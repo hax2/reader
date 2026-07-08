@@ -155,10 +155,6 @@ window.addEventListener("resize", () => {
   if (selectedWordButton && !wordPopover.hidden) positionWordPopover(selectedWordButton);
 });
 
-window.addEventListener("scroll", () => {
-  if (selectedWordButton && !wordPopover.hidden) positionWordPopover(selectedWordButton);
-}, { passive: true });
-
 function setAudioSource(src, message) {
   audio.src = src;
   audio.load();
@@ -529,13 +525,14 @@ function positionWordPopover(anchor) {
 
   const popoverRect = wordPopover.getBoundingClientRect();
   const desiredLeft = rect.left + rect.width / 2 - width / 2;
-  const left = Math.max(margin, Math.min(desiredLeft, window.innerWidth - width - margin));
+  const left = window.scrollX + Math.max(margin, Math.min(desiredLeft, window.innerWidth - width - margin));
   const aboveTop = rect.top - popoverRect.height - 10;
   const belowTop = rect.bottom + 10;
-  const top = aboveTop >= margin ? aboveTop : Math.min(belowTop, window.innerHeight - popoverRect.height - margin);
+  const viewportTop = aboveTop >= margin ? aboveTop : Math.min(belowTop, window.innerHeight - popoverRect.height - margin);
+  const top = window.scrollY + Math.max(margin, viewportTop);
 
   wordPopover.style.left = `${left}px`;
-  wordPopover.style.top = `${Math.max(margin, top)}px`;
+  wordPopover.style.top = `${top}px`;
   wordPopover.dataset.placement = aboveTop >= margin ? "above" : "below";
 }
 
