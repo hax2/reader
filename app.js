@@ -55,10 +55,6 @@ backToLibrary.addEventListener("click", () => {
   showLibrary();
 });
 
-listenPanel.addEventListener("pointerdown", () => {
-  expandPlayer();
-});
-
 listenPanel.addEventListener("focusin", () => {
   expandPlayer(false);
 });

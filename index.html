@@ -7,6 +7,29 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
+    <details class="settings-menu">
+      <summary>Settings</summary>
+      <div class="appearance-controls">
+        <label>
+          <span>Theme</span>
+          <select id="themeSelect">
+            <option value="paper">Paper</option>
+            <option value="mist">Mist</option>
+            <option value="night">Night</option>
+          </select>
+        </label>
+        <label>
+          <span>Highlight</span>
+          <select id="highlightSelect">
+            <option value="sage">Sage wash</option>
+            <option value="sky">Sky wash</option>
+            <option value="rose">Rose wash</option>
+            <option value="underline">Underline</option>
+          </select>
+        </label>
+      </div>
+    </details>
+
     <main class="app" data-view="library">
       <section class="library-panel screen" aria-labelledby="library-title">
         <div class="topbar">
@@ -60,29 +83,6 @@
             <h2>Word</h2>
             <div id="definition" class="definition">
               <p class="muted">Tap a word for an English meaning.</p>
-            </div>
-          </div>
-
-          <div class="tool-block compact">
-            <h2>Appearance</h2>
-            <div class="appearance-controls">
-              <label>
-                <span>Theme</span>
-                <select id="themeSelect">
-                  <option value="paper">Paper</option>
-                  <option value="mist">Mist</option>
-                  <option value="night">Night</option>
-                </select>
-              </label>
-              <label>
-                <span>Highlight</span>
-                <select id="highlightSelect">
-                  <option value="sage">Sage wash</option>
-                  <option value="sky">Sky wash</option>
-                  <option value="rose">Rose wash</option>
-                  <option value="underline">Underline</option>
-                </select>
-              </label>
             </div>
           </div>
 
