@@ -7,29 +7,6 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <details class="settings-menu">
-      <summary>Settings</summary>
-      <div class="appearance-controls">
-        <label>
-          <span>Theme</span>
-          <select id="themeSelect">
-            <option value="paper">Paper</option>
-            <option value="mist">Mist</option>
-            <option value="night">Night</option>
-          </select>
-        </label>
-        <label>
-          <span>Highlight</span>
-          <select id="highlightSelect">
-            <option value="sage">Sage wash</option>
-            <option value="sky">Sky wash</option>
-            <option value="rose">Rose wash</option>
-            <option value="underline">Underline</option>
-          </select>
-        </label>
-      </div>
-    </details>
-
     <main class="app" data-view="library">
       <section class="library-panel screen" aria-labelledby="library-title">
         <div class="topbar">
@@ -49,9 +26,36 @@
             <p class="eyebrow">Now reading</p>
             <h1 id="app-title">Pick a reading above</h1>
           </div>
+          <div class="player-actions">
+            <details id="settingsMenu" class="settings-menu">
+              <summary aria-label="Settings">⚙</summary>
+              <div class="appearance-controls">
+                <label>
+                  <span>Theme</span>
+                  <select id="themeSelect">
+                    <option value="system">System</option>
+                    <option value="paper">Paper</option>
+                    <option value="mist">Mist</option>
+                    <option value="night">Night</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Highlight</span>
+                  <select id="highlightSelect">
+                    <option value="sage">Sage wash</option>
+                    <option value="sky">Sky wash</option>
+                    <option value="rose">Rose wash</option>
+                    <option value="underline">Underline</option>
+                  </select>
+                </label>
+              </div>
+            </details>
+            <button id="collapsePlayer" class="utility-button" type="button" aria-label="Collapse player">×</button>
+          </div>
         </div>
 
         <div class="player-strip">
+          <button id="expandPlayer" class="utility-button expand-player-button" type="button" aria-label="Expand player">⌃</button>
           <button id="playPause" class="icon-button" type="button" aria-label="Play or pause" disabled>
             <span id="playIcon">▶</span>
           </button>

@@ -5,6 +5,8 @@ const audioFile = document.querySelector("#audioFile");
 const transcriptFile = document.querySelector("#transcriptFile");
 const appTitle = document.querySelector("#app-title");
 const backToLibrary = document.querySelector("#backToLibrary");
+const collapsePlayerButton = document.querySelector("#collapsePlayer");
+const expandPlayerButton = document.querySelector("#expandPlayer");
 const trackList = document.querySelector("#trackList");
 const playPause = document.querySelector("#playPause");
 const playIcon = document.querySelector("#playIcon");
@@ -20,9 +22,12 @@ const studyCount = document.querySelector("#studyCount");
 const downloadAnki = document.querySelector("#downloadAnki");
 const themeSelect = document.querySelector("#themeSelect");
 const highlightSelect = document.querySelector("#highlightSelect");
+const settingsMenu = document.querySelector("#settingsMenu");
 const wordPopover = document.querySelector("#wordPopover");
 const canvas = document.querySelector("#waveform");
 const ctx = canvas.getContext("2d");
+const systemThemeQuery = window.matchMedia?.("(prefers-color-scheme: dark)") || null;
+const themeOptions = ["system", "paper", "mist", "night"];
 
 let words = [];
 let currentWordIndex = -1;
@@ -61,6 +66,14 @@ listenPanel.addEventListener("focusin", () => {
 
 listenPanel.addEventListener("focusout", () => {
   schedulePlayerCollapse();
+});
+
+collapsePlayerButton.addEventListener("click", () => {
+  collapsePlayer();
+});
+
+expandPlayerButton.addEventListener("click", () => {
+  expandPlayer(false);
 });
 
 trackList.addEventListener("click", (event) => {
@@ -117,6 +130,18 @@ highlightSelect.addEventListener("change", () => {
   saveAppearanceSettings(appearanceSettings);
   applyAppearanceSettings();
 });
+
+const handleSystemThemeChange = () => {
+  if (appearanceSettings.theme === "system") {
+    applyAppearanceSettings();
+  }
+};
+
+if (systemThemeQuery?.addEventListener) {
+  systemThemeQuery.addEventListener("change", handleSystemThemeChange);
+} else if (systemThemeQuery?.addListener) {
+  systemThemeQuery.addListener(handleSystemThemeChange);
+}
 
 playPause.addEventListener("click", () => {
   if (!audio.src) return;
@@ -290,6 +315,7 @@ function schedulePlayerCollapse(delay = 3600) {
 
 function collapsePlayer() {
   window.clearTimeout(playerCollapseTimer);
+  settingsMenu.open = false;
   listenPanel.classList.remove("player-expanded");
 }
 
@@ -903,11 +929,11 @@ function loadAppearanceSettings() {
   try {
     const saved = JSON.parse(localStorage.getItem("spanish-reader-appearance") || "{}");
     return {
-      theme: ["paper", "mist", "night"].includes(saved.theme) ? saved.theme : "paper",
+      theme: themeOptions.includes(saved.theme) ? saved.theme : "system",
       highlight: ["sage", "sky", "rose", "underline"].includes(saved.highlight) ? saved.highlight : "sage"
     };
   } catch {
-    return { theme: "paper", highlight: "sage" };
+    return { theme: "system", highlight: "sage" };
   }
 }
 
@@ -916,9 +942,16 @@ function saveAppearanceSettings(settings) {
 }
 
 function applyAppearanceSettings() {
-  document.documentElement.dataset.theme = appearanceSettings.theme;
+  document.documentElement.dataset.theme = resolveTheme(appearanceSettings.theme);
   document.documentElement.dataset.highlight = appearanceSettings.highlight;
   themeSelect.value = appearanceSettings.theme;
   highlightSelect.value = appearanceSettings.highlight;
   drawWaveform(audio.duration ? (audio.currentTime || 0) / audio.duration : 0);
+}
+
+function resolveTheme(theme) {
+  if (theme === "system") {
+    return systemThemeQuery?.matches ? "night" : "paper";
+  }
+  return theme;
 }
