@@ -29,8 +29,239 @@ let pendingResumeTime = 0;
 let lastProgressSave = 0;
 let selectedWordButton = null;
 let definitionRequestId = 0;
+let lookupTimer = 0;
+let activeLookups = 0;
+const lookupQueue = [];
+const queuedLookups = new Set();
 let translationCache = loadTranslationCache();
 let progressCache = loadProgressCache();
+
+const COMMON_TRANSLATIONS = {
+  a: "to; at",
+  absoluto: "absolute",
+  abusos: "abuses",
+  acá: "here",
+  acueductos: "aqueducts",
+  adelante: "forward",
+  adentrar: "to go into",
+  agarra: "grabs",
+  agarrar: "to grab",
+  agua: "water",
+  ahí: "there",
+  al: "to the",
+  algo: "something",
+  alguien: "someone",
+  alivio: "relief",
+  ambos: "both",
+  ante: "before; in the face of",
+  apagar: "to put out",
+  aquí: "here",
+  así: "like this; so",
+  básico: "basic",
+  básicamente: "basically",
+  brazo: "arm",
+  buscar: "to seek",
+  cada: "each",
+  calor: "heat",
+  cambio: "change",
+  cara: "face",
+  casi: "almost",
+  ciudad: "city",
+  claro: "clear; of course",
+  clase: "class",
+  clases: "classes",
+  cómo: "how",
+  como: "as; like",
+  completo: "complete",
+  con: "with",
+  contexto: "context",
+  contra: "against",
+  corazón: "heart",
+  cruje: "creaks",
+  cubo: "bucket",
+  cualquier: "any",
+  cuenta: "account; realizes",
+  de: "of; from",
+  delante: "in front",
+  del: "of the; from the",
+  dejaría: "would leave",
+  dice: "says",
+  diciendo: "saying",
+  día: "day",
+  donde: "where",
+  dura: "hard; harsh",
+  económico: "economic",
+  economicistas: "economists; economistic thinkers",
+  edificio: "building",
+  el: "the",
+  él: "he; him",
+  en: "in; on",
+  entender: "to understand",
+  entonces: "then; so",
+  entre: "between; among",
+  época: "era; period",
+  era: "was",
+  es: "is",
+  esa: "that",
+  escena: "scene",
+  escuchas: "you hear",
+  ese: "that",
+  eso: "that",
+  espontaneidad: "spontaneity",
+  esta: "this",
+  está: "is",
+  están: "are",
+  estar: "to be",
+  estás: "you are",
+  estado: "state",
+  estas: "these",
+  este: "this",
+  esto: "this",
+  estructural: "structural",
+  exacto: "exact",
+  exactamente: "exactly",
+  exigencia: "demand; requirement",
+  fábrica: "factory",
+  fábricas: "factories",
+  forma: "form; way",
+  frena: "stops; brakes",
+  frente: "against; facing",
+  frustrante: "frustrating",
+  fuego: "fire",
+  gallo: "rooster; Gallo",
+  gente: "people",
+  gobierno: "government",
+  gran: "great; large",
+  hacer: "to do; to make",
+  hay: "there is; there are",
+  hecho: "fact; done",
+  histórico: "historical",
+  hoy: "today",
+  idea: "idea",
+  imaginemos: "let's imagine",
+  inmediato: "immediate",
+  innegociable: "non-negotiable",
+  instinto: "instinct",
+  intentar: "to try",
+  inversión: "investment",
+  ir: "to go",
+  justo: "right; just",
+  la: "the",
+  lado: "side",
+  largo: "long",
+  las: "the",
+  le: "to him; to her",
+  lenin: "Lenin",
+  líder: "leader",
+  literalmente: "literally",
+  llamas: "flames",
+  lo: "it; the thing",
+  locura: "madness; crazy",
+  lógica: "logic",
+  los: "the",
+  lucha: "struggle; fight",
+  luchar: "to fight",
+  madera: "wood",
+  martínov: "Martinov",
+  martinov: "Martinov",
+  masas: "masses",
+  más: "more",
+  me: "me",
+  manguera: "hose",
+  mira: "look",
+  mismo: "same; itself",
+  momento: "moment",
+  movimiento: "movement",
+  mucho: "much; a lot",
+  muy: "very",
+  nada: "nothing",
+  narices: "noses; right in front of you",
+  ni: "nor; not even",
+  no: "no; not",
+  nos: "us; ourselves",
+  nuestra: "our",
+  o: "or",
+  organización: "organization",
+  organizar: "to organize",
+  otro: "other; another",
+  papel: "role; paper",
+  para: "for; in order to",
+  parece: "seems",
+  perder: "to lose",
+  periódico: "newspaper",
+  pero: "but",
+  perplejo: "perplexed",
+  plazo: "term; deadline",
+  poco: "little",
+  política: "politics; policy",
+  político: "political",
+  por: "by; for; through",
+  porque: "because",
+  postura: "position; stance",
+  práctico: "practical",
+  pregunta: "question",
+  propia: "own",
+  propagandista: "propagandist",
+  puf: "oof; whew",
+  pues: "well; then",
+  pura: "pure",
+  qué: "what",
+  que: "that; which",
+  realmente: "really",
+  rediseñar: "to redesign",
+  repente: "suddenly",
+  revolucionaria: "revolutionary",
+  revolucionario: "revolutionary",
+  rusia: "Russia",
+  se: "himself; herself; itself",
+  sea: "is; may be",
+  seco: "dry; abrupt",
+  según: "according to",
+  segundo: "second",
+  si: "if",
+  sí: "yes; itself",
+  siglo: "century",
+  sin: "without",
+  sindical: "trade-union; labor-union",
+  sistema: "system",
+  sociedad: "society",
+  solo: "only; alone",
+  son: "are",
+  sobre: "about; over",
+  su: "his; her; its; their",
+  suena: "sounds",
+  sufrimiento: "suffering",
+  supervivencia: "survival",
+  sus: "his; her; its; their",
+  te: "you",
+  tenemos: "we have",
+  teoría: "theory",
+  terroristas: "terrorists",
+  tesis: "thesis",
+  texto: "text",
+  tienes: "you have",
+  todo: "all; everything",
+  todos: "all; everyone",
+  toda: "all; whole",
+  todas: "all",
+  total: "total",
+  totalmente: "totally",
+  trabajo: "work",
+  trabajadores: "workers",
+  tuberías: "pipes",
+  un: "a; one",
+  una: "a; one",
+  urgente: "urgent",
+  usa: "uses",
+  va: "goes",
+  vale: "okay; worth",
+  vamos: "let's go; we are going",
+  vanguardia: "vanguard",
+  ver: "to see",
+  verdad: "truth; really",
+  y: "and",
+  ya: "already; now"
+};
 
 drawWaveform(0);
 loadLibrary();
@@ -249,6 +480,7 @@ function setWords(nextWords, precise) {
   if (!precise) assignApproximateTimes(words);
   renderWords();
   updateProgress();
+  warmTranslationCache(words);
 }
 
 function parseTranscript(text, name) {
@@ -439,26 +671,23 @@ async function showDefinition(word, anchor) {
   selectedWordButton?.classList.add("selected");
   const requestId = ++definitionRequestId;
   const normalized = normalizeWord(word.text);
-  renderDefinition(word.text, "Looking up English meaning...");
+  const instant = getCachedTranslation(normalized);
+  if (instant) {
+    renderDefinition(word.text, instant, anchor);
+    queueNearbyTranslations(word.index);
+    return;
+  }
+
+  renderDefinition(word.text, "Looking up...");
+  queueNearbyTranslations(word.index);
 
   if (word.translation) {
     renderDefinition(word.text, word.translation, anchor);
     return;
   }
-  if (translationCache[normalized]) {
-    renderDefinition(word.text, translationCache[normalized], anchor);
-    return;
-  }
 
   try {
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(normalized)}&langpair=es|en`;
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Lookup failed");
-    const data = await response.json();
-    const translated = data?.responseData?.translatedText;
-    if (!translated) throw new Error("No translation returned");
-    translationCache[normalized] = translated;
-    saveTranslationCache(translationCache);
+    const translated = await fetchTranslation(normalized);
     if (requestId === definitionRequestId) renderDefinition(word.text, translated, anchor);
   } catch {
     const spanishDict = `https://www.spanishdict.com/translate/${encodeURIComponent(normalized)}`;
@@ -505,6 +734,88 @@ function hideWordPopover() {
   selectedWordButton?.classList.remove("selected");
   selectedWordButton = null;
   wordPopover.hidden = true;
+}
+
+function getCachedTranslation(normalized) {
+  return translationCache[normalized] || COMMON_TRANSLATIONS[normalized] || COMMON_TRANSLATIONS[stripDiacritics(normalized)] || "";
+}
+
+async function fetchTranslation(normalized) {
+  const cached = getCachedTranslation(normalized);
+  if (cached) return cached;
+
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), 4500);
+  try {
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(normalized)}&langpair=es|en`;
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) throw new Error("Lookup failed");
+    const data = await response.json();
+    const translated = data?.responseData?.translatedText;
+    if (!translated) throw new Error("No translation returned");
+    translationCache[normalized] = translated;
+    saveTranslationCache(translationCache);
+    return translated;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+}
+
+function warmTranslationCache(list) {
+  const seen = new Set();
+  for (const word of list) {
+    const normalized = normalizeWord(word.text);
+    if (!normalized || seen.has(normalized) || getCachedTranslation(normalized)) continue;
+    seen.add(normalized);
+    enqueueTranslation(normalized);
+    if (seen.size >= 80) break;
+  }
+}
+
+function queueNearbyTranslations(index) {
+  if (!Number.isFinite(index)) return;
+  const start = Math.max(0, index - 18);
+  const end = Math.min(words.length, index + 42);
+  for (let i = start; i < end; i += 1) {
+    const normalized = normalizeWord(words[i].text);
+    if (normalized && !getCachedTranslation(normalized)) enqueueTranslation(normalized, true);
+  }
+}
+
+function enqueueTranslation(normalized, priority = false) {
+  if (queuedLookups.has(normalized) || getCachedTranslation(normalized)) return;
+  queuedLookups.add(normalized);
+  if (priority) lookupQueue.unshift(normalized);
+  else lookupQueue.push(normalized);
+  scheduleLookupPump();
+}
+
+function scheduleLookupPump(delay = 350) {
+  if (lookupTimer) return;
+  lookupTimer = window.setTimeout(() => {
+    lookupTimer = 0;
+    pumpLookupQueue();
+  }, delay);
+}
+
+function pumpLookupQueue() {
+  if (activeLookups > 0 || !lookupQueue.length) return;
+  const normalized = lookupQueue.shift();
+  if (!normalized) return;
+  if (getCachedTranslation(normalized)) {
+    queuedLookups.delete(normalized);
+    scheduleLookupPump(0);
+    return;
+  }
+
+  activeLookups += 1;
+  fetchTranslation(normalized)
+    .catch(() => {})
+    .finally(() => {
+      activeLookups -= 1;
+      queuedLookups.delete(normalized);
+      if (lookupQueue.length) scheduleLookupPump(850);
+    });
 }
 
 function drawWaveform(progress) {
@@ -591,6 +902,10 @@ function saveActiveProgress(force) {
 
 function normalizeWord(word) {
   return word.toLocaleLowerCase("es").replace(/[^\p{L}\p{M}\d]/gu, "");
+}
+
+function stripDiacritics(value) {
+  return value.normalize("NFD").replace(/\p{M}/gu, "");
 }
 
 function escapeHtml(value) {
