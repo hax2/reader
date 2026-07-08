@@ -63,7 +63,16 @@
             </div>
 
             <div class="player-strip">
-              <div class="player-left"></div>
+              <div class="player-left">
+                <select id="playbackRate" class="utility-button" aria-label="Playback speed" style="appearance: auto; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--surface); color: var(--ink);">
+                  <option value="0.5">0.5x</option>
+                  <option value="0.75">0.75x</option>
+                  <option value="1" selected>1x</option>
+                  <option value="1.25">1.25x</option>
+                  <option value="1.5">1.5x</option>
+                  <option value="2">2x</option>
+                </select>
+              </div>
             
             <div class="player-center">
               <button id="playPause" class="play-button" type="button" aria-label="Play or pause" disabled>

@@ -119,14 +119,14 @@
 
 :root[data-theme="night"][data-highlight="sky"] {
   --highlight-text: #fff;
-  --highlight-bg: rgba(255, 255, 255, 0.2);
-  --highlight-shadow: rgba(255, 255, 255, 0.14);
+  --highlight-bg: rgba(102, 157, 199, 0.35);
+  --highlight-shadow: rgba(102, 157, 199, 0.2);
 }
 
 :root[data-theme="night"][data-highlight="rose"] {
   --highlight-text: #fff;
-  --highlight-bg: rgba(255, 255, 255, 0.2);
-  --highlight-shadow: rgba(255, 255, 255, 0.14);
+  --highlight-bg: rgba(190, 111, 132, 0.35);
+  --highlight-shadow: rgba(190, 111, 132, 0.2);
 }
 
 * {
@@ -406,9 +406,12 @@ h2 {
   padding: 12px 16px;
   background: var(--sticky-bg);
   border-bottom: 1px solid var(--reader-border);
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 10;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9999;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -585,7 +588,7 @@ h2 {
 .workspace {
   display: grid;
   gap: 24px;
-  padding: 28px 0 0;
+  padding: 80px 0 0;
 }
 
 .reader-shell {
