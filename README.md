@@ -36,15 +36,16 @@ Install the transcription environment:
 Create a synced transcript from your normal terminal, where the NVIDIA driver is available:
 
 ```sh
-. .venv/bin/activate
-python scripts/transcribe.py "Vanguardia_revolucionaria_frente_a_política_sindical.m4a" --model medium --vtt
+./scripts/transcribe_gpu.sh "Vanguardia_revolucionaria_frente_a_política_sindical.m4a" --model medium --vtt
 python scripts/build_library.py
 ```
 
-The script uses `faster-whisper` with Spanish language mode and word timestamps. It defaults to CUDA with `float16`, which is the right path for an RTX GPU. If VRAM is tight, use:
+The setup installs `faster-whisper` plus CUDA 12 cuBLAS/cuDNN wheels. Use `transcribe_gpu.sh` instead of calling `transcribe.py` directly because the wrapper exposes those CUDA libraries through `LD_LIBRARY_PATH`.
+
+The script uses Spanish language mode and word timestamps. It defaults to CUDA with `float16`, which is the right path for an RTX GPU. If VRAM is tight, use:
 
 ```sh
-python scripts/transcribe.py audio.m4a --model small --compute-type int8_float16
+./scripts/transcribe_gpu.sh audio.m4a --model small --compute-type int8_float16
 ```
 
 If `nvidia-smi` cannot see the GPU, fix the NVIDIA driver or CUDA runtime first, or run with `--device cpu --compute-type int8`.

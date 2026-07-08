@@ -13,13 +13,16 @@ cat <<'MSG'
 Transcriber environment is ready.
 
 Try:
-  . .venv/bin/activate
-  python scripts/transcribe.py "Vanguardia_revolucionaria_frente_a_política_sindical.m4a" --model medium --vtt
+  ./scripts/transcribe_gpu.sh "Vanguardia_revolucionaria_frente_a_política_sindical.m4a" --model medium --vtt
   python scripts/build_library.py
 
 GPU diagnostic:
   nvidia-smi
 
 If CUDA runs out of memory, retry with:
-  python scripts/transcribe.py audio.m4a --model small --compute-type int8_float16
+  ./scripts/transcribe_gpu.sh audio.m4a --model small --compute-type int8_float16
+
+CPU fallback:
+  . .venv/bin/activate
+  python scripts/transcribe.py audio.m4a --device cpu --compute-type int8
 MSG

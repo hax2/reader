@@ -53,21 +53,31 @@ def main() -> None:
     words: list[dict[str, float | str]] = []
     vtt_cues: list[tuple[float, float, str]] = []
 
-    for segment in segments:
-        segment_text = clean_text(segment.text)
-        if segment_text:
-            vtt_cues.append((segment.start, segment.end, segment_text))
-        for word in segment.words or []:
-            text = clean_word(word.word)
-            if not text:
-                continue
-            words.append(
-                {
-                    "word": text,
-                    "start": round(float(word.start), 3),
-                    "end": round(float(word.end), 3),
-                }
-            )
+    try:
+        for segment in segments:
+            segment_text = clean_text(segment.text)
+            if segment_text:
+                vtt_cues.append((segment.start, segment.end, segment_text))
+            for word in segment.words or []:
+                text = clean_word(word.word)
+                if not text:
+                    continue
+                words.append(
+                    {
+                        "word": text,
+                        "start": round(float(word.start), 3),
+                        "end": round(float(word.end), 3),
+                    }
+                )
+    except RuntimeError as exc:
+        message = str(exc)
+        if "libcublas.so.12" in message or "libcudnn" in message:
+            raise SystemExit(
+                "CUDA runtime libraries were not found. Run ./scripts/setup_transcriber.sh, "
+                "then launch transcription with ./scripts/transcribe_gpu.sh instead of "
+                "calling scripts/transcribe.py directly."
+            ) from exc
+        raise
 
     payload = {
         "source": args.audio.name,
