@@ -26,6 +26,7 @@ def main() -> None:
         item = {
             "title": title_from_stem(audio.stem),
             "audio": audio.name,
+            "glossary": "glossary/shared.json",
         }
         if transcript.exists():
             item["transcript"] = transcript.name

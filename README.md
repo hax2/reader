@@ -25,6 +25,14 @@ my-audio.m4a
 my-audio.json
 ```
 
+Update the shared vocabulary file after adding transcripts:
+
+```sh
+python3 scripts/build_glossary.py
+```
+
+This scans transcript JSON files, merges new unique words into `glossary/shared.json`, and writes words that still need English meanings to `glossary/missing.json`. Fill in meanings in `glossary/shared.json`; the reader uses that file for instant word popups.
+
 ## Transcribe with your NVIDIA GPU
 
 Install the transcription environment:

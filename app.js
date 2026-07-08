@@ -36,235 +36,10 @@ const queuedLookups = new Set();
 let translationCache = loadTranslationCache();
 let progressCache = loadProgressCache();
 
-const COMMON_TRANSLATIONS = {
-  a: "to; at",
-  absoluto: "absolute",
-  abusos: "abuses",
-  acá: "here",
-  acueductos: "aqueducts",
-  adelante: "forward",
-  adentrar: "to go into",
-  agarra: "grabs",
-  agarrar: "to grab",
-  agua: "water",
-  ahí: "there",
-  al: "to the",
-  algo: "something",
-  alguien: "someone",
-  alivio: "relief",
-  ambos: "both",
-  ante: "before; in the face of",
-  apagar: "to put out",
-  aquí: "here",
-  así: "like this; so",
-  básico: "basic",
-  básicamente: "basically",
-  brazo: "arm",
-  buscar: "to seek",
-  cada: "each",
-  calor: "heat",
-  cambio: "change",
-  cara: "face",
-  casi: "almost",
-  ciudad: "city",
-  claro: "clear; of course",
-  clase: "class",
-  clases: "classes",
-  cómo: "how",
-  como: "as; like",
-  completo: "complete",
-  con: "with",
-  contexto: "context",
-  contra: "against",
-  corazón: "heart",
-  cruje: "creaks",
-  cubo: "bucket",
-  cualquier: "any",
-  cuenta: "account; realizes",
-  de: "of; from",
-  delante: "in front",
-  del: "of the; from the",
-  dejaría: "would leave",
-  dice: "says",
-  diciendo: "saying",
-  día: "day",
-  donde: "where",
-  dura: "hard; harsh",
-  económico: "economic",
-  economicistas: "economists; economistic thinkers",
-  edificio: "building",
-  el: "the",
-  él: "he; him",
-  en: "in; on",
-  entender: "to understand",
-  entonces: "then; so",
-  entre: "between; among",
-  época: "era; period",
-  era: "was",
-  es: "is",
-  esa: "that",
-  escena: "scene",
-  escuchas: "you hear",
-  ese: "that",
-  eso: "that",
-  espontaneidad: "spontaneity",
-  esta: "this",
-  está: "is",
-  están: "are",
-  estar: "to be",
-  estás: "you are",
-  estado: "state",
-  estas: "these",
-  este: "this",
-  esto: "this",
-  estructural: "structural",
-  exacto: "exact",
-  exactamente: "exactly",
-  exigencia: "demand; requirement",
-  fábrica: "factory",
-  fábricas: "factories",
-  forma: "form; way",
-  frena: "stops; brakes",
-  frente: "against; facing",
-  frustrante: "frustrating",
-  fuego: "fire",
-  gallo: "rooster; Gallo",
-  gente: "people",
-  gobierno: "government",
-  gran: "great; large",
-  hacer: "to do; to make",
-  hay: "there is; there are",
-  hecho: "fact; done",
-  histórico: "historical",
-  hoy: "today",
-  idea: "idea",
-  imaginemos: "let's imagine",
-  inmediato: "immediate",
-  innegociable: "non-negotiable",
-  instinto: "instinct",
-  intentar: "to try",
-  inversión: "investment",
-  ir: "to go",
-  justo: "right; just",
-  la: "the",
-  lado: "side",
-  largo: "long",
-  las: "the",
-  le: "to him; to her",
-  lenin: "Lenin",
-  líder: "leader",
-  literalmente: "literally",
-  llamas: "flames",
-  lo: "it; the thing",
-  locura: "madness; crazy",
-  lógica: "logic",
-  los: "the",
-  lucha: "struggle; fight",
-  luchar: "to fight",
-  madera: "wood",
-  martínov: "Martinov",
-  martinov: "Martinov",
-  masas: "masses",
-  más: "more",
-  me: "me",
-  manguera: "hose",
-  mira: "look",
-  mismo: "same; itself",
-  momento: "moment",
-  movimiento: "movement",
-  mucho: "much; a lot",
-  muy: "very",
-  nada: "nothing",
-  narices: "noses; right in front of you",
-  ni: "nor; not even",
-  no: "no; not",
-  nos: "us; ourselves",
-  nuestra: "our",
-  o: "or",
-  organización: "organization",
-  organizar: "to organize",
-  otro: "other; another",
-  papel: "role; paper",
-  para: "for; in order to",
-  parece: "seems",
-  perder: "to lose",
-  periódico: "newspaper",
-  pero: "but",
-  perplejo: "perplexed",
-  plazo: "term; deadline",
-  poco: "little",
-  política: "politics; policy",
-  político: "political",
-  por: "by; for; through",
-  porque: "because",
-  postura: "position; stance",
-  práctico: "practical",
-  pregunta: "question",
-  propia: "own",
-  propagandista: "propagandist",
-  puf: "oof; whew",
-  pues: "well; then",
-  pura: "pure",
-  qué: "what",
-  que: "that; which",
-  realmente: "really",
-  rediseñar: "to redesign",
-  repente: "suddenly",
-  revolucionaria: "revolutionary",
-  revolucionario: "revolutionary",
-  rusia: "Russia",
-  se: "himself; herself; itself",
-  sea: "is; may be",
-  seco: "dry; abrupt",
-  según: "according to",
-  segundo: "second",
-  si: "if",
-  sí: "yes; itself",
-  siglo: "century",
-  sin: "without",
-  sindical: "trade-union; labor-union",
-  sistema: "system",
-  sociedad: "society",
-  solo: "only; alone",
-  son: "are",
-  sobre: "about; over",
-  su: "his; her; its; their",
-  suena: "sounds",
-  sufrimiento: "suffering",
-  supervivencia: "survival",
-  sus: "his; her; its; their",
-  te: "you",
-  tenemos: "we have",
-  teoría: "theory",
-  terroristas: "terrorists",
-  tesis: "thesis",
-  texto: "text",
-  tienes: "you have",
-  todo: "all; everything",
-  todos: "all; everyone",
-  toda: "all; whole",
-  todas: "all",
-  total: "total",
-  totalmente: "totally",
-  trabajo: "work",
-  trabajadores: "workers",
-  tuberías: "pipes",
-  un: "a; one",
-  una: "a; one",
-  urgente: "urgent",
-  usa: "uses",
-  va: "goes",
-  vale: "okay; worth",
-  vamos: "let's go; we are going",
-  vanguardia: "vanguard",
-  ver: "to see",
-  verdad: "truth; really",
-  y: "and",
-  ya: "already; now"
-};
+let sharedGlossary = {};
 
 drawWaveform(0);
-loadLibrary();
+initialize();
 
 backToLibrary.addEventListener("click", () => {
   showLibrary();
@@ -396,11 +171,31 @@ async function loadLibrary() {
       .map((track) => ({
         ...track,
         id: track.id || track.audio,
-        title: track.title || track.audio
+        title: track.title || track.audio,
+        glossary: track.glossary || "glossary/shared.json"
       }));
     renderTrackList();
   } catch {
     trackList.innerHTML = `<p class="muted">No hosted readings found. Add audio files and run <code>python3 scripts/build_library.py</code>.</p>`;
+  }
+}
+
+async function initialize() {
+  await loadSharedGlossary();
+  await loadLibrary();
+}
+
+async function loadSharedGlossary(path = "glossary/shared.json") {
+  try {
+    const response = await fetch(path, { cache: "no-store" });
+    if (!response.ok) throw new Error("Glossary not found");
+    const glossary = await response.json();
+    if (!glossary || typeof glossary !== "object" || Array.isArray(glossary)) {
+      throw new Error("Invalid glossary");
+    }
+    sharedGlossary = glossary;
+  } catch {
+    sharedGlossary = {};
   }
 }
 
@@ -410,6 +205,7 @@ async function loadTrack(track) {
   appTitle.textContent = track.title;
   showReader();
   setAudioSource(track.audio, `${track.title} loaded.`);
+  await loadSharedGlossary(track.glossary || "glossary/shared.json");
   renderTrackList();
 
   if (!track.transcript) {
@@ -737,7 +533,7 @@ function hideWordPopover() {
 }
 
 function getCachedTranslation(normalized) {
-  return translationCache[normalized] || COMMON_TRANSLATIONS[normalized] || COMMON_TRANSLATIONS[stripDiacritics(normalized)] || "";
+  return sharedGlossary[normalized] || sharedGlossary[stripDiacritics(normalized)] || translationCache[normalized] || "";
 }
 
 async function fetchTranslation(normalized) {
