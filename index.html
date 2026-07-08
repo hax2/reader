@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spanish Listening Reader</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app">
+      <section class="library-panel" aria-labelledby="library-title">
+        <div class="topbar">
+          <div>
+            <p class="eyebrow">Spanish Listening Reader</p>
+            <h1 id="library-title">Choose a reading</h1>
+          </div>
+        </div>
+        <div id="trackList" class="track-list" aria-live="polite"></div>
+      </section>
+
+      <section class="listen-panel" aria-labelledby="app-title">
+        <div class="topbar">
+          <div>
+            <p class="eyebrow">Now reading</p>
+            <h1 id="app-title">Pick a reading above</h1>
+          </div>
+        </div>
+
+        <div class="player-strip">
+          <button id="playPause" class="icon-button" type="button" aria-label="Play or pause" disabled>
+            <span id="playIcon">▶</span>
+          </button>
+          <div class="timeline-wrap">
+            <canvas id="waveform" width="900" height="92" aria-hidden="true"></canvas>
+            <input id="seek" class="seek" type="range" min="0" max="0" step="0.01" value="0" disabled aria-label="Seek">
+          </div>
+          <div class="time-readout">
+            <span id="currentTime">0:00</span>
+            <span id="duration">0:00</span>
+          </div>
+        </div>
+
+        <audio id="audio" preload="metadata"></audio>
+      </section>
+
+      <details class="manual-tools">
+        <summary>Manual import tools</summary>
+        <div class="import-grid">
+          <label class="file-pick">
+            <span>Audio</span>
+            <input id="audioFile" type="file" accept="audio/*,.m4a">
+          </label>
+          <label class="file-pick">
+            <span>Transcript</span>
+            <input id="transcriptFile" type="file" accept=".json,.vtt,.srt,.txt,text/plain,application/json">
+          </label>
+        </div>
+      </details>
+
+      <section class="workspace">
+        <aside class="side-panel" aria-label="Transcript tools">
+          <div class="tool-block">
+            <h2>Text source</h2>
+            <textarea id="pasteTranscript" rows="9" placeholder="Paste Spanish text here when you do not have a timed transcript. Highlighting will be approximate."></textarea>
+            <button id="usePastedText" type="button">Use pasted text</button>
+          </div>
+
+          <div class="tool-block compact">
+            <h2>Clicked word</h2>
+            <div id="definition" class="definition">
+              <p class="muted">Click any Spanish word to see an English meaning.</p>
+            </div>
+          </div>
+        </aside>
+
+        <section class="reader-shell" aria-label="Transcript reader">
+          <div id="status" class="status">Choose a hosted reading to begin.</div>
+          <article id="reader" class="reader" lang="es"></article>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
