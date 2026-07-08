@@ -490,6 +490,12 @@ h2 {
   display: none !important;
 }
 
+@media (max-width: 600px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+}
+
 .back-button,
 .utility-button,
 .settings-menu summary {
@@ -836,13 +842,6 @@ textarea {
   .track-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .listen-panel {
-    bottom: 22px;
-    padding: 14px;
-  }
-
-
 
   .workspace {
     grid-template-columns: minmax(0, 1fr) 260px;
