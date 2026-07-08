@@ -399,18 +399,33 @@ h2 {
   min-width: 0;
 }
 
-.player-left h1 {
-  font-size: 0.95rem;
-  font-weight: 600;
+.reader-topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--sticky-bg);
+  border-bottom: 1px solid var(--reader-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.reader-topbar .title-wrap {
+  min-width: 0;
+  flex: 1;
+}
+
+.reader-topbar h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-line-clamp: unset;
-  margin: 0;
-}
-
-.player-left .eyebrow {
-  display: none;
+  color: var(--ink);
 }
 
 .player-center {

@@ -19,24 +19,26 @@
       </section>
 
       <section class="reader-view screen" aria-labelledby="app-title">
-      <section class="listen-panel player-expanded" aria-labelledby="app-title">
-        <div class="listen-panel-inner">
-          <div class="timeline-wrap">
-            <div class="waveform-container">
-              <canvas id="waveform" width="900" height="20" aria-hidden="true"></canvas>
-              <input id="seek" class="seek" type="range" min="0" max="0" step="0.01" value="0" disabled aria-label="Seek">
-            </div>
+        <header class="reader-topbar">
+          <button id="backToLibrary" class="utility-button" type="button" aria-label="Back to readings">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          </button>
+          <div class="title-wrap">
+            <h1 id="app-title">Pick a reading above</h1>
           </div>
-
-          <div class="player-strip">
-            <div class="player-left">
-              <button id="backToLibrary" class="utility-button" type="button" aria-label="Back to readings">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-              </button>
-              <div class="title-wrap">
-                <h1 id="app-title">Pick a reading above</h1>
+        </header>
+        
+        <section class="listen-panel player-expanded" aria-labelledby="app-title">
+          <div class="listen-panel-inner">
+            <div class="timeline-wrap">
+              <div class="waveform-container">
+                <canvas id="waveform" width="900" height="20" aria-hidden="true"></canvas>
+                <input id="seek" class="seek" type="range" min="0" max="0" step="0.01" value="0" disabled aria-label="Seek">
               </div>
             </div>
+
+            <div class="player-strip">
+              <div class="player-left"></div>
             
             <div class="player-center">
               <button id="playPause" class="play-button" type="button" aria-label="Play or pause" disabled>
