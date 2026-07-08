@@ -15,6 +15,8 @@ const statusEl = document.querySelector("#status");
 const pasteTranscript = document.querySelector("#pasteTranscript");
 const usePastedText = document.querySelector("#usePastedText");
 const definition = document.querySelector("#definition");
+const studyCount = document.querySelector("#studyCount");
+const downloadAnki = document.querySelector("#downloadAnki");
 const wordPopover = document.querySelector("#wordPopover");
 const canvas = document.querySelector("#waveform");
 const ctx = canvas.getContext("2d");
@@ -35,10 +37,12 @@ const lookupQueue = [];
 const queuedLookups = new Set();
 let translationCache = loadTranslationCache();
 let progressCache = loadProgressCache();
+let studyLog = loadStudyLog();
 
 let sharedGlossary = {};
 
 drawWaveform(0);
+updateStudyControls();
 initialize();
 
 backToLibrary.addEventListener("click", () => {
@@ -82,6 +86,10 @@ usePastedText.addEventListener("click", () => {
   assignApproximateTimes(parsed);
   setWords(parsed, false);
   status("Pasted text loaded. Highlighting is approximate because no word timings were provided.");
+});
+
+downloadAnki.addEventListener("click", () => {
+  downloadAnkiCards();
 });
 
 playPause.addEventListener("click", () => {
@@ -470,6 +478,7 @@ async function showDefinition(word, anchor) {
   const instant = getCachedTranslation(normalized);
   if (instant) {
     renderDefinition(word.text, instant, anchor);
+    logStudiedWord(word, instant);
     queueNearbyTranslations(word.index);
     return;
   }
@@ -479,12 +488,16 @@ async function showDefinition(word, anchor) {
 
   if (word.translation) {
     renderDefinition(word.text, word.translation, anchor);
+    logStudiedWord(word, word.translation);
     return;
   }
 
   try {
     const translated = await fetchTranslation(normalized);
-    if (requestId === definitionRequestId) renderDefinition(word.text, translated, anchor);
+    if (requestId === definitionRequestId) {
+      renderDefinition(word.text, translated, anchor);
+      logStudiedWord(word, translated);
+    }
   } catch {
     const spanishDict = `https://www.spanishdict.com/translate/${encodeURIComponent(normalized)}`;
     const wordReference = `https://www.wordreference.com/es/en/translation.asp?spen=${encodeURIComponent(normalized)}`;
@@ -530,6 +543,89 @@ function hideWordPopover() {
   selectedWordButton?.classList.remove("selected");
   selectedWordButton = null;
   wordPopover.hidden = true;
+}
+
+function logStudiedWord(word, meaning) {
+  if (!word || !meaning || /looking up/i.test(String(meaning))) return;
+  const normalized = normalizeWord(word.text);
+  if (!normalized) return;
+
+  const previous = studyLog[normalized] || {};
+  const context = contextSentenceForWord(word.index);
+  studyLog[normalized] = {
+    word: word.text,
+    normalized,
+    meaning,
+    context: previous.context || context,
+    reading: previous.reading || appTitle.textContent || "Untitled reading",
+    firstSeenAt: previous.firstSeenAt || new Date().toISOString(),
+    lastSeenAt: new Date().toISOString(),
+    lookupCount: (previous.lookupCount || 0) + 1
+  };
+  saveStudyLog(studyLog);
+  updateStudyControls();
+}
+
+function contextSentenceForWord(index) {
+  if (!Number.isFinite(index) || !words[index]) return "";
+  let start = index;
+  while (start > 0 && !endsSentence(words[start - 1])) start -= 1;
+
+  let end = index;
+  while (end < words.length - 1 && !endsSentence(words[end])) end += 1;
+
+  return words
+    .slice(start, end + 1)
+    .map((word, offset) => {
+      const absoluteIndex = start + offset;
+      const text = absoluteIndex === index ? `<b>${escapeHtml(word.text)}</b>` : escapeHtml(word.text);
+      return `${text}${escapeHtml(word.separator || " ")}`;
+    })
+    .join("")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function endsSentence(word) {
+  return /[.!?…]["')\]]*\s*$/.test(`${word.text}${word.separator || ""}`);
+}
+
+function updateStudyControls() {
+  const count = Object.values(studyLog).filter((entry) => entry?.word && entry?.meaning).length;
+  studyCount.textContent = `${count.toLocaleString()} looked-up ${count === 1 ? "word" : "words"}`;
+  downloadAnki.disabled = count === 0;
+}
+
+function downloadAnkiCards() {
+  const entries = Object.values(studyLog)
+    .filter((entry) => entry?.word && entry?.meaning)
+    .sort((a, b) => String(a.normalized || a.word).localeCompare(String(b.normalized || b.word), "es"));
+  if (!entries.length) return;
+
+  const rows = entries.map((entry) => [
+    entry.word,
+    entry.meaning,
+    entry.context,
+    entry.reading
+  ].map(tsvField).join("\t"));
+  const blob = new Blob([`${rows.join("\n")}\n`], {
+    type: "text/tab-separated-values;charset=utf-8"
+  });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `spanish-reader-anki-${new Date().toISOString().slice(0, 10)}.tsv`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function tsvField(value) {
+  return String(value ?? "")
+    .replace(/\r?\n/g, "<br>")
+    .replace(/\t/g, " ")
+    .trim();
 }
 
 function getCachedTranslation(normalized) {
@@ -740,4 +836,16 @@ function loadProgressCache() {
 
 function saveProgressCache(cache) {
   localStorage.setItem("spanish-reader-progress", JSON.stringify(cache));
+}
+
+function loadStudyLog() {
+  try {
+    return JSON.parse(localStorage.getItem("spanish-reader-study-log") || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveStudyLog(log) {
+  localStorage.setItem("spanish-reader-study-log", JSON.stringify(log));
 }

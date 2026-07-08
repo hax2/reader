@@ -33,6 +33,14 @@ python3 scripts/build_glossary.py
 
 This scans transcript JSON files, merges new unique words into `glossary/shared.json`, and writes words that still need English meanings to `glossary/missing.json`. Fill in meanings in `glossary/shared.json`; the reader uses that file for instant word popups.
 
+## Anki export
+
+Words you tap are saved in the browser. Use **Download Anki cards** in the reader to export a tab-separated file with these fields:
+
+```text
+Spanish word    English meaning    Context sentence    Reading title
+```
+
 ## Transcribe with your NVIDIA GPU
 
 Install the transcription environment:
