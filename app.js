@@ -5,7 +5,7 @@ const audioFile = document.querySelector("#audioFile");
 const transcriptFile = document.querySelector("#transcriptFile");
 const appTitle = document.querySelector("#app-title");
 const backToLibrary = document.querySelector("#backToLibrary");
-const collapsePlayerButton = document.querySelector("#collapsePlayer");
+const collapsePlayerInlineButton = document.querySelector("#collapsePlayerInline");
 const expandPlayerButton = document.querySelector("#expandPlayer");
 const trackList = document.querySelector("#trackList");
 const playPause = document.querySelector("#playPause");
@@ -68,7 +68,7 @@ listenPanel.addEventListener("focusout", () => {
   schedulePlayerCollapse();
 });
 
-collapsePlayerButton.addEventListener("click", () => {
+collapsePlayerInlineButton.addEventListener("click", () => {
   collapsePlayer();
 });
 
