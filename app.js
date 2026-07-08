@@ -1,5 +1,6 @@
 const audio = document.querySelector("#audio");
 const app = document.querySelector(".app");
+const listenPanel = document.querySelector(".listen-panel");
 const audioFile = document.querySelector("#audioFile");
 const transcriptFile = document.querySelector("#transcriptFile");
 const appTitle = document.querySelector("#app-title");
@@ -34,6 +35,7 @@ let lastProgressSave = 0;
 let selectedWordButton = null;
 let definitionRequestId = 0;
 let lookupTimer = 0;
+let playerCollapseTimer = 0;
 let activeLookups = 0;
 const lookupQueue = [];
 const queuedLookups = new Set();
@@ -51,6 +53,18 @@ initialize();
 
 backToLibrary.addEventListener("click", () => {
   showLibrary();
+});
+
+listenPanel.addEventListener("pointerdown", () => {
+  expandPlayer();
+});
+
+listenPanel.addEventListener("focusin", () => {
+  expandPlayer(false);
+});
+
+listenPanel.addEventListener("focusout", () => {
+  schedulePlayerCollapse();
 });
 
 trackList.addEventListener("click", (event) => {
@@ -110,6 +124,7 @@ highlightSelect.addEventListener("change", () => {
 
 playPause.addEventListener("click", () => {
   if (!audio.src) return;
+  expandPlayer();
   if (audio.paused) {
     audio.play();
   } else {
@@ -149,6 +164,7 @@ audio.addEventListener("ended", () => {
 });
 
 seek.addEventListener("input", () => {
+  expandPlayer();
   audio.currentTime = Number(seek.value);
   saveActiveProgress(true);
   updateProgress();
@@ -252,13 +268,33 @@ function showLibrary() {
   app.dataset.view = "library";
   document.title = "Spanish Listening Reader";
   hideWordPopover();
+  collapsePlayer();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function showReader() {
   app.dataset.view = "reader";
   document.title = appTitle.textContent ? `${appTitle.textContent} · Spanish Listening Reader` : "Spanish Listening Reader";
+  expandPlayer();
   window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function expandPlayer(autoCollapse = true) {
+  listenPanel.classList.add("player-expanded");
+  window.clearTimeout(playerCollapseTimer);
+  if (autoCollapse) schedulePlayerCollapse();
+}
+
+function schedulePlayerCollapse(delay = 3600) {
+  window.clearTimeout(playerCollapseTimer);
+  playerCollapseTimer = window.setTimeout(() => {
+    if (!listenPanel.contains(document.activeElement)) collapsePlayer();
+  }, delay);
+}
+
+function collapsePlayer() {
+  window.clearTimeout(playerCollapseTimer);
+  listenPanel.classList.remove("player-expanded");
 }
 
 function renderTrackList() {
