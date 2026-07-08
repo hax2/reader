@@ -1,7 +1,9 @@
 const audio = document.querySelector("#audio");
+const app = document.querySelector(".app");
 const audioFile = document.querySelector("#audioFile");
 const transcriptFile = document.querySelector("#transcriptFile");
 const appTitle = document.querySelector("#app-title");
+const backToLibrary = document.querySelector("#backToLibrary");
 const trackList = document.querySelector("#trackList");
 const playPause = document.querySelector("#playPause");
 const playIcon = document.querySelector("#playIcon");
@@ -30,6 +32,10 @@ let progressCache = loadProgressCache();
 drawWaveform(0);
 loadLibrary();
 
+backToLibrary.addEventListener("click", () => {
+  showLibrary();
+});
+
 trackList.addEventListener("click", (event) => {
   const button = event.target.closest(".track-card");
   if (!button) return;
@@ -44,6 +50,7 @@ audioFile.addEventListener("change", () => {
   objectUrl = URL.createObjectURL(file);
   activeTrackId = "";
   appTitle.textContent = file.name;
+  showReader();
   setAudioSource(objectUrl, `${file.name} loaded.`);
 });
 
@@ -152,6 +159,7 @@ async function loadTrack(track) {
   activeTrackId = track.id;
   pendingResumeTime = progressCache[activeTrackId]?.time || 0;
   appTitle.textContent = track.title;
+  showReader();
   setAudioSource(track.audio, `${track.title} loaded.`);
   renderTrackList();
 
@@ -173,6 +181,18 @@ async function loadTrack(track) {
   } catch {
     status(`${track.title} loaded, but its transcript could not be loaded.`);
   }
+}
+
+function showLibrary() {
+  app.dataset.view = "library";
+  document.title = "Spanish Listening Reader";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showReader() {
+  app.dataset.view = "reader";
+  document.title = appTitle.textContent ? `${appTitle.textContent} · Spanish Listening Reader` : "Spanish Listening Reader";
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function renderTrackList() {
@@ -197,7 +217,7 @@ function renderTrackList() {
         <span class="track-meta">${track.transcript ? "Synced transcript" : "Audio only"}</span>
         <span class="track-progress-label">${progressLabel(saved)}</span>
       </span>
-      <span class="track-action">${percent > 2 ? "Resume" : "Start"}</span>
+      <span class="track-action" aria-hidden="true">&rarr;</span>
       <span class="track-progress" aria-hidden="true"><span></span></span>
     `;
     fragment.append(button);
@@ -321,15 +341,28 @@ function wordWeight(text) {
 function renderWords() {
   reader.replaceChildren();
   const fragment = document.createDocumentFragment();
+  let paragraph = document.createElement("p");
+  let sentenceCount = 0;
+
   words.forEach((word, index) => {
     const span = document.createElement("button");
     span.type = "button";
     span.className = "word";
     span.dataset.index = String(index);
     span.textContent = word.text;
-    fragment.append(span);
-    fragment.append(document.createTextNode(word.separator || " "));
+    paragraph.append(span);
+    paragraph.append(document.createTextNode(word.separator || " "));
+
+    if (/[.!?…]["')\]]*$/.test(word.text)) {
+      sentenceCount += 1;
+    }
+    if (sentenceCount >= 4 && index < words.length - 1) {
+      fragment.append(paragraph);
+      paragraph = document.createElement("p");
+      sentenceCount = 0;
+    }
   });
+  if (paragraph.childNodes.length) fragment.append(paragraph);
   reader.append(fragment);
 }
 

@@ -7,19 +7,21 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <main class="app">
-      <section class="library-panel" aria-labelledby="library-title">
+    <main class="app" data-view="library">
+      <section class="library-panel screen" aria-labelledby="library-title">
         <div class="topbar">
           <div>
             <p class="eyebrow">Spanish Listening Reader</p>
-            <h1 id="library-title">Choose a reading</h1>
+            <h1 id="library-title">Read with the audio</h1>
           </div>
         </div>
         <div id="trackList" class="track-list" aria-live="polite"></div>
       </section>
 
+      <section class="reader-view screen" aria-labelledby="app-title">
       <section class="listen-panel" aria-labelledby="app-title">
         <div class="topbar">
+          <button id="backToLibrary" class="back-button" type="button" aria-label="Back to readings">&larr;</button>
           <div>
             <p class="eyebrow">Now reading</p>
             <h1 id="app-title">Pick a reading above</h1>
@@ -43,40 +45,39 @@
         <audio id="audio" preload="metadata"></audio>
       </section>
 
-      <details class="manual-tools">
-        <summary>Manual import tools</summary>
-        <div class="import-grid">
-          <label class="file-pick">
-            <span>Audio</span>
-            <input id="audioFile" type="file" accept="audio/*,.m4a">
-          </label>
-          <label class="file-pick">
-            <span>Transcript</span>
-            <input id="transcriptFile" type="file" accept=".json,.vtt,.srt,.txt,text/plain,application/json">
-          </label>
-        </div>
-      </details>
-
       <section class="workspace">
-        <aside class="side-panel" aria-label="Transcript tools">
-          <div class="tool-block">
-            <h2>Text source</h2>
-            <textarea id="pasteTranscript" rows="9" placeholder="Paste Spanish text here when you do not have a timed transcript. Highlighting will be approximate."></textarea>
-            <button id="usePastedText" type="button">Use pasted text</button>
-          </div>
-
-          <div class="tool-block compact">
-            <h2>Clicked word</h2>
-            <div id="definition" class="definition">
-              <p class="muted">Click any Spanish word to see an English meaning.</p>
-            </div>
-          </div>
-        </aside>
-
         <section class="reader-shell" aria-label="Transcript reader">
           <div id="status" class="status">Choose a hosted reading to begin.</div>
           <article id="reader" class="reader" lang="es"></article>
         </section>
+
+        <aside class="side-panel" aria-label="Reading tools">
+          <div class="tool-block compact">
+            <h2>Word</h2>
+            <div id="definition" class="definition">
+              <p class="muted">Tap a word for an English meaning.</p>
+            </div>
+          </div>
+
+          <details class="manual-tools">
+            <summary>Import</summary>
+            <div class="import-grid">
+              <label class="file-pick">
+                <span>Audio</span>
+                <input id="audioFile" type="file" accept="audio/*,.m4a">
+              </label>
+              <label class="file-pick">
+                <span>Transcript</span>
+                <input id="transcriptFile" type="file" accept=".json,.vtt,.srt,.txt,text/plain,application/json">
+              </label>
+            </div>
+            <div class="tool-block">
+              <textarea id="pasteTranscript" rows="7" placeholder="Paste Spanish text"></textarea>
+              <button id="usePastedText" type="button">Use pasted text</button>
+            </div>
+          </details>
+        </aside>
+      </section>
       </section>
     </main>
 
