@@ -269,7 +269,7 @@ h2 {
 
 .track-card:focus-visible,
 .back-button:focus-visible,
-.icon-button:focus-visible,
+.play-button:focus-visible,
 .utility-button:focus-visible,
 .settings-menu summary:focus-visible,
 .word:focus-visible {
@@ -332,37 +332,47 @@ h2 {
   position: fixed;
   left: 50%;
   right: auto;
-  bottom: 12px;
+  bottom: 24px;
   top: auto;
   z-index: 8;
-  width: min(720px, calc(100vw - 20px));
+  width: min(720px, calc(100vw - 32px));
   margin: 0;
-  padding: 12px;
+  padding: 0;
   background: var(--sticky-bg);
   border: 1px solid var(--reader-border);
-  border-radius: 12px;
-  backdrop-filter: blur(18px);
-  box-shadow: var(--shadow);
+  border-radius: 28px;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.08);
   overflow: visible;
   transform: translateX(-50%);
   transition:
-    width 180ms ease,
-    padding 180ms ease,
-    border-radius 180ms ease,
-    box-shadow 180ms ease;
+    width 400ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-radius 400ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    bottom 400ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 400ms ease;
+}
+
+.listen-panel-inner {
+  padding: 20px 24px;
+  transition: padding 400ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .listen-panel:not(.player-expanded) {
-  width: 188px;
-  min-height: 66px;
-  padding: 8px;
+  width: 210px;
+  bottom: 32px;
   border-radius: 999px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+}
+
+.listen-panel:not(.player-expanded) .listen-panel-inner {
+  padding: 10px;
 }
 
 .listen-panel .topbar {
   align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .listen-panel .topbar > div {
@@ -373,15 +383,18 @@ h2 {
   display: -webkit-box;
   max-width: none;
   overflow: hidden;
-  font-size: clamp(1.08rem, 4vw, 1.55rem);
-  line-height: 1.16;
+  font-size: clamp(1.15rem, 4vw, 1.6rem);
+  font-weight: 800;
+  line-height: 1.15;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  letter-spacing: -0.01em;
 }
 
 .listen-panel .eyebrow {
   margin-bottom: 4px;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
 }
 
 .back-button,
@@ -393,39 +406,40 @@ h2 {
   place-items: center;
   padding: 0;
   border-radius: 50%;
+  transition: all 200ms ease;
 }
 
 .back-button {
-  width: 36px;
-  height: 36px;
-  min-height: 36px;
-  color: var(--accent-dark);
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  color: var(--ink);
   background: var(--wash);
-  font-size: 1.25rem;
+  border: 1px solid transparent;
 }
 
 .back-button:hover {
   color: var(--button-ink);
   background: var(--accent);
+  transform: scale(1.05);
 }
 
 .utility-button,
 .settings-menu summary {
-  width: 40px;
-  height: 40px;
-  min-height: 40px;
-  color: var(--accent-dark);
-  background: var(--wash);
-  font-size: 1rem;
-  font-weight: 850;
-  line-height: 1;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  color: var(--ink);
+  background: transparent;
   cursor: pointer;
+  border: 1px solid transparent;
 }
 
 .utility-button:hover,
 .settings-menu summary:hover {
-  color: var(--button-ink);
-  background: var(--accent);
+  background: var(--wash);
+  color: var(--accent);
+  transform: scale(1.05);
 }
 
 .settings-menu {
@@ -444,21 +458,26 @@ h2 {
 .settings-menu .appearance-controls {
   position: absolute;
   left: 0;
-  bottom: calc(100% + 12px);
+  bottom: calc(100% + 16px);
   z-index: 2;
-  width: min(260px, calc(100vw - 36px));
-  box-shadow: var(--shadow);
+  width: min(280px, calc(100vw - 36px));
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--reader-border);
+  background: var(--popover-bg);
+  backdrop-filter: blur(20px);
 }
 
 .player-strip {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 88px minmax(0, 1fr);
   grid-template-areas:
     "left play right"
     "timeline timeline timeline"
     "time time time";
   align-items: center;
-  gap: 10px 12px;
+  gap: 16px 16px;
 }
 
 .player-left,
@@ -479,20 +498,40 @@ h2 {
   justify-self: end;
 }
 
-.icon-button {
+.play-button {
   grid-area: play;
-  width: 72px;
-  height: 72px;
-  min-height: 72px;
+  width: 80px;
+  height: 80px;
+  min-height: 80px;
   justify-self: center;
-  font-size: 1.32rem;
-  box-shadow: var(--control-shadow);
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: var(--button-ink);
+  box-shadow: 0 12px 32px var(--focus-ring);
+  transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 250ms ease, filter 250ms ease;
+  border: none;
 }
 
-.listen-panel.player-expanded .icon-button {
-  width: 72px;
-  height: 72px;
-  min-height: 72px;
+.play-button span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-button:hover:not(:disabled) {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 16px 40px var(--focus-ring);
+  filter: brightness(1.1);
+}
+
+.play-button:active:not(:disabled) {
+  transform: scale(0.96);
+  box-shadow: 0 8px 24px var(--focus-ring);
+}
+
+.listen-panel.player-expanded .play-button {
+  width: 80px;
+  height: 80px;
+  min-height: 80px;
 }
 
 .expand-player-button {
@@ -513,11 +552,11 @@ h2 {
 }
 
 .listen-panel:not(.player-expanded) .player-strip {
-  grid-template-columns: 40px 64px 40px;
+  grid-template-columns: 44px 72px 44px;
   grid-template-areas: "left play right";
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .listen-panel:not(.player-expanded) .player-left,
@@ -531,13 +570,14 @@ h2 {
 
 .listen-panel:not(.player-expanded) .settings-menu .appearance-controls {
   left: 0;
-  bottom: calc(100% + 14px);
+  bottom: calc(100% + 18px);
 }
 
-.listen-panel:not(.player-expanded) .icon-button {
-  width: 64px;
-  height: 64px;
-  min-height: 64px;
+.listen-panel:not(.player-expanded) .play-button {
+  width: 72px;
+  height: 72px;
+  min-height: 72px;
+  box-shadow: 0 8px 24px var(--focus-ring);
 }
 
 .listen-panel:not(.player-expanded) .expand-player-button {
@@ -549,22 +589,23 @@ h2 {
   grid-area: timeline;
   position: relative;
   min-width: 0;
-  height: 46px;
+  height: 60px;
 }
 
 #waveform {
   width: 100%;
-  height: 46px;
+  height: 60px;
   display: block;
-  border-radius: 7px;
+  border-radius: 12px;
   background: var(--wave-bg);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .seek {
   position: absolute;
   inset: 0;
   width: 100%;
-  height: 46px;
+  height: 60px;
   opacity: 0;
   cursor: pointer;
 }
@@ -573,10 +614,12 @@ h2 {
   grid-area: time;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-top: -4px;
+  margin-top: -6px;
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }
 
 .time-readout span:last-child {
@@ -587,17 +630,18 @@ h2 {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 12px 16px;
+  border: 1px solid var(--reader-border);
+  border-radius: 16px;
   background: var(--soft-surface);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
 .study-actions .muted {
   min-width: 0;
-  font-size: 0.86rem;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
@@ -896,26 +940,26 @@ textarea {
   }
 
   .player-strip {
-    grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr);
-    gap: 14px;
+    grid-template-columns: minmax(0, 1fr) 88px minmax(0, 1fr);
+    gap: 16px;
   }
 
-  .icon-button {
-    width: 72px;
-    height: 72px;
-    min-height: 72px;
+  .play-button {
+    width: 88px;
+    height: 88px;
+    min-height: 88px;
   }
 
-  .listen-panel.player-expanded .icon-button {
-    width: 72px;
-    height: 72px;
-    min-height: 72px;
+  .listen-panel.player-expanded .play-button {
+    width: 88px;
+    height: 88px;
+    min-height: 88px;
   }
 
   .timeline-wrap,
   #waveform,
   .seek {
-    height: 56px;
+    height: 72px;
   }
 
   .time-readout {

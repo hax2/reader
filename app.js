@@ -10,6 +10,9 @@ const expandPlayerButton = document.querySelector("#expandPlayer");
 const trackList = document.querySelector("#trackList");
 const playPause = document.querySelector("#playPause");
 const playIcon = document.querySelector("#playIcon");
+
+const PLAY_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+const PAUSE_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
 const seek = document.querySelector("#seek");
 const currentTimeEl = document.querySelector("#currentTime");
 const durationEl = document.querySelector("#duration");
@@ -155,12 +158,12 @@ playPause.addEventListener("click", () => {
 });
 
 audio.addEventListener("play", () => {
-  playIcon.textContent = "❚❚";
+  playIcon.innerHTML = PAUSE_ICON;
   tick();
 });
 
 audio.addEventListener("pause", () => {
-  playIcon.textContent = "▶";
+  playIcon.innerHTML = PLAY_ICON;
   cancelAnimationFrame(rafId);
   updateProgress();
 });
@@ -180,7 +183,7 @@ audio.addEventListener("loadedmetadata", () => {
 });
 
 audio.addEventListener("ended", () => {
-  playIcon.textContent = "▶";
+  playIcon.innerHTML = PLAY_ICON;
   saveActiveProgress(true);
   updateProgress();
 });
