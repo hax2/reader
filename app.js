@@ -9,6 +9,7 @@ const collapsePlayerInlineButton = document.querySelector("#collapsePlayerInline
 const expandPlayerButton = document.querySelector("#expandPlayer");
 const trackList = document.querySelector("#trackList");
 const playPause = document.querySelector("#playPause");
+const playbackRateSelect = document.querySelector("#playbackRate");
 const playIcon = document.querySelector("#playIcon");
 
 const PLAY_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
@@ -159,6 +160,10 @@ playPause.addEventListener("pointerdown", (e) => {
   }
 });
 
+playbackRateSelect.addEventListener("change", (e) => {
+  audio.playbackRate = parseFloat(e.target.value);
+});
+
 audio.addEventListener("play", () => {
   playIcon.innerHTML = PAUSE_ICON;
   tick();
@@ -216,6 +221,7 @@ window.addEventListener("resize", () => {
 
 function setAudioSource(src, message) {
   audio.src = src;
+  audio.playbackRate = parseFloat(playbackRateSelect.value);
   audio.load();
   seek.value = "0";
   currentTimeEl.textContent = "0:00";
