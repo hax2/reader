@@ -22,12 +22,10 @@
       <section class="listen-panel player-expanded" aria-labelledby="app-title">
         <div class="listen-panel-inner">
           <div class="timeline-wrap">
-            <span id="currentTime" class="time-readout-inline">0:00</span>
             <div class="waveform-container">
-              <canvas id="waveform" width="900" height="24" aria-hidden="true"></canvas>
+              <canvas id="waveform" width="900" height="20" aria-hidden="true"></canvas>
               <input id="seek" class="seek" type="range" min="0" max="0" step="0.01" value="0" disabled aria-label="Seek">
             </div>
-            <span id="duration" class="time-readout-inline">0:00</span>
           </div>
 
           <div class="player-strip">
@@ -36,7 +34,6 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
               </button>
               <div class="title-wrap">
-                <p class="eyebrow">Now reading</p>
                 <h1 id="app-title">Pick a reading above</h1>
               </div>
             </div>
@@ -44,12 +41,25 @@
             <div class="player-center">
               <button id="playPause" class="play-button" type="button" aria-label="Play or pause" disabled>
                 <span id="playIcon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                 </span>
               </button>
             </div>
             
             <div class="player-right">
+              <div class="time-readout">
+                <span id="currentTime" class="time-readout-inline">0:00</span>
+                <span class="time-divider">/</span>
+                <span id="duration" class="time-readout-inline">0:00</span>
+              </div>
+              
+              <div class="study-actions-compact">
+                <span id="studyCount" class="muted hidden-mobile">0 looked-up words</span>
+                <button id="downloadAnki" class="utility-button" type="button" aria-label="Download Anki cards" disabled>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+              </div>
+
               <details id="settingsMenu" class="settings-menu">
                 <summary aria-label="Settings">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
@@ -75,18 +85,11 @@
                   </label>
                 </div>
               </details>
-              <button id="expandPlayer" class="utility-button expand-player-button" type="button" aria-label="Expand player">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-              </button>
-              <button id="collapsePlayerInline" class="utility-button inline-collapse-button" type="button" aria-label="Collapse player">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </button>
+              
+              <!-- Hidden to avoid app.js errors -->
+              <button id="expandPlayer" class="hidden" type="button" aria-hidden="true"></button>
+              <button id="collapsePlayerInline" class="hidden" type="button" aria-hidden="true"></button>
             </div>
-          </div>
-          
-          <div class="study-actions">
-            <p id="studyCount" class="muted">0 looked-up words</p>
-            <button id="downloadAnki" class="secondary-button" type="button" disabled>Download Anki cards</button>
           </div>
           
           <audio id="audio" preload="metadata"></audio>
