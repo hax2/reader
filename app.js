@@ -28,6 +28,7 @@ const canvas = document.querySelector("#waveform");
 const ctx = canvas.getContext("2d");
 const systemThemeQuery = window.matchMedia?.("(prefers-color-scheme: dark)") || null;
 const themeOptions = ["system", "paper", "mist", "night"];
+const appearanceSettingsVersion = 2;
 
 let words = [];
 let currentWordIndex = -1;
@@ -786,7 +787,7 @@ function drawWaveform(progress) {
   const height = canvas.height;
   const styles = getComputedStyle(document.documentElement);
   const waveBg = styles.getPropertyValue("--wave-bg").trim() || "#eef3f1";
-  const waveDone = styles.getPropertyValue("--wave-done").trim() || "#236c61";
+  const waveDone = styles.getPropertyValue("--wave-done").trim() || "#315fba";
   const waveRest = styles.getPropertyValue("--wave-rest").trim() || "#b8c7c2";
   ctx.clearRect(0, 0, width, height);
   ctx.fillStyle = waveBg;
@@ -928,8 +929,11 @@ function saveStudyLog(log) {
 function loadAppearanceSettings() {
   try {
     const saved = JSON.parse(localStorage.getItem("spanish-reader-appearance") || "{}");
+    const theme = saved.version === appearanceSettingsVersion && themeOptions.includes(saved.theme)
+      ? saved.theme
+      : "system";
     return {
-      theme: themeOptions.includes(saved.theme) ? saved.theme : "system",
+      theme,
       highlight: ["sage", "sky", "rose", "underline"].includes(saved.highlight) ? saved.highlight : "sage"
     };
   } catch {
@@ -938,7 +942,10 @@ function loadAppearanceSettings() {
 }
 
 function saveAppearanceSettings(settings) {
-  localStorage.setItem("spanish-reader-appearance", JSON.stringify(settings));
+  localStorage.setItem("spanish-reader-appearance", JSON.stringify({
+    ...settings,
+    version: appearanceSettingsVersion
+  }));
 }
 
 function applyAppearanceSettings() {

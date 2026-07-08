@@ -7,8 +7,8 @@
   --paper: #f6f4ee;
   --panel: #fffdfa;
   --wash: #eef4f0;
-  --accent: #236c61;
-  --accent-dark: #174e46;
+  --accent: #315fba;
+  --accent-dark: #244789;
   --button-ink: #fff;
   --blue: #2b5fc7;
   --rose: #9f3d54;
@@ -17,10 +17,10 @@
   --reader-border: rgba(221, 226, 222, 0.9);
   --reader-shadow: 0 16px 42px rgba(29, 36, 32, 0.08);
   --read-word: #6a746f;
-  --selection-bg: rgba(35, 108, 97, 0.12);
+  --selection-bg: rgba(49, 95, 186, 0.12);
   --focus-ring: rgba(43, 95, 199, 0.34);
   --track-hover: #fbfff9;
-  --track-active-border: rgba(35, 108, 97, 0.35);
+  --track-active-border: rgba(49, 95, 186, 0.35);
   --track-progress-bg: #e7ebe7;
   --sticky-bg: rgba(255, 253, 250, 0.94);
   --soft-surface: rgba(255, 253, 250, 0.72);
@@ -28,10 +28,10 @@
   --popover-border: rgba(29, 36, 32, 0.13);
   --popover-shadow: 0 16px 38px rgba(29, 36, 32, 0.2);
   --highlight-text: #18221f;
-  --highlight-bg: rgba(75, 132, 121, 0.2);
-  --highlight-shadow: rgba(75, 132, 121, 0.12);
+  --highlight-bg: rgba(88, 125, 190, 0.2);
+  --highlight-shadow: rgba(88, 125, 190, 0.12);
   --wave-bg: #eef3f1;
-  --wave-done: #236c61;
+  --wave-done: #315fba;
   --wave-rest: #b8c7c2;
   --shadow: 0 18px 44px rgba(29, 36, 32, 0.09);
   --control-shadow: 0 10px 22px rgba(29, 36, 32, 0.16);
@@ -75,20 +75,20 @@
   --paper: #000;
   --panel: #101114;
   --wash: #1b1d22;
-  --accent: #8ab4ff;
-  --accent-dark: #c5d9ff;
-  --button-ink: #05070b;
-  --blue: #9ec0ff;
-  --rose: #f0a8ba;
+  --accent: #f4f4f5;
+  --accent-dark: #fff;
+  --button-ink: #000;
+  --blue: #d7d9de;
+  --rose: #c9cbd1;
   --body-glow: rgba(22, 24, 28, 0.76);
   --body-glow-end: rgba(0, 0, 0, 0);
   --reader-border: rgba(255, 255, 255, 0.12);
   --reader-shadow: 0 22px 60px rgba(0, 0, 0, 0.62);
   --read-word: #8b8f97;
-  --selection-bg: rgba(138, 180, 255, 0.17);
-  --focus-ring: rgba(138, 180, 255, 0.5);
+  --selection-bg: rgba(255, 255, 255, 0.14);
+  --focus-ring: rgba(255, 255, 255, 0.42);
   --track-hover: #17191e;
-  --track-active-border: rgba(138, 180, 255, 0.48);
+  --track-active-border: rgba(255, 255, 255, 0.42);
   --track-progress-bg: #242730;
   --sticky-bg: rgba(12, 13, 16, 0.96);
   --soft-surface: rgba(18, 20, 24, 0.9);
@@ -96,11 +96,11 @@
   --popover-border: rgba(255, 255, 255, 0.14);
   --popover-shadow: 0 20px 56px rgba(0, 0, 0, 0.66);
   --highlight-text: #fff;
-  --highlight-bg: rgba(138, 180, 255, 0.27);
-  --highlight-shadow: rgba(138, 180, 255, 0.18);
+  --highlight-bg: rgba(255, 255, 255, 0.2);
+  --highlight-shadow: rgba(255, 255, 255, 0.14);
   --wave-bg: #181a1f;
-  --wave-done: #8ab4ff;
-  --wave-rest: #4c5361;
+  --wave-done: #f4f4f5;
+  --wave-rest: #5a5d64;
   --shadow: 0 24px 64px rgba(0, 0, 0, 0.56);
   --control-shadow: 0 14px 32px rgba(0, 0, 0, 0.5);
 }
@@ -118,15 +118,15 @@
 }
 
 :root[data-theme="night"][data-highlight="sky"] {
-  --highlight-text: #f1f7ff;
-  --highlight-bg: rgba(126, 176, 218, 0.3);
-  --highlight-shadow: rgba(126, 176, 218, 0.14);
+  --highlight-text: #fff;
+  --highlight-bg: rgba(255, 255, 255, 0.2);
+  --highlight-shadow: rgba(255, 255, 255, 0.14);
 }
 
 :root[data-theme="night"][data-highlight="rose"] {
-  --highlight-text: #fff2f5;
-  --highlight-bg: rgba(218, 132, 154, 0.28);
-  --highlight-shadow: rgba(218, 132, 154, 0.14);
+  --highlight-text: #fff;
+  --highlight-bg: rgba(255, 255, 255, 0.2);
+  --highlight-shadow: rgba(255, 255, 255, 0.14);
 }
 
 * {
