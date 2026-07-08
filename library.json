@@ -1,5 +1,29 @@
 [
   {
+    "title": "Adioscordera",
+    "audio": "adioscordera.mp3",
+    "glossary": "glossary/shared.json",
+    "transcript": "adioscordera.json"
+  },
+  {
+    "title": "Cuentos de amor de locura y de muerte",
+    "audio": "Cuentos de amor de locura y de muerte.mp3",
+    "glossary": "glossary/shared.json",
+    "transcript": "Cuentos de amor de locura y de muerte.json"
+  },
+  {
+    "title": "Cuentos de la tierra",
+    "audio": "Cuentos de la tierra.mp3",
+    "glossary": "glossary/shared.json",
+    "transcript": "Cuentos de la tierra.json"
+  },
+  {
+    "title": "Elindulto",
+    "audio": "elindulto.mp3",
+    "glossary": "glossary/shared.json",
+    "transcript": "elindulto.json"
+  },
+  {
     "title": "Vanguardia revolucionaria frente a política sindical",
     "audio": "Vanguardia_revolucionaria_frente_a_política_sindical.m4a",
     "glossary": "glossary/shared.json",
