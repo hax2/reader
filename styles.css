@@ -659,6 +659,14 @@ h2 {
   color: var(--read-word);
 }
 
+:root[data-text-mode="dim-upcoming"] .word {
+  color: var(--read-word);
+}
+
+:root[data-text-mode="dim-upcoming"] .word.read {
+  color: inherit;
+}
+
 .word.current {
   color: var(--highlight-text);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 14%, var(--highlight-bg) 14%);
@@ -673,6 +681,12 @@ h2 {
 :root[data-highlight="underline"] .word.current {
   background: transparent;
   box-shadow: inset 0 -0.14em 0 var(--highlight-bg);
+}
+
+:root[data-highlight="none"] .word.current {
+  background: transparent;
+  box-shadow: none;
+  color: var(--ink);
 }
 
 .side-panel {

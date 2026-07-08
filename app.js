@@ -26,6 +26,7 @@ const studyCount = document.querySelector("#studyCount");
 const downloadAnki = document.querySelector("#downloadAnki");
 const themeSelect = document.querySelector("#themeSelect");
 const highlightSelect = document.querySelector("#highlightSelect");
+const textModeSelect = document.querySelector("#textModeSelect");
 const settingsMenu = document.querySelector("#settingsMenu");
 const wordPopover = document.querySelector("#wordPopover");
 const canvas = document.querySelector("#waveform");
@@ -132,6 +133,12 @@ themeSelect.addEventListener("change", () => {
 
 highlightSelect.addEventListener("change", () => {
   appearanceSettings.highlight = highlightSelect.value;
+  saveAppearanceSettings(appearanceSettings);
+  applyAppearanceSettings();
+});
+
+textModeSelect.addEventListener("change", () => {
+  appearanceSettings.textMode = textModeSelect.value;
   saveAppearanceSettings(appearanceSettings);
   applyAppearanceSettings();
 });
@@ -948,11 +955,12 @@ function loadAppearanceSettings() {
       : "system";
     return {
       theme,
-      highlight: ["sage", "sky", "rose", "underline"].includes(saved.highlight) ? saved.highlight : "sage",
+      highlight: ["sage", "sky", "rose", "underline", "none"].includes(saved.highlight) ? saved.highlight : "sage",
+      textMode: ["dim-passed", "dim-upcoming"].includes(saved.textMode) ? saved.textMode : "dim-passed",
       playbackRate: saved.playbackRate || 1
     };
   } catch {
-    return { theme: "system", highlight: "sage", playbackRate: 1 };
+    return { theme: "system", highlight: "sage", textMode: "dim-passed", playbackRate: 1 };
   }
 }
 
@@ -966,8 +974,10 @@ function saveAppearanceSettings(settings) {
 function applyAppearanceSettings() {
   document.documentElement.dataset.theme = resolveTheme(appearanceSettings.theme);
   document.documentElement.dataset.highlight = appearanceSettings.highlight;
+  document.documentElement.dataset.textMode = appearanceSettings.textMode;
   themeSelect.value = appearanceSettings.theme;
   highlightSelect.value = appearanceSettings.highlight;
+  textModeSelect.value = appearanceSettings.textMode;
   playbackRateSelect.value = appearanceSettings.playbackRate;
   audio.playbackRate = appearanceSettings.playbackRate;
   drawWaveform(audio.duration ? (audio.currentTime || 0) / audio.duration : 0);
