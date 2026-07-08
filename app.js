@@ -17,6 +17,8 @@ const usePastedText = document.querySelector("#usePastedText");
 const definition = document.querySelector("#definition");
 const studyCount = document.querySelector("#studyCount");
 const downloadAnki = document.querySelector("#downloadAnki");
+const themeSelect = document.querySelector("#themeSelect");
+const highlightSelect = document.querySelector("#highlightSelect");
 const wordPopover = document.querySelector("#wordPopover");
 const canvas = document.querySelector("#waveform");
 const ctx = canvas.getContext("2d");
@@ -38,9 +40,11 @@ const queuedLookups = new Set();
 let translationCache = loadTranslationCache();
 let progressCache = loadProgressCache();
 let studyLog = loadStudyLog();
+let appearanceSettings = loadAppearanceSettings();
 
 let sharedGlossary = {};
 
+applyAppearanceSettings();
 drawWaveform(0);
 updateStudyControls();
 initialize();
@@ -90,6 +94,18 @@ usePastedText.addEventListener("click", () => {
 
 downloadAnki.addEventListener("click", () => {
   downloadAnkiCards();
+});
+
+themeSelect.addEventListener("change", () => {
+  appearanceSettings.theme = themeSelect.value;
+  saveAppearanceSettings(appearanceSettings);
+  applyAppearanceSettings();
+});
+
+highlightSelect.addEventListener("change", () => {
+  appearanceSettings.highlight = highlightSelect.value;
+  saveAppearanceSettings(appearanceSettings);
+  applyAppearanceSettings();
 });
 
 playPause.addEventListener("click", () => {
@@ -710,8 +726,12 @@ function pumpLookupQueue() {
 function drawWaveform(progress) {
   const width = canvas.width;
   const height = canvas.height;
+  const styles = getComputedStyle(document.documentElement);
+  const waveBg = styles.getPropertyValue("--wave-bg").trim() || "#eef3f1";
+  const waveDone = styles.getPropertyValue("--wave-done").trim() || "#236c61";
+  const waveRest = styles.getPropertyValue("--wave-rest").trim() || "#b8c7c2";
   ctx.clearRect(0, 0, width, height);
-  ctx.fillStyle = "#eef3f1";
+  ctx.fillStyle = waveBg;
   ctx.fillRect(0, 0, width, height);
 
   const bars = 96;
@@ -723,7 +743,7 @@ function drawWaveform(progress) {
     const barHeight = Math.max(8, height * amplitude);
     const x = i * (barWidth + gap);
     const y = (height - barHeight) / 2;
-    ctx.fillStyle = phase <= progress ? "#0d766e" : "#b8c7c2";
+    ctx.fillStyle = phase <= progress ? waveDone : waveRest;
     roundRect(ctx, x, y, barWidth, barHeight, 4);
     ctx.fill();
   }
@@ -845,4 +865,28 @@ function loadStudyLog() {
 
 function saveStudyLog(log) {
   localStorage.setItem("spanish-reader-study-log", JSON.stringify(log));
+}
+
+function loadAppearanceSettings() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("spanish-reader-appearance") || "{}");
+    return {
+      theme: ["paper", "mist", "night"].includes(saved.theme) ? saved.theme : "paper",
+      highlight: ["sage", "sky", "rose", "underline"].includes(saved.highlight) ? saved.highlight : "sage"
+    };
+  } catch {
+    return { theme: "paper", highlight: "sage" };
+  }
+}
+
+function saveAppearanceSettings(settings) {
+  localStorage.setItem("spanish-reader-appearance", JSON.stringify(settings));
+}
+
+function applyAppearanceSettings() {
+  document.documentElement.dataset.theme = appearanceSettings.theme;
+  document.documentElement.dataset.highlight = appearanceSettings.highlight;
+  themeSelect.value = appearanceSettings.theme;
+  highlightSelect.value = appearanceSettings.highlight;
+  drawWaveform(audio.duration ? (audio.currentTime || 0) / audio.duration : 0);
 }
