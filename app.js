@@ -161,7 +161,10 @@ playPause.addEventListener("pointerdown", (e) => {
 });
 
 playbackRateSelect.addEventListener("change", (e) => {
-  audio.playbackRate = parseFloat(e.target.value);
+  const rate = parseFloat(e.target.value);
+  audio.playbackRate = rate;
+  appearanceSettings.playbackRate = rate;
+  saveAppearanceSettings(appearanceSettings);
 });
 
 audio.addEventListener("play", () => {
@@ -945,10 +948,11 @@ function loadAppearanceSettings() {
       : "system";
     return {
       theme,
-      highlight: ["sage", "sky", "rose", "underline"].includes(saved.highlight) ? saved.highlight : "sage"
+      highlight: ["sage", "sky", "rose", "underline"].includes(saved.highlight) ? saved.highlight : "sage",
+      playbackRate: saved.playbackRate || 1
     };
   } catch {
-    return { theme: "system", highlight: "sage" };
+    return { theme: "system", highlight: "sage", playbackRate: 1 };
   }
 }
 
@@ -964,6 +968,8 @@ function applyAppearanceSettings() {
   document.documentElement.dataset.highlight = appearanceSettings.highlight;
   themeSelect.value = appearanceSettings.theme;
   highlightSelect.value = appearanceSettings.highlight;
+  playbackRateSelect.value = appearanceSettings.playbackRate;
+  audio.playbackRate = appearanceSettings.playbackRate;
   drawWaveform(audio.duration ? (audio.currentTime || 0) / audio.duration : 0);
 }
 
