@@ -147,7 +147,9 @@ if (systemThemeQuery?.addEventListener) {
   systemThemeQuery.addListener(handleSystemThemeChange);
 }
 
-playPause.addEventListener("click", () => {
+playPause.addEventListener("pointerdown", (e) => {
+  if (e.button !== 0) return; // Only respond to left clicks
+  e.preventDefault();
   if (!audio.src) return;
   expandPlayer();
   if (audio.paused) {
