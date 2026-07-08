@@ -15,6 +15,7 @@ const statusEl = document.querySelector("#status");
 const pasteTranscript = document.querySelector("#pasteTranscript");
 const usePastedText = document.querySelector("#usePastedText");
 const definition = document.querySelector("#definition");
+const wordPopover = document.querySelector("#wordPopover");
 const canvas = document.querySelector("#waveform");
 const ctx = canvas.getContext("2d");
 
@@ -26,6 +27,8 @@ let tracks = [];
 let activeTrackId = "";
 let pendingResumeTime = 0;
 let lastProgressSave = 0;
+let selectedWordButton = null;
+let definitionRequestId = 0;
 let translationCache = loadTranslationCache();
 let progressCache = loadProgressCache();
 
@@ -124,8 +127,23 @@ seek.addEventListener("input", () => {
 reader.addEventListener("click", (event) => {
   const target = event.target.closest(".word");
   if (!target) return;
-  showDefinition(words[Number(target.dataset.index)]);
+  event.stopPropagation();
+  showDefinition(words[Number(target.dataset.index)], target);
 });
+
+document.addEventListener("click", (event) => {
+  if (wordPopover.hidden) return;
+  if (wordPopover.contains(event.target) || event.target.closest(".word")) return;
+  hideWordPopover();
+});
+
+window.addEventListener("resize", () => {
+  if (selectedWordButton && !wordPopover.hidden) positionWordPopover(selectedWordButton);
+});
+
+window.addEventListener("scroll", () => {
+  if (selectedWordButton && !wordPopover.hidden) positionWordPopover(selectedWordButton);
+}, { passive: true });
 
 function setAudioSource(src, message) {
   audio.src = src;
@@ -186,6 +204,7 @@ async function loadTrack(track) {
 function showLibrary() {
   app.dataset.view = "library";
   document.title = "Spanish Listening Reader";
+  hideWordPopover();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -340,6 +359,7 @@ function wordWeight(text) {
 
 function renderWords() {
   reader.replaceChildren();
+  hideWordPopover();
   const fragment = document.createDocumentFragment();
   let paragraph = document.createElement("p");
   let sentenceCount = 0;
@@ -412,20 +432,21 @@ function findWordAt(time) {
   return Math.max(0, Math.min(words.length - 1, low));
 }
 
-async function showDefinition(word) {
+async function showDefinition(word, anchor) {
   if (!word) return;
+  selectedWordButton?.classList.remove("selected");
+  selectedWordButton = anchor || null;
+  selectedWordButton?.classList.add("selected");
+  const requestId = ++definitionRequestId;
   const normalized = normalizeWord(word.text);
-  definition.innerHTML = `
-    <p class="definition-word">${escapeHtml(word.text)}</p>
-    <p class="translation">Looking up English meaning...</p>
-  `;
+  renderDefinition(word.text, "Looking up English meaning...");
 
   if (word.translation) {
-    renderDefinition(word.text, word.translation);
+    renderDefinition(word.text, word.translation, anchor);
     return;
   }
   if (translationCache[normalized]) {
-    renderDefinition(word.text, translationCache[normalized]);
+    renderDefinition(word.text, translationCache[normalized], anchor);
     return;
   }
 
@@ -438,26 +459,52 @@ async function showDefinition(word) {
     if (!translated) throw new Error("No translation returned");
     translationCache[normalized] = translated;
     saveTranslationCache(translationCache);
-    renderDefinition(word.text, translated);
+    if (requestId === definitionRequestId) renderDefinition(word.text, translated, anchor);
   } catch {
     const spanishDict = `https://www.spanishdict.com/translate/${encodeURIComponent(normalized)}`;
     const wordReference = `https://www.wordreference.com/es/en/translation.asp?spen=${encodeURIComponent(normalized)}`;
-    definition.innerHTML = `
-      <p class="definition-word">${escapeHtml(word.text)}</p>
-      <p class="translation">No automatic result. Open
-        <a href="${spanishDict}" target="_blank" rel="noreferrer">SpanishDict</a>
-        or
-        <a href="${wordReference}" target="_blank" rel="noreferrer">WordReference</a>.
-      </p>
-    `;
+    if (requestId !== definitionRequestId) return;
+    const fallback = `No automatic result. <a href="${spanishDict}" target="_blank" rel="noreferrer">SpanishDict</a> or <a href="${wordReference}" target="_blank" rel="noreferrer">WordReference</a>.`;
+    renderDefinition(word.text, fallback, anchor, true);
   }
 }
 
-function renderDefinition(word, translation) {
-  definition.innerHTML = `
+function renderDefinition(word, translation, anchor = selectedWordButton, allowHtml = false) {
+  const translationHtml = allowHtml ? translation : escapeHtml(translation);
+  const content = `
     <p class="definition-word">${escapeHtml(word)}</p>
-    <p class="translation">${escapeHtml(translation)}</p>
+    <p class="translation">${translationHtml}</p>
   `;
+  definition.innerHTML = content;
+  wordPopover.innerHTML = content;
+  wordPopover.hidden = false;
+  if (anchor) positionWordPopover(anchor);
+}
+
+function positionWordPopover(anchor) {
+  const rect = anchor.getBoundingClientRect();
+  const margin = 12;
+  const width = Math.min(320, window.innerWidth - margin * 2);
+  wordPopover.style.width = `${width}px`;
+  wordPopover.style.left = "0px";
+  wordPopover.style.top = "0px";
+
+  const popoverRect = wordPopover.getBoundingClientRect();
+  const desiredLeft = rect.left + rect.width / 2 - width / 2;
+  const left = Math.max(margin, Math.min(desiredLeft, window.innerWidth - width - margin));
+  const aboveTop = rect.top - popoverRect.height - 10;
+  const belowTop = rect.bottom + 10;
+  const top = aboveTop >= margin ? aboveTop : Math.min(belowTop, window.innerHeight - popoverRect.height - margin);
+
+  wordPopover.style.left = `${left}px`;
+  wordPopover.style.top = `${Math.max(margin, top)}px`;
+  wordPopover.dataset.placement = aboveTop >= margin ? "above" : "below";
+}
+
+function hideWordPopover() {
+  selectedWordButton?.classList.remove("selected");
+  selectedWordButton = null;
+  wordPopover.hidden = true;
 }
 
 function drawWaveform(progress) {
