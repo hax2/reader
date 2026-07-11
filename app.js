@@ -1,12 +1,9 @@
 const audio = document.querySelector("#audio");
 const app = document.querySelector(".app");
-const listenPanel = document.querySelector(".listen-panel");
 const audioFile = document.querySelector("#audioFile");
 const transcriptFile = document.querySelector("#transcriptFile");
 const appTitle = document.querySelector("#app-title");
 const backToLibrary = document.querySelector("#backToLibrary");
-const collapsePlayerInlineButton = document.querySelector("#collapsePlayerInline");
-const expandPlayerButton = document.querySelector("#expandPlayer");
 const trackList = document.querySelector("#trackList");
 const playPause = document.querySelector("#playPause");
 const playbackRateSelect = document.querySelector("#playbackRate");
@@ -27,7 +24,6 @@ const downloadAnki = document.querySelector("#downloadAnki");
 const themeSelect = document.querySelector("#themeSelect");
 const highlightSelect = document.querySelector("#highlightSelect");
 const textModeSelect = document.querySelector("#textModeSelect");
-const settingsMenu = document.querySelector("#settingsMenu");
 const wordPopover = document.querySelector("#wordPopover");
 const canvas = document.querySelector("#waveform");
 const ctx = canvas.getContext("2d");
@@ -37,6 +33,7 @@ const appearanceSettingsVersion = 2;
 
 let words = [];
 let currentWordIndex = -1;
+let readWordCount = -1;
 let rafId = 0;
 let objectUrl = "";
 let tracks = [];
@@ -45,17 +42,11 @@ let pendingResumeTime = 0;
 let lastProgressSave = 0;
 let selectedWordButton = null;
 let definitionRequestId = 0;
-let lookupTimer = 0;
-let playerCollapseTimer = 0;
-let activeLookups = 0;
-const lookupQueue = [];
-const queuedLookups = new Set();
+let trackLoadId = 0;
 let translationCache = loadTranslationCache();
 let progressCache = loadProgressCache();
 let studyLog = loadStudyLog();
 let appearanceSettings = loadAppearanceSettings();
-
-let sharedGlossary = {};
 
 applyAppearanceSettings();
 drawWaveform(0);
@@ -64,22 +55,6 @@ initialize();
 
 backToLibrary.addEventListener("click", () => {
   showLibrary();
-});
-
-listenPanel.addEventListener("focusin", () => {
-  expandPlayer(false);
-});
-
-listenPanel.addEventListener("focusout", () => {
-  schedulePlayerCollapse();
-});
-
-collapsePlayerInlineButton.addEventListener("click", () => {
-  collapsePlayer();
-});
-
-expandPlayerButton.addEventListener("click", () => {
-  expandPlayer(false);
 });
 
 trackList.addEventListener("click", (event) => {
@@ -93,6 +68,9 @@ audioFile.addEventListener("change", () => {
   const file = audioFile.files?.[0];
   if (!file) return;
   if (objectUrl) URL.revokeObjectURL(objectUrl);
+  audio.pause();
+  trackLoadId += 1;
+  saveActiveProgress(true);
   objectUrl = URL.createObjectURL(file);
   activeTrackId = "";
   appTitle.textContent = file.name;
@@ -103,10 +81,14 @@ audioFile.addEventListener("change", () => {
 transcriptFile.addEventListener("change", async () => {
   const file = transcriptFile.files?.[0];
   if (!file) return;
-  const text = await file.text();
-  const parsed = parseTranscript(text, file.name);
-  setWords(parsed, parsed.some((word) => Number.isFinite(word.start)));
-  status(`${file.name} loaded with ${parsed.length.toLocaleString()} words.`);
+  try {
+    const text = await file.text();
+    const parsed = parseTranscript(text, file.name);
+    setWords(parsed, hasValidTimings(parsed));
+    status(`${file.name} loaded with ${parsed.length.toLocaleString()} words.`);
+  } catch {
+    status(`${file.name} could not be read. Check that it is a valid transcript file.`);
+  }
 });
 
 usePastedText.addEventListener("click", () => {
@@ -155,13 +137,10 @@ if (systemThemeQuery?.addEventListener) {
   systemThemeQuery.addListener(handleSystemThemeChange);
 }
 
-playPause.addEventListener("pointerdown", (e) => {
-  if (e.button !== 0) return; // Only respond to left clicks
-  e.preventDefault();
+playPause.addEventListener("click", () => {
   if (!audio.src) return;
-  expandPlayer();
   if (audio.paused) {
-    audio.play();
+    audio.play().catch(() => status("Playback could not be started."));
   } else {
     audio.pause();
   }
@@ -190,7 +169,7 @@ audio.addEventListener("loadedmetadata", () => {
   seek.disabled = false;
   playPause.disabled = false;
   durationEl.textContent = formatTime(audio.duration);
-  if (words.length && !hasRealTimings(words)) assignApproximateTimes(words);
+  if (words.length && !hasValidTimings(words)) assignApproximateTimes(words);
   if (pendingResumeTime > 0 && audio.duration) {
     audio.currentTime = Math.min(pendingResumeTime, Math.max(0, audio.duration - 1));
     pendingResumeTime = 0;
@@ -206,7 +185,6 @@ audio.addEventListener("ended", () => {
 });
 
 seek.addEventListener("input", () => {
-  expandPlayer();
   audio.currentTime = Number(seek.value);
   saveActiveProgress(true);
   updateProgress();
@@ -230,12 +208,22 @@ window.addEventListener("resize", () => {
 });
 
 function setAudioSource(src, message) {
+  audio.pause();
+  words = [];
+  reader.replaceChildren();
+  hideWordPopover();
+  definition.innerHTML = `<p class="muted">Tap a word for an English meaning.</p>`;
   audio.src = src;
   audio.playbackRate = parseFloat(playbackRateSelect.value);
   audio.load();
   seek.value = "0";
+  seek.max = "0";
+  seek.disabled = true;
+  playPause.disabled = true;
   currentTimeEl.textContent = "0:00";
+  durationEl.textContent = "0:00";
   currentWordIndex = -1;
+  readWordCount = -1;
   status(message);
 }
 
@@ -250,8 +238,7 @@ async function loadLibrary() {
       .map((track) => ({
         ...track,
         id: track.id || track.audio,
-        title: track.title || track.audio,
-        glossary: track.glossary || "glossary/shared.json"
+        title: track.title || track.audio
       }));
     renderTrackList();
   } catch {
@@ -260,31 +247,18 @@ async function loadLibrary() {
 }
 
 async function initialize() {
-  await loadSharedGlossary();
   await loadLibrary();
 }
 
-async function loadSharedGlossary(path = "glossary/shared.json") {
-  try {
-    const response = await fetch(path, { cache: "no-store" });
-    if (!response.ok) throw new Error("Glossary not found");
-    const glossary = await response.json();
-    if (!glossary || typeof glossary !== "object" || Array.isArray(glossary)) {
-      throw new Error("Invalid glossary");
-    }
-    sharedGlossary = glossary;
-  } catch {
-    sharedGlossary = {};
-  }
-}
-
 async function loadTrack(track) {
+  audio.pause();
+  saveActiveProgress(true);
+  const loadId = ++trackLoadId;
   activeTrackId = track.id;
   pendingResumeTime = progressCache[activeTrackId]?.time || 0;
   appTitle.textContent = track.title;
   showReader();
   setAudioSource(track.audio, `${track.title} loaded.`);
-  await loadSharedGlossary(track.glossary || "glossary/shared.json");
   renderTrackList();
 
   if (!track.transcript) {
@@ -298,47 +272,30 @@ async function loadTrack(track) {
     const response = await fetch(track.transcript);
     if (!response.ok) throw new Error("Transcript not found");
     const text = await response.text();
+    if (loadId !== trackLoadId || activeTrackId !== track.id) return;
     const parsed = parseTranscript(text, track.transcript);
-    setWords(parsed, parsed.some((word) => Number.isFinite(word.start)));
+    setWords(parsed, hasValidTimings(parsed));
     const resumeMessage = pendingResumeTime > 0 ? ` Resuming at ${formatTime(pendingResumeTime)}.` : "";
     status(`${track.title} loaded with ${parsed.length.toLocaleString()} synced words.${resumeMessage}`);
   } catch {
+    if (loadId !== trackLoadId || activeTrackId !== track.id) return;
     status(`${track.title} loaded, but its transcript could not be loaded.`);
   }
 }
 
 function showLibrary() {
+  audio.pause();
+  saveActiveProgress(true);
   app.dataset.view = "library";
   document.title = "Spanish Listening Reader";
   hideWordPopover();
-  collapsePlayer();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function showReader() {
   app.dataset.view = "reader";
   document.title = appTitle.textContent ? `${appTitle.textContent} · Spanish Listening Reader` : "Spanish Listening Reader";
-  expandPlayer();
   window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function expandPlayer(autoCollapse = true) {
-  listenPanel.classList.add("player-expanded");
-  window.clearTimeout(playerCollapseTimer);
-  if (autoCollapse) schedulePlayerCollapse();
-}
-
-function schedulePlayerCollapse(delay = 3600) {
-  window.clearTimeout(playerCollapseTimer);
-  playerCollapseTimer = window.setTimeout(() => {
-    if (!listenPanel.contains(document.activeElement)) collapsePlayer();
-  }, delay);
-}
-
-function collapsePlayer() {
-  window.clearTimeout(playerCollapseTimer);
-  settingsMenu.open = false;
-  listenPanel.classList.remove("player-expanded");
 }
 
 function renderTrackList() {
@@ -373,7 +330,15 @@ function renderTrackList() {
 
 function setWords(nextWords, precise) {
   words = nextWords.map((word, index) => ({ ...word, index }));
-  if (!precise) assignApproximateTimes(words);
+  if (!precise) {
+    words.forEach((word) => {
+      word.start = Number.NaN;
+      word.end = Number.NaN;
+    });
+    assignApproximateTimes(words);
+  }
+  currentWordIndex = -1;
+  readWordCount = -1;
   renderWords();
   updateProgress();
 }
@@ -532,13 +497,15 @@ function updateProgress() {
 function updateCurrentWord(time) {
   if (!words.length) return;
   const index = findWordAt(time);
-  if (index === currentWordIndex) return;
-  if (currentWordIndex >= 0) {
-    const previous = reader.querySelector(`[data-index="${currentWordIndex}"]`);
-    previous?.classList.remove("current");
-    previous?.classList.add("read");
-  }
+  const endedCount = countEndedWords(time);
+  if (index === currentWordIndex && endedCount === readWordCount) return;
+  const wordButtons = reader.querySelectorAll(".word");
+  wordButtons.forEach((button, wordIndex) => {
+    button.classList.toggle("current", wordIndex === index);
+    button.classList.toggle("read", wordIndex < endedCount);
+  });
   currentWordIndex = index;
+  readWordCount = endedCount;
   if (index >= 0) {
     const active = reader.querySelector(`[data-index="${index}"]`);
     active?.classList.add("current");
@@ -556,12 +523,18 @@ function findWordAt(time) {
     else if (time >= word.end) low = mid + 1;
     else return mid;
   }
-  return Math.max(0, Math.min(words.length - 1, low));
+  return -1;
 }
 
-function extractMeaning(translated) {
-  const match = translated.match(/<b>(.*?)<\/b>/i);
-  return match ? match[1].replace(/<[^>]+>/g, "").trim() : translated;
+function countEndedWords(time) {
+  let low = 0;
+  let high = words.length;
+  while (low < high) {
+    const mid = Math.floor((low + high) / 2);
+    if (words[mid].end <= time) low = mid + 1;
+    else high = mid;
+  }
+  return low;
 }
 
 async function showDefinition(word, anchor) {
@@ -577,7 +550,7 @@ async function showDefinition(word, anchor) {
   
   if (instant) {
     renderDefinition(contextHTML, instant, anchor, true);
-    logStudiedWord(word, extractMeaning(instant) || instant);
+    logStudiedWord(word, instant);
     return;
   }
 
@@ -593,20 +566,24 @@ async function showDefinition(word, anchor) {
     const translated = await fetchTranslation(contextHTML);
     if (requestId === definitionRequestId) {
       renderDefinition(contextHTML, translated, anchor, true);
-      logStudiedWord(word, extractMeaning(translated) || translated);
+      logStudiedWord(word, translated);
     }
   } catch {
     const spanishDict = `https://www.spanishdict.com/translate/${encodeURIComponent(normalized)}`;
     const wordReference = `https://www.wordreference.com/es/en/translation.asp?spen=${encodeURIComponent(normalized)}`;
     if (requestId !== definitionRequestId) return;
     const fallback = `No automatic result. <a href="${spanishDict}" target="_blank" rel="noreferrer">SpanishDict</a> or <a href="${wordReference}" target="_blank" rel="noreferrer">WordReference</a>.`;
-    renderDefinition(contextHTML, fallback, anchor, true);
+    renderDefinition(contextHTML, fallback, anchor, "trusted");
   }
 }
 
 function renderDefinition(word, translation, anchor = selectedWordButton, allowHtml = false) {
   const wordHtml = allowHtml ? word : escapeHtml(word);
-  const translationHtml = allowHtml ? translation : escapeHtml(translation);
+  const translationHtml = allowHtml === "trusted"
+    ? translation
+    : allowHtml
+      ? sanitizeEmphasisHtml(translation)
+      : escapeHtml(translation);
   const content = `
     <p class="definition-word">${wordHtml}</p>
     <p class="translation">${translationHtml}</p>
@@ -649,14 +626,17 @@ function logStudiedWord(word, meaning) {
   const normalized = normalizeWord(word.text);
   if (!normalized) return;
 
-  const previous = studyLog[normalized] || {};
   const context = contextSentenceForWord(word.index);
-  studyLog[normalized] = {
+  const reading = appTitle.textContent || "Untitled reading";
+  const contextText = htmlToText(context);
+  const key = `${normalized}\u241f${reading}\u241f${contextText}`;
+  const previous = studyLog[key] || {};
+  studyLog[key] = {
     word: word.text,
     normalized,
-    meaning,
-    context: previous.context || context,
-    reading: previous.reading || appTitle.textContent || "Untitled reading",
+    meaning: htmlToText(meaning),
+    context,
+    reading,
     firstSeenAt: previous.firstSeenAt || new Date().toISOString(),
     lastSeenAt: new Date().toISOString(),
     lookupCount: (previous.lookupCount || 0) + 1
@@ -727,86 +707,29 @@ function tsvField(value) {
     .trim();
 }
 
-function getCachedTranslation(normalized) {
-  return sharedGlossary[normalized] || sharedGlossary[stripDiacritics(normalized)] || translationCache[normalized] || "";
+function getCachedTranslation(context) {
+  return translationCache[context] || "";
 }
 
-async function fetchTranslation(normalized) {
-  const cached = getCachedTranslation(normalized);
+async function fetchTranslation(context) {
+  const cached = getCachedTranslation(context);
   if (cached) return cached;
 
   const controller = new AbortController();
   const timeoutId = window.setTimeout(() => controller.abort(), 4500);
   try {
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(normalized)}&langpair=es|en`;
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(context)}&langpair=es|en`;
     const response = await fetch(url, { signal: controller.signal });
     if (!response.ok) throw new Error("Lookup failed");
     const data = await response.json();
     const translated = data?.responseData?.translatedText;
     if (!translated) throw new Error("No translation returned");
-    translationCache[normalized] = translated;
+    translationCache[context] = translated;
     saveTranslationCache(translationCache);
     return translated;
   } finally {
     window.clearTimeout(timeoutId);
   }
-}
-
-function warmTranslationCache(list) {
-  const seen = new Set();
-  for (const word of list) {
-    const normalized = normalizeWord(word.text);
-    if (!normalized || seen.has(normalized) || getCachedTranslation(normalized)) continue;
-    seen.add(normalized);
-    enqueueTranslation(normalized);
-    if (seen.size >= 80) break;
-  }
-}
-
-function queueNearbyTranslations(index) {
-  if (!Number.isFinite(index)) return;
-  const start = Math.max(0, index - 18);
-  const end = Math.min(words.length, index + 42);
-  for (let i = start; i < end; i += 1) {
-    const normalized = normalizeWord(words[i].text);
-    if (normalized && !getCachedTranslation(normalized)) enqueueTranslation(normalized, true);
-  }
-}
-
-function enqueueTranslation(normalized, priority = false) {
-  if (queuedLookups.has(normalized) || getCachedTranslation(normalized)) return;
-  queuedLookups.add(normalized);
-  if (priority) lookupQueue.unshift(normalized);
-  else lookupQueue.push(normalized);
-  scheduleLookupPump();
-}
-
-function scheduleLookupPump(delay = 350) {
-  if (lookupTimer) return;
-  lookupTimer = window.setTimeout(() => {
-    lookupTimer = 0;
-    pumpLookupQueue();
-  }, delay);
-}
-
-function pumpLookupQueue() {
-  if (activeLookups > 0 || !lookupQueue.length) return;
-  const normalized = lookupQueue.shift();
-  if (!normalized) return;
-  if (getCachedTranslation(normalized)) {
-    queuedLookups.delete(normalized);
-    scheduleLookupPump(0);
-    return;
-  }
-
-  activeLookups += 1;
-  fetchTranslation(normalized)
-    .catch(() => {})
-    .finally(() => {
-      activeLookups -= 1;
-      queuedLookups.delete(normalized);
-      if (lookupQueue.length) scheduleLookupPump(850);
-    });
 }
 
 function drawWaveform(progress) {
@@ -845,8 +768,19 @@ function roundRect(context, x, y, width, height, radius) {
   context.closePath();
 }
 
-function hasRealTimings(list) {
-  return list.some((word) => Number.isFinite(word.start) && Number.isFinite(word.end));
+function hasValidTimings(list) {
+  let previousStart = -Infinity;
+  let previousEnd = -Infinity;
+  return list.length > 0 && list.every((word) => {
+    const valid = Number.isFinite(word.start)
+      && Number.isFinite(word.end)
+      && word.start >= previousStart
+      && word.end >= previousEnd
+      && word.end >= word.start;
+    previousStart = word.start;
+    previousEnd = word.end;
+    return valid;
+  });
 }
 
 function toSeconds(value) {
@@ -899,10 +833,6 @@ function normalizeWord(word) {
   return word.toLocaleLowerCase("es").replace(/[^\p{L}\p{M}\d]/gu, "");
 }
 
-function stripDiacritics(value) {
-  return value.normalize("NFD").replace(/\p{M}/gu, "");
-}
-
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
     "&": "&amp;",
@@ -911,6 +841,33 @@ function escapeHtml(value) {
     '"': "&quot;",
     "'": "&#039;"
   })[char]);
+}
+
+function sanitizeEmphasisHtml(value) {
+  const template = document.createElement("template");
+  template.innerHTML = String(value);
+
+  const sanitizeNode = (node) => {
+    if (node.nodeType === Node.TEXT_NODE) return document.createTextNode(node.textContent || "");
+    const fragment = document.createDocumentFragment();
+    for (const child of node.childNodes) fragment.append(sanitizeNode(child));
+    if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "B") {
+      const bold = document.createElement("b");
+      bold.append(fragment);
+      return bold;
+    }
+    return fragment;
+  };
+
+  const container = document.createElement("div");
+  for (const child of template.content.childNodes) container.append(sanitizeNode(child));
+  return container.innerHTML;
+}
+
+function htmlToText(value) {
+  const template = document.createElement("template");
+  template.innerHTML = String(value ?? "");
+  return (template.content.textContent || "").replace(/\s+/g, " ").trim();
 }
 
 function status(message) {

@@ -54,9 +54,6 @@ fi
 echo "==> Rebuilding library..."
 python3 scripts/build_library.py
 
-echo "==> Rebuilding glossary..."
-python3 scripts/build_glossary.py
-
 echo "==> Committing and pushing to GitHub..."
 git add .
 
