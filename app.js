@@ -376,7 +376,6 @@ function setWords(nextWords, precise) {
   if (!precise) assignApproximateTimes(words);
   renderWords();
   updateProgress();
-  warmTranslationCache(words);
 }
 
 function parseTranscript(text, name) {
@@ -560,42 +559,48 @@ function findWordAt(time) {
   return Math.max(0, Math.min(words.length - 1, low));
 }
 
+function extractMeaning(translated) {
+  const match = translated.match(/<b>(.*?)<\/b>/i);
+  return match ? match[1].replace(/<[^>]+>/g, "").trim() : translated;
+}
+
 async function showDefinition(word, anchor) {
   if (!word) return;
   selectedWordButton?.classList.remove("selected");
   selectedWordButton = anchor || null;
   selectedWordButton?.classList.add("selected");
   const requestId = ++definitionRequestId;
+  
   const normalized = normalizeWord(word.text);
-  const instant = getCachedTranslation(normalized);
+  const contextHTML = contextSentenceForWord(word.index);
+  const instant = getCachedTranslation(contextHTML);
+  
   if (instant) {
-    renderDefinition(word.text, instant, anchor);
-    logStudiedWord(word, instant);
-    queueNearbyTranslations(word.index);
+    renderDefinition(contextHTML, instant, anchor, true);
+    logStudiedWord(word, extractMeaning(instant) || instant);
     return;
   }
 
-  renderDefinition(word.text, "Looking up...");
-  queueNearbyTranslations(word.index);
+  renderDefinition(contextHTML, "Looking up...", anchor, true);
 
   if (word.translation) {
-    renderDefinition(word.text, word.translation, anchor);
+    renderDefinition(contextHTML, word.translation, anchor, true);
     logStudiedWord(word, word.translation);
     return;
   }
 
   try {
-    const translated = await fetchTranslation(normalized);
+    const translated = await fetchTranslation(contextHTML);
     if (requestId === definitionRequestId) {
-      renderDefinition(word.text, translated, anchor);
-      logStudiedWord(word, translated);
+      renderDefinition(contextHTML, translated, anchor, true);
+      logStudiedWord(word, extractMeaning(translated) || translated);
     }
   } catch {
     const spanishDict = `https://www.spanishdict.com/translate/${encodeURIComponent(normalized)}`;
     const wordReference = `https://www.wordreference.com/es/en/translation.asp?spen=${encodeURIComponent(normalized)}`;
     if (requestId !== definitionRequestId) return;
     const fallback = `No automatic result. <a href="${spanishDict}" target="_blank" rel="noreferrer">SpanishDict</a> or <a href="${wordReference}" target="_blank" rel="noreferrer">WordReference</a>.`;
-    renderDefinition(word.text, fallback, anchor, true);
+    renderDefinition(contextHTML, fallback, anchor, true);
   }
 }
 

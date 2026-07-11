@@ -18,6 +18,12 @@
     "transcript": "Cuentos de la tierra.json"
   },
   {
+    "title": "El suicidio de la hispania romana",
+    "audio": "El_suicidio_de_la_Hispania_romana.m4a",
+    "glossary": "glossary/shared.json",
+    "transcript": "El_suicidio_de_la_Hispania_romana.json"
+  },
+  {
     "title": "Elindulto",
     "audio": "elindulto.mp3",
     "glossary": "glossary/shared.json",
