@@ -686,7 +686,7 @@ function contextSentenceForWord(index) {
 }
 
 function endsSentence(word) {
-  return /[.!?…]["')\]]*\s*$/.test(`${word.text}${word.separator || ""}`);
+  return /[.,:;!?…]["')\]]*\s*$/.test(`${word.text}${word.separator || ""}`);
 }
 
 function updateStudyControls() {
