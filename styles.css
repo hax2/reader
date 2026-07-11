@@ -659,7 +659,7 @@ h2 {
   color: var(--read-word);
 }
 
-:root[data-text-mode="dim-upcoming"] .word {
+:root[data-text-mode="dim-upcoming"] .word:not(.current) {
   color: var(--read-word);
 }
 

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Add Audio
+Comment=Drag and drop an audio file here, or click to auto-scan and publish
+Exec=konsole --hold -e bash -c 'cd /home/Shodan/reader && ./add_audio.sh %F'
+Icon=audio-x-generic
+Terminal=false
+Categories=Utility;
+MimeType=audio/mpeg;audio/mp4;audio/x-m4a;
