@@ -778,14 +778,17 @@ h2 {
 .word-popover .translation {
   color: var(--ink);
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.35;
 }
 
 .word-popover .definition-word b,
 .word-popover .translation b {
-  color: var(--accent);
+  color: var(--accent-dark);
   font-weight: 800;
+  background-color: var(--selection-bg);
+  padding: 0 2px;
+  border-radius: 4px;
 }
 
 .word-popover a {
