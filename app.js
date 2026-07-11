@@ -668,10 +668,10 @@ function logStudiedWord(word, meaning) {
 function contextSentenceForWord(index) {
   if (!Number.isFinite(index) || !words[index]) return "";
   let start = index;
-  while (start > 0 && !endsSentence(words[start - 1])) start -= 1;
+  while (start > 0 && start > index - 3 && !endsSentence(words[start - 1])) start -= 1;
 
   let end = index;
-  while (end < words.length - 1 && !endsSentence(words[end])) end += 1;
+  while (end < words.length - 1 && end < index + 1 && !endsSentence(words[end])) end += 1;
 
   return words
     .slice(start, end + 1)
