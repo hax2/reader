@@ -605,9 +605,10 @@ async function showDefinition(word, anchor) {
 }
 
 function renderDefinition(word, translation, anchor = selectedWordButton, allowHtml = false) {
+  const wordHtml = allowHtml ? word : escapeHtml(word);
   const translationHtml = allowHtml ? translation : escapeHtml(translation);
   const content = `
-    <p class="definition-word">${escapeHtml(word)}</p>
+    <p class="definition-word">${wordHtml}</p>
     <p class="translation">${translationHtml}</p>
   `;
   definition.innerHTML = content;

@@ -770,17 +770,22 @@ h2 {
 }
 
 .word-popover .definition-word {
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   letter-spacing: 0;
-  text-transform: uppercase;
   color: var(--muted);
 }
 
 .word-popover .translation {
   color: var(--ink);
-  font-size: 1.2rem;
-  font-weight: 780;
-  line-height: 1.28;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.word-popover .definition-word b,
+.word-popover .translation b {
+  color: var(--accent);
+  font-weight: 800;
 }
 
 .word-popover a {
