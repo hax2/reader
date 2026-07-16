@@ -21,6 +21,12 @@ const usePastedText = document.querySelector("#usePastedText");
 const definition = document.querySelector("#definition");
 const studyCount = document.querySelector("#studyCount");
 const downloadAnki = document.querySelector("#downloadAnki");
+const ankiDialog = document.querySelector("#ankiDialog");
+const ankiDialogCount = document.querySelector("#ankiDialogCount");
+const ankiCardList = document.querySelector("#ankiCardList");
+const closeAnkiDialog = document.querySelector("#closeAnkiDialog");
+const cancelAnkiReview = document.querySelector("#cancelAnkiReview");
+const downloadReviewedAnki = document.querySelector("#downloadReviewedAnki");
 const themeSelect = document.querySelector("#themeSelect");
 const highlightSelect = document.querySelector("#highlightSelect");
 const textModeSelect = document.querySelector("#textModeSelect");
@@ -104,7 +110,48 @@ usePastedText.addEventListener("click", () => {
 });
 
 downloadAnki.addEventListener("click", () => {
+  openAnkiReview();
+});
+
+closeAnkiDialog.addEventListener("click", () => ankiDialog.close());
+cancelAnkiReview.addEventListener("click", () => ankiDialog.close());
+
+downloadReviewedAnki.addEventListener("click", () => {
   downloadAnkiCards();
+  ankiDialog.close();
+});
+
+ankiCardList.addEventListener("input", (event) => {
+  const field = event.target.closest("[data-field]");
+  const card = event.target.closest(".anki-card-editor");
+  if (!field || !card) return;
+  const entry = studyLog[card.dataset.studyKey];
+  if (!entry) return;
+
+  const value = field.value;
+  if (field.dataset.field === "context") entry.context = escapeHtml(value);
+  else entry[field.dataset.field] = value;
+  if (field.dataset.field === "word") {
+    entry.normalized = normalizeWord(value);
+    card.querySelector(".anki-card-editor-header strong").textContent = value || "Untitled word";
+  }
+  entry.lastSeenAt = new Date().toISOString();
+  saveStudyLog(studyLog);
+  updateStudyControls();
+  updateAnkiReviewCount();
+});
+
+ankiCardList.addEventListener("click", (event) => {
+  const removeButton = event.target.closest("[data-remove-card]");
+  if (!removeButton) return;
+  const card = removeButton.closest(".anki-card-editor");
+  if (!card) return;
+  delete studyLog[card.dataset.studyKey];
+  saveStudyLog(studyLog);
+  card.remove();
+  updateStudyControls();
+  updateAnkiReviewCount();
+  if (!studyEntries().length) ankiDialog.close();
 });
 
 themeSelect.addEventListener("change", () => {
@@ -670,15 +717,72 @@ function endsSentence(word) {
 }
 
 function updateStudyControls() {
-  const count = Object.values(studyLog).filter((entry) => entry?.word && entry?.meaning).length;
+  const count = studyEntries().length;
   studyCount.textContent = `${count.toLocaleString()} looked-up ${count === 1 ? "word" : "words"}`;
   downloadAnki.disabled = count === 0;
 }
 
+function studyEntries() {
+  return Object.entries(studyLog)
+    .filter(([, entry]) => entry && typeof entry === "object")
+    .sort(([, a], [, b]) => String(a.normalized || a.word).localeCompare(String(b.normalized || b.word), "es"));
+}
+
+function downloadableStudyEntries() {
+  return studyEntries().filter(([, entry]) => String(entry.word || "").trim() && String(entry.meaning || "").trim());
+}
+
+function openAnkiReview() {
+  const entries = studyEntries();
+  if (!entries.length) return;
+  audio.pause();
+  ankiCardList.replaceChildren();
+
+  const fragment = document.createDocumentFragment();
+  for (const [key, entry] of entries) {
+    const card = document.createElement("article");
+    card.className = "anki-card-editor";
+    card.dataset.studyKey = key;
+    card.innerHTML = `
+      <div class="anki-card-editor-header">
+        <strong>${escapeHtml(entry.word || "Untitled word")}</strong>
+        <button class="remove-card-button" type="button" data-remove-card aria-label="Remove ${escapeHtml(entry.word || "card")} from Anki export">Remove</button>
+      </div>
+      <div class="anki-card-fields">
+        <label>
+          <span>Clicked word</span>
+          <input data-field="word" value="${escapeHtml(entry.word || "")}">
+        </label>
+        <label>
+          <span>Translated phrase</span>
+          <textarea data-field="meaning" rows="2">${escapeHtml(entry.meaning || "")}</textarea>
+        </label>
+        <label>
+          <span>Spanish context</span>
+          <textarea data-field="context" rows="2">${escapeHtml(htmlToText(entry.context))}</textarea>
+        </label>
+        <label>
+          <span>Reading</span>
+          <input data-field="reading" value="${escapeHtml(entry.reading || "")}">
+        </label>
+      </div>
+    `;
+    fragment.append(card);
+  }
+  ankiCardList.append(fragment);
+  updateAnkiReviewCount();
+  ankiDialog.showModal();
+}
+
+function updateAnkiReviewCount() {
+  const count = studyEntries().length;
+  const readyCount = downloadableStudyEntries().length;
+  ankiDialogCount.textContent = `${count.toLocaleString()} ${count === 1 ? "card" : "cards"} saved · ${readyCount.toLocaleString()} ready to download`;
+  downloadReviewedAnki.disabled = readyCount === 0;
+}
+
 function downloadAnkiCards() {
-  const entries = Object.values(studyLog)
-    .filter((entry) => entry?.word && entry?.meaning)
-    .sort((a, b) => String(a.normalized || a.word).localeCompare(String(b.normalized || b.word), "es"));
+  const entries = downloadableStudyEntries().map(([, entry]) => entry);
   if (!entries.length) return;
 
   const rows = entries.map((entry) => [
