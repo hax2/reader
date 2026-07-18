@@ -31,6 +31,13 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.5"></circle><circle cx="12" cy="5" r="1.5"></circle><circle cx="12" cy="19" r="1.5"></circle></svg>
             </summary>
             <div class="appearance-controls">
+              <div class="appearance-heading">
+                <div>
+                  <strong>Reading appearance</strong>
+                  <span>Make the page comfortable for you.</span>
+                </div>
+                <button id="resetAppearance" class="text-button" type="button">Reset</button>
+              </div>
               <label>
                 <span>Theme</span>
                 <select id="themeSelect">
@@ -55,6 +62,36 @@
                   <option value="rose">Rose wash</option>
                   <option value="underline">Underline</option>
                   <option value="none">None</option>
+                </select>
+              </label>
+              <label>
+                <span class="control-label">
+                  <span>Text size</span>
+                  <output id="textSizeValue" for="textSize">100%</output>
+                </span>
+                <input id="textSize" type="range" min="80" max="140" step="5" value="100">
+              </label>
+              <label>
+                <span class="control-label">
+                  <span>Line spacing</span>
+                  <output id="lineHeightValue" for="lineHeight">1.8</output>
+                </span>
+                <input id="lineHeight" type="range" min="1.4" max="2.2" step="0.1" value="1.8">
+              </label>
+              <label>
+                <span>Typeface</span>
+                <select id="fontSelect">
+                  <option value="serif">Book serif</option>
+                  <option value="sans">Clean sans</option>
+                  <option value="accessible">Accessible sans</option>
+                </select>
+              </label>
+              <label>
+                <span>Text width</span>
+                <select id="readerWidthSelect">
+                  <option value="narrow">Narrow</option>
+                  <option value="standard">Standard</option>
+                  <option value="wide">Wide</option>
                 </select>
               </label>
             </div>

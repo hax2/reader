@@ -30,12 +30,19 @@ const downloadReviewedAnki = document.querySelector("#downloadReviewedAnki");
 const themeSelect = document.querySelector("#themeSelect");
 const highlightSelect = document.querySelector("#highlightSelect");
 const textModeSelect = document.querySelector("#textModeSelect");
+const textSize = document.querySelector("#textSize");
+const textSizeValue = document.querySelector("#textSizeValue");
+const lineHeight = document.querySelector("#lineHeight");
+const lineHeightValue = document.querySelector("#lineHeightValue");
+const fontSelect = document.querySelector("#fontSelect");
+const readerWidthSelect = document.querySelector("#readerWidthSelect");
+const resetAppearance = document.querySelector("#resetAppearance");
 const wordPopover = document.querySelector("#wordPopover");
 const canvas = document.querySelector("#waveform");
 const ctx = canvas.getContext("2d");
 const systemThemeQuery = window.matchMedia?.("(prefers-color-scheme: dark)") || null;
 const themeOptions = ["system", "paper", "mist", "night"];
-const appearanceSettingsVersion = 2;
+const appearanceSettingsVersion = 3;
 
 let words = [];
 let currentWordIndex = -1;
@@ -168,6 +175,38 @@ highlightSelect.addEventListener("change", () => {
 
 textModeSelect.addEventListener("change", () => {
   appearanceSettings.textMode = textModeSelect.value;
+  saveAppearanceSettings(appearanceSettings);
+  applyAppearanceSettings();
+});
+
+textSize.addEventListener("input", () => {
+  appearanceSettings.textSize = Number(textSize.value);
+  saveAppearanceSettings(appearanceSettings);
+  applyAppearanceSettings();
+});
+
+lineHeight.addEventListener("input", () => {
+  appearanceSettings.lineHeight = Number(lineHeight.value);
+  saveAppearanceSettings(appearanceSettings);
+  applyAppearanceSettings();
+});
+
+fontSelect.addEventListener("change", () => {
+  appearanceSettings.font = fontSelect.value;
+  saveAppearanceSettings(appearanceSettings);
+  applyAppearanceSettings();
+});
+
+readerWidthSelect.addEventListener("change", () => {
+  appearanceSettings.readerWidth = readerWidthSelect.value;
+  saveAppearanceSettings(appearanceSettings);
+  applyAppearanceSettings();
+});
+
+resetAppearance.addEventListener("click", () => {
+  const playbackRate = appearanceSettings.playbackRate;
+  appearanceSettings = defaultAppearanceSettings();
+  appearanceSettings.playbackRate = playbackRate;
   saveAppearanceSettings(appearanceSettings);
   applyAppearanceSettings();
 });
@@ -1017,18 +1056,38 @@ function saveStudyLog(log) {
 function loadAppearanceSettings() {
   try {
     const saved = JSON.parse(localStorage.getItem("spanish-reader-appearance") || "{}");
-    const theme = saved.version === appearanceSettingsVersion && themeOptions.includes(saved.theme)
-      ? saved.theme
-      : "system";
+    const defaults = defaultAppearanceSettings();
     return {
-      theme,
-      highlight: ["sage", "sky", "rose", "underline", "none"].includes(saved.highlight) ? saved.highlight : "sage",
-      textMode: ["dim-passed", "dim-upcoming"].includes(saved.textMode) ? saved.textMode : "dim-passed",
-      playbackRate: saved.playbackRate || 1
+      theme: themeOptions.includes(saved.theme) ? saved.theme : defaults.theme,
+      highlight: ["sage", "sky", "rose", "underline", "none"].includes(saved.highlight) ? saved.highlight : defaults.highlight,
+      textMode: ["dim-passed", "dim-upcoming"].includes(saved.textMode) ? saved.textMode : defaults.textMode,
+      textSize: numberInRange(saved.textSize, 80, 140, defaults.textSize),
+      lineHeight: numberInRange(saved.lineHeight, 1.4, 2.2, defaults.lineHeight),
+      font: ["serif", "sans", "accessible"].includes(saved.font) ? saved.font : defaults.font,
+      readerWidth: ["narrow", "standard", "wide"].includes(saved.readerWidth) ? saved.readerWidth : defaults.readerWidth,
+      playbackRate: numberInRange(saved.playbackRate, 0.5, 2, defaults.playbackRate)
     };
   } catch {
-    return { theme: "system", highlight: "sage", textMode: "dim-passed", playbackRate: 1 };
+    return defaultAppearanceSettings();
   }
+}
+
+function defaultAppearanceSettings() {
+  return {
+    theme: "system",
+    highlight: "sage",
+    textMode: "dim-passed",
+    textSize: 100,
+    lineHeight: 1.8,
+    font: "serif",
+    readerWidth: "standard",
+    playbackRate: 1
+  };
+}
+
+function numberInRange(value, min, max, fallback) {
+  const number = Number(value);
+  return Number.isFinite(number) && number >= min && number <= max ? number : fallback;
 }
 
 function saveAppearanceSettings(settings) {
@@ -1042,9 +1101,19 @@ function applyAppearanceSettings() {
   document.documentElement.dataset.theme = resolveTheme(appearanceSettings.theme);
   document.documentElement.dataset.highlight = appearanceSettings.highlight;
   document.documentElement.dataset.textMode = appearanceSettings.textMode;
+  document.documentElement.dataset.readerFont = appearanceSettings.font;
+  document.documentElement.dataset.readerWidth = appearanceSettings.readerWidth;
+  document.documentElement.style.setProperty("--reader-font-size", `${1.6 * appearanceSettings.textSize / 100}rem`);
+  document.documentElement.style.setProperty("--reader-line-height", appearanceSettings.lineHeight);
   themeSelect.value = appearanceSettings.theme;
   highlightSelect.value = appearanceSettings.highlight;
   textModeSelect.value = appearanceSettings.textMode;
+  textSize.value = appearanceSettings.textSize;
+  textSizeValue.value = `${appearanceSettings.textSize}%`;
+  lineHeight.value = appearanceSettings.lineHeight;
+  lineHeightValue.value = appearanceSettings.lineHeight.toFixed(1);
+  fontSelect.value = appearanceSettings.font;
+  readerWidthSelect.value = appearanceSettings.readerWidth;
   playbackRateSelect.value = appearanceSettings.playbackRate;
   audio.playbackRate = appearanceSettings.playbackRate;
   drawWaveform(audio.duration ? (audio.currentTime || 0) / audio.duration : 0);
