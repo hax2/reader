@@ -20,6 +20,11 @@
     "transcript": "el_monte_de_las_animas.json"
   },
   {
+    "title": "El rayo de luna",
+    "audio": "el_rayo_de_luna.m4a",
+    "transcript": "el_rayo_de_luna.json"
+  },
+  {
     "title": "El suicidio de la hispania romana",
     "audio": "El_suicidio_de_la_Hispania_romana.m4a",
     "transcript": "El_suicidio_de_la_Hispania_romana.json"
@@ -28,6 +33,11 @@
     "title": "Elindulto",
     "audio": "elindulto.mp3",
     "transcript": "elindulto.json"
+  },
+  {
+    "title": "La ajorca de oro",
+    "audio": "la_ajorca_de_oro.m4a",
+    "transcript": "la_ajorca_de_oro.json"
   },
   {
     "title": "Vanguardia revolucionaria frente a política sindical",

@@ -90,7 +90,7 @@ def narrate_batch(
 
     if pending:
         print(
-            f"Submitting {len(pending)} missing chunks as one Gemini Batch job...",
+            f"Submitting {len(pending)} missing chunks as individual Gemini Batch jobs...",
             flush=True,
         )
         responses = run_individual_batch_jobs(pending, args, api_key)

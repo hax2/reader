@@ -81,6 +81,7 @@ def main() -> None:
 
     payload = {
         "source": args.audio.name,
+        "title": existing_title(output),
         "language": info.language,
         "language_probability": round(float(info.language_probability), 4),
         "model": args.model,
@@ -97,6 +98,17 @@ def main() -> None:
 
 def clean_word(value: str) -> str:
     return re.sub(r"\s+", " ", value).strip()
+
+
+def existing_title(path: Path) -> str:
+    if not path.exists():
+        return ""
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return ""
+    title = payload.get("title", "") if isinstance(payload, dict) else ""
+    return title.strip() if isinstance(title, str) else ""
 
 
 def clean_text(value: str) -> str:
