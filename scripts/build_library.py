@@ -29,6 +29,9 @@ def main() -> None:
         }
         if transcript.exists():
             item["transcript"] = transcript.name
+            transcript_title = title_from_transcript(transcript)
+            if transcript_title:
+                item["title"] = transcript_title
         tracks.append(item)
 
     args.output.write_text(
@@ -41,6 +44,16 @@ def main() -> None:
 def title_from_stem(stem: str) -> str:
     normalized = unicodedata.normalize("NFKC", stem).replace("_", " ").replace("-", " ")
     return " ".join(normalized.split()).strip().capitalize()
+
+
+def title_from_transcript(path: Path) -> str:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return ""
+    if isinstance(payload, dict) and isinstance(payload.get("title"), str):
+        return payload["title"].strip()
+    return ""
 
 
 if __name__ == "__main__":

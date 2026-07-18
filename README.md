@@ -64,6 +64,29 @@ The script uses Spanish language mode and word timestamps. It defaults to CUDA w
 ./scripts/transcribe_gpu.sh audio.m4a --model small --compute-type int8_float16
 ```
 
+## Generate narration with Gemini TTS
+
+Put `GEMINI_API_KEY` in the local `.env` file, then narrate one or more UTF-8
+text files with the mature `Charon` voice:
+
+```sh
+python3 scripts/gemini_tts.py texts/el_monte_de_las_animas.txt
+```
+
+The script uses Gemini's asynchronous Batch API at half the standard API price.
+It writes a compressed `.m4a` file and a source-text-based timed JSON transcript
+to the repository root. API responses are resumably cached in the ignored
+`.tts-cache/` directory. Pass `--standard` only when immediate synchronous
+generation is worth the higher price. `.env` is ignored and must never be
+committed.
+
+The included public-domain Bécquer texts can be downloaded again from
+Wikisource with:
+
+```sh
+python3 scripts/download_classics.py
+```
+
 If `nvidia-smi` cannot see the GPU, fix the NVIDIA driver or CUDA runtime first, or run with `--device cpu --compute-type int8`.
 
 ## Transcript formats

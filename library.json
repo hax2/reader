@@ -15,6 +15,11 @@
     "transcript": "Cuentos de la tierra.json"
   },
   {
+    "title": "El monte de las ánimas",
+    "audio": "el_monte_de_las_animas.m4a",
+    "transcript": "el_monte_de_las_animas.json"
+  },
+  {
     "title": "El suicidio de la hispania romana",
     "audio": "El_suicidio_de_la_Hispania_romana.m4a",
     "transcript": "El_suicidio_de_la_Hispania_romana.json"
