@@ -601,6 +601,27 @@ h2 {
   backdrop-filter: blur(20px);
 }
 
+.settings-menu .appearance-controls.is-adjusting {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.appearance-controls.is-adjusting > *:not(.is-active-control) {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.appearance-controls.is-adjusting .is-active-control {
+  padding: 10px;
+  color: var(--ink);
+  background: var(--popover-bg);
+  border: 1px solid var(--reader-border);
+  border-radius: 10px;
+  box-shadow: var(--control-shadow);
+}
+
 .workspace {
   display: grid;
   gap: 24px;
@@ -681,7 +702,14 @@ h2 {
     box-shadow 160ms ease;
 }
 
-.word:hover {
+@media (hover: hover) and (pointer: fine) {
+  .word:hover {
+    color: var(--ink);
+    background: var(--selection-bg);
+  }
+}
+
+.word:active {
   color: var(--ink);
   background: var(--selection-bg);
 }
