@@ -702,7 +702,14 @@ h2 {
     box-shadow 160ms ease;
 }
 
-.word:hover {
+@media (hover: hover) and (pointer: fine) {
+  .word:hover {
+    color: var(--ink);
+    background: var(--selection-bg);
+  }
+}
+
+.word:active {
   color: var(--ink);
   background: var(--selection-bg);
 }
