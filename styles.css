@@ -735,7 +735,6 @@ h2 {
 .word.selected {
   color: var(--ink);
   background: var(--selection-bg);
-  box-shadow: none;
 }
 
 :root[data-highlight="underline"] .word.current {
