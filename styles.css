@@ -709,11 +709,6 @@ h2 {
   }
 }
 
-.word:active {
-  color: var(--ink);
-  background: var(--selection-bg);
-}
-
 .word.read {
   color: var(--read-word);
 }
