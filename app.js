@@ -30,8 +30,6 @@ const downloadReviewedAnki = document.querySelector("#downloadReviewedAnki");
 const themeSelect = document.querySelector("#themeSelect");
 const highlightSelect = document.querySelector("#highlightSelect");
 const textModeSelect = document.querySelector("#textModeSelect");
-const settingsMenu = document.querySelector("#settingsMenu");
-const appearanceControls = settingsMenu.querySelector(".appearance-controls");
 const textSize = document.querySelector("#textSize");
 const textSizeValue = document.querySelector("#textSizeValue");
 const lineHeight = document.querySelector("#lineHeight");
@@ -62,8 +60,6 @@ let translationCache = loadTranslationCache();
 let progressCache = loadProgressCache();
 let studyLog = loadStudyLog();
 let appearanceSettings = loadAppearanceSettings();
-let sliderPreviewTimer = 0;
-let draggingAppearanceSlider = false;
 
 applyAppearanceSettings();
 drawWaveform(0);
@@ -184,19 +180,15 @@ textModeSelect.addEventListener("change", () => {
 });
 
 textSize.addEventListener("input", () => {
-  beginSliderPreview(textSize);
   appearanceSettings.textSize = Number(textSize.value);
   saveAppearanceSettings(appearanceSettings);
   applyAppearanceSettings();
-  scheduleSliderPreviewEnd();
 });
 
 lineHeight.addEventListener("input", () => {
-  beginSliderPreview(lineHeight);
   appearanceSettings.lineHeight = Number(lineHeight.value);
   saveAppearanceSettings(appearanceSettings);
   applyAppearanceSettings();
-  scheduleSliderPreviewEnd();
 });
 
 fontSelect.addEventListener("change", () => {
@@ -218,44 +210,6 @@ resetAppearance.addEventListener("click", () => {
   saveAppearanceSettings(appearanceSettings);
   applyAppearanceSettings();
 });
-
-[textSize, lineHeight].forEach((slider) => {
-  slider.addEventListener("pointerdown", () => {
-    draggingAppearanceSlider = true;
-    beginSliderPreview(slider);
-  });
-});
-
-window.addEventListener("pointerup", () => {
-  draggingAppearanceSlider = false;
-  endSliderPreview();
-});
-window.addEventListener("pointercancel", () => {
-  draggingAppearanceSlider = false;
-  endSliderPreview();
-});
-settingsMenu.addEventListener("toggle", () => {
-  if (!settingsMenu.open) endSliderPreview();
-});
-
-function beginSliderPreview(slider) {
-  window.clearTimeout(sliderPreviewTimer);
-  appearanceControls.querySelector(".is-active-control")?.classList.remove("is-active-control");
-  slider.closest("label")?.classList.add("is-active-control");
-  appearanceControls.classList.add("is-adjusting");
-}
-
-function scheduleSliderPreviewEnd() {
-  if (draggingAppearanceSlider) return;
-  window.clearTimeout(sliderPreviewTimer);
-  sliderPreviewTimer = window.setTimeout(endSliderPreview, 700);
-}
-
-function endSliderPreview() {
-  window.clearTimeout(sliderPreviewTimer);
-  appearanceControls.classList.remove("is-adjusting");
-  appearanceControls.querySelector(".is-active-control")?.classList.remove("is-active-control");
-}
 
 const handleSystemThemeChange = () => {
   if (appearanceSettings.theme === "system") {
