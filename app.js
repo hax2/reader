@@ -333,6 +333,7 @@ document.addEventListener("click", (event) => {
   if (wordPopover.hidden) return;
   if (wordPopover.contains(event.target) || event.target.closest(".word")) return;
   hideWordPopover();
+  updateCurrentWord(audio.currentTime || 0);
 });
 
 window.addEventListener("resize", () => {
@@ -628,6 +629,10 @@ function updateProgress() {
 
 function updateCurrentWord(time) {
   if (!words.length) return;
+  if (!wordPopover.hidden) {
+    clearCurrentWordHighlight();
+    return;
+  }
   const index = findWordAt(time);
   const endedCount = countEndedWords(time);
   if (index === currentWordIndex && endedCount === readWordCount) return;
@@ -723,7 +728,13 @@ function renderDefinition(word, translation, anchor = selectedWordButton, allowH
   definition.innerHTML = content;
   wordPopover.innerHTML = content;
   wordPopover.hidden = false;
+  clearCurrentWordHighlight();
   if (anchor) positionWordPopover(anchor);
+}
+
+function clearCurrentWordHighlight() {
+  reader.querySelector(".word.current")?.classList.remove("current");
+  currentWordIndex = -1;
 }
 
 function positionWordPopover(anchor) {
