@@ -8,6 +8,10 @@ const trackList = document.querySelector("#trackList");
 const playPause = document.querySelector("#playPause");
 const playbackRateSelect = document.querySelector("#playbackRate");
 const playIcon = document.querySelector("#playIcon");
+const skipBack = document.querySelector("#skipBack");
+const skipForward = document.querySelector("#skipForward");
+const readModeToggle = document.querySelector("#readModeToggle");
+const readModeLabel = readModeToggle?.querySelector(".mode-label");
 
 const PLAY_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
 const PAUSE_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
@@ -64,6 +68,7 @@ let studyLog = loadStudyLog();
 let appearanceSettings = loadAppearanceSettings();
 let sliderPreviewTimer = 0;
 let draggingAppearanceSlider = false;
+let isReadMode = false;
 
 applyAppearanceSettings();
 drawWaveform(0);
@@ -275,6 +280,55 @@ playPause.addEventListener("click", () => {
     audio.play().catch(() => status("Playback could not be started."));
   } else {
     audio.pause();
+  }
+});
+
+skipBack.addEventListener("click", () => {
+  if (!audio.src || !audio.duration) return;
+  audio.currentTime = Math.max(0, audio.currentTime - 10);
+  updateProgress();
+});
+
+skipForward.addEventListener("click", () => {
+  if (!audio.src || !audio.duration) return;
+  audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+  updateProgress();
+});
+
+readModeToggle.addEventListener("click", () => {
+  isReadMode = !isReadMode;
+  app.dataset.mode = isReadMode ? "read" : "listen";
+  if (readModeLabel) readModeLabel.textContent = isReadMode ? "" : "Read";
+  if (isReadMode) {
+    audio.pause();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  const tag = event.target.tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || event.target.isContentEditable) return;
+  if (app.dataset.view !== "reader") return;
+
+  switch (event.key) {
+    case "ArrowLeft":
+      event.preventDefault();
+      audio.currentTime = Math.max(0, audio.currentTime - 10);
+      updateProgress();
+      break;
+    case "ArrowRight":
+      event.preventDefault();
+      audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10);
+      updateProgress();
+      break;
+    case " ":
+      event.preventDefault();
+      if (!audio.src) return;
+      if (audio.paused) {
+        audio.play().catch(() => {});
+      } else {
+        audio.pause();
+      }
+      break;
   }
 });
 
@@ -628,6 +682,7 @@ function updateProgress() {
 
 function updateCurrentWord(time) {
   if (!words.length) return;
+  if (isReadMode) return;
   const index = findWordAt(time);
   const endedCount = countEndedWords(time);
   if (index === currentWordIndex && endedCount === readWordCount) return;
@@ -716,14 +771,40 @@ function renderDefinition(word, translation, anchor = selectedWordButton, allowH
     : allowHtml
       ? sanitizeEmphasisHtml(translation)
       : escapeHtml(translation);
+  const playFromHereBtn = `<button class="play-from-here" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Play from here</button>`;
   const content = `
     <p class="definition-word">${wordHtml}</p>
     <p class="translation">${translationHtml}</p>
+    ${playFromHereBtn}
   `;
   definition.innerHTML = content;
   wordPopover.innerHTML = content;
   wordPopover.hidden = false;
   if (anchor) positionWordPopover(anchor);
+
+  const wirePlayFromHere = (container) => {
+    const btn = container.querySelector(".play-from-here");
+    if (!btn || !selectedWordButton) return;
+    const wordIndex = Number(selectedWordButton.dataset.index);
+    const wordData = words[wordIndex];
+    if (!wordData || !Number.isFinite(wordData.start)) {
+      btn.style.display = "none";
+      return;
+    }
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      audio.currentTime = wordData.start;
+      if (isReadMode) {
+        isReadMode = false;
+        app.dataset.mode = "listen";
+        if (readModeLabel) readModeLabel.textContent = "Read";
+      }
+      audio.play().catch(() => {});
+      hideWordPopover();
+    });
+  };
+  wirePlayFromHere(definition);
+  wirePlayFromHere(wordPopover);
 }
 
 function positionWordPopover(anchor) {
