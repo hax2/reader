@@ -6,15 +6,16 @@ const appTitle = document.querySelector("#app-title");
 const backToLibrary = document.querySelector("#backToLibrary");
 const trackList = document.querySelector("#trackList");
 const playPause = document.querySelector("#playPause");
-const playbackRateSelect = document.querySelector("#playbackRate");
+const playbackRateButton = document.querySelector("#playbackRate");
 const playIcon = document.querySelector("#playIcon");
 const skipBack = document.querySelector("#skipBack");
 const skipForward = document.querySelector("#skipForward");
 const readModeToggle = document.querySelector("#readModeToggle");
 const readModeLabel = readModeToggle?.querySelector(".mode-label");
 
-const PLAY_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
-const PAUSE_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+const PLAY_ICON = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>`;
+const PAUSE_ICON = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+const SPEED_STEPS = [0.5, 0.75, 1, 1.25, 1.5, 2];
 const seek = document.querySelector("#seek");
 const currentTimeEl = document.querySelector("#currentTime");
 const durationEl = document.querySelector("#duration");
@@ -332,11 +333,15 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-playbackRateSelect.addEventListener("change", (e) => {
-  const rate = parseFloat(e.target.value);
+playbackRateButton.addEventListener("click", () => {
+  const currentRate = appearanceSettings.playbackRate;
+  const currentIndex = SPEED_STEPS.indexOf(currentRate);
+  const nextIndex = (currentIndex + 1) % SPEED_STEPS.length;
+  const rate = SPEED_STEPS[nextIndex];
   audio.playbackRate = rate;
   appearanceSettings.playbackRate = rate;
   saveAppearanceSettings(appearanceSettings);
+  updateSpeedButton(rate);
 });
 
 audio.addEventListener("play", () => {
@@ -400,7 +405,7 @@ function setAudioSource(src, message) {
   hideWordPopover();
   definition.innerHTML = `<p class="muted">Tap a word for an English meaning.</p>`;
   audio.src = src;
-  audio.playbackRate = parseFloat(playbackRateSelect.value);
+  audio.playbackRate = appearanceSettings.playbackRate;
   audio.load();
   seek.value = "0";
   seek.max = "0";
@@ -1144,6 +1149,11 @@ function status(message) {
   statusEl.textContent = message;
 }
 
+function updateSpeedButton(rate) {
+  const label = rate === 1 ? "1×" : `${rate}×`;
+  playbackRateButton.textContent = label;
+}
+
 function loadTranslationCache() {
   try {
     return JSON.parse(localStorage.getItem("spanish-reader-translations") || "{}");
@@ -1241,7 +1251,7 @@ function applyAppearanceSettings() {
   lineHeightValue.value = appearanceSettings.lineHeight.toFixed(1);
   fontSelect.value = appearanceSettings.font;
   readerWidthSelect.value = appearanceSettings.readerWidth;
-  playbackRateSelect.value = appearanceSettings.playbackRate;
+  updateSpeedButton(appearanceSettings.playbackRate);
   audio.playbackRate = appearanceSettings.playbackRate;
   drawWaveform(audio.duration ? (audio.currentTime || 0) / audio.duration : 0);
 }
