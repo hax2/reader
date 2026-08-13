@@ -274,6 +274,9 @@ h2 {
 .track-card:focus-visible,
 .back-button:focus-visible,
 .play-button:focus-visible,
+.skip-button:focus-visible,
+.speed-button:focus-visible,
+.speed-menu button:focus-visible,
 .utility-button:focus-visible,
 .settings-menu summary:focus-visible,
 .word:focus-visible {
@@ -329,7 +332,7 @@ h2 {
 }
 
 .reader-view {
-  padding-bottom: 120px;
+  padding-bottom: 150px;
   padding-top: 60px;
 }
 
@@ -354,47 +357,49 @@ h2 {
 .listen-panel-inner {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 0 16px 8px 16px;
+  padding: 0 max(16px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   display: flex;
   flex-direction: column;
 }
 
 .timeline-wrap {
   width: 100%;
-  margin-top: -10px;
+  margin-top: -12px;
   z-index: 2;
 }
 
 .waveform-container {
   position: relative;
-  height: 20px;
+  height: 24px;
   width: 100%;
 }
 
 #waveform {
   width: 100%;
-  height: 20px;
+  height: 24px;
   display: block;
-  border-radius: 4px;
+  border: 1px solid var(--reader-border);
+  border-radius: 7px;
   background: var(--wave-bg);
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .seek {
   position: absolute;
   inset: 0;
   width: 100%;
-  height: 20px;
+  height: 24px;
   opacity: 0;
   cursor: pointer;
 }
 
 .player-strip {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(54px, 1fr) auto minmax(54px, 1fr);
   align-items: center;
-  gap: 2px;
-  margin-top: 4px;
+  width: 100%;
+  min-height: 58px;
+  margin-top: 1px;
 }
 
 .reader-topbar {
@@ -430,40 +435,63 @@ h2 {
 }
 
 .player-transport {
+  grid-column: 2;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
-.player-meta {
+.speed-control {
+  position: relative;
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+}
+
+.study-actions-compact {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: 12px;
-  padding: 0 2px;
+  gap: 8px;
 }
 
 .skip-button {
-  width: 36px;
-  height: 36px;
-  min-height: 36px;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
   border-radius: 50%;
   background: transparent;
   color: var(--muted);
-  border: 1px solid transparent;
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: all 150ms ease;
+  transition: color 150ms ease, background 150ms ease, transform 150ms ease;
   padding: 0;
+}
+
+.skip-button svg {
+  width: 32px;
+  height: 32px;
+}
+
+.skip-value {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.56rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .skip-button:hover:not(:disabled) {
   color: var(--ink);
   background: var(--wash);
-  transform: scale(1.06);
 }
 
 .skip-button:active:not(:disabled) {
@@ -476,30 +504,88 @@ h2 {
 }
 
 .speed-button {
-  min-height: auto;
-  padding: 3px 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 54px;
+  min-height: 44px;
+  padding: 0 2px;
   border: none;
-  border-radius: 4px;
+  border-radius: 999px;
   background: transparent;
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 750;
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 780;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.01em;
   cursor: pointer;
-  transition: color 150ms ease;
+  transition: color 150ms ease, background 150ms ease;
   white-space: nowrap;
 }
 
-.speed-button:hover {
+.speed-button:hover,
+.speed-button[aria-expanded="true"] {
   color: var(--ink);
+  background: var(--wash);
+}
+
+.speed-chevron {
+  flex: 0 0 auto;
+  color: var(--muted);
+  transition: transform 160ms ease;
+}
+
+.speed-button[aria-expanded="true"] .speed-chevron {
+  transform: rotate(180deg);
+}
+
+.speed-menu {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 10px);
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  width: min(246px, calc(100vw - 32px));
+  padding: 8px;
+  color: var(--ink);
+  background: var(--popover-bg);
+  border: 1px solid var(--popover-border);
+  border-radius: 14px;
+  box-shadow: var(--popover-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.speed-menu[hidden] {
+  display: none;
+}
+
+.speed-menu button {
+  min-height: 40px;
+  padding: 0 8px;
+  border-radius: 9px;
+  color: var(--soft-ink);
   background: transparent;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.speed-menu button:hover {
+  color: var(--ink);
+  background: var(--wash);
+}
+
+.speed-menu button.is-selected {
+  color: var(--button-ink);
+  background: var(--accent);
 }
 
 .play-button {
-  width: 48px;
-  height: 48px;
-  min-height: 48px;
+  width: 58px;
+  height: 58px;
+  min-height: 58px;
   padding: 0;
   border-radius: 50%;
   background: var(--accent);
@@ -513,11 +599,14 @@ h2 {
 }
 
 .play-button span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+}
+
+.play-button .play-glyph {
+  transform: translateX(1.5px);
 }
 
 .play-button:hover:not(:disabled) {
@@ -532,27 +621,31 @@ h2 {
 .time-readout {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
+  min-height: 19px;
+  margin-top: 3px;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
-  font-size: 0.78rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .time-divider {
   color: var(--reader-border);
 }
 
-.study-actions-compact {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .study-actions-compact .muted {
   font-size: 0.8rem;
   font-weight: 600;
   white-space: nowrap;
+}
+
+.study-actions-compact .utility-button {
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
 }
 
 .hidden {
@@ -678,16 +771,6 @@ h2 {
 @media (max-width: 600px) {
   .hidden-mobile {
     display: none !important;
-  }
-
-  .player-transport {
-    gap: 10px;
-  }
-
-  .skip-button {
-    width: 32px;
-    height: 32px;
-    min-height: 32px;
   }
 
   .mode-toggle {

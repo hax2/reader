@@ -7,15 +7,18 @@ const backToLibrary = document.querySelector("#backToLibrary");
 const trackList = document.querySelector("#trackList");
 const playPause = document.querySelector("#playPause");
 const playbackRateButton = document.querySelector("#playbackRate");
+const playbackRateValue = playbackRateButton.querySelector(".speed-value");
+const speedMenu = document.querySelector("#speedMenu");
+const speedOptions = [...speedMenu.querySelectorAll("[data-rate]")];
+const SPEED_RATES = speedOptions.map((option) => Number(option.dataset.rate));
 const playIcon = document.querySelector("#playIcon");
 const skipBack = document.querySelector("#skipBack");
 const skipForward = document.querySelector("#skipForward");
 const readModeToggle = document.querySelector("#readModeToggle");
 const readModeLabel = readModeToggle?.querySelector(".mode-label");
 
-const PLAY_ICON = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>`;
-const PAUSE_ICON = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
-const SPEED_STEPS = [0.5, 0.75, 1, 1.25, 1.5, 2];
+const PLAY_ICON = `<svg class="play-glyph" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>`;
+const PAUSE_ICON = `<svg class="pause-glyph" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="5" y="4" width="4.5" height="16" rx="1"></rect><rect x="14.5" y="4" width="4.5" height="16" rx="1"></rect></svg>`;
 const seek = document.querySelector("#seek");
 const currentTimeEl = document.querySelector("#currentTime");
 const durationEl = document.querySelector("#duration");
@@ -307,7 +310,7 @@ readModeToggle.addEventListener("click", () => {
 
 document.addEventListener("keydown", (event) => {
   const tag = event.target.tagName;
-  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || event.target.isContentEditable) return;
+  if (tag === "BUTTON" || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || event.target.isContentEditable) return;
   if (app.dataset.view !== "reader") return;
 
   switch (event.key) {
@@ -334,14 +337,38 @@ document.addEventListener("keydown", (event) => {
 });
 
 playbackRateButton.addEventListener("click", () => {
-  const currentRate = appearanceSettings.playbackRate;
-  const currentIndex = SPEED_STEPS.indexOf(currentRate);
-  const nextIndex = (currentIndex + 1) % SPEED_STEPS.length;
-  const rate = SPEED_STEPS[nextIndex];
-  audio.playbackRate = rate;
-  appearanceSettings.playbackRate = rate;
-  saveAppearanceSettings(appearanceSettings);
-  updateSpeedButton(rate);
+  setSpeedMenuOpen(speedMenu.hidden);
+});
+
+speedMenu.addEventListener("click", (event) => {
+  const option = event.target.closest("[data-rate]");
+  if (!option) return;
+  setPlaybackRate(Number(option.dataset.rate));
+  setSpeedMenuOpen(false);
+  playbackRateButton.focus();
+});
+
+speedMenu.addEventListener("keydown", (event) => {
+  const currentIndex = speedOptions.indexOf(document.activeElement);
+  let nextIndex = currentIndex;
+  if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex = (currentIndex + 1) % speedOptions.length;
+  if (event.key === "ArrowLeft" || event.key === "ArrowUp") nextIndex = (currentIndex - 1 + speedOptions.length) % speedOptions.length;
+  if (event.key === "Home") nextIndex = 0;
+  if (event.key === "End") nextIndex = speedOptions.length - 1;
+  if (nextIndex === currentIndex) return;
+  event.preventDefault();
+  speedOptions[nextIndex].focus();
+});
+
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".speed-control")) setSpeedMenuOpen(false);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !speedMenu.hidden) {
+    setSpeedMenuOpen(false);
+    playbackRateButton.focus();
+  }
 });
 
 audio.addEventListener("play", () => {
@@ -1150,8 +1177,34 @@ function status(message) {
 }
 
 function updateSpeedButton(rate) {
-  const label = rate === 1 ? "1×" : `${rate}×`;
-  playbackRateButton.textContent = label;
+  const label = formatPlaybackRate(rate);
+  playbackRateValue.textContent = label;
+  playbackRateButton.setAttribute("aria-label", `Playback speed: ${rate} times`);
+  speedOptions.forEach((option) => {
+    const isSelected = Number(option.dataset.rate) === rate;
+    option.classList.toggle("is-selected", isSelected);
+    option.setAttribute("aria-checked", String(isSelected));
+  });
+}
+
+function formatPlaybackRate(rate) {
+  if (rate === 1 || rate === 2) return `${rate}×`;
+  return `${rate.toFixed(2)}×`;
+}
+
+function setPlaybackRate(rate) {
+  audio.playbackRate = rate;
+  appearanceSettings.playbackRate = rate;
+  saveAppearanceSettings(appearanceSettings);
+  updateSpeedButton(rate);
+}
+
+function setSpeedMenuOpen(isOpen) {
+  speedMenu.hidden = !isOpen;
+  playbackRateButton.setAttribute("aria-expanded", String(isOpen));
+  if (isOpen) {
+    speedMenu.querySelector(".is-selected")?.focus();
+  }
 }
 
 function loadTranslationCache() {
@@ -1202,7 +1255,7 @@ function loadAppearanceSettings() {
       lineHeight: numberInRange(saved.lineHeight, 1.4, 2.2, defaults.lineHeight),
       font: ["serif", "sans", "accessible"].includes(saved.font) ? saved.font : defaults.font,
       readerWidth: ["narrow", "standard", "wide"].includes(saved.readerWidth) ? saved.readerWidth : defaults.readerWidth,
-      playbackRate: numberInRange(saved.playbackRate, 0.5, 2, defaults.playbackRate)
+      playbackRate: SPEED_RATES.includes(Number(saved.playbackRate)) ? Number(saved.playbackRate) : defaults.playbackRate
     };
   } catch {
     return defaultAppearanceSettings();
