@@ -80,6 +80,16 @@ to the repository root. API responses are resumably cached in the ignored
 generation is worth the higher price. `.env` is ignored and must never be
 committed.
 
+For large collections, submit jobs without polling:
+
+```sh
+python3 scripts/gemini_tts.py texts/*.txt --max-chars 600 --submit-only
+```
+
+Run the same command later without `--submit-only` to collect completed jobs and
+assemble the audio. Keep each submission wave below 100 uncached chunks, which
+is the Batch API concurrent-job limit.
+
 The included public-domain Bécquer texts can be downloaded again from
 Wikisource with:
 

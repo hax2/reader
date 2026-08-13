@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import concurrent.futures
 import json
 import os
 import re
@@ -36,6 +37,11 @@ def parse_args() -> argparse.Namespace:
         "--standard",
         action="store_true",
         help="Use synchronous standard-price requests instead of the default Batch API",
+    )
+    parser.add_argument(
+        "--submit-only",
+        action="store_true",
+        help="Submit/resume batch jobs and exit without polling or assembling audio",
     )
     return parser.parse_args()
 
@@ -93,7 +99,16 @@ def narrate_batch(
             f"Submitting {len(pending)} missing chunks as individual Gemini Batch jobs...",
             flush=True,
         )
-        responses = run_individual_batch_jobs(pending, args, api_key)
+        responses = run_individual_batch_jobs(
+            pending, args, api_key, submit_only=args.submit_only
+        )
+        if args.submit_only:
+            print(
+                "Submission complete. Run the same command without --submit-only "
+                "later to collect and assemble results.",
+                flush=True,
+            )
+            return
         for item in pending:
             response = responses[item["key"]]
             write_response_or_split(item, response, args, api_key)
@@ -222,13 +237,18 @@ def run_batch_job(
 
 
 def run_individual_batch_jobs(
-    pending: list[dict], args: argparse.Namespace, api_key: str
+    pending: list[dict],
+    args: argparse.Namespace,
+    api_key: str,
+    *,
+    submit_only: bool = False,
 ) -> dict[str, dict]:
     url = (
         "https://generativelanguage.googleapis.com/v1beta/models/"
         f"{args.model}:batchGenerateContent"
     )
     jobs: dict[str, tuple[str, Path]] = {}
+    to_create: list[tuple[str, Path, dict, dict]] = []
     jobs_dir = Path.cwd() / ".tts-cache" / "batch_jobs"
     jobs_dir.mkdir(parents=True, exist_ok=True)
 
@@ -242,6 +262,7 @@ def run_individual_batch_jobs(
             saved_state = json.loads(state_path.read_text(encoding="utf-8"))
         if saved_state.get("signature") == signature and saved_state.get("name"):
             job_name = saved_state["name"]
+            jobs[key] = (job_name, state_path)
         else:
             payload = {
                 "batch": {
@@ -281,18 +302,27 @@ def run_individual_batch_jobs(
                     },
                 }
             }
-            created = request_json(url, api_key, payload)
-            job_name = created["name"]
-            state_path.write_text(
-                json.dumps(
-                    {"name": job_name, "signature": signature}, indent=2
-                )
-                + "\n",
-                encoding="utf-8",
-            )
-        jobs[key] = (job_name, state_path)
+            to_create.append((key, state_path, signature, payload))
+
+    def create_job(entry: tuple[str, Path, dict, dict]) -> tuple[str, str, Path]:
+        key, state_path, signature, payload = entry
+        job_name = request_json(url, api_key, payload)["name"]
+        state_path.write_text(
+            json.dumps({"name": job_name, "signature": signature}, indent=2)
+            + "\n",
+            encoding="utf-8",
+        )
+        return key, job_name, state_path
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
+        futures = [executor.submit(create_job, entry) for entry in to_create]
+        for future in concurrent.futures.as_completed(futures):
+            key, job_name, state_path = future.result()
+            jobs[key] = (job_name, state_path)
 
     print(f"Created or resumed {len(jobs)} individual batch jobs.", flush=True)
+    if submit_only:
+        return {}
     responses: dict[str, dict] = {}
     while jobs:
         completed: list[str] = []

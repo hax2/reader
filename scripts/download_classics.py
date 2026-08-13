@@ -30,6 +30,24 @@ STORIES = (
         "filename": "la_ajorca_de_oro.txt",
         "opening": ("lla era hermosa", "Ella era hermosa"),
     },
+    {
+        "page": "Los ojos verdes",
+        "title": "Los ojos verdes",
+        "filename": "los_ojos_verdes.txt",
+        "opening": ("ace mucho tiempo", "Hace mucho tiempo"),
+    },
+    {
+        "page": "El miserere (Bécquer)",
+        "title": "El miserere",
+        "filename": "el_miserere.txt",
+        "opening": ("ace algunos meses", "Hace algunos meses"),
+    },
+    {
+        "page": "Maese Pérez el organista",
+        "title": "Maese Pérez el organista",
+        "filename": "maese_perez_el_organista.txt",
+        "opening": ("n Sevilla", "En Sevilla"),
+    },
 )
 
 
@@ -137,10 +155,11 @@ def extract_story(
 
 
 def clean_markdown(line: str) -> str:
-    line = line.rstrip().replace("**", "").replace("__", "")
-    if line.startswith("_") and line.endswith("_"):
-        line = line[1:-1]
-    return line.strip()
+    line = line.rstrip().replace("**", "").replace("_", "")
+    line = line.strip()
+    if re.fullmatch(r"\.{10,}\s*\|?", line) or re.fullmatch(r"-+\|-+", line):
+        return ""
+    return line
 
 
 if __name__ == "__main__":
