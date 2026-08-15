@@ -1,65 +1,248 @@
 [
   {
-    "title": "¡Adiós, Cordera!",
-    "author": "Leopoldo Alas (Clarín)",
-    "cover": "covers/adioscordera.jpg",
-    "audio": "adioscordera.mp3",
-    "transcript": "adioscordera.json"
+    "id": "samaniego-leon-raton",
+    "title": "El león y el ratón",
+    "author": "Félix María Samaniego",
+    "year": 1781,
+    "difficulty": "B1",
+    "difficultyNote": "Very short, with poetic word order and some historical vocabulary.",
+    "genre": "Fable",
+    "tags": [
+      "animals",
+      "kindness",
+      "poetry"
+    ],
+    "description": "A tiny act of mercy returns when a powerful lion needs help.",
+    "minutes": 1,
+    "wordCount": 131,
+    "text": "texts/el_leon_y_el_raton.txt",
+    "source": "https://es.wikisource.org/wiki/El_le%C3%B3n_y_el_rat%C3%B3n_(Samaniego)",
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
   },
   {
-    "title": "Cuentos de amor de locura y de muerte",
-    "author": "Horacio Quiroga",
-    "cover": "covers/cuentos_amor.jpg",
-    "audio": "Cuentos de amor de locura y de muerte.mp3",
-    "transcript": "Cuentos de amor de locura y de muerte.json"
+    "id": "samaniego-cuervo-zorro",
+    "title": "El cuervo y el zorro",
+    "author": "Félix María Samaniego",
+    "year": 1781,
+    "difficulty": "B1",
+    "difficultyNote": "Brief verse with a few literary forms and an inverted syntax.",
+    "genre": "Fable",
+    "tags": [
+      "animals",
+      "vanity",
+      "poetry"
+    ],
+    "description": "A flattering fox knows exactly how to separate a crow from his cheese.",
+    "minutes": 1,
+    "wordCount": 149,
+    "text": "texts/el_cuervo_y_el_zorro.txt",
+    "source": "https://es.wikisource.org/wiki/El_cuervo_y_el_zorro",
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
   },
   {
-    "title": "Cuentos de la tierra",
-    "author": "Emilia Pardo Bazán",
-    "cover": "covers/cuentos_tierra.jpg",
-    "audio": "Cuentos de la tierra.mp3",
-    "transcript": "Cuentos de la tierra.json"
+    "id": "samaniego-cigarra-hormiga",
+    "title": "La cigarra y la hormiga",
+    "author": "Félix María Samaniego",
+    "year": 1781,
+    "difficulty": "B1",
+    "difficultyNote": "Short and repetitive, but the edition preserves historical spelling.",
+    "genre": "Fable",
+    "tags": [
+      "animals",
+      "work",
+      "poetry"
+    ],
+    "description": "A famous argument between summer's singer and winter's planner.",
+    "minutes": 1,
+    "wordCount": 178,
+    "text": "texts/la_cigarra_y_la_hormiga.txt",
+    "source": "https://es.wikisource.org/wiki/La_cigarra_y_la_hormiga_(Samaniego)",
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
   },
   {
+    "id": "marti-bebe-pomposo",
+    "title": "Bebé y el señor don Pomposo",
+    "author": "José Martí",
+    "year": 1889,
+    "difficulty": "B1",
+    "difficultyNote": "Clear narration with long but rhythmic sentences and concrete vocabulary.",
+    "genre": "Children's story",
+    "tags": [
+      "family",
+      "generosity",
+      "Cuba"
+    ],
+    "description": "A privileged boy sees an unfair gift and quietly decides what to do with it.",
+    "minutes": 8,
+    "wordCount": 1464,
+    "text": "texts/bebe_y_el_senor_don_pomposo.txt",
+    "source": "https://es.wikisource.org/wiki/Beb%C3%A9_y_el_se%C3%B1or_don_Pomposo",
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+  },
+  {
+    "id": "marti-nene-traviesa",
+    "title": "Nené traviesa",
+    "author": "José Martí",
+    "year": 1889,
+    "difficulty": "B1",
+    "difficultyNote": "Concrete storytelling with expressive punctuation and some period vocabulary.",
+    "genre": "Children's story",
+    "tags": [
+      "family",
+      "curiosity",
+      "Cuba"
+    ],
+    "description": "Curiosity draws Nené toward the one old book her father asked her not to touch.",
+    "minutes": 10,
+    "wordCount": 1836,
+    "text": "texts/nene_traviesa.txt",
+    "source": "https://es.wikisource.org/wiki/Nen%C3%A9_traviesa",
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+  },
+  {
+    "id": "marti-muneca-negra",
+    "title": "La muñeca negra",
+    "author": "José Martí",
+    "year": 1889,
+    "difficulty": "B2",
+    "difficultyNote": "Accessible plot, with long descriptive passages and nineteenth-century vocabulary.",
+    "genre": "Children's story",
+    "tags": [
+      "family",
+      "empathy",
+      "Cuba"
+    ],
+    "description": "On her birthday, Piedad receives a splendid new doll—but remembers the old one everyone else overlooks.",
+    "minutes": 17,
+    "wordCount": 2990,
+    "text": "texts/la_muneca_negra.txt",
+    "source": "https://es.wikisource.org/wiki/La_mu%C3%B1eca_negra",
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+  },
+  {
+    "id": "becquer-monte-animas",
     "title": "El monte de las ánimas",
     "author": "Gustavo Adolfo Bécquer",
-    "cover": "covers/monte_animas.jpg",
+    "year": 1861,
+    "difficulty": "C1",
+    "difficultyNote": "Gothic atmosphere, historical references, and elaborate nineteenth-century prose.",
+    "genre": "Gothic legend",
+    "tags": [
+      "ghosts",
+      "horror",
+      "Castile"
+    ],
+    "description": "A dare on All Souls' Night leads back to a haunted mountain.",
+    "minutes": 20,
+    "wordCount": 2732,
     "audio": "el_monte_de_las_animas.m4a",
-    "transcript": "el_monte_de_las_animas.json"
+    "transcript": "el_monte_de_las_animas.json",
+    "sourceText": "texts/el_monte_de_las_animas.txt",
+    "source": "https://es.wikisource.org/wiki/El_monte_de_las_%C3%A1nimas",
+    "rights": "Public-domain work; project-produced narration; Wikisource transcription CC BY-SA 4.0"
   },
   {
+    "id": "becquer-rayo-luna",
     "title": "El rayo de luna",
     "author": "Gustavo Adolfo Bécquer",
-    "cover": "covers/rayo_luna.jpg",
+    "year": 1862,
+    "difficulty": "C1",
+    "difficultyNote": "Lyrical, introspective prose with figurative language and long sentences.",
+    "genre": "Romantic legend",
+    "tags": [
+      "love",
+      "illusion",
+      "Soria"
+    ],
+    "description": "A solitary poet pursues an impossible woman through moonlit ruins.",
+    "minutes": 25,
+    "wordCount": 3551,
     "audio": "el_rayo_de_luna.m4a",
-    "transcript": "el_rayo_de_luna.json"
+    "transcript": "el_rayo_de_luna.json",
+    "sourceText": "texts/el_rayo_de_luna.txt",
+    "source": "https://es.wikisource.org/wiki/El_rayo_de_luna",
+    "rights": "Public-domain work; project-produced narration; Wikisource transcription CC BY-SA 4.0"
   },
   {
-    "title": "El suicidio de la hispania romana",
-    "author": "Félix de Azúa",
-    "cover": "covers/suicidio_romana.jpg",
-    "audio": "El_suicidio_de_la_Hispania_romana.m4a",
-    "transcript": "El_suicidio_de_la_Hispania_romana.json"
-  },
-  {
-    "title": "El indulto",
-    "author": "Emilia Pardo Bazán",
-    "cover": "covers/elindulto.jpg",
-    "audio": "elindulto.mp3",
-    "transcript": "elindulto.json"
-  },
-  {
+    "id": "becquer-ajorca-oro",
     "title": "La ajorca de oro",
     "author": "Gustavo Adolfo Bécquer",
-    "cover": "covers/ajorca_oro.jpg",
+    "year": 1861,
+    "difficulty": "C1",
+    "difficultyNote": "Dense visual description, religious vocabulary, and nineteenth-century syntax.",
+    "genre": "Gothic legend",
+    "tags": [
+      "obsession",
+      "supernatural",
+      "Toledo"
+    ],
+    "description": "A lover enters Toledo Cathedral to steal the one jewel María desires.",
+    "minutes": 18,
+    "wordCount": 2304,
     "audio": "la_ajorca_de_oro.m4a",
-    "transcript": "la_ajorca_de_oro.json"
+    "transcript": "la_ajorca_de_oro.json",
+    "sourceText": "texts/la_ajorca_de_oro.txt",
+    "source": "https://es.wikisource.org/wiki/La_ajorca_de_oro",
+    "rights": "Public-domain work; project-produced narration; Wikisource transcription CC BY-SA 4.0"
   },
   {
-    "title": "Vanguardia revolucionaria frente a política sindical",
-    "author": "Andreu Nin",
-    "cover": "covers/vanguardia.jpg",
-    "audio": "Vanguardia_revolucionaria_frente_a_política_sindical.m4a",
-    "transcript": "Vanguardia_revolucionaria_frente_a_política_sindical.json"
+    "id": "becquer-ojos-verdes",
+    "title": "Los ojos verdes",
+    "author": "Gustavo Adolfo Bécquer",
+    "year": 1861,
+    "difficulty": "C1",
+    "difficultyNote": "Atmospheric dialogue and descriptive prose with archaic and hunting vocabulary.",
+    "genre": "Gothic legend",
+    "tags": [
+      "supernatural",
+      "desire",
+      "nature"
+    ],
+    "description": "A noble hunter becomes obsessed with the mysterious presence in a forbidden spring.",
+    "minutes": 15,
+    "wordCount": 2691,
+    "text": "texts/los_ojos_verdes.txt",
+    "source": "https://es.wikisource.org/wiki/Los_ojos_verdes",
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+  },
+  {
+    "id": "becquer-miserere",
+    "title": "El miserere",
+    "author": "Gustavo Adolfo Bécquer",
+    "year": 1862,
+    "difficulty": "C1",
+    "difficultyNote": "A frame narrative rich in musical, religious, and historical language.",
+    "genre": "Gothic legend",
+    "tags": [
+      "music",
+      "ghosts",
+      "religion"
+    ],
+    "description": "A musician searches for a sacred sound no living choir can produce.",
+    "minutes": 19,
+    "wordCount": 3336,
+    "text": "texts/el_miserere.txt",
+    "source": "https://es.wikisource.org/wiki/El_miserere_(B%C3%A9cquer)",
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+  },
+  {
+    "id": "becquer-maese-perez",
+    "title": "Maese Pérez el organista",
+    "author": "Gustavo Adolfo Bécquer",
+    "year": 1861,
+    "difficulty": "C1",
+    "difficultyNote": "The longest selection, with dialogue, period idiom, and religious vocabulary.",
+    "genre": "Gothic legend",
+    "tags": [
+      "music",
+      "ghosts",
+      "Seville"
+    ],
+    "description": "Seville gathers on Christmas Eve to hear an old blind organist play.",
+    "minutes": 29,
+    "wordCount": 5245,
+    "text": "texts/maese_perez_el_organista.txt",
+    "source": "https://es.wikisource.org/wiki/Maese_P%C3%A9rez_el_organista",
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
   }
 ]

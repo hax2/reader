@@ -1,8 +1,10 @@
 # Spanish Listening Reader
 
-Static GitHub Pages app for listening to Spanish audio while reading synced text. Click a word to look up an English meaning.
+Static GitHub Pages app for reading public-domain Spanish literature, with synced narration where a project-owned recording is available. Click a word to look up an English meaning.
 
-The homepage is a mobile-first list of hosted readings. Each reading saves its own playback position in the browser, so users can leave and resume different audios independently.
+The catalog groups readings by editorial CEFR estimate (B1–C1) and supports accent-insensitive search, format filters, and sorting by level, title, author, or length. Catalog preferences and each recording's playback position are saved in the browser.
+
+The difficulty labels are reading guidance, not formal CEFR certifications. Original spelling is preserved, so short historical verse can still be rated B1.
 
 ## Use locally
 
@@ -12,18 +14,27 @@ Open `index.html` in a browser, or serve the folder with any static server.
 
 Push these files to a GitHub repository, then enable Pages from the repository root in **Settings -> Pages**.
 
-Run this after adding or removing hosted audio files:
+## Curating the library
+
+`library.json` is the hand-curated source of truth. Every entry needs a stable ID, an editorial difficulty note, source and rights metadata, and either a text file or an audio file with a timed transcript. Run this after editing it:
 
 ```sh
 python3 scripts/build_library.py
+python3 scripts/build_library.py --check
 ```
 
-If a hosted audio file has a same-name JSON transcript, the site loads it automatically. Example:
+The validator checks required metadata and referenced files, then derives word counts and reading/listening times. It intentionally does not auto-publish arbitrary media dropped into the repository.
+
+For a narrated reading, include both fields:
 
 ```text
-my-audio.m4a
-my-audio.json
+"audio": "my-audio.m4a",
+"transcript": "my-audio.json"
 ```
+
+Text-only entries use `"text": "texts/my-story.txt"`.
+
+The catalog covers are original CSS typography generated from each entry's metadata. There are no third-party jacket images to license, download, or keep in sync. See [RIGHTS.md](RIGHTS.md) for the publication policy and attribution summary.
 
 Update the shared vocabulary file after adding transcripts:
 
@@ -90,12 +101,13 @@ Run the same command later without `--submit-only` to collect completed jobs and
 assemble the audio. Keep each submission wave below 100 uncached chunks, which
 is the Batch API concurrent-job limit.
 
-The included public-domain Bécquer texts can be downloaded again from
-Wikisource with:
+The included public-domain Bécquer, Samaniego, and Martí texts can be downloaded from Wikisource with:
 
 ```sh
 python3 scripts/download_classics.py
 ```
+
+Existing files are preserved by default. Use `--refresh` to replace them with the current Wikisource transcriptions. Attribution links and the transcription license are recorded in `texts/SOURCES.md` and in each catalog entry.
 
 If `nvidia-smi` cannot see the GPU, fix the NVIDIA driver or CUDA runtime first, or run with `--device cpu --compute-type int8`.
 

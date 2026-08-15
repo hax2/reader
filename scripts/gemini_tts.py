@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import base64
 import concurrent.futures
+import hashlib
+import io
 import json
 import os
 import re
@@ -73,7 +75,8 @@ def narrate_batch(
         text = normalize_text(text_path.read_text(encoding="utf-8"))
         chunks = split_text(text, args.max_chars)
         stem = text_path.stem
-        cache_dir = root / ".tts-cache" / f"{stem}-{args.max_chars}"
+        signature = cache_signature(text, args)
+        cache_dir = root / ".tts-cache" / f"{stem}-{signature}"
         cache_dir.mkdir(parents=True, exist_ok=True)
         story = {
             "text_path": text_path,
@@ -88,7 +91,7 @@ def narrate_batch(
             if not wav_path.exists():
                 pending.append(
                     {
-                        "key": f"{stem}-{args.max_chars}:{index:03}",
+                        "key": f"{stem}-{signature}:{index:03}",
                         "chunk": chunk,
                         "wav_path": wav_path,
                     }
@@ -470,7 +473,7 @@ def narrate(text_path: Path, args: argparse.Namespace, api_key: str) -> None:
     chunks = split_text(text, args.max_chars)
     stem = text_path.stem
     root = Path.cwd()
-    cache_dir = root / ".tts-cache" / f"{stem}-{args.max_chars}"
+    cache_dir = root / ".tts-cache" / f"{stem}-{cache_signature(text, args)}"
     cache_dir.mkdir(parents=True, exist_ok=True)
     chunk_info: list[tuple[str, Path, float]] = []
 
@@ -594,15 +597,25 @@ def decode_audio(audio: bytes, default_rate: int) -> tuple[bytes, int]:
     if not audio.startswith(b"RIFF"):
         return audio, default_rate
 
-    temp = Path("/tmp/gemini-tts-response.wav")
-    temp.write_bytes(audio)
-    try:
-        with wave.open(str(temp), "rb") as source:
-            if source.getnchannels() != 1 or source.getsampwidth() != 2:
-                raise RuntimeError("Gemini returned an unsupported WAV format")
-            return source.readframes(source.getnframes()), source.getframerate()
-    finally:
-        temp.unlink(missing_ok=True)
+    with wave.open(io.BytesIO(audio), "rb") as source:
+        if source.getnchannels() != 1 or source.getsampwidth() != 2:
+            raise RuntimeError("Gemini returned an unsupported WAV format")
+        return source.readframes(source.getnframes()), source.getframerate()
+
+
+def cache_signature(text: str, args: argparse.Namespace) -> str:
+    payload = json.dumps(
+        {
+            "text": text,
+            "model": args.model,
+            "voice": args.voice,
+            "instruction": DEFAULT_INSTRUCTION,
+            "max_chars": args.max_chars,
+        },
+        ensure_ascii=False,
+        sort_keys=True,
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()[:16]
 
 
 def split_text(text: str, max_chars: int) -> list[str]:

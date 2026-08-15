@@ -5,6 +5,11 @@ const transcriptFile = document.querySelector("#transcriptFile");
 const appTitle = document.querySelector("#app-title");
 const backToLibrary = document.querySelector("#backToLibrary");
 const trackList = document.querySelector("#trackList");
+const librarySearch = document.querySelector("#librarySearch");
+const formatFilter = document.querySelector("#formatFilter");
+const librarySort = document.querySelector("#librarySort");
+const levelFilters = [...document.querySelectorAll(".level-filter")];
+const catalogSummary = document.querySelector("#catalogSummary");
 const playPause = document.querySelector("#playPause");
 const playbackRateButton = document.querySelector("#playbackRate");
 const playbackRateValue = playbackRateButton.querySelector(".speed-value");
@@ -24,6 +29,7 @@ const currentTimeEl = document.querySelector("#currentTime");
 const durationEl = document.querySelector("#duration");
 const reader = document.querySelector("#reader");
 const statusEl = document.querySelector("#status");
+const readingMeta = document.querySelector("#readingMeta");
 const pasteTranscript = document.querySelector("#pasteTranscript");
 const usePastedText = document.querySelector("#usePastedText");
 const definition = document.querySelector("#definition");
@@ -53,6 +59,13 @@ const ctx = canvas.getContext("2d");
 const systemThemeQuery = window.matchMedia?.("(prefers-color-scheme: dark)") || null;
 const themeOptions = ["system", "paper", "mist", "night"];
 const appearanceSettingsVersion = 3;
+const difficultyOrder = ["A2", "B1", "B2", "C1"];
+const difficultyLabels = {
+  A2: "Early reader",
+  B1: "Intermediate",
+  B2: "Upper intermediate",
+  C1: "Advanced"
+};
 
 let words = [];
 let currentWordIndex = -1;
@@ -61,29 +74,82 @@ let rafId = 0;
 let objectUrl = "";
 let tracks = [];
 let activeTrackId = "";
+let activeAudioSource = "";
 let pendingResumeTime = 0;
 let lastProgressSave = 0;
 let selectedWordButton = null;
 let definitionRequestId = 0;
 let trackLoadId = 0;
 let translationCache = loadTranslationCache();
+let sharedGlossary = {};
 let progressCache = loadProgressCache();
 let studyLog = loadStudyLog();
 let appearanceSettings = loadAppearanceSettings();
 let sliderPreviewTimer = 0;
 let draggingAppearanceSlider = false;
 let isReadMode = false;
+let catalogSettings = loadCatalogSettings();
 
 applyAppearanceSettings();
 drawWaveform(0);
 updateStudyControls();
 initialize();
 
+librarySearch.value = catalogSettings.search;
+formatFilter.value = catalogSettings.format;
+librarySort.value = catalogSettings.sort;
+updateLevelFilters();
+
+librarySearch.addEventListener("input", () => {
+  catalogSettings.search = librarySearch.value;
+  saveCatalogSettings();
+  renderTrackList();
+});
+
+formatFilter.addEventListener("change", () => {
+  catalogSettings.format = formatFilter.value;
+  saveCatalogSettings();
+  renderTrackList();
+});
+
+librarySort.addEventListener("change", () => {
+  catalogSettings.sort = librarySort.value;
+  saveCatalogSettings();
+  renderTrackList();
+});
+
+levelFilters.forEach((button) => {
+  button.addEventListener("click", () => {
+    catalogSettings.level = button.dataset.level;
+    saveCatalogSettings();
+    updateLevelFilters();
+    renderTrackList();
+  });
+});
+
 backToLibrary.addEventListener("click", () => {
   showLibrary();
 });
 
+window.addEventListener("popstate", () => {
+  const routeId = decodeURIComponent(location.hash.slice(1));
+  const track = tracks.find((item) => item.id === routeId);
+  if (track) loadTrack(track, false);
+  else showLibrary(false);
+});
+
 trackList.addEventListener("click", (event) => {
+  if (event.target.closest("[data-clear-catalog]")) {
+    catalogSettings = { search: "", format: "all", sort: "difficulty", level: "all" };
+    librarySearch.value = "";
+    formatFilter.value = "all";
+    librarySort.value = "difficulty";
+    updateLevelFilters();
+    saveCatalogSettings();
+    renderTrackList();
+    librarySearch.focus();
+    return;
+  }
   const button = event.target.closest(".track-card");
   if (!button) return;
   const track = tracks.find((item) => item.id === button.dataset.trackId);
@@ -99,7 +165,11 @@ audioFile.addEventListener("change", () => {
   saveActiveProgress(true);
   objectUrl = URL.createObjectURL(file);
   activeTrackId = "";
+  activeAudioSource = objectUrl;
   appTitle.textContent = file.name;
+  readingMeta.hidden = true;
+  app.dataset.media = "audio";
+  setReadMode(false);
   showReader();
   setAudioSource(objectUrl, `${file.name} loaded.`);
 });
@@ -300,12 +370,8 @@ skipForward.addEventListener("click", () => {
 });
 
 readModeToggle.addEventListener("click", () => {
-  isReadMode = !isReadMode;
-  app.dataset.mode = isReadMode ? "read" : "listen";
-  if (readModeLabel) readModeLabel.textContent = isReadMode ? "" : "Read";
-  if (isReadMode) {
-    audio.pause();
-  }
+  if (app.dataset.media === "text") return;
+  setReadMode(!isReadMode);
 });
 
 document.addEventListener("keydown", (event) => {
@@ -369,15 +435,22 @@ document.addEventListener("keydown", (event) => {
     setSpeedMenuOpen(false);
     playbackRateButton.focus();
   }
+  if (event.key === "Escape" && !wordPopover.hidden) {
+    const returnFocus = selectedWordButton;
+    hideWordPopover();
+    returnFocus?.focus();
+  }
 });
 
 audio.addEventListener("play", () => {
   playIcon.innerHTML = PAUSE_ICON;
+  playPause.setAttribute("aria-label", "Pause");
   tick();
 });
 
 audio.addEventListener("pause", () => {
   playIcon.innerHTML = PLAY_ICON;
+  playPause.setAttribute("aria-label", "Play");
   cancelAnimationFrame(rafId);
   updateProgress();
 });
@@ -386,6 +459,8 @@ audio.addEventListener("loadedmetadata", () => {
   seek.max = audio.duration || 0;
   seek.disabled = false;
   playPause.disabled = false;
+  skipBack.disabled = false;
+  skipForward.disabled = false;
   durationEl.textContent = formatTime(audio.duration);
   if (words.length && !hasValidTimings(words)) assignApproximateTimes(words);
   if (pendingResumeTime > 0 && audio.duration) {
@@ -398,6 +473,7 @@ audio.addEventListener("loadedmetadata", () => {
 
 audio.addEventListener("ended", () => {
   playIcon.innerHTML = PLAY_ICON;
+  playPause.setAttribute("aria-label", "Play");
   saveActiveProgress(true);
   updateProgress();
 });
@@ -412,7 +488,20 @@ reader.addEventListener("click", (event) => {
   const target = event.target.closest(".word");
   if (!target) return;
   event.stopPropagation();
+  setWordTabStop(target);
   showDefinition(words[Number(target.dataset.index)], target);
+});
+
+reader.addEventListener("keydown", (event) => {
+  const target = event.target.closest(".word");
+  if (!target || !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
+  event.preventDefault();
+  const offset = event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 1;
+  const next = reader.querySelector(`[data-index="${Number(target.dataset.index) + offset}"]`);
+  if (next) {
+    setWordTabStop(next);
+    next.focus();
+  }
 });
 
 document.addEventListener("click", (event) => {
@@ -423,6 +512,11 @@ document.addEventListener("click", (event) => {
 
 window.addEventListener("resize", () => {
   if (selectedWordButton && !wordPopover.hidden) positionWordPopover(selectedWordButton);
+});
+
+window.addEventListener("pagehide", () => saveActiveProgress(true));
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") saveActiveProgress(true);
 });
 
 function setAudioSource(src, message) {
@@ -438,6 +532,8 @@ function setAudioSource(src, message) {
   seek.max = "0";
   seek.disabled = true;
   playPause.disabled = true;
+  skipBack.disabled = true;
+  skipForward.disabled = true;
   currentTimeEl.textContent = "0:00";
   durationEl.textContent = "0:00";
   currentWordIndex = -1;
@@ -452,11 +548,13 @@ async function loadLibrary() {
     const library = await response.json();
     if (!Array.isArray(library)) throw new Error("Invalid library");
     tracks = library
-      .filter((track) => track.audio)
+      .filter((track) => track.audio || track.text || track.transcript)
       .map((track) => ({
         ...track,
-        id: track.id || track.audio,
-        title: track.title || track.audio
+        id: track.id || track.audio || track.text || track.transcript,
+        title: track.title || track.audio || track.text || track.transcript,
+        difficulty: difficultyOrder.includes(track.difficulty) ? track.difficulty : "C1",
+        minutes: Number(track.minutes) || 0
       }));
     renderTrackList();
   } catch {
@@ -465,21 +563,48 @@ async function loadLibrary() {
 }
 
 async function initialize() {
-  await loadLibrary();
+  await Promise.all([loadLibrary(), loadSharedGlossary()]);
+  const routeId = decodeURIComponent(location.hash.slice(1));
+  const routeTrack = tracks.find((track) => track.id === routeId);
+  if (routeTrack) await loadTrack(routeTrack, false);
 }
 
-async function loadTrack(track) {
+async function loadSharedGlossary() {
+  try {
+    const response = await fetch("glossary/shared.json");
+    if (!response.ok) return;
+    const glossary = await response.json();
+    if (glossary && typeof glossary === "object" && !Array.isArray(glossary)) sharedGlossary = glossary;
+  } catch {
+    sharedGlossary = {};
+  }
+}
+
+async function loadTrack(track, updateHistory = true) {
   audio.pause();
   saveActiveProgress(true);
   const loadId = ++trackLoadId;
   activeTrackId = track.id;
+  activeAudioSource = track.audio || "";
   pendingResumeTime = progressCache[activeTrackId]?.time || 0;
   appTitle.textContent = track.title;
+  renderReadingMeta(track);
   showReader();
-  setAudioSource(track.audio, `${track.title} loaded.`);
+  if (updateHistory && location.hash.slice(1) !== encodeURIComponent(track.id)) {
+    history.pushState({ trackId: track.id }, "", `#${encodeURIComponent(track.id)}`);
+  }
+  app.dataset.media = track.audio ? "audio" : "text";
+  setReadMode(!track.audio);
+  if (track.audio) {
+    setAudioSource(track.audio, `${track.title} loaded.`);
+  } else {
+    clearAudioSource();
+    status(`Opening ${track.title}…`);
+  }
   renderTrackList();
 
-  if (!track.transcript) {
+  const transcriptPath = track.audio ? track.transcript : (track.text || track.transcript);
+  if (!transcriptPath) {
     words = [];
     reader.replaceChildren();
     status(`${track.title} has no transcript yet.`);
@@ -487,26 +612,57 @@ async function loadTrack(track) {
   }
 
   try {
-    const response = await fetch(track.transcript);
+    const response = await fetch(transcriptPath);
     if (!response.ok) throw new Error("Transcript not found");
     const text = await response.text();
     if (loadId !== trackLoadId || activeTrackId !== track.id) return;
-    const parsed = parseTranscript(text, track.transcript);
-    setWords(parsed, hasValidTimings(parsed));
-    const resumeMessage = pendingResumeTime > 0 ? ` Resuming at ${formatTime(pendingResumeTime)}.` : "";
-    status(`${track.title} loaded with ${parsed.length.toLocaleString()} synced words.${resumeMessage}`);
+    const parsed = parseTranscript(track.text ? stripCatalogTextHeader(text, track) : text, transcriptPath);
+    const precise = Boolean(track.audio) && hasValidTimings(parsed);
+    setWords(parsed, precise);
+    if (track.audio) {
+      const resumeMessage = pendingResumeTime > 0 ? ` Resuming at ${formatTime(pendingResumeTime)}.` : "";
+      status(`${track.title} loaded with ${parsed.length.toLocaleString()} synced words.${resumeMessage}`);
+    } else {
+      status(`${track.title} · ${parsed.length.toLocaleString()} words · about ${track.minutes || readingMinutes(parsed.length)} min to read.`);
+    }
   } catch {
     if (loadId !== trackLoadId || activeTrackId !== track.id) return;
     status(`${track.title} loaded, but its transcript could not be loaded.`);
   }
 }
 
-function showLibrary() {
+function clearAudioSource() {
+  activeTrackId && saveActiveProgress(true);
+  audio.removeAttribute("src");
+  audio.load();
+  words = [];
+  reader.replaceChildren();
+  hideWordPopover();
+  definition.innerHTML = `<p class="muted">Tap a word for an English meaning.</p>`;
+  pendingResumeTime = 0;
+  currentWordIndex = -1;
+  readWordCount = -1;
+  seek.value = "0";
+  seek.max = "0";
+  seek.disabled = true;
+  playPause.disabled = true;
+  skipBack.disabled = true;
+  skipForward.disabled = true;
+  currentTimeEl.textContent = "0:00";
+  durationEl.textContent = "0:00";
+  drawWaveform(0);
+}
+
+function showLibrary(updateHistory = true) {
   audio.pause();
   saveActiveProgress(true);
   app.dataset.view = "library";
   document.title = "Spanish Listening Reader";
+  if (updateHistory && location.hash) {
+    history.pushState({}, "", `${location.pathname}${location.search}`);
+  }
   hideWordPopover();
+  renderTrackList();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -516,39 +672,204 @@ function showReader() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function setReadMode(enabled) {
+  isReadMode = enabled;
+  app.dataset.mode = enabled ? "read" : "listen";
+  readModeToggle.setAttribute("aria-pressed", String(enabled));
+  readModeToggle.setAttribute("aria-label", enabled ? "Switch to listening mode" : "Switch to reading mode");
+  readModeToggle.title = enabled ? "Listen with highlighting" : "Read without listening";
+  if (readModeLabel) readModeLabel.textContent = enabled ? "" : "Read";
+  if (enabled) audio.pause();
+}
+
+function renderReadingMeta(track) {
+  readingMeta.replaceChildren();
+  const facts = document.createElement("div");
+  facts.className = "reading-facts";
+  for (const value of [track.difficulty, track.author, track.genre, track.minutes ? `${track.minutes} min` : ""]) {
+    if (!value) continue;
+    const span = document.createElement("span");
+    span.textContent = value;
+    facts.append(span);
+  }
+  readingMeta.append(facts);
+  if (track.difficultyNote) {
+    const note = document.createElement("p");
+    note.textContent = track.difficultyNote;
+    readingMeta.append(note);
+  }
+  if (String(track.source || "").startsWith("https://")) {
+    const source = document.createElement("a");
+    source.href = track.source;
+    source.target = "_blank";
+    source.rel = "noreferrer";
+    source.textContent = "Source & rights";
+    source.title = track.rights || "Source edition";
+    readingMeta.append(source);
+  }
+  readingMeta.hidden = false;
+}
+
 function renderTrackList() {
   trackList.replaceChildren();
   if (!tracks.length) {
     trackList.innerHTML = `<p class="muted">No hosted readings found.</p>`;
+    catalogSummary.textContent = "No readings available";
     return;
   }
 
+  const query = normalizeSearch(catalogSettings.search);
+  const visibleTracks = tracks
+    .filter((track) => {
+      if (catalogSettings.level !== "all" && track.difficulty !== catalogSettings.level) return false;
+      if (catalogSettings.format === "listen" && !track.audio) return false;
+      if (catalogSettings.format === "read" && track.audio) return false;
+      if (!query) return true;
+      return normalizeSearch([
+        track.title,
+        track.author,
+        track.genre,
+        track.description,
+        ...(Array.isArray(track.tags) ? track.tags : [])
+      ].filter(Boolean).join(" ")).includes(query);
+    })
+    .sort(compareTracks);
+
+  const countLabel = `${visibleTracks.length.toLocaleString()} ${visibleTracks.length === 1 ? "reading" : "readings"}`;
+  catalogSummary.textContent = visibleTracks.length === tracks.length ? countLabel : `${countLabel} of ${tracks.length}`;
+
+  if (!visibleTracks.length) {
+    trackList.innerHTML = `
+      <div class="empty-catalog">
+        <h2>No stories match</h2>
+        <p>Try another title, format, or reading level.</p>
+        <button type="button" data-clear-catalog>Clear filters</button>
+      </div>`;
+    return;
+  }
+
+  const groups = catalogSettings.sort === "difficulty"
+    ? difficultyOrder.map((level) => [level, visibleTracks.filter((track) => track.difficulty === level)]).filter(([, items]) => items.length)
+    : [["results", visibleTracks]];
+
   const fragment = document.createDocumentFragment();
-  for (const track of tracks) {
+  for (const [level, groupTracks] of groups) {
+    const section = document.createElement("section");
+    section.className = "difficulty-group";
+    if (level !== "results") {
+      const heading = document.createElement("header");
+      heading.className = "difficulty-heading";
+      heading.innerHTML = `
+        <div>
+          <span class="level-mark">${escapeHtml(level)}</span>
+          <h2>${escapeHtml(difficultyLabels[level])}</h2>
+        </div>
+        <p>${difficultyDescription(level)} · ${groupTracks.length} ${groupTracks.length === 1 ? "story" : "stories"}</p>`;
+      section.append(heading);
+    }
+    const grid = document.createElement("div");
+    grid.className = "track-grid";
+    for (const track of groupTracks) grid.append(createTrackCard(track));
+    section.append(grid);
+    fragment.append(section);
+  }
+  trackList.append(fragment);
+}
+
+function createTrackCard(track) {
     const saved = progressCache[track.id] || {};
     const percent = saved.duration ? Math.min(100, Math.round((saved.time / saved.duration) * 100)) : 0;
     const button = document.createElement("button");
     button.type = "button";
     button.className = `track-card${track.id === activeTrackId ? " active" : ""}`;
     button.dataset.trackId = track.id;
+    if (track.id === activeTrackId) button.setAttribute("aria-current", "true");
     button.style.setProperty("--progress", `${percent}%`);
+    const tone = coverTone(track);
+    const formatLabel = track.audio ? "Listen & read" : "Read";
+    const timeLabel = track.minutes ? `${track.minutes} min` : "Short read";
     button.innerHTML = `
       <div class="track-cover-wrapper">
-        <div class="track-cover">
-          ${track.cover ? `<img src="${escapeHtml(track.cover)}" alt="Cover for ${escapeHtml(track.title)}" loading="lazy">` : `<div class="track-cover-placeholder"></div>`}
+        <div class="track-cover cover-tone-${tone}" aria-hidden="true">
+          <span class="cover-kicker">${escapeHtml(track.genre || "Classic")}</span>
+          <span class="cover-title">${escapeHtml(track.title)}</span>
+          <span class="cover-ornament"></span>
+          <span class="cover-author">${escapeHtml(track.author || "Anonymous")}</span>
         </div>
         <span class="track-progress" aria-hidden="true"><span></span></span>
       </div>
       <div class="track-info">
+        <span class="track-badges"><span class="level-badge">${escapeHtml(track.difficulty)}</span><span>${formatLabel}</span><span>${timeLabel}</span></span>
         <span class="track-title">${escapeHtml(track.title)}</span>
         ${track.author ? `<span class="track-author">${escapeHtml(track.author)}</span>` : ""}
-        <span class="track-meta">${track.transcript ? "Synced transcript" : "Audio only"}</span>
-        <span class="track-progress-label">${progressLabel(saved)}</span>
+        ${track.description ? `<span class="track-description">${escapeHtml(track.description)}</span>` : ""}
+        <span class="track-progress-label">${track.audio ? progressLabel(saved) : "Ready to read"}</span>
       </div>
     `;
-    fragment.append(button);
+    return button;
+}
+
+function compareTracks(a, b) {
+  if (catalogSettings.sort === "length") return (a.minutes || 999) - (b.minutes || 999) || compareTitle(a, b);
+  if (catalogSettings.sort === "author") return String(a.author || "").localeCompare(String(b.author || ""), "es") || compareTitle(a, b);
+  if (catalogSettings.sort === "title") return compareTitle(a, b);
+  return difficultyOrder.indexOf(a.difficulty) - difficultyOrder.indexOf(b.difficulty) || compareTitle(a, b);
+}
+
+function compareTitle(a, b) {
+  return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
+}
+
+function normalizeSearch(value) {
+  return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("es").trim();
+}
+
+function difficultyDescription(level) {
+  return {
+    A2: "Brief, approachable language",
+    B1: "Familiar narration with some literary vocabulary",
+    B2: "Layered prose and a broader vocabulary",
+    C1: "Dense, historical, or stylistically demanding"
+  }[level] || "Unrated";
+}
+
+function coverTone(track) {
+  const seed = [...String(track.id)].reduce((sum, character) => sum + character.codePointAt(0), 0);
+  return (seed % 6) + 1;
+}
+
+function readingMinutes(wordCount) {
+  return Math.max(1, Math.round(Number(wordCount || 0) / 180));
+}
+
+function updateLevelFilters() {
+  levelFilters.forEach((button) => {
+    const selected = button.dataset.level === catalogSettings.level;
+    button.classList.toggle("is-selected", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+}
+
+function loadCatalogSettings() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("reader-catalog-v1") || "{}");
+    return {
+      search: String(saved.search || ""),
+      format: ["all", "listen", "read"].includes(saved.format) ? saved.format : "all",
+      sort: ["difficulty", "title", "author", "length"].includes(saved.sort) ? saved.sort : "difficulty",
+      level: ["all", ...difficultyOrder].includes(saved.level) ? saved.level : "all"
+    };
+  } catch {
+    return { search: "", format: "all", sort: "difficulty", level: "all" };
   }
-  trackList.append(fragment);
+}
+
+function saveCatalogSettings() {
+  try {
+    localStorage.setItem("reader-catalog-v1", JSON.stringify(catalogSettings));
+  } catch {
+    // Catalog preferences are optional when storage is unavailable.
+  }
 }
 
 function setWords(nextWords, precise) {
@@ -577,6 +898,14 @@ function parseTranscript(text, name) {
     return parseCueTranscript(trimmed);
   }
   return tokenizeUntimed(trimmed);
+}
+
+function stripCatalogTextHeader(text, track) {
+  const lines = text.replace(/\r/g, "").split("\n");
+  if (lines[0]?.trim() === track.title && lines[1]?.trim() === track.author && !lines[2]?.trim()) {
+    return lines.slice(3).join("\n");
+  }
+  return text;
 }
 
 function parseJsonTranscript(text) {
@@ -684,6 +1013,7 @@ function renderWords() {
     span.type = "button";
     span.className = "word";
     span.dataset.index = String(index);
+    span.tabIndex = index === 0 ? 0 : -1;
     span.textContent = word.text;
     paragraph.append(span);
     paragraph.append(document.createTextNode(word.separator || " "));
@@ -712,6 +1042,7 @@ function updateProgress() {
   seek.value = String(current);
   currentTimeEl.textContent = formatTime(current);
   durationEl.textContent = formatTime(duration);
+  seek.setAttribute("aria-valuetext", `${formatTime(current)} of ${formatTime(duration)}`);
   drawWaveform(duration ? current / duration : 0);
   updateCurrentWord(current);
   saveActiveProgress(false);
@@ -723,18 +1054,28 @@ function updateCurrentWord(time) {
   const index = findWordAt(time);
   const endedCount = countEndedWords(time);
   if (index === currentWordIndex && endedCount === readWordCount) return;
-  const wordButtons = reader.querySelectorAll(".word");
-  wordButtons.forEach((button, wordIndex) => {
-    button.classList.toggle("current", wordIndex === index);
-    button.classList.toggle("read", wordIndex < endedCount);
-  });
+  if (currentWordIndex >= 0) reader.querySelector(`[data-index="${currentWordIndex}"]`)?.classList.remove("current");
+  const firstChanged = Math.max(0, Math.min(readWordCount < 0 ? 0 : readWordCount, endedCount));
+  const lastChanged = Math.max(readWordCount, endedCount);
+  for (let wordIndex = firstChanged; wordIndex < lastChanged; wordIndex += 1) {
+    reader.querySelector(`[data-index="${wordIndex}"]`)?.classList.toggle("read", wordIndex < endedCount);
+  }
   currentWordIndex = index;
   readWordCount = endedCount;
   if (index >= 0) {
     const active = reader.querySelector(`[data-index="${index}"]`);
     active?.classList.add("current");
-    active?.scrollIntoView({ block: "center", inline: "nearest", behavior: "smooth" });
+    active?.scrollIntoView({
+      block: "center",
+      inline: "nearest",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+    });
   }
+}
+
+function setWordTabStop(button) {
+  reader.querySelector('.word[tabindex="0"]')?.setAttribute("tabindex", "-1");
+  button.tabIndex = 0;
 }
 
 function findWordAt(time) {
@@ -770,7 +1111,7 @@ async function showDefinition(word, anchor) {
   
   const normalized = normalizeWord(word.text);
   const contextHTML = contextSentenceForWord(word.index);
-  const instant = getCachedTranslation(contextHTML);
+  const instant = sharedGlossary[normalized] || getCachedTranslation(contextHTML);
   
   if (instant) {
     renderDefinition(contextHTML, instant, anchor, true);
@@ -1121,7 +1462,9 @@ function progressLabel(saved) {
 }
 
 function saveActiveProgress(force) {
-  if (!activeTrackId || !audio.duration || !Number.isFinite(audio.duration)) return;
+  if (app.dataset.media !== "audio" || !activeTrackId || !audio.duration || !Number.isFinite(audio.duration)) return;
+  const expectedSource = activeAudioSource ? new URL(activeAudioSource, document.baseURI).href : "";
+  if (!expectedSource || audio.currentSrc !== expectedSource) return;
   const now = Date.now();
   if (!force && now - lastProgressSave < 1500) return;
   lastProgressSave = now;
@@ -1133,7 +1476,7 @@ function saveActiveProgress(force) {
     updatedAt: new Date().toISOString()
   };
   saveProgressCache(progressCache);
-  renderTrackList();
+  if (app.dataset.view === "library") renderTrackList();
 }
 
 function normalizeWord(word) {
@@ -1221,7 +1564,7 @@ function loadTranslationCache() {
 }
 
 function saveTranslationCache(cache) {
-  localStorage.setItem("spanish-reader-translations", JSON.stringify(cache));
+  safeSetLocalStorage("spanish-reader-translations", cache);
 }
 
 function loadProgressCache() {
@@ -1233,7 +1576,7 @@ function loadProgressCache() {
 }
 
 function saveProgressCache(cache) {
-  localStorage.setItem("spanish-reader-progress", JSON.stringify(cache));
+  safeSetLocalStorage("spanish-reader-progress", cache);
 }
 
 function loadStudyLog() {
@@ -1245,7 +1588,7 @@ function loadStudyLog() {
 }
 
 function saveStudyLog(log) {
-  localStorage.setItem("spanish-reader-study-log", JSON.stringify(log));
+  safeSetLocalStorage("spanish-reader-study-log", log);
 }
 
 function loadAppearanceSettings() {
@@ -1286,10 +1629,18 @@ function numberInRange(value, min, max, fallback) {
 }
 
 function saveAppearanceSettings(settings) {
-  localStorage.setItem("spanish-reader-appearance", JSON.stringify({
+  safeSetLocalStorage("spanish-reader-appearance", {
     ...settings,
     version: appearanceSettingsVersion
-  }));
+  });
+}
+
+function safeSetLocalStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Reading remains usable in private mode or when storage is full.
+  }
 }
 
 function applyAppearanceSettings() {

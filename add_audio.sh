@@ -51,19 +51,7 @@ if [ "$NEW_FILES_PROCESSED" -eq 0 ]; then
     exit 0
 fi
 
-echo "==> Rebuilding library..."
-python3 scripts/build_library.py
-
-echo "==> Committing and pushing to GitHub..."
-git add .
-
-if [ "$NEW_FILES_PROCESSED" -eq 1 ]; then
-    CLEAN_NAME="${PROCESSED_NAMES[0]//_/ }"
-    git commit -m "Add $CLEAN_NAME"
-else
-    git commit -m "Auto-add $NEW_FILES_PROCESSED new audio files"
-fi
-
-git push
-
-echo "==> Successfully processed and pushed to GitHub!"
+echo "==> Transcription complete."
+echo "Review the transcript, then add a curated entry with source and rights metadata to library.json."
+echo "Run 'python3 scripts/build_library.py' when the entry is ready."
+echo "Nothing was committed or pushed automatically."
