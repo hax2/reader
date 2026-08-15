@@ -13,7 +13,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Create word-level Spanish transcript JSON using faster-whisper."
     )
-    parser.add_argument("audio", type=Path, help="Audio file to transcribe")
+    parser.add_argument("audio", type=Path, nargs="+", help="Audio file(s) to transcribe")
     parser.add_argument("-o", "--output", type=Path, help="Output JSON path")
     parser.add_argument("--model", default="medium", help="Whisper model size or path")
     parser.add_argument("--device", default="cuda", choices=["cuda", "cpu", "auto"])
@@ -30,8 +30,11 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    if not args.audio.exists():
-        raise SystemExit(f"Audio file not found: {args.audio}")
+    missing = [audio for audio in args.audio if not audio.exists()]
+    if missing:
+        raise SystemExit(f"Audio file not found: {missing[0]}")
+    if args.output and len(args.audio) != 1:
+        raise SystemExit("--output can only be used with one audio file")
 
     try:
         from faster_whisper import WhisperModel
@@ -40,10 +43,15 @@ def main() -> None:
             "Missing faster-whisper. Run: ./scripts/setup_transcriber.sh"
         ) from exc
 
-    output = args.output or args.audio.with_suffix(".json")
     model = WhisperModel(args.model, device=args.device, compute_type=args.compute_type)
+    for audio in args.audio:
+        transcribe_audio(model, audio, args)
+
+
+def transcribe_audio(model, audio: Path, args: argparse.Namespace) -> None:
+    output = args.output or audio.with_suffix(".json")
     segments, info = model.transcribe(
-        str(args.audio),
+        str(audio),
         language="es",
         beam_size=args.beam_size,
         vad_filter=not args.no_vad,
@@ -80,7 +88,7 @@ def main() -> None:
         raise
 
     payload = {
-        "source": args.audio.name,
+        "source": audio.name,
         "title": existing_title(output),
         "language": info.language,
         "language_probability": round(float(info.language_probability), 4),

@@ -77,6 +77,14 @@ The script uses Spanish language mode and word timestamps. It defaults to CUDA w
 ./scripts/transcribe_gpu.sh audio.m4a --model small --compute-type int8_float16
 ```
 
+Pass several audio files in one command to load Whisper only once. This is the
+required final alignment step after local or Gemini TTS; source-duration timing
+is only an assembly fallback and is not accurate enough for highlighting:
+
+```sh
+./scripts/transcribe_gpu.sh first.m4a second.m4a third.m4a --model medium
+```
+
 ## Generate narration with Gemini TTS
 
 Put `GEMINI_API_KEY` in the local `.env` file, then narrate one or more UTF-8
