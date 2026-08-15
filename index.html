@@ -11,10 +11,16 @@
     <main class="app" data-view="library" data-mode="listen" data-media="audio">
       <section class="library-panel screen" aria-labelledby="library-title">
         <div class="topbar">
-          <div>
+          <div class="topbar-main">
             <p class="eyebrow">Lecturas · Spanish Listening Reader</p>
             <h1 id="library-title">Find your next reading</h1>
             <p class="library-intro">Spanish stories, scripture, and classics, arranged by reading level. Listen with word-by-word highlighting or settle in and read.</p>
+          </div>
+          <div class="topbar-actions">
+            <button id="openOnboardingBtn" class="onboarding-launch-btn" type="button" aria-label="Personalize reader settings and theme">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              <span>Personalize</span>
+            </button>
           </div>
         </div>
         <div class="collection-tabs" role="tablist" aria-label="Choose a library collection">
@@ -80,7 +86,10 @@
                   <strong>Reading appearance</strong>
                   <span>Make the page comfortable for you.</span>
                 </div>
-                <button id="resetAppearance" class="text-button" type="button">Reset</button>
+                <div class="appearance-actions">
+                  <button id="openOnboardingFromSettings" class="text-button" type="button">Setup wizard</button>
+                  <button id="resetAppearance" class="text-button" type="button">Reset</button>
+                </div>
               </div>
               <label>
                 <span>Theme</span>
@@ -244,6 +253,380 @@
         </aside>
       </section>
     </main>
+    <dialog id="onboardingDialog" class="onboarding-dialog" aria-labelledby="onboardingDialogTitle">
+      <div class="onboarding-shell">
+        <header class="onboarding-header">
+          <div class="onboarding-title-group">
+            <p class="eyebrow">Personalize your reader</p>
+            <h2 id="onboardingDialogTitle">Set up your reading experience</h2>
+          </div>
+          <button id="closeOnboardingBtn" class="utility-button onboarding-close-btn" type="button" aria-label="Close setup wizard">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+          </button>
+        </header>
+
+        <nav class="onboarding-steps-nav" aria-label="Setup progress">
+          <button type="button" class="step-pill is-active" data-step="1">
+            <span class="step-num">1</span>
+            <span class="step-label">Theme</span>
+          </button>
+          <button type="button" class="step-pill" data-step="2">
+            <span class="step-num">2</span>
+            <span class="step-label">Typography</span>
+          </button>
+          <button type="button" class="step-pill" data-step="3">
+            <span class="step-num">3</span>
+            <span class="step-label">Audio &amp; Sync</span>
+          </button>
+          <button type="button" class="step-pill" data-step="4">
+            <span class="step-num">4</span>
+            <span class="step-label">Level &amp; Goals</span>
+          </button>
+        </nav>
+
+        <div class="onboarding-body">
+          <!-- Left Controls Pane -->
+          <div class="onboarding-controls-pane">
+            
+            <!-- STEP 1: Theme & Ambiance -->
+            <section class="onboarding-step-section is-active" data-step-panel="1">
+              <div class="step-header">
+                <h3>Choose a Theme &amp; Tone</h3>
+                <p class="step-desc">Pick an atmosphere tailored for comfortable day, evening, or night reading sessions.</p>
+              </div>
+
+              <div class="option-grid theme-options" role="radiogroup" aria-label="Color theme">
+                <button type="button" class="option-card is-selected" data-setting="theme" data-value="paper" role="radio" aria-checked="true">
+                  <div class="theme-swatch paper-swatch">
+                    <span class="swatch-text">Aa</span>
+                  </div>
+                  <div class="option-info">
+                    <strong class="option-title">Paper</strong>
+                    <span class="option-desc">Warm cream editorial tone, dark olive-charcoal ink. Classic book feel.</span>
+                  </div>
+                  <span class="check-badge" aria-hidden="true">✓</span>
+                </button>
+
+                <button type="button" class="option-card" data-setting="theme" data-value="mist" role="radio" aria-checked="false">
+                  <div class="theme-swatch mist-swatch">
+                    <span class="swatch-text">Aa</span>
+                  </div>
+                  <div class="option-info">
+                    <strong class="option-title">Mist</strong>
+                    <span class="option-desc">Cool slate &amp; mint tint with serene contrast. Calm on the eyes.</span>
+                  </div>
+                  <span class="check-badge" aria-hidden="true">✓</span>
+                </button>
+
+                <button type="button" class="option-card" data-setting="theme" data-value="night" role="radio" aria-checked="false">
+                  <div class="theme-swatch night-swatch">
+                    <span class="swatch-text">Aa</span>
+                  </div>
+                  <div class="option-info">
+                    <strong class="option-title">Night</strong>
+                    <span class="option-desc">Deep obsidian OLED dark mode with crisp, gentle white text.</span>
+                  </div>
+                  <span class="check-badge" aria-hidden="true">✓</span>
+                </button>
+
+                <button type="button" class="option-card" data-setting="theme" data-value="system" role="radio" aria-checked="false">
+                  <div class="theme-swatch system-swatch">
+                    <span class="swatch-split left">A</span><span class="swatch-split right">a</span>
+                  </div>
+                  <div class="option-info">
+                    <strong class="option-title">System</strong>
+                    <span class="option-desc">Automatically matches your operating system light or dark mode.</span>
+                  </div>
+                  <span class="check-badge" aria-hidden="true">✓</span>
+                </button>
+              </div>
+            </section>
+
+            <!-- STEP 2: Typography & Spacing -->
+            <section class="onboarding-step-section" data-step-panel="2">
+              <div class="step-header">
+                <h3>Typography &amp; Spacing</h3>
+                <p class="step-desc">Adjust the typeface, sizing, and line height for effortless reading clarity.</p>
+              </div>
+
+              <div class="control-group">
+                <label class="group-label">Typeface</label>
+                <div class="option-grid font-options" role="radiogroup" aria-label="Typeface">
+                  <button type="button" class="option-card is-selected" data-setting="font" data-value="serif" role="radio" aria-checked="true">
+                    <span class="font-preview font-serif">Ag</span>
+                    <div class="option-info">
+                      <strong class="option-title">Book Serif</strong>
+                      <span class="option-desc">Classic Georgia editorial style</span>
+                    </div>
+                  </button>
+                  <button type="button" class="option-card" data-setting="font" data-value="sans" role="radio" aria-checked="false">
+                    <span class="font-preview font-sans">Ag</span>
+                    <div class="option-info">
+                      <strong class="option-title">Clean Sans</strong>
+                      <span class="option-desc">Modern, sharp system sans-serif</span>
+                    </div>
+                  </button>
+                  <button type="button" class="option-card" data-setting="font" data-value="accessible" role="radio" aria-checked="false">
+                    <span class="font-preview font-accessible">Ag</span>
+                    <div class="option-info">
+                      <strong class="option-title">Accessible Sans</strong>
+                      <span class="option-desc">High legibility character shapes</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <div class="control-group sliders-grid">
+                <div class="slider-box">
+                  <div class="slider-header">
+                    <label for="onboardingTextSize">Text Size</label>
+                    <output id="onboardingTextSizeValue" for="onboardingTextSize">100%</output>
+                  </div>
+                  <input id="onboardingTextSize" type="range" min="80" max="140" step="5" value="100">
+                  <div class="slider-presets">
+                    <button type="button" class="preset-chip" data-slider="size" data-val="85">Small (85%)</button>
+                    <button type="button" class="preset-chip is-active" data-slider="size" data-val="100">Default (100%)</button>
+                    <button type="button" class="preset-chip" data-slider="size" data-val="120">Large (120%)</button>
+                    <button type="button" class="preset-chip" data-slider="size" data-val="135">Extra (135%)</button>
+                  </div>
+                </div>
+
+                <div class="slider-box">
+                  <div class="slider-header">
+                    <label for="onboardingLineHeight">Line Spacing</label>
+                    <output id="onboardingLineHeightValue" for="onboardingLineHeight">1.8</output>
+                  </div>
+                  <input id="onboardingLineHeight" type="range" min="1.4" max="2.2" step="0.1" value="1.8">
+                  <div class="slider-presets">
+                    <button type="button" class="preset-chip" data-slider="height" data-val="1.5">Compact (1.5)</button>
+                    <button type="button" class="preset-chip is-active" data-slider="height" data-val="1.8">Standard (1.8)</button>
+                    <button type="button" class="preset-chip" data-slider="height" data-val="2.1">Spacious (2.1)</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="group-label">Reading Column Width</label>
+                <div class="segmented-control" role="radiogroup" aria-label="Reading column width">
+                  <button type="button" class="segment-btn" data-setting="readerWidth" data-value="narrow" role="radio" aria-checked="false">Narrow (580px)</button>
+                  <button type="button" class="segment-btn is-selected" data-setting="readerWidth" data-value="standard" role="radio" aria-checked="true">Standard (760px)</button>
+                  <button type="button" class="segment-btn" data-setting="readerWidth" data-value="wide" role="radio" aria-checked="false">Wide (920px)</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- STEP 3: Audio & Reading Tracking -->
+            <section class="onboarding-step-section" data-step-panel="3">
+              <div class="step-header">
+                <h3>Audio Sync &amp; Highlighting</h3>
+                <p class="step-desc">Customize how words illuminate and translations display as you listen.</p>
+              </div>
+
+              <div class="control-group">
+                <label class="group-label">Word Highlight Style</label>
+                <div class="highlight-pills" role="radiogroup" aria-label="Highlight style">
+                  <button type="button" class="highlight-chip is-selected" data-setting="highlight" data-value="sage" role="radio" aria-checked="true">
+                    <span class="chip-dot dot-sage"></span> Sage wash
+                  </button>
+                  <button type="button" class="highlight-chip" data-setting="highlight" data-value="sky" role="radio" aria-checked="false">
+                    <span class="chip-dot dot-sky"></span> Sky wash
+                  </button>
+                  <button type="button" class="highlight-chip" data-setting="highlight" data-value="rose" role="radio" aria-checked="false">
+                    <span class="chip-dot dot-rose"></span> Rose wash
+                  </button>
+                  <button type="button" class="highlight-chip" data-setting="highlight" data-value="underline" role="radio" aria-checked="false">
+                    <span class="chip-dot dot-underline"></span> Underline
+                  </button>
+                  <button type="button" class="highlight-chip" data-setting="highlight" data-value="none" role="radio" aria-checked="false">
+                    <span class="chip-dot dot-none"></span> None
+                  </button>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="group-label">Focus &amp; Text Dimming</label>
+                <div class="option-grid focus-options" role="radiogroup" aria-label="Focus mode">
+                  <button type="button" class="option-card is-selected" data-setting="textMode" data-value="dim-passed" role="radio" aria-checked="true">
+                    <div class="option-info">
+                      <strong class="option-title">Dim passed words</strong>
+                      <span class="option-desc">Subtly softens spoken text so your eye naturally flows ahead.</span>
+                    </div>
+                  </button>
+                  <button type="button" class="option-card" data-setting="textMode" data-value="dim-upcoming" role="radio" aria-checked="false">
+                    <div class="option-info">
+                      <strong class="option-title">Dim upcoming words</strong>
+                      <span class="option-desc">Dims future text so you stay locked on the current spoken word.</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="group-label">Translation Display</label>
+                <div class="option-grid translation-options" role="radiogroup" aria-label="Translation layout">
+                  <button type="button" class="option-card is-selected" data-setting="translationLayout" data-value="spanish-only" role="radio" aria-checked="true">
+                    <div class="option-info">
+                      <strong class="option-title">Spanish only (Immersion)</strong>
+                      <span class="option-desc">Pure Spanish text; tap any word for instant English definitions and vocabulary review.</span>
+                    </div>
+                  </button>
+                  <button type="button" class="option-card" data-setting="translationLayout" data-value="side-by-side" role="radio" aria-checked="false">
+                    <div class="option-info">
+                      <strong class="option-title">Side by side (Parallel)</strong>
+                      <span class="option-desc">Dual columns with aligned English translations running parallel to the Spanish text.</span>
+                    </div>
+                  </button>
+                  <button type="button" class="option-card" data-setting="translationLayout" data-value="english-below" role="radio" aria-checked="false">
+                    <div class="option-info">
+                      <strong class="option-title">English underneath</strong>
+                      <span class="option-desc">Interlinear translation directly beneath each Spanish sentence block.</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="group-label">Default Playback Speed</label>
+                <div class="speed-chips" role="radiogroup" aria-label="Audio playback speed">
+                  <button type="button" class="speed-chip" data-setting="playbackRate" data-value="0.75" role="radio" aria-checked="false">0.75×</button>
+                  <button type="button" class="speed-chip" data-setting="playbackRate" data-value="0.9" role="radio" aria-checked="false">0.90×</button>
+                  <button type="button" class="speed-chip is-selected" data-setting="playbackRate" data-value="1" role="radio" aria-checked="true">1.0×</button>
+                  <button type="button" class="speed-chip" data-setting="playbackRate" data-value="1.1" role="radio" aria-checked="false">1.10×</button>
+                  <button type="button" class="speed-chip" data-setting="playbackRate" data-value="1.25" role="radio" aria-checked="false">1.25×</button>
+                  <button type="button" class="speed-chip" data-setting="playbackRate" data-value="1.5" role="radio" aria-checked="false">1.50×</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- STEP 4: Reading Level & Catalog Goals -->
+            <section class="onboarding-step-section" data-step-panel="4">
+              <div class="step-header">
+                <h3>Level &amp; Library Focus</h3>
+                <p class="step-desc">Choose your Spanish level and format preference to tailor your library catalog.</p>
+              </div>
+
+              <div class="control-group">
+                <label class="group-label">Target Reading Level</label>
+                <div class="option-grid level-options" role="radiogroup" aria-label="Reading level">
+                  <button type="button" class="option-card is-selected" data-setting="catalogLevel" data-value="all" role="radio" aria-checked="true">
+                    <div class="option-info">
+                      <strong class="option-title">All Levels</strong>
+                      <span class="option-desc">Browse every story, scripture reading, and classic in the library.</span>
+                    </div>
+                  </button>
+                  <button type="button" class="option-card" data-setting="catalogLevel" data-value="B1" role="radio" aria-checked="false">
+                    <span class="level-tag">B1</span>
+                    <div class="option-info">
+                      <strong class="option-title">Intermediate (B1)</strong>
+                      <span class="option-desc">Fables, accessible classic stories, everyday conversational vocabulary.</span>
+                    </div>
+                  </button>
+                  <button type="button" class="option-card" data-setting="catalogLevel" data-value="B2" role="radio" aria-checked="false">
+                    <span class="level-tag">B2</span>
+                    <div class="option-info">
+                      <strong class="option-title">Upper Intermediate (B2)</strong>
+                      <span class="option-desc">Rich literary stories (Bécquer, Quiroga), scriptures, and legends.</span>
+                    </div>
+                  </button>
+                  <button type="button" class="option-card" data-setting="catalogLevel" data-value="C1" role="radio" aria-checked="false">
+                    <span class="level-tag">C1</span>
+                    <div class="option-info">
+                      <strong class="option-title">Advanced (C1)</strong>
+                      <span class="option-desc">Complex historical treatises, Greek philosophy, deep Spanish vocabulary.</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="group-label">Preferred Format</label>
+                <div class="segmented-control" role="radiogroup" aria-label="Preferred format">
+                  <button type="button" class="segment-btn is-selected" data-setting="catalogFormat" data-value="all" role="radio" aria-checked="true">All Formats</button>
+                  <button type="button" class="segment-btn" data-setting="catalogFormat" data-value="listen" role="radio" aria-checked="false">Listen &amp; Read</button>
+                  <button type="button" class="segment-btn" data-setting="catalogFormat" data-value="read" role="radio" aria-checked="false">Read Only</button>
+                </div>
+              </div>
+
+              <div class="summary-card">
+                <div class="summary-card-header">
+                  <span class="summary-icon">✨</span>
+                  <strong>Your Custom Reader Setup</strong>
+                </div>
+                <div id="onboardingSummaryBadges" class="summary-badges"></div>
+              </div>
+            </section>
+
+          </div>
+
+          <!-- Right Live Demonstration Pane -->
+          <div class="onboarding-preview-pane" aria-label="Interactive demonstration">
+            <div class="preview-pane-header">
+              <div class="preview-header-title">
+                <span class="live-dot" aria-hidden="true"></span>
+                <strong>Live Demonstration</strong>
+              </div>
+              <div id="previewStatusBadge" class="preview-status-badge">Paper · Book Serif</div>
+            </div>
+
+            <!-- Demo Container Frame -->
+            <div id="onboardingDemoFrame" class="demo-frame" data-demo-theme="paper" data-demo-highlight="sage" data-demo-text-mode="dim-passed" data-demo-font="serif" data-demo-width="standard" data-demo-translation="spanish-only">
+              
+              <!-- Mini Demo Player Header -->
+              <div class="demo-player-bar">
+                <button id="demoPlayBtn" class="demo-play-btn" type="button" aria-label="Play simulated audio highlight">
+                  <span class="demo-play-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
+                  </span>
+                  <span class="demo-play-label">Play Demo</span>
+                </button>
+                
+                <div class="demo-progress-track" aria-hidden="true">
+                  <div id="demoProgressFill" class="demo-progress-fill"></div>
+                </div>
+
+                <div class="demo-meta-strip">
+                  <span id="demoTimeDisplay" class="demo-time">0:00 / 0:15</span>
+                  <span id="demoSpeedDisplay" class="demo-speed-badge">1.0×</span>
+                </div>
+              </div>
+
+              <!-- Demo Interactive Reader -->
+              <div class="demo-reader-scroll">
+                <article id="demoReaderArticle" class="demo-reader-article" lang="es">
+                  <div class="demo-translation-pair">
+                    <p id="demoSpanishText" class="demo-spanish-text" lang="es"></p>
+                    <p id="demoEnglishTranslation" class="demo-english-translation" lang="en"></p>
+                  </div>
+                </article>
+
+                <!-- Embedded interactive word popover inside demo -->
+                <div id="demoWordPopover" class="demo-word-popover" role="tooltip" hidden>
+                  <p id="demoPopoverWord" class="demo-popover-word">peludo</p>
+                  <p id="demoPopoverDef" class="demo-popover-def"><strong>furry, hairy</strong> (adj.) · <em>Tap any word in the reader for instant meaning.</em></p>
+                </div>
+              </div>
+
+              <!-- Demo Tip Banner -->
+              <div class="demo-hint-bar">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <span>Live demo: Click words to inspect definitions or press Play Demo to test audio tracking!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizard Navigation Footer -->
+        <footer class="onboarding-footer">
+          <button id="onboardingSkipBtn" class="text-button onboarding-skip-btn" type="button">Skip for now</button>
+          
+          <div class="onboarding-nav-actions">
+            <button id="onboardingPrevBtn" class="secondary-button" type="button" disabled>Back</button>
+            <button id="onboardingNextBtn" class="primary-button" type="button">Continue</button>
+            <button id="onboardingFinishBtn" class="primary-button finish-btn" type="button" hidden>Finish &amp; Start Reading</button>
+          </div>
+        </footer>
+      </div>
+    </dialog>
     <dialog id="ankiDialog" class="anki-dialog" aria-labelledby="ankiDialogTitle">
       <div class="anki-dialog-shell">
         <header class="anki-dialog-header">

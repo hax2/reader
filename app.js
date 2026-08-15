@@ -600,7 +600,14 @@ async function initialize() {
   await Promise.all([loadLibrary(), loadSharedGlossary()]);
   const routeId = decodeURIComponent(location.hash.slice(1));
   const routeTrack = tracks.find((track) => track.id === routeId);
-  if (routeTrack) await loadTrack(routeTrack, false);
+  if (routeTrack) {
+    await loadTrack(routeTrack, false);
+  } else {
+    const hasSeenOnboarding = localStorage.getItem("spanish-reader-onboarding-v1");
+    if (!hasSeenOnboarding) {
+      openOnboarding(1);
+    }
+  }
 }
 
 async function loadSharedGlossary() {
@@ -2111,3 +2118,575 @@ function resolveTheme(theme) {
   }
   return theme;
 }
+
+/* ==========================================================================
+   ONBOARDING CONTROLLER & INTERACTIVE DEMONSTRATION ENGINE
+   ========================================================================== */
+
+const onboardingDialog = document.querySelector("#onboardingDialog");
+const openOnboardingBtn = document.querySelector("#openOnboardingBtn");
+const openOnboardingFromSettings = document.querySelector("#openOnboardingFromSettings");
+const closeOnboardingBtn = document.querySelector("#closeOnboardingBtn");
+const onboardingSkipBtn = document.querySelector("#onboardingSkipBtn");
+const onboardingPrevBtn = document.querySelector("#onboardingPrevBtn");
+const onboardingNextBtn = document.querySelector("#onboardingNextBtn");
+const onboardingFinishBtn = document.querySelector("#onboardingFinishBtn");
+const onboardingStepPills = [...document.querySelectorAll(".step-pill")];
+const onboardingStepSections = [...document.querySelectorAll(".onboarding-step-section")];
+const onboardingOptionCards = [...document.querySelectorAll(".onboarding-dialog .option-card, .onboarding-dialog .segment-btn, .onboarding-dialog .highlight-chip, .onboarding-dialog .speed-chip")];
+const onboardingTextSize = document.querySelector("#onboardingTextSize");
+const onboardingTextSizeValue = document.querySelector("#onboardingTextSizeValue");
+const onboardingLineHeight = document.querySelector("#onboardingLineHeight");
+const onboardingLineHeightValue = document.querySelector("#onboardingLineHeightValue");
+const onboardingPresetChips = [...document.querySelectorAll(".onboarding-dialog .preset-chip")];
+const onboardingDemoFrame = document.querySelector("#onboardingDemoFrame");
+const demoPlayBtn = document.querySelector("#demoPlayBtn");
+const demoProgressFill = document.querySelector("#demoProgressFill");
+const demoTimeDisplay = document.querySelector("#demoTimeDisplay");
+const demoSpeedDisplay = document.querySelector("#demoSpeedDisplay");
+const demoSpanishText = document.querySelector("#demoSpanishText");
+const demoEnglishTranslation = document.querySelector("#demoEnglishTranslation");
+const demoWordPopover = document.querySelector("#demoWordPopover");
+const demoPopoverWord = document.querySelector("#demoPopoverWord");
+const demoPopoverDef = document.querySelector("#demoPopoverDef");
+const previewStatusBadge = document.querySelector("#previewStatusBadge");
+const onboardingSummaryBadges = document.querySelector("#onboardingSummaryBadges");
+
+const DEMO_EXCERPT_WORDS = [
+  { word: "Platero", separator: " ", def: "Platero (the silver donkey in Juan Ramón Jiménez's classic)", start: 0.0, dur: 0.5 },
+  { word: "es", separator: " ", def: "is (from <em>ser</em>)", start: 0.5, dur: 0.25 },
+  { word: "pequeño,", separator: " ", def: "small, little (adj.)", start: 0.75, dur: 0.6 },
+  { word: "peludo,", separator: " ", def: "furry, hairy (adj.)", start: 1.35, dur: 0.6 },
+  { word: "suave;", separator: " ", def: "soft, smooth, gentle (adj.)", start: 1.95, dur: 0.65 },
+  { word: "tan", separator: " ", def: "so, as (adv.)", start: 2.6, dur: 0.3 },
+  { word: "blando", separator: " ", def: "soft, tender, yielding (adj.)", start: 2.9, dur: 0.5 },
+  { word: "por", separator: " ", def: "by, on (prep.)", start: 3.4, dur: 0.25 },
+  { word: "fuera,", separator: " ", def: "outside, on the exterior (adv.)", start: 3.65, dur: 0.6 },
+  { word: "que", separator: " ", def: "that, which (conj.)", start: 4.25, dur: 0.25 },
+  { word: "se", separator: " ", def: "oneself / passive marker (pron.)", start: 4.5, dur: 0.25 },
+  { word: "diría", separator: " ", def: "one would say (from <em>decir</em>)", start: 4.75, dur: 0.5 },
+  { word: "todo", separator: " ", def: "entirely, all (adv./adj.)", start: 5.25, dur: 0.4 },
+  { word: "de", separator: " ", def: "of, made of (prep.)", start: 5.65, dur: 0.2 },
+  { word: "algodón,", separator: " ", def: "cotton (noun masc.)", start: 5.85, dur: 0.7 },
+  { word: "que", separator: " ", def: "that, which (conj.)", start: 6.55, dur: 0.25 },
+  { word: "no", separator: " ", def: "not, no (adv.)", start: 6.8, dur: 0.25 },
+  { word: "lleva", separator: " ", def: "carries, has (from <em>llevar</em>)", start: 7.05, dur: 0.4 },
+  { word: "huesos.", separator: " ", def: "bones (noun masc. pl.)", start: 7.45, dur: 0.8 },
+  { word: "Sólo", separator: " ", def: "Only, just (adv.)", start: 8.25, dur: 0.4 },
+  { word: "los", separator: " ", def: "the (masc. pl. art.)", start: 8.65, dur: 0.25 },
+  { word: "espejos", separator: " ", def: "mirrors (noun masc. pl.)", start: 8.9, dur: 0.55 },
+  { word: "de", separator: " ", def: "of (prep.)", start: 9.45, dur: 0.2 },
+  { word: "azabache", separator: " ", def: "jet-black stone, pitch-black (noun)", start: 9.65, dur: 0.65 },
+  { word: "de", separator: " ", def: "of (prep.)", start: 10.3, dur: 0.2 },
+  { word: "sus", separator: " ", def: "his, its (possessive)", start: 10.5, dur: 0.3 },
+  { word: "ojos", separator: " ", def: "eyes (noun masc. pl.)", start: 10.8, dur: 0.5 },
+  { word: "son", separator: " ", def: "are (from <em>ser</em>)", start: 11.3, dur: 0.3 },
+  { word: "duros", separator: " ", def: "hard, solid, tough (adj. pl.)", start: 11.6, dur: 0.55 },
+  { word: "cual", separator: " ", def: "like, as (prep./adv.)", start: 12.15, dur: 0.35 },
+  { word: "dos", separator: " ", def: "two (num.)", start: 12.5, dur: 0.3 },
+  { word: "escarabajos", separator: " ", def: "beetles (noun masc. pl.)", start: 12.8, dur: 0.75 },
+  { word: "de", separator: " ", def: "of (prep.)", start: 13.55, dur: 0.2 },
+  { word: "cristal", separator: " ", def: "crystal, glass (noun masc.)", start: 13.75, dur: 0.55 },
+  { word: "negro.", separator: "", def: "black (adj. masc.)", start: 14.3, dur: 0.7 }
+];
+
+const DEMO_TOTAL_DURATION = 15.0;
+const DEMO_ENGLISH_TEXT = "Platero is small, furry, soft; so soft on the outside that one would say he is made entirely of cotton, that he has no bones. Only the jet mirrors of his eyes are hard as two beetles of black glass.";
+
+let onboardingState = {
+  step: 1,
+  theme: "system",
+  font: "serif",
+  textSize: 100,
+  lineHeight: 1.8,
+  readerWidth: "standard",
+  highlight: "sage",
+  textMode: "dim-passed",
+  translationLayout: "spanish-only",
+  playbackRate: 1,
+  catalogLevel: "all",
+  catalogFormat: "all",
+  isPlayingDemo: false,
+  demoCurrentTime: 0,
+  demoRafId: 0,
+  demoLastTimestamp: 0
+};
+
+function openOnboarding(initialStep = 1) {
+  onboardingState = {
+    step: initialStep,
+    theme: appearanceSettings.theme || "system",
+    font: appearanceSettings.font || "serif",
+    textSize: appearanceSettings.textSize || 100,
+    lineHeight: appearanceSettings.lineHeight || 1.8,
+    readerWidth: appearanceSettings.readerWidth || "standard",
+    highlight: appearanceSettings.highlight || "sage",
+    textMode: appearanceSettings.textMode || "dim-passed",
+    translationLayout: appearanceSettings.translationLayout || "spanish-only",
+    playbackRate: appearanceSettings.playbackRate || 1,
+    catalogLevel: catalogSettings.level || "all",
+    catalogFormat: catalogSettings.format || "all",
+    isPlayingDemo: false,
+    demoCurrentTime: 0,
+    demoRafId: 0,
+    demoLastTimestamp: 0
+  };
+
+  renderDemoWords();
+  syncOnboardingControlsWithState();
+  goToOnboardingStep(initialStep);
+  updateDemoPreview();
+  resetDemoSimulation();
+
+  try {
+    onboardingDialog.showModal();
+  } catch {
+    // In case dialog is already open
+  }
+}
+
+function closeOnboarding(saveCurrent = false) {
+  if (saveCurrent) {
+    finishOnboarding();
+  } else {
+    applyAppearanceSettings();
+    pauseDemoSimulation();
+    safeSetLocalStorage("spanish-reader-onboarding-v1", { completed: true, timestamp: Date.now() });
+    try {
+      onboardingDialog.close();
+    } catch {}
+  }
+}
+
+function syncOnboardingControlsWithState() {
+  onboardingOptionCards.forEach((card) => {
+    const setting = card.dataset.setting;
+    const value = card.dataset.value;
+    if (!setting) return;
+    const matches = String(onboardingState[setting]) === String(value);
+    card.classList.toggle("is-selected", matches);
+    card.setAttribute("aria-checked", matches ? "true" : "false");
+  });
+
+  if (onboardingTextSize && onboardingTextSizeValue) {
+    onboardingTextSize.value = onboardingState.textSize;
+    onboardingTextSizeValue.value = `${onboardingState.textSize}%`;
+    updatePresetChips("size", onboardingState.textSize);
+  }
+
+  if (onboardingLineHeight && onboardingLineHeightValue) {
+    onboardingLineHeight.value = onboardingState.lineHeight;
+    onboardingLineHeightValue.value = onboardingState.lineHeight.toFixed(1);
+    updatePresetChips("height", onboardingState.lineHeight);
+  }
+}
+
+function updatePresetChips(type, val) {
+  onboardingPresetChips.filter((c) => c.dataset.slider === type).forEach((c) => {
+    const chipVal = Number(c.dataset.val);
+    c.classList.toggle("is-active", Math.abs(chipVal - val) < 0.05);
+  });
+}
+
+function goToOnboardingStep(stepNumber) {
+  const step = Math.min(4, Math.max(1, stepNumber));
+  onboardingState.step = step;
+
+  onboardingStepPills.forEach((pill, idx) => {
+    const pillStep = idx + 1;
+    pill.classList.toggle("is-active", pillStep === step);
+    pill.classList.toggle("is-completed", pillStep < step);
+  });
+
+  onboardingStepSections.forEach((sec, idx) => {
+    sec.classList.toggle("is-active", idx + 1 === step);
+  });
+
+  if (onboardingPrevBtn) onboardingPrevBtn.disabled = step === 1;
+
+  if (step === 4) {
+    if (onboardingNextBtn) onboardingNextBtn.hidden = true;
+    if (onboardingFinishBtn) onboardingFinishBtn.hidden = false;
+    renderOnboardingSummary();
+  } else {
+    if (onboardingNextBtn) {
+      onboardingNextBtn.hidden = false;
+      onboardingNextBtn.textContent = "Continue";
+    }
+    if (onboardingFinishBtn) onboardingFinishBtn.hidden = true;
+  }
+}
+
+function updateDemoPreview() {
+  if (!onboardingDemoFrame) return;
+
+  const resolvedTheme = resolveTheme(onboardingState.theme);
+  onboardingDemoFrame.dataset.demoTheme = resolvedTheme;
+  onboardingDemoFrame.dataset.demoHighlight = onboardingState.highlight;
+  onboardingDemoFrame.dataset.demoTextMode = onboardingState.textMode;
+  onboardingDemoFrame.dataset.demoFont = onboardingState.font;
+  onboardingDemoFrame.dataset.demoWidth = onboardingState.readerWidth;
+  onboardingDemoFrame.dataset.demoTranslation = onboardingState.translationLayout;
+
+  const fontSizeRem = (1.45 * onboardingState.textSize / 100).toFixed(2);
+  onboardingDemoFrame.style.setProperty("--demo-font-size", `${fontSizeRem}rem`);
+  onboardingDemoFrame.style.setProperty("--demo-line-height", onboardingState.lineHeight);
+
+  if (demoSpeedDisplay) {
+    demoSpeedDisplay.textContent = `${onboardingState.playbackRate}×`;
+  }
+
+  const fontNames = { serif: "Book Serif", sans: "Clean Sans", accessible: "Accessible Sans" };
+  const themeNames = { paper: "Paper", mist: "Mist", night: "Night", system: "System" };
+  const highlightNames = { sage: "Sage", sky: "Sky", rose: "Rose", underline: "Underline", none: "None" };
+
+  if (previewStatusBadge) {
+    previewStatusBadge.textContent = `${themeNames[onboardingState.theme] || "Theme"} · ${fontNames[onboardingState.font] || "Font"} · ${highlightNames[onboardingState.highlight] || "Highlight"}`;
+  }
+
+  // Live ambience feedback on background document
+  document.documentElement.dataset.theme = resolvedTheme;
+  document.documentElement.dataset.highlight = onboardingState.highlight;
+  document.documentElement.dataset.textMode = onboardingState.textMode;
+  document.documentElement.dataset.translationLayout = onboardingState.translationLayout;
+  app.dataset.translationLayout = onboardingState.translationLayout;
+  document.documentElement.dataset.readerFont = onboardingState.font;
+  document.documentElement.dataset.readerWidth = onboardingState.readerWidth;
+  document.documentElement.style.setProperty("--reader-font-size", `${1.6 * onboardingState.textSize / 100}rem`);
+  document.documentElement.style.setProperty("--reader-line-height", onboardingState.lineHeight);
+}
+
+function renderDemoWords() {
+  if (!demoSpanishText) return;
+  demoSpanishText.replaceChildren();
+  hideDemoWordPopover();
+
+  DEMO_EXCERPT_WORDS.forEach((item, index) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "demo-word";
+    btn.dataset.demoIndex = String(index);
+    btn.textContent = item.word;
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      pauseDemoSimulation();
+      showDemoWordPopover(index, btn);
+    });
+    demoSpanishText.append(btn);
+    if (item.separator) {
+      demoSpanishText.append(document.createTextNode(item.separator));
+    }
+  });
+
+  if (demoEnglishTranslation) {
+    demoEnglishTranslation.textContent = DEMO_ENGLISH_TEXT;
+  }
+}
+
+function playDemoSimulation() {
+  onboardingState.isPlayingDemo = true;
+  onboardingState.demoLastTimestamp = performance.now();
+  if (demoPlayBtn) {
+    const label = demoPlayBtn.querySelector(".demo-play-label");
+    const icon = demoPlayBtn.querySelector(".demo-play-icon");
+    if (label) label.textContent = "Pause Demo";
+    if (icon) icon.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="4" width="4.5" height="16" rx="1"></rect><rect x="14.5" y="4" width="4.5" height="16" rx="1"></rect></svg>';
+  }
+  hideDemoWordPopover();
+  cancelAnimationFrame(onboardingState.demoRafId);
+  onboardingState.demoRafId = requestAnimationFrame(tickDemoSimulation);
+}
+
+function pauseDemoSimulation() {
+  onboardingState.isPlayingDemo = false;
+  cancelAnimationFrame(onboardingState.demoRafId);
+  if (demoPlayBtn) {
+    const label = demoPlayBtn.querySelector(".demo-play-label");
+    const icon = demoPlayBtn.querySelector(".demo-play-icon");
+    if (label) label.textContent = "Play Demo";
+    if (icon) icon.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>';
+  }
+}
+
+function toggleDemoSimulation() {
+  if (onboardingState.isPlayingDemo) {
+    pauseDemoSimulation();
+  } else {
+    if (onboardingState.demoCurrentTime >= DEMO_TOTAL_DURATION - 0.2) {
+      resetDemoSimulation();
+    }
+    playDemoSimulation();
+  }
+}
+
+function resetDemoSimulation() {
+  pauseDemoSimulation();
+  onboardingState.demoCurrentTime = 0;
+  updateDemoProgressUI();
+  highlightDemoWord(-1);
+}
+
+function tickDemoSimulation(timestamp) {
+  if (!onboardingState.isPlayingDemo) return;
+
+  const elapsedSec = (timestamp - onboardingState.demoLastTimestamp) / 1000;
+  onboardingState.demoLastTimestamp = timestamp;
+
+  onboardingState.demoCurrentTime += elapsedSec * onboardingState.playbackRate;
+
+  if (onboardingState.demoCurrentTime >= DEMO_TOTAL_DURATION) {
+    onboardingState.demoCurrentTime = DEMO_TOTAL_DURATION;
+    updateDemoProgressUI();
+    highlightDemoWord(DEMO_EXCERPT_WORDS.length - 1);
+    pauseDemoSimulation();
+    setTimeout(() => {
+      resetDemoSimulation();
+    }, 800);
+    return;
+  }
+
+  updateDemoProgressUI();
+
+  const activeIdx = DEMO_EXCERPT_WORDS.findIndex(
+    (w) => onboardingState.demoCurrentTime >= w.start && onboardingState.demoCurrentTime < w.start + w.dur
+  );
+  highlightDemoWord(activeIdx);
+
+  onboardingState.demoRafId = requestAnimationFrame(tickDemoSimulation);
+}
+
+function updateDemoProgressUI() {
+  if (!demoProgressFill || !demoTimeDisplay) return;
+  const pct = Math.min(100, Math.max(0, (onboardingState.demoCurrentTime / DEMO_TOTAL_DURATION) * 100));
+  demoProgressFill.style.width = `${pct}%`;
+
+  const curMins = Math.floor(onboardingState.demoCurrentTime / 60);
+  const curSecs = Math.floor(onboardingState.demoCurrentTime % 60).toString().padStart(2, "0");
+  const totMins = Math.floor(DEMO_TOTAL_DURATION / 60);
+  const totSecs = Math.floor(DEMO_TOTAL_DURATION % 60).toString().padStart(2, "0");
+  demoTimeDisplay.textContent = `${curMins}:${curSecs} / ${totMins}:${totSecs}`;
+}
+
+function highlightDemoWord(wordIndex) {
+  if (!demoSpanishText) return;
+  const wordEls = demoSpanishText.querySelectorAll(".demo-word");
+  wordEls.forEach((el, idx) => {
+    const isCurrent = idx === wordIndex;
+    const isRead = wordIndex >= 0 && idx < wordIndex;
+    el.classList.toggle("is-current", isCurrent);
+    el.classList.toggle("is-read", isRead);
+  });
+}
+
+function showDemoWordPopover(wordIndex, anchorEl) {
+  const item = DEMO_EXCERPT_WORDS[wordIndex];
+  if (!item || !anchorEl || !demoWordPopover) return;
+
+  demoSpanishText.querySelectorAll(".demo-word").forEach((w) => w.classList.remove("is-selected"));
+  anchorEl.classList.add("is-selected");
+
+  demoPopoverWord.textContent = item.word.replace(/[.,;:!?]/g, "");
+  demoPopoverDef.innerHTML = `${item.def}<em>Tap word in reader for instant vocabulary help.</em>`;
+  demoWordPopover.hidden = false;
+
+  const scrollContainer = demoSpanishText.closest(".demo-reader-scroll");
+  if (!scrollContainer) return;
+
+  const containerRect = scrollContainer.getBoundingClientRect();
+  const anchorRect = anchorEl.getBoundingClientRect();
+
+  const top = anchorRect.bottom - containerRect.top + scrollContainer.scrollTop + 6;
+  const left = Math.max(8, Math.min(containerRect.width - 250, anchorRect.left - containerRect.left - 20));
+
+  demoWordPopover.style.top = `${top}px`;
+  demoWordPopover.style.left = `${left}px`;
+}
+
+function hideDemoWordPopover() {
+  if (!demoWordPopover) return;
+  demoWordPopover.hidden = true;
+  demoSpanishText?.querySelectorAll(".demo-word").forEach((w) => w.classList.remove("is-selected"));
+}
+
+function renderOnboardingSummary() {
+  if (!onboardingSummaryBadges) return;
+
+  const themeNames = { paper: "Paper", mist: "Mist", night: "Night", system: "System" };
+  const fontNames = { serif: "Book Serif", sans: "Clean Sans", accessible: "Accessible Sans" };
+  const highlightNames = { sage: "Sage Wash", sky: "Sky Wash", rose: "Rose Wash", underline: "Underline", none: "None" };
+  const transNames = { "spanish-only": "Spanish Immersion", "side-by-side": "Side by Side", "english-below": "English Underneath" };
+  const levelNames = { all: "All Levels", B1: "B1 Intermediate", B2: "B2 Upper Intermediate", C1: "C1 Advanced" };
+  const formatNames = { all: "All Formats", listen: "Listen & Read", read: "Read Only" };
+
+  const badges = [
+    { label: "Theme", val: themeNames[onboardingState.theme] || "System" },
+    { label: "Typeface", val: `${fontNames[onboardingState.font]} (${onboardingState.textSize}%)` },
+    { label: "Highlight", val: highlightNames[onboardingState.highlight] || "Sage" },
+    { label: "Layout", val: transNames[onboardingState.translationLayout] || "Immersion" },
+    { label: "Audio Rate", val: `${onboardingState.playbackRate}×` },
+    { label: "Reading Level", val: levelNames[onboardingState.catalogLevel] || "All Levels" },
+    { label: "Format", val: formatNames[onboardingState.catalogFormat] || "All Formats" }
+  ];
+
+  onboardingSummaryBadges.innerHTML = badges
+    .map(
+      (b) => `
+    <span class="summary-badge-item">
+      <span>${b.label}:</span>
+      <strong>${b.val}</strong>
+    </span>
+  `
+    )
+    .join("");
+}
+
+function finishOnboarding() {
+  appearanceSettings.theme = onboardingState.theme;
+  appearanceSettings.font = onboardingState.font;
+  appearanceSettings.textSize = onboardingState.textSize;
+  appearanceSettings.lineHeight = onboardingState.lineHeight;
+  appearanceSettings.readerWidth = onboardingState.readerWidth;
+  appearanceSettings.highlight = onboardingState.highlight;
+  appearanceSettings.textMode = onboardingState.textMode;
+  appearanceSettings.translationLayout = onboardingState.translationLayout;
+  appearanceSettings.playbackRate = onboardingState.playbackRate;
+
+  saveAppearanceSettings(appearanceSettings);
+
+  catalogSettings.level = onboardingState.catalogLevel;
+  catalogSettings.format = onboardingState.catalogFormat;
+  saveCatalogSettings();
+
+  safeSetLocalStorage("spanish-reader-onboarding-v1", { completed: true, timestamp: Date.now() });
+
+  applyAppearanceSettings();
+  updateLevelFilters();
+  if (formatFilter) formatFilter.value = catalogSettings.format;
+  renderTrackList();
+
+  pauseDemoSimulation();
+  try {
+    onboardingDialog.close();
+  } catch {}
+}
+
+// --- Wire Onboarding Event Listeners ---
+
+if (openOnboardingBtn) {
+  openOnboardingBtn.addEventListener("click", () => openOnboarding(1));
+}
+
+if (openOnboardingFromSettings) {
+  openOnboardingFromSettings.addEventListener("click", () => {
+    settingsMenu?.removeAttribute("open");
+    openOnboarding(1);
+  });
+}
+
+if (closeOnboardingBtn) {
+  closeOnboardingBtn.addEventListener("click", () => closeOnboarding(false));
+}
+
+if (onboardingSkipBtn) {
+  onboardingSkipBtn.addEventListener("click", () => closeOnboarding(true));
+}
+
+if (onboardingPrevBtn) {
+  onboardingPrevBtn.addEventListener("click", () => goToOnboardingStep(onboardingState.step - 1));
+}
+
+if (onboardingNextBtn) {
+  onboardingNextBtn.addEventListener("click", () => {
+    if (onboardingState.step < 4) {
+      goToOnboardingStep(onboardingState.step + 1);
+    } else {
+      finishOnboarding();
+    }
+  });
+}
+
+if (onboardingFinishBtn) {
+  onboardingFinishBtn.addEventListener("click", () => finishOnboarding());
+}
+
+onboardingStepPills.forEach((pill) => {
+  pill.addEventListener("click", () => {
+    const step = Number(pill.dataset.step);
+    if (step >= 1 && step <= 4) goToOnboardingStep(step);
+  });
+});
+
+onboardingOptionCards.forEach((card) => {
+  card.addEventListener("click", () => {
+    const setting = card.dataset.setting;
+    const value = card.dataset.value;
+    if (!setting) return;
+
+    if (setting === "playbackRate") {
+      onboardingState.playbackRate = Number(value);
+    } else {
+      onboardingState[setting] = value;
+    }
+
+    const groupCards = onboardingOptionCards.filter((c) => c.dataset.setting === setting);
+    groupCards.forEach((c) => {
+      const matches = c.dataset.value === String(value);
+      c.classList.toggle("is-selected", matches);
+      c.setAttribute("aria-checked", matches ? "true" : "false");
+    });
+
+    updateDemoPreview();
+    if (onboardingState.step === 4) {
+      renderOnboardingSummary();
+    }
+  });
+});
+
+if (onboardingTextSize && onboardingTextSizeValue) {
+  onboardingTextSize.addEventListener("input", () => {
+    onboardingState.textSize = Number(onboardingTextSize.value);
+    onboardingTextSizeValue.value = `${onboardingState.textSize}%`;
+    updatePresetChips("size", onboardingState.textSize);
+    updateDemoPreview();
+  });
+}
+
+if (onboardingLineHeight && onboardingLineHeightValue) {
+  onboardingLineHeight.addEventListener("input", () => {
+    onboardingState.lineHeight = Number(onboardingLineHeight.value);
+    onboardingLineHeightValue.value = onboardingState.lineHeight.toFixed(1);
+    updatePresetChips("height", onboardingState.lineHeight);
+    updateDemoPreview();
+  });
+}
+
+onboardingPresetChips.forEach((chip) => {
+  chip.addEventListener("click", () => {
+    const type = chip.dataset.slider;
+    const val = Number(chip.dataset.val);
+    if (type === "size" && onboardingTextSize && onboardingTextSizeValue) {
+      onboardingTextSize.value = val;
+      onboardingState.textSize = val;
+      onboardingTextSizeValue.value = `${val}%`;
+      updatePresetChips("size", val);
+    } else if (type === "height" && onboardingLineHeight && onboardingLineHeightValue) {
+      onboardingLineHeight.value = val;
+      onboardingState.lineHeight = val;
+      onboardingLineHeightValue.value = val.toFixed(1);
+      updatePresetChips("height", val);
+    }
+    updateDemoPreview();
+  });
+});
+
+if (demoPlayBtn) {
+  demoPlayBtn.addEventListener("click", () => toggleDemoSimulation());
+}
+
+if (onboardingDialog) {
+  onboardingDialog.addEventListener("close", () => {
+    pauseDemoSimulation();
+    applyAppearanceSettings();
+  });
+}
+
