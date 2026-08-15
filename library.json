@@ -630,11 +630,15 @@
     "collection": "greek-classics",
     "originalLanguage": "Ancient Greek",
     "rights": "Ancient Greek original and historical Spanish edition; source transcription terms apply; project-produced local narration",
-    "text": "texts/greek_epicuro_carta_meneceo.txt",
     "cover": "covers/greek_epicuro_carta_meneceo.webp",
     "wordCount": 1767,
     "minutes": 10,
-    "englishTranslation": "translations/greek-epicuro-carta-meneceo.en.json"
+    "englishTranslation": "translations/greek-epicuro-carta-meneceo.en.json",
+    "sourceText": "texts/greek_epicuro_carta_meneceo.txt",
+    "audio": "greek_epicuro_carta_meneceo.m4a",
+    "transcript": "greek_epicuro_carta_meneceo.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "8980b301c90fd736"
   },
   {
     "id": "greek-platon-caverna",
@@ -657,11 +661,15 @@
     "collection": "greek-classics",
     "originalLanguage": "Ancient Greek",
     "rights": "Ancient Greek original and historical Spanish edition; source transcription terms apply; project-produced local narration",
-    "text": "texts/greek_platon_alegoria_caverna.txt",
     "cover": "covers/greek_platon_alegoria_caverna.webp",
     "wordCount": 318,
     "minutes": 2,
-    "englishTranslation": "translations/greek-platon-caverna.en.json"
+    "englishTranslation": "translations/greek-platon-caverna.en.json",
+    "sourceText": "texts/greek_platon_alegoria_caverna.txt",
+    "audio": "greek_platon_alegoria_caverna.m4a",
+    "transcript": "greek_platon_alegoria_caverna.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "0a6951a43e142900"
   },
   {
     "id": "greek-platon-criton",
@@ -684,11 +692,15 @@
     "collection": "greek-classics",
     "originalLanguage": "Ancient Greek",
     "rights": "Ancient Greek original and historical Spanish edition; source transcription terms apply; project-produced local narration",
-    "text": "texts/greek_platon_criton.txt",
     "cover": "covers/greek_platon_criton.webp",
     "wordCount": 5217,
-    "minutes": 29,
-    "englishTranslation": "translations/greek-platon-criton.en.json"
+    "minutes": 33,
+    "englishTranslation": "translations/greek-platon-criton.en.json",
+    "sourceText": "texts/greek_platon_criton.txt",
+    "audio": "greek_platon_criton.m4a",
+    "transcript": "greek_platon_criton.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "c2c85cd13e284c62"
   },
   {
     "id": "greek-homero-odisea-canto-ix",
@@ -711,11 +723,15 @@
     "collection": "greek-classics",
     "originalLanguage": "Ancient Greek",
     "rights": "Ancient Greek original and historical Spanish edition; source transcription terms apply; project-produced local narration",
-    "text": "texts/greek_homero_odisea_canto_ix.txt",
     "cover": "covers/greek_homero_odisea_canto_ix.webp",
     "wordCount": 5644,
-    "minutes": 31,
-    "englishTranslation": "translations/greek-homero-odisea-canto-ix.en.json"
+    "minutes": 35,
+    "englishTranslation": "translations/greek-homero-odisea-canto-ix.en.json",
+    "sourceText": "texts/greek_homero_odisea_canto_ix.txt",
+    "audio": "greek_homero_odisea_canto_ix.m4a",
+    "transcript": "greek_homero_odisea_canto_ix.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "2777ca69f6bdb2f1"
   },
   {
     "id": "greek-homero-odisea-canto-xii",
@@ -739,10 +755,14 @@
     "collection": "greek-classics",
     "originalLanguage": "Ancient Greek",
     "rights": "Ancient Greek original and historical Spanish edition; source transcription terms apply; project-produced local narration",
-    "text": "texts/greek_homero_odisea_canto_xii.txt",
     "cover": "covers/greek_homero_odisea_canto_xii.webp",
     "wordCount": 4566,
-    "minutes": 25,
-    "englishTranslation": "translations/greek-homero-odisea-canto-xii.en.json"
+    "minutes": 28,
+    "englishTranslation": "translations/greek-homero-odisea-canto-xii.en.json",
+    "sourceText": "texts/greek_homero_odisea_canto_xii.txt",
+    "audio": "greek_homero_odisea_canto_xii.m4a",
+    "transcript": "greek_homero_odisea_canto_xii.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "f3fda65e8785173e"
   }
 ]

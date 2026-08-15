@@ -33,7 +33,7 @@ SILENCE_SECONDS = 0.25
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("plan", "run", "status"), nargs="?", default="run")
+    parser.add_argument("command", choices=("plan", "run", "status", "publish"), nargs="?", default="run")
     parser.add_argument("--root", type=Path, default=Path.cwd())
     parser.add_argument("--model-size", choices=("1.7B", "0.6B"), default="1.7B")
     parser.add_argument("--max-chars", type=int, default=500)
@@ -60,6 +60,14 @@ def main() -> None:
         return
     if args.command == "status":
         print_status(jobs)
+        return
+    if args.command == "publish":
+        for job in jobs:
+            if not job["audio_path"].is_file():
+                raise RuntimeError(f"Missing completed narration: {job['audio_path'].name}")
+            validate_aligned_transcript(job, args.alignment_model)
+        publish_jobs(root, jobs)
+        print("Validated existing narrations and updated library.json.")
         return
     if not jobs:
         print("No text-only catalog entries need narration.")
