@@ -1,54 +1,64 @@
 [
   {
-    "title": "Adioscordera",
+    "title": "¡Adiós, Cordera!",
+    "author": "Leopoldo Alas (Clarín)",
+    "cover": "covers/adioscordera.jpg",
     "audio": "adioscordera.mp3",
     "transcript": "adioscordera.json"
   },
   {
     "title": "Cuentos de amor de locura y de muerte",
+    "author": "Horacio Quiroga",
+    "cover": "covers/cuentos_amor.jpg",
     "audio": "Cuentos de amor de locura y de muerte.mp3",
     "transcript": "Cuentos de amor de locura y de muerte.json"
   },
   {
-    "title": "Cuentos de amor de locura y de muerte.old",
-    "audio": "Cuentos de amor de locura y de muerte.old.mp3"
-  },
-  {
     "title": "Cuentos de la tierra",
+    "author": "Emilia Pardo Bazán",
+    "cover": "covers/cuentos_tierra.jpg",
     "audio": "Cuentos de la tierra.mp3",
     "transcript": "Cuentos de la tierra.json"
   },
   {
-    "title": "Cuentos de la tierra.old",
-    "audio": "Cuentos de la tierra.old.mp3"
-  },
-  {
     "title": "El monte de las ánimas",
+    "author": "Gustavo Adolfo Bécquer",
+    "cover": "covers/monte_animas.jpg",
     "audio": "el_monte_de_las_animas.m4a",
     "transcript": "el_monte_de_las_animas.json"
   },
   {
     "title": "El rayo de luna",
+    "author": "Gustavo Adolfo Bécquer",
+    "cover": "covers/rayo_luna.jpg",
     "audio": "el_rayo_de_luna.m4a",
     "transcript": "el_rayo_de_luna.json"
   },
   {
     "title": "El suicidio de la hispania romana",
+    "author": "Félix de Azúa",
+    "cover": "covers/suicidio_romana.jpg",
     "audio": "El_suicidio_de_la_Hispania_romana.m4a",
     "transcript": "El_suicidio_de_la_Hispania_romana.json"
   },
   {
-    "title": "Elindulto",
+    "title": "El indulto",
+    "author": "Emilia Pardo Bazán",
+    "cover": "covers/elindulto.jpg",
     "audio": "elindulto.mp3",
     "transcript": "elindulto.json"
   },
   {
     "title": "La ajorca de oro",
+    "author": "Gustavo Adolfo Bécquer",
+    "cover": "covers/ajorca_oro.jpg",
     "audio": "la_ajorca_de_oro.m4a",
     "transcript": "la_ajorca_de_oro.json"
   },
   {
     "title": "Vanguardia revolucionaria frente a política sindical",
+    "author": "Andreu Nin",
+    "cover": "covers/vanguardia.jpg",
     "audio": "Vanguardia_revolucionaria_frente_a_política_sindical.m4a",
     "transcript": "Vanguardia_revolucionaria_frente_a_política_sindical.json"
   }

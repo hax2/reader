@@ -18,20 +18,38 @@ def main() -> None:
     args = parser.parse_args()
 
     root = args.root.resolve()
+    
+    existing_library = {}
+    if args.output.exists():
+        try:
+            with open(args.output, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if isinstance(data, list):
+                    existing_library = {item.get("audio"): item for item in data if item.get("audio")}
+        except Exception:
+            pass
+
     tracks = []
     for audio in sorted(root.iterdir(), key=lambda path: path.name.lower()):
         if not audio.is_file() or audio.suffix.lower() not in AUDIO_EXTENSIONS:
             continue
         transcript = audio.with_suffix(".json")
-        item = {
-            "title": title_from_stem(audio.stem),
-            "audio": audio.name,
-        }
-        if transcript.exists():
-            item["transcript"] = transcript.name
+        if not transcript.exists():
+            continue
+            
+        item = existing_library.get(audio.name, {})
+        
+        if "title" not in item:
+            item["title"] = title_from_stem(audio.stem)
+            
+        item["audio"] = audio.name
+        item["transcript"] = transcript.name
+        
+        if "title" not in existing_library.get(audio.name, {}):
             transcript_title = title_from_transcript(transcript)
             if transcript_title:
                 item["title"] = transcript_title
+                
         tracks.append(item)
 
     args.output.write_text(
