@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import fcntl
+import gc
 import hashlib
 import json
 import os
@@ -26,7 +27,7 @@ REFERENCE_DURATION = 4.54
 REFERENCE_TEXT = (
     "La noche de difuntos me despertó a no sé qué hora el doble de las campanas."
 )
-PIPELINE_VERSION = 2
+PIPELINE_VERSION = 3
 SILENCE_SECONDS = 0.25
 
 
@@ -40,6 +41,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--retries", type=int, default=3)
     parser.add_argument("--batch-size", type=int, default=2)
     parser.add_argument("--only", action="append", default=[], help="generate only this catalog id")
+    parser.add_argument(
+        "--alignment-model",
+        default="medium",
+        help="faster-whisper model used for the required final word alignment",
+    )
     return parser.parse_args()
 
 
@@ -146,9 +152,21 @@ def run_worker(root: Path, cache_root: Path, jobs: list[dict], args: argparse.Na
             label = str(indexes[0] + 1) if len(indexes) == 1 else f"{indexes[0] + 1}–{indexes[-1] + 1}"
             print(f"  chunks {label}/{len(job['chunks'])}", flush=True)
         assemble_story(job, args)
-        print(f"  wrote {job['audio_path'].name} and {job['transcript_path'].name}", flush=True)
+        print(f"  wrote {job['audio_path'].name}", flush=True)
+    # The TTS model nearly fills an 8 GB card. Release it before loading Whisper
+    # in the alignment subprocess, otherwise CUDA can fail despite both models
+    # fitting comfortably when run one after the other.
+    del clone_prompt
+    del model
+    gc.collect()
+    try:
+        import torch
+        torch.cuda.empty_cache()
+    except ImportError:
+        pass
+    align_jobs(root, jobs, args)
     publish_jobs(root, jobs)
-    print("All local narrations are complete and library.json has been updated.", flush=True)
+    print("All narrations are Whisper-aligned and library.json has been updated.", flush=True)
 
 
 def load_model(model_size: str):
@@ -276,7 +294,7 @@ def generate_with_fallback(model, clone_prompt, job: dict, indexes: list[int], a
 
 def assemble_story(job: dict, args: argparse.Namespace) -> None:
     combined = job["cache_dir"] / "combined.wav"
-    offsets, durations = join_wavs(
+    join_wavs(
         [(chunk, chunk_path(job, index)) for index, chunk in enumerate(job["chunks"])],
         combined,
     )
@@ -290,27 +308,10 @@ def assemble_story(job: dict, args: argparse.Namespace) -> None:
         check=True,
     )
     os.replace(temporary_audio, job["audio_path"])
-    words = source_timings(job["chunks"], offsets, durations)
-    payload = {
-        "source": job["audio_path"].name,
-        "title": job["entry"]["title"],
-        "language": "es",
-        "generator": f"Qwen3-TTS {args.model_size} local voice clone with source-text timing",
-        "words": words,
-    }
-    temporary_transcript = job["transcript_path"].with_suffix(".tmp.json")
-    temporary_transcript.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-    os.replace(temporary_transcript, job["transcript_path"])
 
 
-def join_wavs(chunks: list[tuple[str, Path]], output: Path) -> tuple[list[float], list[float]]:
+def join_wavs(chunks: list[tuple[str, Path]], output: Path) -> None:
     sample_rate = 24000
-    offsets: list[float] = []
-    durations: list[float] = []
-    cursor = 0.0
     with wave.open(str(output), "wb") as target:
         target.setnchannels(1)
         target.setsampwidth(2)
@@ -320,29 +321,44 @@ def join_wavs(chunks: list[tuple[str, Path]], output: Path) -> tuple[list[float]
                 if source.getnchannels() != 1 or source.getsampwidth() != 2 or source.getframerate() != sample_rate:
                     raise RuntimeError(f"Incompatible local TTS chunk: {path}")
                 frames = source.readframes(source.getnframes())
-                duration = source.getnframes() / sample_rate
-            offsets.append(cursor)
-            durations.append(duration)
             target.writeframes(frames)
-            cursor += duration
             if index < len(chunks) - 1:
                 target.writeframes(b"\0\0" * int(sample_rate * SILENCE_SECONDS))
-                cursor += SILENCE_SECONDS
-    return offsets, durations
 
 
-def source_timings(chunks: list[str], offsets: list[float], durations: list[float]) -> list[dict]:
-    words: list[dict] = []
-    for text, offset, duration in zip(chunks, offsets, durations):
-        tokens = re.findall(r"\S+", text)
-        weights = [token_weight(token) for token in tokens]
-        total = sum(weights) or 1.0
-        cursor = offset
-        for token, weight in zip(tokens, weights):
-            token_duration = duration * weight / total
-            words.append({"word": token, "start": round(cursor, 3), "end": round(cursor + token_duration, 3)})
-            cursor += token_duration
-    return words
+def align_jobs(root: Path, jobs: list[dict], args: argparse.Namespace) -> None:
+    """Run actual speech alignment once for the full batch, then verify every result."""
+    wrapper = root / "scripts" / "transcribe_gpu.sh"
+    if not wrapper.is_file() or not (root / ".venv").is_dir():
+        raise RuntimeError(
+            "Whisper alignment is required before publishing. "
+            "Run ./scripts/setup_transcriber.sh, then resume this command."
+        )
+    print(f"Aligning {len(jobs)} narration(s) with faster-whisper {args.alignment_model}…", flush=True)
+    subprocess.run(
+        [str(wrapper), *(str(job["audio_path"]) for job in jobs), "--model", args.alignment_model],
+        cwd=root,
+        check=True,
+    )
+    for job in jobs:
+        validate_aligned_transcript(job, args.alignment_model)
+
+
+def validate_aligned_transcript(job: dict, model: str) -> None:
+    path = job["transcript_path"]
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as error:
+        raise RuntimeError(f"Whisper did not produce a valid transcript for {job['entry']['id']}: {error}") from error
+    words = payload.get("words") if isinstance(payload, dict) else None
+    if (
+        not isinstance(words, list)
+        or not words
+        or payload.get("timingMethod") != "faster-whisper-word-timestamps"
+        or payload.get("model") != model
+        or payload.get("source") != job["audio_path"].name
+    ):
+        raise RuntimeError(f"Refusing to publish unaligned transcript: {path.name}")
 
 
 def publish_jobs(root: Path, jobs: list[dict]) -> None:
@@ -462,6 +478,7 @@ def content_signature(text: str, root: Path, args: argparse.Namespace) -> str:
             "pipeline": PIPELINE_VERSION,
             "text": text,
             "model": MODEL_IDS[args.model_size],
+            "alignmentModel": args.alignment_model,
             "max_chars": args.max_chars,
             "reference": reference_hash,
         },
@@ -469,12 +486,6 @@ def content_signature(text: str, root: Path, args: argparse.Namespace) -> str:
         sort_keys=True,
     ).encode()
     return hashlib.sha256(payload).hexdigest()[:16]
-
-
-def token_weight(token: str) -> float:
-    letters = len(re.sub(r"[^\wáéíóúüñÁÉÍÓÚÜÑ]", "", token))
-    pause = 3.0 if token.endswith((".", "!", "?", "…")) else 1.5 if token.endswith((",", ";", ":")) else 0.0
-    return max(1.0, letters * 0.75 + pause)
 
 
 if __name__ == "__main__":

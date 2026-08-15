@@ -9,6 +9,7 @@ const librarySearch = document.querySelector("#librarySearch");
 const formatFilter = document.querySelector("#formatFilter");
 const librarySort = document.querySelector("#librarySort");
 const levelFilters = [...document.querySelectorAll(".level-filter")];
+const collectionTabs = [...document.querySelectorAll(".collection-tab")];
 const catalogSummary = document.querySelector("#catalogSummary");
 const playPause = document.querySelector("#playPause");
 const playbackRateButton = document.querySelector("#playbackRate");
@@ -99,6 +100,19 @@ librarySearch.value = catalogSettings.search;
 formatFilter.value = catalogSettings.format;
 librarySort.value = catalogSettings.sort;
 updateLevelFilters();
+updateCollectionTabs();
+
+collectionTabs.forEach((button, index) => {
+  button.addEventListener("click", () => selectCollection(button.dataset.collection));
+  button.addEventListener("keydown", (event) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    let nextIndex = event.key === "Home" ? 0 : event.key === "End" ? collectionTabs.length - 1 : index + (event.key === "ArrowRight" ? 1 : -1);
+    nextIndex = (nextIndex + collectionTabs.length) % collectionTabs.length;
+    selectCollection(collectionTabs[nextIndex].dataset.collection);
+    collectionTabs[nextIndex].focus();
+  });
+});
 
 librarySearch.addEventListener("input", () => {
   catalogSettings.search = librarySearch.value;
@@ -140,11 +154,12 @@ window.addEventListener("popstate", () => {
 
 trackList.addEventListener("click", (event) => {
   if (event.target.closest("[data-clear-catalog]")) {
-    catalogSettings = { search: "", format: "all", sort: "difficulty", level: "all" };
+    catalogSettings = { search: "", format: "all", sort: "difficulty", level: "all", collection: "all" };
     librarySearch.value = "";
     formatFilter.value = "all";
     librarySort.value = "difficulty";
     updateLevelFilters();
+    updateCollectionTabs();
     saveCatalogSettings();
     renderTrackList();
     librarySearch.focus();
@@ -554,6 +569,7 @@ async function loadLibrary() {
         id: track.id || track.audio || track.text || track.transcript,
         title: track.title || track.audio || track.text || track.transcript,
         difficulty: difficultyOrder.includes(track.difficulty) ? track.difficulty : "C1",
+        collection: track.collection === "bible" ? "bible" : "stories",
         minutes: Number(track.minutes) || 0
       }));
     renderTrackList();
@@ -721,6 +737,7 @@ function renderTrackList() {
   const query = normalizeSearch(catalogSettings.search);
   const visibleTracks = tracks
     .filter((track) => {
+      if (catalogSettings.collection !== "all" && track.collection !== catalogSettings.collection) return false;
       if (catalogSettings.level !== "all" && track.difficulty !== catalogSettings.level) return false;
       if (catalogSettings.format === "listen" && !track.audio) return false;
       if (catalogSettings.format === "read" && track.audio) return false;
@@ -730,6 +747,7 @@ function renderTrackList() {
         track.author,
         track.genre,
         track.description,
+        track.collection === "bible" ? "biblia bible" : "cuentos stories",
         ...(Array.isArray(track.tags) ? track.tags : [])
       ].filter(Boolean).join(" ")).includes(query);
     })
@@ -755,6 +773,7 @@ function renderTrackList() {
   const fragment = document.createDocumentFragment();
   const showingDefaultCatalog = !query
     && catalogSettings.level === "all"
+    && catalogSettings.collection === "all"
     && catalogSettings.format === "all"
     && catalogSettings.sort === "difficulty";
   const continueTracks = showingDefaultCatalog
@@ -877,6 +896,23 @@ function updateLevelFilters() {
   });
 }
 
+function selectCollection(collection) {
+  catalogSettings.collection = ["all", "stories", "bible"].includes(collection) ? collection : "all";
+  saveCatalogSettings();
+  updateCollectionTabs();
+  renderTrackList();
+}
+
+function updateCollectionTabs() {
+  collectionTabs.forEach((button) => {
+    const selected = button.dataset.collection === catalogSettings.collection;
+    button.classList.toggle("is-selected", selected);
+    button.setAttribute("aria-selected", String(selected));
+    button.tabIndex = selected ? 0 : -1;
+    if (selected) trackList.setAttribute("aria-labelledby", button.id);
+  });
+}
+
 function loadCatalogSettings() {
   try {
     const saved = JSON.parse(localStorage.getItem("reader-catalog-v1") || "{}");
@@ -884,10 +920,11 @@ function loadCatalogSettings() {
       search: String(saved.search || ""),
       format: ["all", "listen", "read"].includes(saved.format) ? saved.format : "all",
       sort: ["difficulty", "title", "author", "length"].includes(saved.sort) ? saved.sort : "difficulty",
-      level: ["all", ...difficultyOrder].includes(saved.level) ? saved.level : "all"
+      level: ["all", ...difficultyOrder].includes(saved.level) ? saved.level : "all",
+      collection: ["all", "stories", "bible"].includes(saved.collection) ? saved.collection : "all"
     };
   } catch {
-    return { search: "", format: "all", sort: "difficulty", level: "all" };
+    return { search: "", format: "all", sort: "difficulty", level: "all", collection: "all" };
   }
 }
 

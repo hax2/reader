@@ -16,3 +16,11 @@
 The works are in the public domain. Their Wikisource transcriptions are available
 under the Creative Commons Attribution-ShareAlike 4.0 license.
 The Wikisource transcriptions preserve the historical spelling of their editions.
+
+## Biblia en Español Sencillo
+
+The Bible shelf uses selected chapters from [La Biblia en Español Sencillo](https://ebible.org/Scriptures/details.php?id=spabes),
+© 2018, 2019 AudioBiblia.org / Irma Flores and distributed under CC BY 4.0.
+The imported text comes from the publisher's narration-friendly chapter archive.
+Verse numbers are omitted there; this project normalizes the chapter headings but
+does not rewrite the passage text.

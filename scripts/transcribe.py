@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 from pathlib import Path
 
@@ -93,9 +94,12 @@ def transcribe_audio(model, audio: Path, args: argparse.Namespace) -> None:
         "language": info.language,
         "language_probability": round(float(info.language_probability), 4),
         "model": args.model,
+        "timingMethod": "faster-whisper-word-timestamps",
         "words": words,
     }
-    output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temporary = output.with_suffix(".tmp.json")
+    temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    os.replace(temporary, output)
     print(f"Wrote {len(words)} words to {output}")
 
     if args.vtt:

@@ -128,9 +128,11 @@ HF_HOME=.tts-cache/huggingface .tts-venv/bin/python scripts/local_tts.py run
 ```
 
 The default is the official Qwen3-TTS 1.7B Base voice-cloning model in BF16.
-It clones a short clean excerpt from the existing project narrator, processes
-small resumable batches on the GPU, and publishes an M4A plus timed source-text JSON
-for every text-only catalog entry. Completed chunks are content-hashed and
+It clones a short clean excerpt from the existing project narrator and processes
+small resumable batches on the GPU. After synthesis, the command loads
+faster-whisper once for the entire batch and creates real word timestamps. It
+will not publish any catalog entries if that alignment step is missing or fails.
+Completed chunks are content-hashed and
 cached under `.tts-cache/local`, so an interrupted run resumes instead of
 starting over. Use `status` to inspect progress without loading the model:
 

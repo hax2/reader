@@ -27,3 +27,10 @@ illustration with no typography, logos, borders, or watermarks.
 The generated PNG masters remain in the local Codex image-output directory;
 the repository versions are centered 848 × 1264 WebP derivatives optimized for
 the catalog.
+
+The six Bible covers were generated for this project on 2026-08-15 with the same
+tool and no external artwork. They use symbolic, text-free scenes: a shepherd's
+valley for selected Psalms, a lit crossroads for selected Proverbs, a tree through
+four seasons for Ecclesiastes, two women in a barley field for Ruth, a ship and
+great fish for Jonah, and a hillside gathering for the Sermon on the Mount. The
+repository files are centered 848 × 1264 WebP derivatives of the generated PNGs.

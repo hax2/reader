@@ -17,6 +17,11 @@
             <p class="library-intro">Public-domain Spanish classics, arranged by reading level. Listen with word-by-word highlighting or settle in and read.</p>
           </div>
         </div>
+        <div class="collection-tabs" role="tablist" aria-label="Choose a library collection">
+          <button id="collection-all" type="button" class="collection-tab is-selected" role="tab" aria-selected="true" aria-controls="trackList" tabindex="0" data-collection="all">All readings</button>
+          <button id="collection-stories" type="button" class="collection-tab" role="tab" aria-selected="false" aria-controls="trackList" tabindex="-1" data-collection="stories">Stories</button>
+          <button id="collection-bible" type="button" class="collection-tab" role="tab" aria-selected="false" aria-controls="trackList" tabindex="-1" data-collection="bible">Bible</button>
+        </div>
         <div class="catalog-tools" role="search" aria-label="Find a reading">
           <label class="search-field">
             <span class="visually-hidden">Search stories or authors</span>
@@ -48,7 +53,7 @@
           <button type="button" class="level-filter" data-level="C1" aria-pressed="false">C1</button>
         </div>
         <p id="catalogSummary" class="catalog-summary" aria-live="polite"></p>
-        <div id="trackList" class="track-list" aria-live="polite"></div>
+        <div id="trackList" class="track-list" role="tabpanel" aria-labelledby="collection-all" aria-live="polite"></div>
       </section>
 
       <section class="reader-view screen" aria-labelledby="app-title">

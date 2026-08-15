@@ -248,6 +248,42 @@ h2 {
   line-height: 1.6;
 }
 
+.collection-tabs {
+  display: flex;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 14px;
+  padding: 4px;
+  overflow-x: auto;
+  background: var(--soft-surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.collection-tab {
+  min-height: 38px;
+  padding: 0 15px;
+  flex: 0 0 auto;
+  color: var(--soft-ink);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  font-size: 0.86rem;
+  font-weight: 750;
+}
+
+.collection-tab:hover,
+.collection-tab.is-selected {
+  color: var(--button-ink);
+  background: var(--accent);
+}
+
+.collection-tab:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 .catalog-tools {
   display: grid;
   grid-template-columns: minmax(220px, 1fr) minmax(150px, 190px) minmax(150px, 190px);
