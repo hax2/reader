@@ -1,0 +1,938 @@
+{
+  "source": "la_cigarra_y_la_hormiga.m4a",
+  "title": "La cigarra y la hormiga",
+  "language": "es",
+  "generator": "Qwen3-TTS 1.7B local voice clone with source-text timing",
+  "words": [
+    {
+      "word": "La",
+      "start": 0.0,
+      "end": 0.181
+    },
+    {
+      "word": "cigarra",
+      "start": 0.181,
+      "end": 0.814
+    },
+    {
+      "word": "y",
+      "start": 0.814,
+      "end": 0.935
+    },
+    {
+      "word": "la",
+      "start": 0.935,
+      "end": 1.116
+    },
+    {
+      "word": "hormiga",
+      "start": 1.116,
+      "end": 1.749
+    },
+    {
+      "word": "Félix",
+      "start": 1.749,
+      "end": 2.201
+    },
+    {
+      "word": "María",
+      "start": 2.201,
+      "end": 2.654
+    },
+    {
+      "word": "Samaniego",
+      "start": 2.654,
+      "end": 3.468
+    },
+    {
+      "word": "Cantando",
+      "start": 3.468,
+      "end": 4.192
+    },
+    {
+      "word": "la",
+      "start": 4.192,
+      "end": 4.373
+    },
+    {
+      "word": "Cigarra",
+      "start": 4.373,
+      "end": 5.006
+    },
+    {
+      "word": "Pasó",
+      "start": 5.006,
+      "end": 5.368
+    },
+    {
+      "word": "el",
+      "start": 5.368,
+      "end": 5.549
+    },
+    {
+      "word": "verano",
+      "start": 5.549,
+      "end": 6.092
+    },
+    {
+      "word": "entero,",
+      "start": 6.092,
+      "end": 6.815
+    },
+    {
+      "word": "Sin",
+      "start": 6.815,
+      "end": 7.087
+    },
+    {
+      "word": "hacer",
+      "start": 7.087,
+      "end": 7.539
+    },
+    {
+      "word": "provisiones",
+      "start": 7.539,
+      "end": 8.534
+    },
+    {
+      "word": "Allá",
+      "start": 8.534,
+      "end": 8.896
+    },
+    {
+      "word": "para",
+      "start": 8.896,
+      "end": 9.258
+    },
+    {
+      "word": "el",
+      "start": 9.258,
+      "end": 9.439
+    },
+    {
+      "word": "invierno.",
+      "start": 9.439,
+      "end": 10.525
+    },
+    {
+      "word": "Los",
+      "start": 10.525,
+      "end": 10.796
+    },
+    {
+      "word": "frios",
+      "start": 10.796,
+      "end": 11.248
+    },
+    {
+      "word": "la",
+      "start": 11.248,
+      "end": 11.429
+    },
+    {
+      "word": "obligaron",
+      "start": 11.429,
+      "end": 12.244
+    },
+    {
+      "word": "Á",
+      "start": 12.244,
+      "end": 12.364
+    },
+    {
+      "word": "guardar",
+      "start": 12.364,
+      "end": 12.997
+    },
+    {
+      "word": "el",
+      "start": 12.997,
+      "end": 13.178
+    },
+    {
+      "word": "silencio,",
+      "start": 13.178,
+      "end": 14.083
+    },
+    {
+      "word": "Y",
+      "start": 14.083,
+      "end": 14.204
+    },
+    {
+      "word": "á",
+      "start": 14.204,
+      "end": 14.324
+    },
+    {
+      "word": "acogerse",
+      "start": 14.324,
+      "end": 15.048
+    },
+    {
+      "word": "al",
+      "start": 15.048,
+      "end": 15.229
+    },
+    {
+      "word": "abrigo",
+      "start": 15.229,
+      "end": 15.772
+    },
+    {
+      "word": "De",
+      "start": 15.772,
+      "end": 15.953
+    },
+    {
+      "word": "su",
+      "start": 15.953,
+      "end": 16.134
+    },
+    {
+      "word": "estrecho",
+      "start": 16.134,
+      "end": 16.857
+    },
+    {
+      "word": "aposento.",
+      "start": 16.857,
+      "end": 17.943
+    },
+    {
+      "word": "Vióse",
+      "start": 17.943,
+      "end": 18.395
+    },
+    {
+      "word": "desproveida",
+      "start": 18.395,
+      "end": 19.391
+    },
+    {
+      "word": "Del",
+      "start": 19.391,
+      "end": 19.662
+    },
+    {
+      "word": "preciso",
+      "start": 19.662,
+      "end": 20.295
+    },
+    {
+      "word": "sustento,",
+      "start": 20.295,
+      "end": 21.2
+    },
+    {
+      "word": "Sin",
+      "start": 21.45,
+      "end": 21.69
+    },
+    {
+      "word": "mosca,",
+      "start": 21.69,
+      "end": 22.251
+    },
+    {
+      "word": "sin",
+      "start": 22.251,
+      "end": 22.491
+    },
+    {
+      "word": "gusano,",
+      "start": 22.491,
+      "end": 23.131
+    },
+    {
+      "word": "Sin",
+      "start": 23.131,
+      "end": 23.372
+    },
+    {
+      "word": "trigo,",
+      "start": 23.372,
+      "end": 23.932
+    },
+    {
+      "word": "sin",
+      "start": 23.932,
+      "end": 24.172
+    },
+    {
+      "word": "centeno.",
+      "start": 24.172,
+      "end": 25.053
+    },
+    {
+      "word": "Habitaba",
+      "start": 25.053,
+      "end": 25.693
+    },
+    {
+      "word": "la",
+      "start": 25.693,
+      "end": 25.854
+    },
+    {
+      "word": "Hormiga",
+      "start": 25.854,
+      "end": 26.414
+    },
+    {
+      "word": "Allí",
+      "start": 26.414,
+      "end": 26.734
+    },
+    {
+      "word": "tabique",
+      "start": 26.734,
+      "end": 27.295
+    },
+    {
+      "word": "en",
+      "start": 27.295,
+      "end": 27.455
+    },
+    {
+      "word": "medio,",
+      "start": 27.455,
+      "end": 28.015
+    },
+    {
+      "word": "Y",
+      "start": 28.015,
+      "end": 28.122
+    },
+    {
+      "word": "con",
+      "start": 28.122,
+      "end": 28.362
+    },
+    {
+      "word": "mil",
+      "start": 28.362,
+      "end": 28.602
+    },
+    {
+      "word": "expresiones",
+      "start": 28.602,
+      "end": 29.483
+    },
+    {
+      "word": "De",
+      "start": 29.483,
+      "end": 29.643
+    },
+    {
+      "word": "atencion",
+      "start": 29.643,
+      "end": 30.284
+    },
+    {
+      "word": "y",
+      "start": 30.284,
+      "end": 30.391
+    },
+    {
+      "word": "respeto",
+      "start": 30.391,
+      "end": 30.951
+    },
+    {
+      "word": "La",
+      "start": 30.951,
+      "end": 31.111
+    },
+    {
+      "word": "dijo:",
+      "start": 31.111,
+      "end": 31.592
+    },
+    {
+      "word": "Doña",
+      "start": 31.592,
+      "end": 31.912
+    },
+    {
+      "word": "Hormiga,",
+      "start": 31.912,
+      "end": 32.632
+    },
+    {
+      "word": "Pues",
+      "start": 32.632,
+      "end": 32.953
+    },
+    {
+      "word": "que",
+      "start": 32.953,
+      "end": 33.193
+    },
+    {
+      "word": "en",
+      "start": 33.193,
+      "end": 33.353
+    },
+    {
+      "word": "vuestros",
+      "start": 33.353,
+      "end": 33.994
+    },
+    {
+      "word": "graneros",
+      "start": 33.994,
+      "end": 34.634
+    },
+    {
+      "word": "Sobran",
+      "start": 34.634,
+      "end": 35.114
+    },
+    {
+      "word": "las",
+      "start": 35.114,
+      "end": 35.355
+    },
+    {
+      "word": "provisiones",
+      "start": 35.355,
+      "end": 36.235
+    },
+    {
+      "word": "Para",
+      "start": 36.235,
+      "end": 36.556
+    },
+    {
+      "word": "vuestro",
+      "start": 36.556,
+      "end": 37.116
+    },
+    {
+      "word": "alimento,",
+      "start": 37.116,
+      "end": 37.917
+    },
+    {
+      "word": "Prestad",
+      "start": 37.917,
+      "end": 38.477
+    },
+    {
+      "word": "alguna",
+      "start": 38.477,
+      "end": 38.958
+    },
+    {
+      "word": "cosa",
+      "start": 38.958,
+      "end": 39.278
+    },
+    {
+      "word": "Con",
+      "start": 39.278,
+      "end": 39.518
+    },
+    {
+      "word": "que",
+      "start": 39.518,
+      "end": 39.758
+    },
+    {
+      "word": "viva",
+      "start": 39.758,
+      "end": 40.078
+    },
+    {
+      "word": "este",
+      "start": 40.078,
+      "end": 40.399
+    },
+    {
+      "word": "invierno",
+      "start": 40.399,
+      "end": 41.039
+    },
+    {
+      "word": "Esta",
+      "start": 41.039,
+      "end": 41.359
+    },
+    {
+      "word": "triste",
+      "start": 41.359,
+      "end": 41.84
+    },
+    {
+      "word": "Cigarra,",
+      "start": 41.84,
+      "end": 42.56
+    },
+    {
+      "word": "Que",
+      "start": 42.56,
+      "end": 42.801
+    },
+    {
+      "word": "alegre",
+      "start": 42.801,
+      "end": 43.281
+    },
+    {
+      "word": "en",
+      "start": 43.281,
+      "end": 43.441
+    },
+    {
+      "word": "otro",
+      "start": 43.441,
+      "end": 43.761
+    },
+    {
+      "word": "tiempo,",
+      "start": 43.761,
+      "end": 44.402
+    },
+    {
+      "word": "Nunca",
+      "start": 44.402,
+      "end": 44.802
+    },
+    {
+      "word": "conoció",
+      "start": 44.802,
+      "end": 45.363
+    },
+    {
+      "word": "el",
+      "start": 45.363,
+      "end": 45.523
+    },
+    {
+      "word": "daño,",
+      "start": 45.523,
+      "end": 46.003
+    },
+    {
+      "word": "Nunca",
+      "start": 46.003,
+      "end": 46.404
+    },
+    {
+      "word": "supo",
+      "start": 46.404,
+      "end": 46.724
+    },
+    {
+      "word": "temerlo.",
+      "start": 46.724,
+      "end": 47.605
+    },
+    {
+      "word": "No",
+      "start": 47.605,
+      "end": 47.765
+    },
+    {
+      "word": "dudéis",
+      "start": 47.765,
+      "end": 48.245
+    },
+    {
+      "word": "en",
+      "start": 48.245,
+      "end": 48.405
+    },
+    {
+      "word": "prestarme,",
+      "start": 48.405,
+      "end": 49.286
+    },
+    {
+      "word": "Que",
+      "start": 49.286,
+      "end": 49.526
+    },
+    {
+      "word": "fielmente",
+      "start": 49.526,
+      "end": 50.247
+    },
+    {
+      "word": "prometo",
+      "start": 50.247,
+      "end": 50.807
+    },
+    {
+      "word": "Pagaros",
+      "start": 50.807,
+      "end": 51.368
+    },
+    {
+      "word": "con",
+      "start": 51.368,
+      "end": 51.608
+    },
+    {
+      "word": "ganancias,",
+      "start": 51.608,
+      "end": 52.489
+    },
+    {
+      "word": "Por",
+      "start": 52.489,
+      "end": 52.729
+    },
+    {
+      "word": "el",
+      "start": 52.729,
+      "end": 52.889
+    },
+    {
+      "word": "nombre",
+      "start": 52.889,
+      "end": 53.369
+    },
+    {
+      "word": "que",
+      "start": 53.369,
+      "end": 53.609
+    },
+    {
+      "word": "tengo.",
+      "start": 53.609,
+      "end": 54.33
+    },
+    {
+      "word": "La",
+      "start": 54.58,
+      "end": 54.749
+    },
+    {
+      "word": "codiciosa",
+      "start": 54.749,
+      "end": 55.51
+    },
+    {
+      "word": "Hormiga",
+      "start": 55.51,
+      "end": 56.102
+    },
+    {
+      "word": "Respondió",
+      "start": 56.102,
+      "end": 56.863
+    },
+    {
+      "word": "con",
+      "start": 56.863,
+      "end": 57.117
+    },
+    {
+      "word": "denuedo",
+      "start": 57.117,
+      "end": 57.708
+    },
+    {
+      "word": "Ocultando",
+      "start": 57.708,
+      "end": 58.469
+    },
+    {
+      "word": "á",
+      "start": 58.469,
+      "end": 58.582
+    },
+    {
+      "word": "la",
+      "start": 58.582,
+      "end": 58.751
+    },
+    {
+      "word": "espalda",
+      "start": 58.751,
+      "end": 59.343
+    },
+    {
+      "word": "Las",
+      "start": 59.343,
+      "end": 59.597
+    },
+    {
+      "word": "llaves",
+      "start": 59.597,
+      "end": 60.104
+    },
+    {
+      "word": "del",
+      "start": 60.104,
+      "end": 60.358
+    },
+    {
+      "word": "granero:",
+      "start": 60.358,
+      "end": 61.119
+    },
+    {
+      "word": "¡Yo",
+      "start": 61.119,
+      "end": 61.288
+    },
+    {
+      "word": "prestar",
+      "start": 61.288,
+      "end": 61.88
+    },
+    {
+      "word": "lo",
+      "start": 61.88,
+      "end": 62.049
+    },
+    {
+      "word": "que",
+      "start": 62.049,
+      "end": 62.302
+    },
+    {
+      "word": "gano",
+      "start": 62.302,
+      "end": 62.641
+    },
+    {
+      "word": "Con",
+      "start": 62.641,
+      "end": 62.894
+    },
+    {
+      "word": "un",
+      "start": 62.894,
+      "end": 63.063
+    },
+    {
+      "word": "trabajo",
+      "start": 63.063,
+      "end": 63.655
+    },
+    {
+      "word": "inmenso!",
+      "start": 63.655,
+      "end": 64.585
+    },
+    {
+      "word": "Díme",
+      "start": 64.585,
+      "end": 64.923
+    },
+    {
+      "word": "pues,",
+      "start": 64.923,
+      "end": 65.431
+    },
+    {
+      "word": "holgazana,",
+      "start": 65.431,
+      "end": 66.361
+    },
+    {
+      "word": "¿Qué",
+      "start": 66.361,
+      "end": 66.614
+    },
+    {
+      "word": "has",
+      "start": 66.614,
+      "end": 66.868
+    },
+    {
+      "word": "hecho",
+      "start": 66.868,
+      "end": 67.291
+    },
+    {
+      "word": "en",
+      "start": 67.291,
+      "end": 67.46
+    },
+    {
+      "word": "el",
+      "start": 67.46,
+      "end": 67.629
+    },
+    {
+      "word": "buen",
+      "start": 67.629,
+      "end": 67.967
+    },
+    {
+      "word": "tiempo?",
+      "start": 67.967,
+      "end": 68.813
+    },
+    {
+      "word": "Yo,",
+      "start": 68.813,
+      "end": 69.151
+    },
+    {
+      "word": "dijo",
+      "start": 69.151,
+      "end": 69.489
+    },
+    {
+      "word": "la",
+      "start": 69.489,
+      "end": 69.658
+    },
+    {
+      "word": "Cigarra,",
+      "start": 69.658,
+      "end": 70.419
+    },
+    {
+      "word": "Á",
+      "start": 70.419,
+      "end": 70.532
+    },
+    {
+      "word": "todo",
+      "start": 70.532,
+      "end": 70.87
+    },
+    {
+      "word": "pasajero",
+      "start": 70.87,
+      "end": 71.547
+    },
+    {
+      "word": "Cantaba",
+      "start": 71.547,
+      "end": 72.138
+    },
+    {
+      "word": "alegremente",
+      "start": 72.138,
+      "end": 73.068
+    },
+    {
+      "word": "Sin",
+      "start": 73.068,
+      "end": 73.322
+    },
+    {
+      "word": "cesar",
+      "start": 73.322,
+      "end": 73.745
+    },
+    {
+      "word": "ni",
+      "start": 73.745,
+      "end": 73.914
+    },
+    {
+      "word": "un",
+      "start": 73.914,
+      "end": 74.083
+    },
+    {
+      "word": "momento.",
+      "start": 74.083,
+      "end": 75.013
+    },
+    {
+      "word": "Hola!",
+      "start": 75.013,
+      "end": 75.69
+    },
+    {
+      "word": "¿con",
+      "start": 75.69,
+      "end": 75.943
+    },
+    {
+      "word": "que",
+      "start": 75.943,
+      "end": 76.197
+    },
+    {
+      "word": "cantabas,",
+      "start": 76.197,
+      "end": 77.042
+    },
+    {
+      "word": "Cuando",
+      "start": 77.042,
+      "end": 77.55
+    },
+    {
+      "word": "yo",
+      "start": 77.55,
+      "end": 77.719
+    },
+    {
+      "word": "andaba",
+      "start": 77.719,
+      "end": 78.226
+    },
+    {
+      "word": "al",
+      "start": 78.226,
+      "end": 78.395
+    },
+    {
+      "word": "remo?",
+      "start": 78.395,
+      "end": 79.072
+    },
+    {
+      "word": "Pues",
+      "start": 79.072,
+      "end": 79.41
+    },
+    {
+      "word": "ahora",
+      "start": 79.41,
+      "end": 79.833
+    },
+    {
+      "word": "que",
+      "start": 79.833,
+      "end": 80.086
+    },
+    {
+      "word": "yo",
+      "start": 80.086,
+      "end": 80.255
+    },
+    {
+      "word": "como,",
+      "start": 80.255,
+      "end": 80.763
+    },
+    {
+      "word": "Baila,",
+      "start": 80.763,
+      "end": 81.354
+    },
+    {
+      "word": "pese",
+      "start": 81.354,
+      "end": 81.693
+    },
+    {
+      "word": "á",
+      "start": 81.693,
+      "end": 81.805
+    },
+    {
+      "word": "tu",
+      "start": 81.805,
+      "end": 81.974
+    },
+    {
+      "word": "cuerpo.",
+      "start": 81.974,
+      "end": 82.82
+    }
+  ]
+}

@@ -360,6 +360,14 @@ h2 {
   margin-top: clamp(42px, 7vw, 76px);
 }
 
+.continue-group {
+  margin-bottom: clamp(42px, 7vw, 76px);
+  padding: clamp(18px, 3vw, 28px);
+  background: var(--soft-surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
 .difficulty-heading {
   display: flex;
   align-items: end;
@@ -486,76 +494,33 @@ h2 {
 }
 
 .track-cover {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   width: 100%;
   aspect-ratio: 2 / 3;
-  padding: 13% 11%;
   overflow: hidden;
-  color: #fffaf0;
-  background: #243e4a;
+  background: var(--wash);
 }
 
-.track-cover::before,
-.track-cover::after {
-  content: "";
-  position: absolute;
-  border: 1px solid currentColor;
-  opacity: 0.34;
-  transform: rotate(45deg);
+.track-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.track-cover::before {
-  width: 72%;
-  aspect-ratio: 1;
-  right: -36%;
-  top: 14%;
+.track-cover-placeholder {
+  display: grid;
+  place-items: end start;
+  width: 100%;
+  height: 100%;
+  padding: 12%;
+  color: #fff;
+  background: linear-gradient(145deg, #293b62, #5875a2);
 }
 
-.track-cover::after {
-  width: 48%;
-  aspect-ratio: 1;
-  left: -25%;
-  bottom: 16%;
-}
-
-.cover-tone-1 { background: linear-gradient(145deg, #173d45, #4e765f); }
-.cover-tone-2 { background: linear-gradient(145deg, #472d43, #a2555e); }
-.cover-tone-3 { background: linear-gradient(145deg, #293b62, #5875a2); }
-.cover-tone-4 { background: linear-gradient(145deg, #5b381f, #a96d35); }
-.cover-tone-5 { background: linear-gradient(145deg, #243c32, #6d7650); }
-.cover-tone-6 { background: linear-gradient(145deg, #382f58, #7b5b8f); }
-
-.cover-kicker,
-.cover-author {
-  position: relative;
-  z-index: 1;
-  font-size: clamp(0.56rem, 1.2vw, 0.72rem);
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  line-height: 1.3;
-  text-transform: uppercase;
-}
-
-.cover-title {
-  position: relative;
-  z-index: 1;
-  margin: auto 0;
+.track-cover-placeholder span {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.35rem, 3vw, 2.1rem);
-  font-weight: 700;
-  line-height: 1.02;
-  text-wrap: balance;
-}
-
-.cover-ornament {
-  position: absolute;
-  inset: 9%;
-  border: 1px solid currentColor;
-  border-radius: 50% 50% 8px 8px;
-  opacity: 0.22;
+  font-size: clamp(1.1rem, 2.6vw, 1.8rem);
+  line-height: 1.05;
 }
 
 .track-info {
@@ -1645,19 +1610,6 @@ h2 {
 
   .track-cover-wrapper {
     border-radius: 6px;
-  }
-
-  .track-cover {
-    padding: 12%;
-  }
-
-  .cover-title {
-    font-size: 0.82rem;
-  }
-
-  .cover-kicker,
-  .cover-author {
-    font-size: 0.4rem;
   }
 
   .track-card:hover .track-cover-wrapper,

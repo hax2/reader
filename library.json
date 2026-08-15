@@ -15,9 +15,14 @@
     "description": "A tiny act of mercy returns when a powerful lion needs help.",
     "minutes": 1,
     "wordCount": 131,
-    "text": "texts/el_leon_y_el_raton.txt",
+    "cover": "covers/el_leon_y_el_raton.webp",
     "source": "https://es.wikisource.org/wiki/El_le%C3%B3n_y_el_rat%C3%B3n_(Samaniego)",
-    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0; project-produced local narration",
+    "sourceText": "texts/el_leon_y_el_raton.txt",
+    "audio": "el_leon_y_el_raton.m4a",
+    "transcript": "el_leon_y_el_raton.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "293b0b5550c533cf"
   },
   {
     "id": "samaniego-cuervo-zorro",
@@ -35,9 +40,14 @@
     "description": "A flattering fox knows exactly how to separate a crow from his cheese.",
     "minutes": 1,
     "wordCount": 149,
-    "text": "texts/el_cuervo_y_el_zorro.txt",
+    "cover": "covers/el_cuervo_y_el_zorro.webp",
     "source": "https://es.wikisource.org/wiki/El_cuervo_y_el_zorro",
-    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0; project-produced local narration",
+    "sourceText": "texts/el_cuervo_y_el_zorro.txt",
+    "audio": "el_cuervo_y_el_zorro.m4a",
+    "transcript": "el_cuervo_y_el_zorro.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "f1e46d50c368330b"
   },
   {
     "id": "samaniego-cigarra-hormiga",
@@ -55,9 +65,14 @@
     "description": "A famous argument between summer's singer and winter's planner.",
     "minutes": 1,
     "wordCount": 178,
-    "text": "texts/la_cigarra_y_la_hormiga.txt",
+    "cover": "covers/la_cigarra_y_la_hormiga.webp",
     "source": "https://es.wikisource.org/wiki/La_cigarra_y_la_hormiga_(Samaniego)",
-    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0; project-produced local narration",
+    "sourceText": "texts/la_cigarra_y_la_hormiga.txt",
+    "audio": "la_cigarra_y_la_hormiga.m4a",
+    "transcript": "la_cigarra_y_la_hormiga.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "dcea57706001f688"
   },
   {
     "id": "marti-bebe-pomposo",
@@ -75,9 +90,14 @@
     "description": "A privileged boy sees an unfair gift and quietly decides what to do with it.",
     "minutes": 8,
     "wordCount": 1464,
-    "text": "texts/bebe_y_el_senor_don_pomposo.txt",
+    "cover": "covers/bebe_y_el_senor_don_pomposo.webp",
     "source": "https://es.wikisource.org/wiki/Beb%C3%A9_y_el_se%C3%B1or_don_Pomposo",
-    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0; project-produced local narration",
+    "sourceText": "texts/bebe_y_el_senor_don_pomposo.txt",
+    "audio": "bebe_y_el_senor_don_pomposo.m4a",
+    "transcript": "bebe_y_el_senor_don_pomposo.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "0825f5bbdce9f7a3"
   },
   {
     "id": "marti-nene-traviesa",
@@ -95,9 +115,14 @@
     "description": "Curiosity draws Nené toward the one old book her father asked her not to touch.",
     "minutes": 10,
     "wordCount": 1836,
-    "text": "texts/nene_traviesa.txt",
+    "cover": "covers/nene_traviesa.webp",
     "source": "https://es.wikisource.org/wiki/Nen%C3%A9_traviesa",
-    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0; project-produced local narration",
+    "sourceText": "texts/nene_traviesa.txt",
+    "audio": "nene_traviesa.m4a",
+    "transcript": "nene_traviesa.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "fc262d59fe8d67e2"
   },
   {
     "id": "marti-muneca-negra",
@@ -115,9 +140,14 @@
     "description": "On her birthday, Piedad receives a splendid new doll—but remembers the old one everyone else overlooks.",
     "minutes": 17,
     "wordCount": 2990,
-    "text": "texts/la_muneca_negra.txt",
+    "cover": "covers/la_muneca_negra.webp",
     "source": "https://es.wikisource.org/wiki/La_mu%C3%B1eca_negra",
-    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0; project-produced local narration",
+    "sourceText": "texts/la_muneca_negra.txt",
+    "audio": "la_muneca_negra.m4a",
+    "transcript": "la_muneca_negra.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "88ee9630c6525fb3"
   },
   {
     "id": "becquer-monte-animas",
@@ -137,6 +167,7 @@
     "wordCount": 2732,
     "audio": "el_monte_de_las_animas.m4a",
     "transcript": "el_monte_de_las_animas.json",
+    "cover": "covers/monte_animas.jpg",
     "sourceText": "texts/el_monte_de_las_animas.txt",
     "source": "https://es.wikisource.org/wiki/El_monte_de_las_%C3%A1nimas",
     "rights": "Public-domain work; project-produced narration; Wikisource transcription CC BY-SA 4.0"
@@ -159,6 +190,7 @@
     "wordCount": 3551,
     "audio": "el_rayo_de_luna.m4a",
     "transcript": "el_rayo_de_luna.json",
+    "cover": "covers/rayo_luna.jpg",
     "sourceText": "texts/el_rayo_de_luna.txt",
     "source": "https://es.wikisource.org/wiki/El_rayo_de_luna",
     "rights": "Public-domain work; project-produced narration; Wikisource transcription CC BY-SA 4.0"
@@ -181,6 +213,7 @@
     "wordCount": 2304,
     "audio": "la_ajorca_de_oro.m4a",
     "transcript": "la_ajorca_de_oro.json",
+    "cover": "covers/ajorca_oro.jpg",
     "sourceText": "texts/la_ajorca_de_oro.txt",
     "source": "https://es.wikisource.org/wiki/La_ajorca_de_oro",
     "rights": "Public-domain work; project-produced narration; Wikisource transcription CC BY-SA 4.0"
@@ -199,11 +232,16 @@
       "nature"
     ],
     "description": "A noble hunter becomes obsessed with the mysterious presence in a forbidden spring.",
-    "minutes": 15,
+    "minutes": 16,
     "wordCount": 2691,
-    "text": "texts/los_ojos_verdes.txt",
+    "cover": "covers/los_ojos_verdes.webp",
     "source": "https://es.wikisource.org/wiki/Los_ojos_verdes",
-    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0; project-produced local narration",
+    "sourceText": "texts/los_ojos_verdes.txt",
+    "audio": "los_ojos_verdes.m4a",
+    "transcript": "los_ojos_verdes.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "bbe4ec52c9892067"
   },
   {
     "id": "becquer-miserere",
@@ -219,11 +257,16 @@
       "religion"
     ],
     "description": "A musician searches for a sacred sound no living choir can produce.",
-    "minutes": 19,
+    "minutes": 21,
     "wordCount": 3336,
-    "text": "texts/el_miserere.txt",
+    "cover": "covers/el_miserere.webp",
     "source": "https://es.wikisource.org/wiki/El_miserere_(B%C3%A9cquer)",
-    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0; project-produced local narration",
+    "sourceText": "texts/el_miserere.txt",
+    "audio": "el_miserere.m4a",
+    "transcript": "el_miserere.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "0462814e51acc4f9"
   },
   {
     "id": "becquer-maese-perez",
@@ -239,10 +282,141 @@
       "Seville"
     ],
     "description": "Seville gathers on Christmas Eve to hear an old blind organist play.",
-    "minutes": 29,
+    "minutes": 32,
     "wordCount": 5245,
-    "text": "texts/maese_perez_el_organista.txt",
+    "cover": "covers/maese_perez_el_organista.webp",
     "source": "https://es.wikisource.org/wiki/Maese_P%C3%A9rez_el_organista",
-    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0"
+    "rights": "Public-domain work; Wikisource transcription CC BY-SA 4.0; project-produced local narration",
+    "sourceText": "texts/maese_perez_el_organista.txt",
+    "audio": "maese_perez_el_organista.m4a",
+    "transcript": "maese_perez_el_organista.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "a38bb8f8430609c5"
+  },
+  {
+    "id": "clarin-adios-cordera",
+    "title": "¡Adiós, Cordera!",
+    "author": "Leopoldo Alas (Clarín)",
+    "difficulty": "C1",
+    "difficultyNote": "Literary realism with regional language, long sentences, and historical context.",
+    "genre": "Short story",
+    "tags": [
+      "Asturias",
+      "family",
+      "social realism"
+    ],
+    "description": "Two children and their beloved cow face the arrival of an unforgiving modern world.",
+    "minutes": 29,
+    "wordCount": 3444,
+    "audio": "adioscordera.mp3",
+    "transcript": "adioscordera.json",
+    "cover": "covers/adioscordera.jpg",
+    "source": "User-provided public-domain text and original narration",
+    "rights": "User-created audio"
+  },
+  {
+    "id": "quiroga-cuentos-amor",
+    "title": "Cuentos de amor de locura y de muerte",
+    "author": "Horacio Quiroga",
+    "difficulty": "B2",
+    "difficultyNote": "A direct plot with literary vocabulary and sustained psychological tension.",
+    "genre": "Short story",
+    "tags": [
+      "horror",
+      "illness",
+      "Río de la Plata"
+    ],
+    "description": "A dark tale from Quiroga's celebrated collection.",
+    "minutes": 14,
+    "wordCount": 1413,
+    "audio": "Cuentos de amor de locura y de muerte.mp3",
+    "transcript": "Cuentos de amor de locura y de muerte.json",
+    "cover": "covers/cuentos_amor.jpg",
+    "source": "User-provided public-domain text and original narration",
+    "rights": "User-created audio"
+  },
+  {
+    "id": "pardo-bazan-cuentos-tierra",
+    "title": "Cuentos de la tierra",
+    "author": "Emilia Pardo Bazán",
+    "difficulty": "C1",
+    "difficultyNote": "Dense realist prose with period vocabulary and social observation.",
+    "genre": "Short story",
+    "tags": [
+      "Galicia",
+      "family",
+      "realism"
+    ],
+    "description": "A story from Pardo Bazán's sharp-eyed collection of rural lives.",
+    "minutes": 13,
+    "wordCount": 1397,
+    "audio": "Cuentos de la tierra.mp3",
+    "transcript": "Cuentos de la tierra.json",
+    "cover": "covers/cuentos_tierra.jpg",
+    "source": "User-provided public-domain text and original narration",
+    "rights": "User-created audio"
+  },
+  {
+    "id": "azua-suicidio-hispania",
+    "title": "El suicidio de la hispania romana",
+    "author": "Félix de Azúa",
+    "difficulty": "C1",
+    "difficultyNote": "An extended historical discussion with abstract vocabulary and dense argument.",
+    "genre": "History essay",
+    "tags": [
+      "history",
+      "Rome",
+      "Spain"
+    ],
+    "description": "A narrated discussion of the end of Roman Hispania.",
+    "minutes": 26,
+    "wordCount": 4115,
+    "audio": "El_suicidio_de_la_Hispania_romana.m4a",
+    "transcript": "El_suicidio_de_la_Hispania_romana.json",
+    "cover": "covers/suicidio_romana.jpg",
+    "source": "User-created project narration",
+    "rights": "User-created audio"
+  },
+  {
+    "id": "pardo-bazan-indulto",
+    "title": "El indulto",
+    "author": "Emilia Pardo Bazán",
+    "difficulty": "C1",
+    "difficultyNote": "Naturalist prose with legal, domestic, and nineteenth-century vocabulary.",
+    "genre": "Short story",
+    "tags": [
+      "women",
+      "violence",
+      "realism"
+    ],
+    "description": "A laundress lives in terror of the pardon that may free her husband.",
+    "minutes": 26,
+    "wordCount": 3050,
+    "audio": "elindulto.mp3",
+    "transcript": "elindulto.json",
+    "cover": "covers/elindulto.jpg",
+    "source": "User-provided public-domain text and original narration",
+    "rights": "User-created audio"
+  },
+  {
+    "id": "nin-vanguardia-sindical",
+    "title": "Vanguardia revolucionaria frente a política sindical",
+    "author": "Andreu Nin",
+    "difficulty": "C1",
+    "difficultyNote": "Political theory with specialized vocabulary and extended argument.",
+    "genre": "Political essay",
+    "tags": [
+      "politics",
+      "labor",
+      "history"
+    ],
+    "description": "A narrated discussion of revolutionary organization and trade-union politics.",
+    "minutes": 27,
+    "wordCount": 4445,
+    "audio": "Vanguardia_revolucionaria_frente_a_política_sindical.m4a",
+    "transcript": "Vanguardia_revolucionaria_frente_a_política_sindical.json",
+    "cover": "covers/vanguardia.jpg",
+    "source": "User-created project narration",
+    "rights": "User-created audio"
   }
 ]

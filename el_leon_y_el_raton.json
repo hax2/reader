@@ -1,0 +1,708 @@
+{
+  "source": "el_leon_y_el_raton.m4a",
+  "title": "El león y el ratón",
+  "language": "es",
+  "generator": "Qwen3-TTS 1.7B local voice clone with source-text timing",
+  "words": [
+    {
+      "word": "El",
+      "start": 0.0,
+      "end": 0.25
+    },
+    {
+      "word": "león",
+      "start": 0.25,
+      "end": 0.749
+    },
+    {
+      "word": "y",
+      "start": 0.749,
+      "end": 0.915
+    },
+    {
+      "word": "el",
+      "start": 0.915,
+      "end": 1.165
+    },
+    {
+      "word": "ratón",
+      "start": 1.165,
+      "end": 1.789
+    },
+    {
+      "word": "Félix",
+      "start": 1.789,
+      "end": 2.413
+    },
+    {
+      "word": "María",
+      "start": 2.413,
+      "end": 3.037
+    },
+    {
+      "word": "Samaniego",
+      "start": 3.037,
+      "end": 4.16
+    },
+    {
+      "word": "Estaba",
+      "start": 4.41,
+      "end": 4.893
+    },
+    {
+      "word": "un",
+      "start": 4.893,
+      "end": 5.055
+    },
+    {
+      "word": "ratoncillo",
+      "start": 5.055,
+      "end": 5.86
+    },
+    {
+      "word": "aprisionado",
+      "start": 5.86,
+      "end": 6.746
+    },
+    {
+      "word": "en",
+      "start": 6.746,
+      "end": 6.908
+    },
+    {
+      "word": "las",
+      "start": 6.908,
+      "end": 7.149
+    },
+    {
+      "word": "garras",
+      "start": 7.149,
+      "end": 7.633
+    },
+    {
+      "word": "de",
+      "start": 7.633,
+      "end": 7.794
+    },
+    {
+      "word": "un",
+      "start": 7.794,
+      "end": 7.955
+    },
+    {
+      "word": "león;",
+      "start": 7.955,
+      "end": 8.438
+    },
+    {
+      "word": "el",
+      "start": 8.438,
+      "end": 8.599
+    },
+    {
+      "word": "desdichado",
+      "start": 8.599,
+      "end": 9.405
+    },
+    {
+      "word": "en",
+      "start": 9.405,
+      "end": 9.566
+    },
+    {
+      "word": "la",
+      "start": 9.566,
+      "end": 9.727
+    },
+    {
+      "word": "tal",
+      "start": 9.727,
+      "end": 9.969
+    },
+    {
+      "word": "ratonera",
+      "start": 9.969,
+      "end": 10.614
+    },
+    {
+      "word": "no",
+      "start": 10.614,
+      "end": 10.775
+    },
+    {
+      "word": "fue",
+      "start": 10.775,
+      "end": 11.016
+    },
+    {
+      "word": "preso",
+      "start": 11.016,
+      "end": 11.419
+    },
+    {
+      "word": "por",
+      "start": 11.419,
+      "end": 11.661
+    },
+    {
+      "word": "ladrón",
+      "start": 11.661,
+      "end": 12.144
+    },
+    {
+      "word": "de",
+      "start": 12.144,
+      "end": 12.305
+    },
+    {
+      "word": "tocino",
+      "start": 12.305,
+      "end": 12.789
+    },
+    {
+      "word": "ni",
+      "start": 12.789,
+      "end": 12.95
+    },
+    {
+      "word": "de",
+      "start": 12.95,
+      "end": 13.111
+    },
+    {
+      "word": "queso,",
+      "start": 13.111,
+      "end": 13.675
+    },
+    {
+      "word": "sino",
+      "start": 13.675,
+      "end": 13.997
+    },
+    {
+      "word": "porque",
+      "start": 13.997,
+      "end": 14.481
+    },
+    {
+      "word": "con",
+      "start": 14.481,
+      "end": 14.722
+    },
+    {
+      "word": "otros",
+      "start": 14.722,
+      "end": 15.125
+    },
+    {
+      "word": "molestaba",
+      "start": 15.125,
+      "end": 15.85
+    },
+    {
+      "word": "al",
+      "start": 15.85,
+      "end": 16.012
+    },
+    {
+      "word": "león,",
+      "start": 16.012,
+      "end": 16.495
+    },
+    {
+      "word": "que",
+      "start": 16.495,
+      "end": 16.737
+    },
+    {
+      "word": "en",
+      "start": 16.737,
+      "end": 16.898
+    },
+    {
+      "word": "su",
+      "start": 16.898,
+      "end": 17.059
+    },
+    {
+      "word": "retiro",
+      "start": 17.059,
+      "end": 17.542
+    },
+    {
+      "word": "descansaba.",
+      "start": 17.542,
+      "end": 18.67
+    },
+    {
+      "word": "Pide",
+      "start": 18.67,
+      "end": 18.992
+    },
+    {
+      "word": "perdón,",
+      "start": 18.992,
+      "end": 19.637
+    },
+    {
+      "word": "llorando",
+      "start": 19.637,
+      "end": 20.282
+    },
+    {
+      "word": "su",
+      "start": 20.282,
+      "end": 20.443
+    },
+    {
+      "word": "insolencia.",
+      "start": 20.443,
+      "end": 21.571
+    },
+    {
+      "word": "Al",
+      "start": 21.571,
+      "end": 21.732
+    },
+    {
+      "word": "oír",
+      "start": 21.732,
+      "end": 21.973
+    },
+    {
+      "word": "implorar",
+      "start": 21.973,
+      "end": 22.618
+    },
+    {
+      "word": "la",
+      "start": 22.618,
+      "end": 22.779
+    },
+    {
+      "word": "real",
+      "start": 22.779,
+      "end": 23.101
+    },
+    {
+      "word": "clemencia,",
+      "start": 23.101,
+      "end": 23.988
+    },
+    {
+      "word": "responde",
+      "start": 23.988,
+      "end": 24.632
+    },
+    {
+      "word": "el",
+      "start": 24.632,
+      "end": 24.793
+    },
+    {
+      "word": "rey",
+      "start": 24.793,
+      "end": 25.035
+    },
+    {
+      "word": "en",
+      "start": 25.035,
+      "end": 25.196
+    },
+    {
+      "word": "majestuoso",
+      "start": 25.196,
+      "end": 26.002
+    },
+    {
+      "word": "tono",
+      "start": 26.002,
+      "end": 26.324
+    },
+    {
+      "word": "(no",
+      "start": 26.324,
+      "end": 26.485
+    },
+    {
+      "word": "dijera",
+      "start": 26.485,
+      "end": 26.968
+    },
+    {
+      "word": "más",
+      "start": 26.968,
+      "end": 27.21
+    },
+    {
+      "word": "Tito)",
+      "start": 27.21,
+      "end": 27.532
+    },
+    {
+      "word": ":",
+      "start": 27.532,
+      "end": 27.694
+    },
+    {
+      "word": "\"¡Te",
+      "start": 27.694,
+      "end": 27.855
+    },
+    {
+      "word": "perdono!\"",
+      "start": 27.855,
+      "end": 28.419
+    },
+    {
+      "word": "Poco",
+      "start": 28.419,
+      "end": 28.741
+    },
+    {
+      "word": "después",
+      "start": 28.741,
+      "end": 29.305
+    },
+    {
+      "word": "cazando",
+      "start": 29.305,
+      "end": 29.869
+    },
+    {
+      "word": "el",
+      "start": 29.869,
+      "end": 30.03
+    },
+    {
+      "word": "león,",
+      "start": 30.03,
+      "end": 30.513
+    },
+    {
+      "word": "tropieza",
+      "start": 30.513,
+      "end": 31.158
+    },
+    {
+      "word": "en",
+      "start": 31.158,
+      "end": 31.319
+    },
+    {
+      "word": "una",
+      "start": 31.319,
+      "end": 31.561
+    },
+    {
+      "word": "red",
+      "start": 31.561,
+      "end": 31.802
+    },
+    {
+      "word": "oculta",
+      "start": 31.802,
+      "end": 32.286
+    },
+    {
+      "word": "en",
+      "start": 32.286,
+      "end": 32.447
+    },
+    {
+      "word": "la",
+      "start": 32.447,
+      "end": 32.608
+    },
+    {
+      "word": "maleza.",
+      "start": 32.608,
+      "end": 33.414
+    },
+    {
+      "word": "Quiere",
+      "start": 33.414,
+      "end": 33.897
+    },
+    {
+      "word": "salir;",
+      "start": 33.897,
+      "end": 34.461
+    },
+    {
+      "word": "mas",
+      "start": 34.461,
+      "end": 34.703
+    },
+    {
+      "word": "queda",
+      "start": 34.703,
+      "end": 35.106
+    },
+    {
+      "word": "prisionero.",
+      "start": 35.106,
+      "end": 36.234
+    },
+    {
+      "word": "Atronando",
+      "start": 36.234,
+      "end": 36.959
+    },
+    {
+      "word": "la",
+      "start": 36.959,
+      "end": 37.12
+    },
+    {
+      "word": "selva",
+      "start": 37.12,
+      "end": 37.523
+    },
+    {
+      "word": "ruge",
+      "start": 37.523,
+      "end": 37.845
+    },
+    {
+      "word": "fiero.",
+      "start": 37.845,
+      "end": 38.57
+    },
+    {
+      "word": "El",
+      "start": 38.82,
+      "end": 38.981
+    },
+    {
+      "word": "libre",
+      "start": 38.981,
+      "end": 39.382
+    },
+    {
+      "word": "ratoncillo,",
+      "start": 39.382,
+      "end": 40.347
+    },
+    {
+      "word": "que",
+      "start": 40.347,
+      "end": 40.588
+    },
+    {
+      "word": "lo",
+      "start": 40.588,
+      "end": 40.748
+    },
+    {
+      "word": "siente,",
+      "start": 40.748,
+      "end": 41.391
+    },
+    {
+      "word": "corriendo",
+      "start": 41.391,
+      "end": 42.114
+    },
+    {
+      "word": "llega,",
+      "start": 42.114,
+      "end": 42.676
+    },
+    {
+      "word": "roe",
+      "start": 42.676,
+      "end": 42.918
+    },
+    {
+      "word": "diligente",
+      "start": 42.918,
+      "end": 43.641
+    },
+    {
+      "word": "los",
+      "start": 43.641,
+      "end": 43.882
+    },
+    {
+      "word": "nudos",
+      "start": 43.882,
+      "end": 44.283
+    },
+    {
+      "word": "de",
+      "start": 44.283,
+      "end": 44.444
+    },
+    {
+      "word": "la",
+      "start": 44.444,
+      "end": 44.605
+    },
+    {
+      "word": "red,",
+      "start": 44.605,
+      "end": 45.006
+    },
+    {
+      "word": "de",
+      "start": 45.006,
+      "end": 45.167
+    },
+    {
+      "word": "tal",
+      "start": 45.167,
+      "end": 45.408
+    },
+    {
+      "word": "manera,",
+      "start": 45.408,
+      "end": 46.051
+    },
+    {
+      "word": "que",
+      "start": 46.051,
+      "end": 46.292
+    },
+    {
+      "word": "al",
+      "start": 46.292,
+      "end": 46.453
+    },
+    {
+      "word": "fin",
+      "start": 46.453,
+      "end": 46.694
+    },
+    {
+      "word": "rompió",
+      "start": 46.694,
+      "end": 47.176
+    },
+    {
+      "word": "los",
+      "start": 47.176,
+      "end": 47.417
+    },
+    {
+      "word": "grillos",
+      "start": 47.417,
+      "end": 47.979
+    },
+    {
+      "word": "de",
+      "start": 47.979,
+      "end": 48.14
+    },
+    {
+      "word": "la",
+      "start": 48.14,
+      "end": 48.301
+    },
+    {
+      "word": "fiera.",
+      "start": 48.301,
+      "end": 49.024
+    },
+    {
+      "word": "Conviene",
+      "start": 49.024,
+      "end": 49.666
+    },
+    {
+      "word": "al",
+      "start": 49.666,
+      "end": 49.827
+    },
+    {
+      "word": "poderoso",
+      "start": 49.827,
+      "end": 50.47
+    },
+    {
+      "word": "para",
+      "start": 50.47,
+      "end": 50.791
+    },
+    {
+      "word": "los",
+      "start": 50.791,
+      "end": 51.032
+    },
+    {
+      "word": "infelices",
+      "start": 51.032,
+      "end": 51.755
+    },
+    {
+      "word": "ser",
+      "start": 51.755,
+      "end": 51.996
+    },
+    {
+      "word": "piadoso;",
+      "start": 51.996,
+      "end": 52.719
+    },
+    {
+      "word": "tal",
+      "start": 52.719,
+      "end": 52.96
+    },
+    {
+      "word": "vez",
+      "start": 52.96,
+      "end": 53.201
+    },
+    {
+      "word": "se",
+      "start": 53.201,
+      "end": 53.362
+    },
+    {
+      "word": "puede",
+      "start": 53.362,
+      "end": 53.764
+    },
+    {
+      "word": "ver",
+      "start": 53.764,
+      "end": 54.005
+    },
+    {
+      "word": "necesitado",
+      "start": 54.005,
+      "end": 54.808
+    },
+    {
+      "word": "del",
+      "start": 54.808,
+      "end": 55.049
+    },
+    {
+      "word": "auxilio",
+      "start": 55.049,
+      "end": 55.612
+    },
+    {
+      "word": "de",
+      "start": 55.612,
+      "end": 55.772
+    },
+    {
+      "word": "aquel",
+      "start": 55.772,
+      "end": 56.174
+    },
+    {
+      "word": "más",
+      "start": 56.174,
+      "end": 56.415
+    },
+    {
+      "word": "desdichado.",
+      "start": 56.415,
+      "end": 57.54
+    }
+  ]
+}

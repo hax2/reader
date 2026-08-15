@@ -1,0 +1,793 @@
+{
+  "source": "el_cuervo_y_el_zorro.m4a",
+  "title": "El cuervo y el zorro",
+  "language": "es",
+  "generator": "Qwen3-TTS 1.7B local voice clone with source-text timing",
+  "words": [
+    {
+      "word": "El",
+      "start": 0.0,
+      "end": 0.167
+    },
+    {
+      "word": "cuervo",
+      "start": 0.167,
+      "end": 0.668
+    },
+    {
+      "word": "y",
+      "start": 0.668,
+      "end": 0.779
+    },
+    {
+      "word": "el",
+      "start": 0.779,
+      "end": 0.946
+    },
+    {
+      "word": "zorro",
+      "start": 0.946,
+      "end": 1.363
+    },
+    {
+      "word": "Félix",
+      "start": 1.363,
+      "end": 1.78
+    },
+    {
+      "word": "María",
+      "start": 1.78,
+      "end": 2.198
+    },
+    {
+      "word": "Samaniego",
+      "start": 2.198,
+      "end": 2.949
+    },
+    {
+      "word": "En",
+      "start": 2.949,
+      "end": 3.116
+    },
+    {
+      "word": "la",
+      "start": 3.116,
+      "end": 3.282
+    },
+    {
+      "word": "rama",
+      "start": 3.282,
+      "end": 3.616
+    },
+    {
+      "word": "de",
+      "start": 3.616,
+      "end": 3.783
+    },
+    {
+      "word": "un",
+      "start": 3.783,
+      "end": 3.95
+    },
+    {
+      "word": "árbol,",
+      "start": 3.95,
+      "end": 4.534
+    },
+    {
+      "word": "bien",
+      "start": 4.534,
+      "end": 4.868
+    },
+    {
+      "word": "ufano",
+      "start": 4.868,
+      "end": 5.285
+    },
+    {
+      "word": "y",
+      "start": 5.285,
+      "end": 5.397
+    },
+    {
+      "word": "contento,",
+      "start": 5.397,
+      "end": 6.231
+    },
+    {
+      "word": "con",
+      "start": 6.231,
+      "end": 6.482
+    },
+    {
+      "word": "un",
+      "start": 6.482,
+      "end": 6.648
+    },
+    {
+      "word": "queso",
+      "start": 6.648,
+      "end": 7.066
+    },
+    {
+      "word": "en",
+      "start": 7.066,
+      "end": 7.233
+    },
+    {
+      "word": "el",
+      "start": 7.233,
+      "end": 7.4
+    },
+    {
+      "word": "pico,",
+      "start": 7.4,
+      "end": 7.9
+    },
+    {
+      "word": "estaba",
+      "start": 7.9,
+      "end": 8.401
+    },
+    {
+      "word": "el",
+      "start": 8.401,
+      "end": 8.568
+    },
+    {
+      "word": "señor",
+      "start": 8.568,
+      "end": 8.985
+    },
+    {
+      "word": "Cuervo.",
+      "start": 8.985,
+      "end": 9.82
+    },
+    {
+      "word": "Del",
+      "start": 9.82,
+      "end": 10.07
+    },
+    {
+      "word": "olor",
+      "start": 10.07,
+      "end": 10.404
+    },
+    {
+      "word": "atraído,",
+      "start": 10.404,
+      "end": 11.155
+    },
+    {
+      "word": "un",
+      "start": 11.155,
+      "end": 11.322
+    },
+    {
+      "word": "Zorro",
+      "start": 11.322,
+      "end": 11.739
+    },
+    {
+      "word": "muy",
+      "start": 11.739,
+      "end": 11.989
+    },
+    {
+      "word": "maestro",
+      "start": 11.989,
+      "end": 12.574
+    },
+    {
+      "word": "le",
+      "start": 12.574,
+      "end": 12.741
+    },
+    {
+      "word": "dijo",
+      "start": 12.741,
+      "end": 13.074
+    },
+    {
+      "word": "estas",
+      "start": 13.074,
+      "end": 13.492
+    },
+    {
+      "word": "palabras",
+      "start": 13.492,
+      "end": 14.159
+    },
+    {
+      "word": "un",
+      "start": 14.159,
+      "end": 14.326
+    },
+    {
+      "word": "poco",
+      "start": 14.326,
+      "end": 14.66
+    },
+    {
+      "word": "más",
+      "start": 14.66,
+      "end": 14.91
+    },
+    {
+      "word": "o",
+      "start": 14.91,
+      "end": 15.022
+    },
+    {
+      "word": "menos:",
+      "start": 15.022,
+      "end": 15.606
+    },
+    {
+      "word": "\"¡Tenga",
+      "start": 15.606,
+      "end": 16.023
+    },
+    {
+      "word": "usted",
+      "start": 16.023,
+      "end": 16.44
+    },
+    {
+      "word": "buenos",
+      "start": 16.44,
+      "end": 16.941
+    },
+    {
+      "word": "días,",
+      "start": 16.941,
+      "end": 17.442
+    },
+    {
+      "word": "señor",
+      "start": 17.442,
+      "end": 17.859
+    },
+    {
+      "word": "Cuervo,",
+      "start": 17.859,
+      "end": 18.527
+    },
+    {
+      "word": "mi",
+      "start": 18.527,
+      "end": 18.694
+    },
+    {
+      "word": "dueño!",
+      "start": 18.694,
+      "end": 19.445
+    },
+    {
+      "word": "¡Vaya",
+      "start": 19.445,
+      "end": 19.778
+    },
+    {
+      "word": "que",
+      "start": 19.778,
+      "end": 20.029
+    },
+    {
+      "word": "estáis",
+      "start": 20.029,
+      "end": 20.529
+    },
+    {
+      "word": "donoso,",
+      "start": 20.529,
+      "end": 21.197
+    },
+    {
+      "word": "mono,",
+      "start": 21.197,
+      "end": 21.698
+    },
+    {
+      "word": "lindo",
+      "start": 21.698,
+      "end": 22.115
+    },
+    {
+      "word": "en",
+      "start": 22.115,
+      "end": 22.282
+    },
+    {
+      "word": "extremo!",
+      "start": 22.282,
+      "end": 23.2
+    },
+    {
+      "word": "Yo",
+      "start": 23.45,
+      "end": 23.621
+    },
+    {
+      "word": "no",
+      "start": 23.621,
+      "end": 23.791
+    },
+    {
+      "word": "gasto",
+      "start": 23.791,
+      "end": 24.218
+    },
+    {
+      "word": "lisonjas,",
+      "start": 24.218,
+      "end": 25.07
+    },
+    {
+      "word": "y",
+      "start": 25.07,
+      "end": 25.184
+    },
+    {
+      "word": "digo",
+      "start": 25.184,
+      "end": 25.525
+    },
+    {
+      "word": "lo",
+      "start": 25.525,
+      "end": 25.696
+    },
+    {
+      "word": "que",
+      "start": 25.696,
+      "end": 25.952
+    },
+    {
+      "word": "siento;",
+      "start": 25.952,
+      "end": 26.634
+    },
+    {
+      "word": "que",
+      "start": 26.634,
+      "end": 26.89
+    },
+    {
+      "word": "si",
+      "start": 26.89,
+      "end": 27.06
+    },
+    {
+      "word": "a",
+      "start": 27.06,
+      "end": 27.174
+    },
+    {
+      "word": "tu",
+      "start": 27.174,
+      "end": 27.345
+    },
+    {
+      "word": "bella",
+      "start": 27.345,
+      "end": 27.771
+    },
+    {
+      "word": "traza",
+      "start": 27.771,
+      "end": 28.198
+    },
+    {
+      "word": "corresponde",
+      "start": 28.198,
+      "end": 29.136
+    },
+    {
+      "word": "el",
+      "start": 29.136,
+      "end": 29.306
+    },
+    {
+      "word": "gorjeo,",
+      "start": 29.306,
+      "end": 29.989
+    },
+    {
+      "word": "juro",
+      "start": 29.989,
+      "end": 30.33
+    },
+    {
+      "word": "a",
+      "start": 30.33,
+      "end": 30.444
+    },
+    {
+      "word": "la",
+      "start": 30.444,
+      "end": 30.614
+    },
+    {
+      "word": "diosa",
+      "start": 30.614,
+      "end": 31.041
+    },
+    {
+      "word": "Ceres,",
+      "start": 31.041,
+      "end": 31.638
+    },
+    {
+      "word": "siendo",
+      "start": 31.638,
+      "end": 32.149
+    },
+    {
+      "word": "testigo",
+      "start": 32.149,
+      "end": 32.746
+    },
+    {
+      "word": "el",
+      "start": 32.746,
+      "end": 32.917
+    },
+    {
+      "word": "cielo,",
+      "start": 32.917,
+      "end": 33.514
+    },
+    {
+      "word": "que",
+      "start": 33.514,
+      "end": 33.77
+    },
+    {
+      "word": "tú",
+      "start": 33.77,
+      "end": 33.94
+    },
+    {
+      "word": "serás",
+      "start": 33.94,
+      "end": 34.367
+    },
+    {
+      "word": "el",
+      "start": 34.367,
+      "end": 34.537
+    },
+    {
+      "word": "Fénix",
+      "start": 34.537,
+      "end": 34.964
+    },
+    {
+      "word": "de",
+      "start": 34.964,
+      "end": 35.134
+    },
+    {
+      "word": "sus",
+      "start": 35.134,
+      "end": 35.39
+    },
+    {
+      "word": "vastos",
+      "start": 35.39,
+      "end": 35.902
+    },
+    {
+      "word": "imperios\"",
+      "start": 35.902,
+      "end": 36.584
+    },
+    {
+      "word": "Al",
+      "start": 36.584,
+      "end": 36.755
+    },
+    {
+      "word": "oír",
+      "start": 36.755,
+      "end": 37.011
+    },
+    {
+      "word": "un",
+      "start": 37.011,
+      "end": 37.181
+    },
+    {
+      "word": "discurso",
+      "start": 37.181,
+      "end": 37.863
+    },
+    {
+      "word": "tan",
+      "start": 37.863,
+      "end": 38.119
+    },
+    {
+      "word": "dulce",
+      "start": 38.119,
+      "end": 38.546
+    },
+    {
+      "word": "y",
+      "start": 38.546,
+      "end": 38.659
+    },
+    {
+      "word": "halagüeño,",
+      "start": 38.659,
+      "end": 39.598
+    },
+    {
+      "word": "de",
+      "start": 39.598,
+      "end": 39.768
+    },
+    {
+      "word": "vanidad",
+      "start": 39.768,
+      "end": 40.365
+    },
+    {
+      "word": "llevado,",
+      "start": 40.365,
+      "end": 41.133
+    },
+    {
+      "word": "quiso",
+      "start": 41.133,
+      "end": 41.559
+    },
+    {
+      "word": "cantar",
+      "start": 41.559,
+      "end": 42.071
+    },
+    {
+      "word": "el",
+      "start": 42.071,
+      "end": 42.242
+    },
+    {
+      "word": "Cuervo.",
+      "start": 42.242,
+      "end": 43.094
+    },
+    {
+      "word": "Abrió",
+      "start": 43.094,
+      "end": 43.521
+    },
+    {
+      "word": "su",
+      "start": 43.521,
+      "end": 43.691
+    },
+    {
+      "word": "negro",
+      "start": 43.691,
+      "end": 44.118
+    },
+    {
+      "word": "pico,",
+      "start": 44.118,
+      "end": 44.63
+    },
+    {
+      "word": "dejó",
+      "start": 44.63,
+      "end": 44.971
+    },
+    {
+      "word": "caer",
+      "start": 44.971,
+      "end": 45.312
+    },
+    {
+      "word": "el",
+      "start": 45.312,
+      "end": 45.482
+    },
+    {
+      "word": "queso.",
+      "start": 45.482,
+      "end": 46.25
+    },
+    {
+      "word": "El",
+      "start": 46.5,
+      "end": 46.67
+    },
+    {
+      "word": "muy",
+      "start": 46.67,
+      "end": 46.924
+    },
+    {
+      "word": "astuto",
+      "start": 46.924,
+      "end": 47.434
+    },
+    {
+      "word": "Zorro,",
+      "start": 47.434,
+      "end": 48.028
+    },
+    {
+      "word": "después",
+      "start": 48.028,
+      "end": 48.622
+    },
+    {
+      "word": "de",
+      "start": 48.622,
+      "end": 48.791
+    },
+    {
+      "word": "haberle",
+      "start": 48.791,
+      "end": 49.385
+    },
+    {
+      "word": "preso,",
+      "start": 49.385,
+      "end": 49.979
+    },
+    {
+      "word": "le",
+      "start": 49.979,
+      "end": 50.149
+    },
+    {
+      "word": "dijo:",
+      "start": 50.149,
+      "end": 50.658
+    },
+    {
+      "word": "\"Señor",
+      "start": 50.658,
+      "end": 51.083
+    },
+    {
+      "word": "bobo,",
+      "start": 51.083,
+      "end": 51.592
+    },
+    {
+      "word": "pues",
+      "start": 51.592,
+      "end": 51.931
+    },
+    {
+      "word": "sin",
+      "start": 51.931,
+      "end": 52.186
+    },
+    {
+      "word": "otro",
+      "start": 52.186,
+      "end": 52.525
+    },
+    {
+      "word": "alimento,",
+      "start": 52.525,
+      "end": 53.374
+    },
+    {
+      "word": "quedáis",
+      "start": 53.374,
+      "end": 53.968
+    },
+    {
+      "word": "con",
+      "start": 53.968,
+      "end": 54.223
+    },
+    {
+      "word": "alabanzas",
+      "start": 54.223,
+      "end": 54.986
+    },
+    {
+      "word": "tan",
+      "start": 54.986,
+      "end": 55.241
+    },
+    {
+      "word": "hinchado",
+      "start": 55.241,
+      "end": 55.92
+    },
+    {
+      "word": "y",
+      "start": 55.92,
+      "end": 56.033
+    },
+    {
+      "word": "repleto,",
+      "start": 56.033,
+      "end": 56.797
+    },
+    {
+      "word": "digerid",
+      "start": 56.797,
+      "end": 57.391
+    },
+    {
+      "word": "las",
+      "start": 57.391,
+      "end": 57.645
+    },
+    {
+      "word": "lisonjas",
+      "start": 57.645,
+      "end": 58.324
+    },
+    {
+      "word": "mientras",
+      "start": 58.324,
+      "end": 59.003
+    },
+    {
+      "word": "yo",
+      "start": 59.003,
+      "end": 59.173
+    },
+    {
+      "word": "digiero",
+      "start": 59.173,
+      "end": 59.767
+    },
+    {
+      "word": "el",
+      "start": 59.767,
+      "end": 59.937
+    },
+    {
+      "word": "queso\"",
+      "start": 59.937,
+      "end": 60.361
+    },
+    {
+      "word": "Quien",
+      "start": 60.361,
+      "end": 60.785
+    },
+    {
+      "word": "oye",
+      "start": 60.785,
+      "end": 61.04
+    },
+    {
+      "word": "aduladores,",
+      "start": 61.04,
+      "end": 62.058
+    },
+    {
+      "word": "nunca",
+      "start": 62.058,
+      "end": 62.483
+    },
+    {
+      "word": "espere",
+      "start": 62.483,
+      "end": 62.992
+    },
+    {
+      "word": "otro",
+      "start": 62.992,
+      "end": 63.331
+    },
+    {
+      "word": "premio.",
+      "start": 63.331,
+      "end": 64.18
+    }
+  ]
+}

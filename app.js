@@ -753,6 +753,31 @@ function renderTrackList() {
     : [["results", visibleTracks]];
 
   const fragment = document.createDocumentFragment();
+  const showingDefaultCatalog = !query
+    && catalogSettings.level === "all"
+    && catalogSettings.format === "all"
+    && catalogSettings.sort === "difficulty";
+  const continueTracks = showingDefaultCatalog
+    ? tracks
+        .filter((track) => {
+          const saved = progressCache[track.id];
+          return track.audio && saved?.time > 0 && saved?.duration > 0 && saved.time / saved.duration < 0.97;
+        })
+        .sort((a, b) => Date.parse(progressCache[b.id].updatedAt || 0) - Date.parse(progressCache[a.id].updatedAt || 0))
+        .slice(0, 3)
+    : [];
+  if (continueTracks.length) {
+    const section = document.createElement("section");
+    section.className = "continue-group";
+    const heading = document.createElement("header");
+    heading.className = "difficulty-heading";
+    heading.innerHTML = `<div><h2>Continue listening</h2></div><p>Your latest ${continueTracks.length === 1 ? "story" : "stories"}</p>`;
+    const grid = document.createElement("div");
+    grid.className = "track-grid";
+    for (const track of continueTracks) grid.append(createTrackCard(track));
+    section.append(heading, grid);
+    fragment.append(section);
+  }
   for (const [level, groupTracks] of groups) {
     const section = document.createElement("section");
     section.className = "difficulty-group";
@@ -785,16 +810,14 @@ function createTrackCard(track) {
     button.dataset.trackId = track.id;
     if (track.id === activeTrackId) button.setAttribute("aria-current", "true");
     button.style.setProperty("--progress", `${percent}%`);
-    const tone = coverTone(track);
     const formatLabel = track.audio ? "Listen & read" : "Read";
     const timeLabel = track.minutes ? `${track.minutes} min` : "Short read";
     button.innerHTML = `
       <div class="track-cover-wrapper">
-        <div class="track-cover cover-tone-${tone}" aria-hidden="true">
-          <span class="cover-kicker">${escapeHtml(track.genre || "Classic")}</span>
-          <span class="cover-title">${escapeHtml(track.title)}</span>
-          <span class="cover-ornament"></span>
-          <span class="cover-author">${escapeHtml(track.author || "Anonymous")}</span>
+        <div class="track-cover" aria-hidden="true">
+          ${track.cover
+            ? `<img src="${escapeHtml(track.cover)}" alt="" width="848" height="1264" loading="lazy" decoding="async">`
+            : `<div class="track-cover-placeholder"><span>${escapeHtml(track.title)}</span></div>`}
         </div>
         <span class="track-progress" aria-hidden="true"><span></span></span>
       </div>
@@ -806,6 +829,15 @@ function createTrackCard(track) {
         <span class="track-progress-label">${track.audio ? progressLabel(saved) : "Ready to read"}</span>
       </div>
     `;
+    const coverImage = button.querySelector(".track-cover img");
+    coverImage?.addEventListener("error", () => {
+      const placeholder = document.createElement("div");
+      const title = document.createElement("span");
+      placeholder.className = "track-cover-placeholder";
+      title.textContent = track.title;
+      placeholder.append(title);
+      coverImage.parentElement?.replaceChildren(placeholder);
+    }, { once: true });
     return button;
 }
 
@@ -831,11 +863,6 @@ function difficultyDescription(level) {
     B2: "Layered prose and a broader vocabulary",
     C1: "Dense, historical, or stylistically demanding"
   }[level] || "Unrated";
-}
-
-function coverTone(track) {
-  const seed = [...String(track.id)].reduce((sum, character) => sum + character.codePointAt(0), 0);
-  return (seed % 6) + 1;
 }
 
 function readingMinutes(wordCount) {

@@ -34,7 +34,9 @@ For a narrated reading, include both fields:
 
 Text-only entries use `"text": "texts/my-story.txt"`.
 
-The catalog covers are original CSS typography generated from each entry's metadata. There are no third-party jacket images to license, download, or keep in sync. See [RIGHTS.md](RIGHTS.md) for the publication policy and attribution summary.
+The catalog uses local cover artwork in `covers/`. Keep images at a 2:3 aspect
+ratio; WebP is preferred for new artwork. If a cover is missing, the reader
+shows a simple text fallback rather than a broken image.
 
 Update the shared vocabulary file after adding transcripts:
 
@@ -100,6 +102,42 @@ python3 scripts/gemini_tts.py texts/*.txt --max-chars 600 --submit-only
 Run the same command later without `--submit-only` to collect completed jobs and
 assemble the audio. Keep each submission wave below 100 uncached chunks, which
 is the Batch API concurrent-job limit.
+
+## Generate narration locally with Qwen3-TTS
+
+On an NVIDIA machine, install the separate local narration environment without
+disturbing the transcription environment:
+
+```sh
+./scripts/setup_local_tts.sh
+```
+
+Preview the work queue, then run it:
+
+```sh
+.tts-venv/bin/python scripts/local_tts.py plan
+HF_HOME=.tts-cache/huggingface .tts-venv/bin/python scripts/local_tts.py run
+```
+
+The default is the official Qwen3-TTS 1.7B Base voice-cloning model in BF16.
+It clones a short clean excerpt from the existing project narrator, processes
+small resumable batches on the GPU, and publishes an M4A plus timed source-text JSON
+for every text-only catalog entry. Completed chunks are content-hashed and
+cached under `.tts-cache/local`, so an interrupted run resumes instead of
+starting over. Use `status` to inspect progress without loading the model:
+
+```sh
+.tts-venv/bin/python scripts/local_tts.py status
+```
+
+To test or regenerate one catalog item, pass its stable ID:
+
+```sh
+HF_HOME=.tts-cache/huggingface .tts-venv/bin/python scripts/local_tts.py run \
+  --only samaniego-leon-raton
+```
+
+If the 1.7B model does not fit a smaller GPU, add `--model-size 0.6B`.
 
 The included public-domain Bécquer, Samaniego, and Martí texts can be downloaded from Wikisource with:
 

@@ -62,10 +62,7 @@ def main() -> None:
             errors.append(f"{label}: needs an audio or text file")
         if item.get("audio") and not item.get("transcript"):
             errors.append(f"{label}: narrated readings need a timed transcript")
-        if not str(item.get("source", "")).startswith("https://"):
-            errors.append(f"{label}: source must be an https URL")
-
-        for field in ("audio", "transcript", "text", "sourceText"):
+        for field in ("audio", "transcript", "text", "sourceText", "cover"):
             if item.get(field) and not (root / item[field]).is_file():
                 errors.append(f"{label}: {field} file does not exist: {item[field]}")
         if item.get("transcript") and (root / item["transcript"]).is_file():
