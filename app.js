@@ -2170,6 +2170,13 @@ const demoPopoverWord = document.querySelector("#demoPopoverWord");
 const demoPopoverDef = document.querySelector("#demoPopoverDef");
 const previewStatusBadge = document.querySelector("#previewStatusBadge");
 const onboardingSummaryBadges = document.querySelector("#onboardingSummaryBadges");
+const onboardingBody = document.querySelector("#onboardingBody");
+const mobileTabControls = document.querySelector("#mobileTabControls");
+const mobileTabPreview = document.querySelector("#mobileTabPreview");
+const mobileJumpToPreviewBtn = document.querySelector("#mobileJumpToPreviewBtn");
+const mobileSampleCard = document.querySelector("#mobileSampleCard");
+const mobileSampleText = document.querySelector("#mobileSampleText");
+const mobileSampleMark = document.querySelector("#mobileSampleMark");
 
 const DEMO_EXCERPT_WORDS = [
   { word: "Platero", separator: " ", def: "Platero (the silver donkey in Juan Ramón Jiménez's classic)", start: 0.0, dur: 0.5 },
@@ -2338,6 +2345,21 @@ function goToOnboardingStep(stepNumber) {
   }
 }
 
+function setMobileOnboardingView(viewName) {
+  if (!onboardingBody) return;
+  const isControls = viewName === "controls";
+  onboardingBody.dataset.mobileView = isControls ? "controls" : "preview";
+
+  if (mobileTabControls) {
+    mobileTabControls.classList.toggle("is-active", isControls);
+    mobileTabControls.setAttribute("aria-selected", String(isControls));
+  }
+  if (mobileTabPreview) {
+    mobileTabPreview.classList.toggle("is-active", !isControls);
+    mobileTabPreview.setAttribute("aria-selected", String(!isControls));
+  }
+}
+
 function updateDemoPreview() {
   if (!onboardingDemoFrame) return;
 
@@ -2363,6 +2385,18 @@ function updateDemoPreview() {
 
   if (previewStatusBadge) {
     previewStatusBadge.textContent = `${themeNames[onboardingState.theme] || "Theme"} · ${fontNames[onboardingState.font] || "Font"} · ${highlightNames[onboardingState.highlight] || "Highlight"}`;
+  }
+
+  // Update mobile sample card styles in real-time
+  if (mobileSampleCard) {
+    const fontFamilies = {
+      serif: 'Georgia, "Times New Roman", serif',
+      sans: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      accessible: 'Atkinson Hyperlegible, -apple-system, BlinkMacSystemFont, sans-serif'
+    };
+    mobileSampleCard.style.fontFamily = fontFamilies[onboardingState.font] || fontFamilies.serif;
+    mobileSampleCard.style.lineHeight = onboardingState.lineHeight;
+    mobileSampleCard.style.fontSize = `${1.05 * onboardingState.textSize / 100}rem`;
   }
 
   // Live ambience feedback on background document
@@ -2708,9 +2742,22 @@ if (demoPlayBtn) {
   demoPlayBtn.addEventListener("click", () => toggleDemoSimulation());
 }
 
+if (mobileTabControls) {
+  mobileTabControls.addEventListener("click", () => setMobileOnboardingView("controls"));
+}
+
+if (mobileTabPreview) {
+  mobileTabPreview.addEventListener("click", () => setMobileOnboardingView("preview"));
+}
+
+if (mobileJumpToPreviewBtn) {
+  mobileJumpToPreviewBtn.addEventListener("click", () => setMobileOnboardingView("preview"));
+}
+
 if (onboardingDialog) {
   onboardingDialog.addEventListener("close", () => {
     pauseDemoSimulation();
+    setMobileOnboardingView("controls");
     applyAppearanceSettings();
   });
 }

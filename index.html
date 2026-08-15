@@ -323,9 +323,34 @@
           </button>
         </nav>
 
-        <div class="onboarding-body">
+        <!-- Mobile View Switcher Tabs (Visible on <=860px screens) -->
+        <div class="onboarding-mobile-tabs" role="tablist" aria-label="Wizard view switcher">
+          <button id="mobileTabControls" type="button" class="mobile-tab-btn is-active" data-mobile-tab="controls" role="tab" aria-selected="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Options</span>
+          </button>
+          <button id="mobileTabPreview" type="button" class="mobile-tab-btn" data-mobile-tab="preview" role="tab" aria-selected="false">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span>Live Demo</span>
+          </button>
+        </div>
+
+        <div id="onboardingBody" class="onboarding-body" data-mobile-view="controls">
           <!-- Left Controls Pane -->
           <div class="onboarding-controls-pane">
+
+            <!-- Compact Live Sample Strip (Mobile only, non-distracting) -->
+            <div class="mobile-demo-sample-bar" role="region" aria-label="Real-time style sample">
+              <div class="mobile-sample-header">
+                <span class="mobile-sample-tag">Live Style Preview</span>
+                <button id="mobileJumpToPreviewBtn" class="mobile-preview-switch-btn" type="button">Test Audio Demo →</button>
+              </div>
+              <div id="mobileSampleCard" class="mobile-sample-card">
+                <p id="mobileSampleText" class="mobile-sample-text">
+                  Platero es suave; sólo los espejos de <mark id="mobileSampleMark" class="mobile-sample-mark">azabache</mark> de sus ojos son duros.
+                </p>
+              </div>
+            </div>
             
             <!-- STEP 1: Theme & Ambiance -->
             <section class="onboarding-step-section is-active" data-step-panel="1">

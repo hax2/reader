@@ -3128,22 +3128,168 @@ textarea {
    RESPONSIVE STYLES FOR ONBOARDING
    ========================================================================== */
 
+/* ==========================================================================
+   RESPONSIVE STYLES FOR ONBOARDING
+   ========================================================================== */
+
+.onboarding-mobile-tabs {
+  display: none;
+}
+
+.mobile-demo-sample-bar {
+  display: none;
+}
+
 @media (max-width: 860px) {
+  .onboarding-dialog {
+    width: min(720px, calc(100vw - 20px));
+    max-height: calc(100vh - 20px);
+  }
+
   .onboarding-shell {
-    height: calc(100vh - 28px);
+    height: calc(100vh - 20px);
+    max-height: calc(100vh - 20px);
+  }
+
+  .onboarding-mobile-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 6px 18px 8px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    flex-shrink: 0;
+  }
+
+  .mobile-tab-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 12px;
+    background: var(--wash);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 140ms ease;
+  }
+
+  .mobile-tab-btn.is-active {
+    background: var(--accent);
+    color: var(--button-ink);
+    border-color: var(--accent);
+    box-shadow: 0 2px 8px rgba(49, 95, 186, 0.25);
+  }
+
+  .mobile-tab-btn.is-active .live-dot {
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
   }
 
   .onboarding-body {
+    display: flex;
+    flex-direction: column;
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: 1fr;
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* When on controls tab: show controls, hide preview */
+  .onboarding-body[data-mobile-view="controls"] .onboarding-controls-pane {
+    display: block;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 16px 20px 24px;
+  }
+
+  .onboarding-body[data-mobile-view="controls"] .onboarding-preview-pane {
+    display: none;
+  }
+
+  /* When on preview tab: hide controls, show full-width preview */
+  .onboarding-body[data-mobile-view="preview"] .onboarding-controls-pane {
+    display: none;
+  }
+
+  .onboarding-body[data-mobile-view="preview"] .onboarding-preview-pane {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    border-left: 0;
+    border-top: 0;
+    padding: 16px 20px 20px;
     overflow-y: auto;
   }
 
-  .onboarding-preview-pane {
-    border-left: 0;
-    border-top: 1px solid var(--line);
-    min-height: 260px;
-    max-height: 320px;
+  .mobile-demo-sample-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+
+  .mobile-sample-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .mobile-sample-tag {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+  }
+
+  .mobile-preview-switch-btn {
+    min-height: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-size: 0.76rem;
+    font-weight: 750;
+    cursor: pointer;
+  }
+
+  .mobile-preview-switch-btn:hover {
+    text-decoration: underline;
+  }
+
+  .mobile-sample-card {
+    padding: 10px 14px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    transition: all 160ms ease;
+  }
+
+  .mobile-sample-text {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .mobile-sample-mark {
+    background: var(--highlight-bg);
+    color: var(--highlight-text);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-weight: 750;
   }
 
   .sliders-grid {
@@ -3156,6 +3302,57 @@ textarea {
 
   .step-pill {
     padding: 4px 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .onboarding-dialog {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+  }
+
+  .onboarding-shell {
+    height: 100vh;
+    max-height: 100vh;
+  }
+
+  .onboarding-header {
+    padding: 14px 16px 10px;
+  }
+
+  .onboarding-header h2 {
+    font-size: 1.15rem;
+  }
+
+  .onboarding-steps-nav {
+    padding: 6px 12px;
+    gap: 4px;
+  }
+
+  .step-pill {
+    padding: 3px 6px;
+    min-height: 28px;
+  }
+
+  .onboarding-body[data-mobile-view="controls"] .onboarding-controls-pane {
+    padding: 14px 16px 20px;
+  }
+
+  .onboarding-body[data-mobile-view="preview"] .onboarding-preview-pane {
+    padding: 14px 16px 18px;
+  }
+
+  .option-card {
+    padding: 12px 14px;
+  }
+
+  .onboarding-footer {
+    padding: 12px 16px;
   }
 }
 
