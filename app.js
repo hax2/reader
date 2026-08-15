@@ -60,7 +60,6 @@ const vocabWarmup = document.querySelector("#vocabWarmup");
 const vocabWarmupList = document.querySelector("#vocabWarmupList");
 const toggleVocabWarmupCollapse = document.querySelector("#toggleVocabWarmupCollapse");
 const startReadingFromVocabBtn = document.querySelector("#startReadingFromVocabBtn");
-const vocabCountIndicator = document.querySelector("#vocabCountIndicator");
 const wordPopover = document.querySelector("#wordPopover");
 const canvas = document.querySelector("#waveform");
 const ctx = canvas.getContext("2d");
@@ -3086,10 +3085,6 @@ async function renderVocabWarmup() {
     if (label) label.textContent = isCollapsed ? "Show key words" : "Hide list";
   }
 
-  if (vocabCountIndicator) {
-    vocabCountIndicator.innerHTML = `Showing <strong>${items.length} key ${items.length === 1 ? "word" : "words"}</strong> for this reading`;
-  }
-
   items.forEach((item) => {
     const card = document.createElement("article");
     card.className = "vocab-card";
@@ -3106,7 +3101,6 @@ async function renderVocabWarmup() {
       <div class="vocab-card-header">
         <div class="vocab-term-row">
           <strong class="vocab-word">${escapeHtml(item.displayWord)}</strong>
-          ${item.frequency > 1 ? `<span class="vocab-freq-pill">${item.frequency}× in text</span>` : ""}
         </div>
         <button class="vocab-save-btn ${isSaved ? "is-saved" : ""}" type="button" aria-label="Save to study cards" title="${isSaved ? "Saved to study cards" : "Save to Anki study cards"}">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>

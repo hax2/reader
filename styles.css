@@ -3595,18 +3595,6 @@ textarea {
   color: var(--ink);
 }
 
-.vocab-freq-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 1px 5px;
-  background: var(--wash);
-  color: var(--accent);
-  border: 1px solid var(--line);
-  border-radius: 9999px;
-  font-size: 0.65rem;
-  font-weight: 800;
-}
-
 .vocab-save-btn {
   display: inline-flex;
   align-items: center;
@@ -3683,19 +3671,10 @@ textarea {
 .vocab-warmup-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 12px;
   padding-top: 6px;
   border-top: 1px solid var(--line);
-}
-
-.vocab-count-indicator {
-  font-size: 0.78rem;
-  color: var(--muted);
-}
-
-.vocab-count-indicator strong {
-  color: var(--ink);
 }
 
 .vocab-start-reading-btn {
