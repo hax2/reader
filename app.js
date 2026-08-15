@@ -3180,7 +3180,17 @@ if (toggleVocabWarmupCollapse) {
 
 if (startReadingFromVocabBtn) {
   startReadingFromVocabBtn.addEventListener("click", () => {
-    reader.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (audio.src) {
+      if (isReadMode) {
+        setReadMode(false);
+      }
+      audio.play().catch(() => {
+        status("Playback could not be started.");
+      });
+      updateCurrentWord(audio.currentTime || 0);
+    } else {
+      reader.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   });
 }
 
