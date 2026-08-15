@@ -1,6 +1,6 @@
 # Spanish Listening Reader
 
-Static GitHub Pages app for reading public-domain Spanish literature, with synced narration where a project-owned recording is available. Click a word to look up an English meaning.
+Static GitHub Pages app for reading public-domain Spanish literature, with synced narration where a project-owned recording is available. Click a word to look up an English meaning, or choose a side-by-side/stacked English translation from the reader settings.
 
 The catalog groups readings by editorial CEFR estimate (B1–C1) and supports accent-insensitive search, format filters, and sorting by level, title, author, or length. Catalog preferences and each recording's playback position are saved in the browser.
 
@@ -45,6 +45,28 @@ python3 scripts/build_glossary.py
 ```
 
 This scans transcript JSON files, merges new unique words into `glossary/shared.json`, and writes words that still need English meanings to `glossary/missing.json`. Fill in meanings in `glossary/shared.json`; the reader uses that file for instant word popups.
+
+## Pretranslate the catalogue locally
+
+With Ollama running and `translategemma:4b` installed, generate resumable English
+translations for every reader paragraph:
+
+```sh
+ollama pull translategemma:4b
+python3 -u scripts/translate_catalog_local.py
+```
+
+Completed files are saved under `translations/`, and `library.json` is updated
+only after each selected book is complete. The reader serves these files in its
+side-by-side and stacked bilingual views, falling back to live translation only
+when a saved paragraph is missing or no longer matches its Spanish source.
+
+Preview the work or translate one book with:
+
+```sh
+python3 scripts/translate_catalog_local.py --dry-run
+python3 -u scripts/translate_catalog_local.py --track samaniego-leon-raton
+```
 
 ## Anki export
 

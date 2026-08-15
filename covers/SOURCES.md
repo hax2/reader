@@ -34,3 +34,10 @@ valley for selected Psalms, a lit crossroads for selected Proverbs, a tree throu
 four seasons for Ecclesiastes, two women in a barley field for Ruth, a ship and
 great fish for Jonah, and a hillside gathering for the Sermon on the Mount. The
 repository files are centered 848 × 1264 WebP derivatives of the generated PNGs.
+
+The five Greek-classics covers were generated for this project on 2026-08-15
+with the same tool and no external artwork. They depict Epicurus teaching in a
+garden, the fire and exit of Plato's cave, Socrates speaking with Crito in prison,
+Odysseus escaping beneath the Cyclops' rams, and the ship passing the Sirens,
+Scylla, and Charybdis. They contain no typography and are stored as centered
+848 × 1264 WebP derivatives.

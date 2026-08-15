@@ -22,7 +22,8 @@
     "audio": "el_leon_y_el_raton.m4a",
     "transcript": "el_leon_y_el_raton.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "293b0b5550c533cf"
+    "mediaVersion": "293b0b5550c533cf",
+    "englishTranslation": "translations/samaniego-leon-raton.en.json"
   },
   {
     "id": "samaniego-cuervo-zorro",
@@ -47,7 +48,8 @@
     "audio": "el_cuervo_y_el_zorro.m4a",
     "transcript": "el_cuervo_y_el_zorro.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "f1e46d50c368330b"
+    "mediaVersion": "f1e46d50c368330b",
+    "englishTranslation": "translations/samaniego-cuervo-zorro.en.json"
   },
   {
     "id": "samaniego-cigarra-hormiga",
@@ -72,7 +74,8 @@
     "audio": "la_cigarra_y_la_hormiga.m4a",
     "transcript": "la_cigarra_y_la_hormiga.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "dcea57706001f688"
+    "mediaVersion": "dcea57706001f688",
+    "englishTranslation": "translations/samaniego-cigarra-hormiga.en.json"
   },
   {
     "id": "marti-bebe-pomposo",
@@ -97,7 +100,8 @@
     "audio": "bebe_y_el_senor_don_pomposo.m4a",
     "transcript": "bebe_y_el_senor_don_pomposo.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "0825f5bbdce9f7a3"
+    "mediaVersion": "0825f5bbdce9f7a3",
+    "englishTranslation": "translations/marti-bebe-pomposo.en.json"
   },
   {
     "id": "marti-nene-traviesa",
@@ -122,7 +126,8 @@
     "audio": "nene_traviesa.m4a",
     "transcript": "nene_traviesa.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "fc262d59fe8d67e2"
+    "mediaVersion": "fc262d59fe8d67e2",
+    "englishTranslation": "translations/marti-nene-traviesa.en.json"
   },
   {
     "id": "marti-muneca-negra",
@@ -147,7 +152,8 @@
     "audio": "la_muneca_negra.m4a",
     "transcript": "la_muneca_negra.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "88ee9630c6525fb3"
+    "mediaVersion": "88ee9630c6525fb3",
+    "englishTranslation": "translations/marti-muneca-negra.en.json"
   },
   {
     "id": "becquer-monte-animas",
@@ -170,7 +176,8 @@
     "cover": "covers/monte_animas.jpg",
     "sourceText": "texts/el_monte_de_las_animas.txt",
     "source": "https://es.wikisource.org/wiki/El_monte_de_las_%C3%A1nimas",
-    "rights": "Public-domain work; project-produced narration; Wikisource transcription CC BY-SA 4.0"
+    "rights": "Public-domain work; project-produced narration; Wikisource transcription CC BY-SA 4.0",
+    "englishTranslation": "translations/becquer-monte-animas.en.json"
   },
   {
     "id": "becquer-rayo-luna",
@@ -193,7 +200,8 @@
     "cover": "covers/rayo_luna.jpg",
     "sourceText": "texts/el_rayo_de_luna.txt",
     "source": "https://es.wikisource.org/wiki/El_rayo_de_luna",
-    "rights": "Public-domain work; project-produced narration; Wikisource transcription CC BY-SA 4.0"
+    "rights": "Public-domain work; project-produced narration; Wikisource transcription CC BY-SA 4.0",
+    "englishTranslation": "translations/becquer-rayo-luna.en.json"
   },
   {
     "id": "becquer-ajorca-oro",
@@ -216,7 +224,8 @@
     "cover": "covers/ajorca_oro.jpg",
     "sourceText": "texts/la_ajorca_de_oro.txt",
     "source": "https://es.wikisource.org/wiki/La_ajorca_de_oro",
-    "rights": "Public-domain work; project-produced narration; Wikisource transcription CC BY-SA 4.0"
+    "rights": "Public-domain work; project-produced narration; Wikisource transcription CC BY-SA 4.0",
+    "englishTranslation": "translations/becquer-ajorca-oro.en.json"
   },
   {
     "id": "becquer-ojos-verdes",
@@ -241,7 +250,8 @@
     "audio": "los_ojos_verdes.m4a",
     "transcript": "los_ojos_verdes.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "bbe4ec52c9892067"
+    "mediaVersion": "bbe4ec52c9892067",
+    "englishTranslation": "translations/becquer-ojos-verdes.en.json"
   },
   {
     "id": "becquer-miserere",
@@ -266,7 +276,8 @@
     "audio": "el_miserere.m4a",
     "transcript": "el_miserere.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "0462814e51acc4f9"
+    "mediaVersion": "0462814e51acc4f9",
+    "englishTranslation": "translations/becquer-miserere.en.json"
   },
   {
     "id": "becquer-maese-perez",
@@ -291,7 +302,8 @@
     "audio": "maese_perez_el_organista.m4a",
     "transcript": "maese_perez_el_organista.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "a38bb8f8430609c5"
+    "mediaVersion": "a38bb8f8430609c5",
+    "englishTranslation": "translations/becquer-maese-perez.en.json"
   },
   {
     "id": "clarin-adios-cordera",
@@ -312,7 +324,8 @@
     "transcript": "adioscordera.json",
     "cover": "covers/adioscordera.jpg",
     "source": "User-provided public-domain text and original narration",
-    "rights": "User-created audio"
+    "rights": "User-created audio",
+    "englishTranslation": "translations/clarin-adios-cordera.en.json"
   },
   {
     "id": "quiroga-cuentos-amor",
@@ -333,7 +346,8 @@
     "transcript": "Cuentos de amor de locura y de muerte.json",
     "cover": "covers/cuentos_amor.jpg",
     "source": "User-provided public-domain text and original narration",
-    "rights": "User-created audio"
+    "rights": "User-created audio",
+    "englishTranslation": "translations/quiroga-cuentos-amor.en.json"
   },
   {
     "id": "pardo-bazan-cuentos-tierra",
@@ -354,7 +368,8 @@
     "transcript": "Cuentos de la tierra.json",
     "cover": "covers/cuentos_tierra.jpg",
     "source": "User-provided public-domain text and original narration",
-    "rights": "User-created audio"
+    "rights": "User-created audio",
+    "englishTranslation": "translations/pardo-bazan-cuentos-tierra.en.json"
   },
   {
     "id": "azua-suicidio-hispania",
@@ -375,7 +390,8 @@
     "transcript": "El_suicidio_de_la_Hispania_romana.json",
     "cover": "covers/suicidio_romana.jpg",
     "source": "User-created project narration",
-    "rights": "User-created audio"
+    "rights": "User-created audio",
+    "englishTranslation": "translations/azua-suicidio-hispania.en.json"
   },
   {
     "id": "pardo-bazan-indulto",
@@ -396,7 +412,8 @@
     "transcript": "elindulto.json",
     "cover": "covers/elindulto.jpg",
     "source": "User-provided public-domain text and original narration",
-    "rights": "User-created audio"
+    "rights": "User-created audio",
+    "englishTranslation": "translations/pardo-bazan-indulto.en.json"
   },
   {
     "id": "nin-vanguardia-sindical",
@@ -417,7 +434,8 @@
     "transcript": "Vanguardia_revolucionaria_frente_a_política_sindical.json",
     "cover": "covers/vanguardia.jpg",
     "source": "User-created project narration",
-    "rights": "User-created audio"
+    "rights": "User-created audio",
+    "englishTranslation": "translations/nin-vanguardia-sindical.en.json"
   },
   {
     "id": "bes-salmos-escogidos",
@@ -445,7 +463,8 @@
     "audio": "bes_salmos_escogidos.m4a",
     "transcript": "bes_salmos_escogidos.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "dad636b604d40201"
+    "mediaVersion": "dad636b604d40201",
+    "englishTranslation": "translations/bes-salmos-escogidos.en.json"
   },
   {
     "id": "bes-proverbios-escogidos",
@@ -473,7 +492,8 @@
     "audio": "bes_proverbios_escogidos.m4a",
     "transcript": "bes_proverbios_escogidos.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "66e82966001969ff"
+    "mediaVersion": "66e82966001969ff",
+    "englishTranslation": "translations/bes-proverbios-escogidos.en.json"
   },
   {
     "id": "bes-eclesiastes",
@@ -501,7 +521,8 @@
     "audio": "bes_eclesiastes.m4a",
     "transcript": "bes_eclesiastes.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "feaae6d15e676208"
+    "mediaVersion": "feaae6d15e676208",
+    "englishTranslation": "translations/bes-eclesiastes.en.json"
   },
   {
     "id": "bes-rut",
@@ -529,7 +550,8 @@
     "audio": "bes_rut.m4a",
     "transcript": "bes_rut.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "ff475c81ce23e023"
+    "mediaVersion": "ff475c81ce23e023",
+    "englishTranslation": "translations/bes-rut.en.json"
   },
   {
     "id": "bes-jonas",
@@ -557,7 +579,8 @@
     "audio": "bes_jonas.m4a",
     "transcript": "bes_jonas.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "34d77478b419bf00"
+    "mediaVersion": "34d77478b419bf00",
+    "englishTranslation": "translations/bes-jonas.en.json"
   },
   {
     "id": "bes-sermon-del-monte",
@@ -585,6 +608,141 @@
     "audio": "bes_sermon_del_monte.m4a",
     "transcript": "bes_sermon_del_monte.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "889e026913faa70c"
+    "mediaVersion": "889e026913faa70c",
+    "englishTranslation": "translations/bes-sermon-del-monte.en.json"
+  },
+  {
+    "id": "greek-epicuro-carta-meneceo",
+    "title": "Carta a Meneceo",
+    "author": "Epicuro",
+    "difficulty": "B2",
+    "difficultyNote": "Direct modern prose, with compact philosophical arguments and abstract vocabulary.",
+    "genre": "Philosophical letter",
+    "tags": [
+      "Grecia",
+      "filosofía",
+      "felicidad",
+      "placer",
+      "muerte"
+    ],
+    "description": "A concise argument for clear thinking, modest desires, friendship, and a life without fear.",
+    "source": "https://es.wikisource.org/wiki/Carta_de_Epicuro_a_Meneceo",
+    "collection": "greek-classics",
+    "originalLanguage": "Ancient Greek",
+    "rights": "Ancient Greek original and historical Spanish edition; source transcription terms apply; project-produced local narration",
+    "text": "texts/greek_epicuro_carta_meneceo.txt",
+    "cover": "covers/greek_epicuro_carta_meneceo.webp",
+    "wordCount": 1767,
+    "minutes": 10,
+    "englishTranslation": "translations/greek-epicuro-carta-meneceo.en.json"
+  },
+  {
+    "id": "greek-platon-caverna",
+    "title": "La alegoría de la caverna",
+    "author": "Platón",
+    "translator": "Patricio de Azcárate",
+    "editionYear": 1872,
+    "difficulty": "B2",
+    "difficultyNote": "A short dialogue built around a vivid image, followed by abstract interpretation.",
+    "genre": "Philosophical dialogue",
+    "tags": [
+      "Grecia",
+      "filosofía",
+      "verdad",
+      "educación",
+      "República"
+    ],
+    "description": "Prisoners mistake shadows for reality until one of them turns toward the light.",
+    "source": "https://www.filosofia.org/cla/pla/azf08051.htm",
+    "collection": "greek-classics",
+    "originalLanguage": "Ancient Greek",
+    "rights": "Ancient Greek original and historical Spanish edition; source transcription terms apply; project-produced local narration",
+    "text": "texts/greek_platon_alegoria_caverna.txt",
+    "cover": "covers/greek_platon_alegoria_caverna.webp",
+    "wordCount": 318,
+    "minutes": 2,
+    "englishTranslation": "translations/greek-platon-caverna.en.json"
+  },
+  {
+    "id": "greek-platon-criton",
+    "title": "Critón",
+    "author": "Platón",
+    "translator": "Patricio de Azcárate",
+    "editionYear": 1871,
+    "difficulty": "C1",
+    "difficultyNote": "Sustained ethical argument in a nineteenth-century translation with historical spelling.",
+    "genre": "Philosophical dialogue",
+    "tags": [
+      "Grecia",
+      "filosofía",
+      "Sócrates",
+      "justicia",
+      "ley"
+    ],
+    "description": "On the eve of his execution, Socrates asks whether escaping prison would betray justice itself.",
+    "source": "https://www.filosofia.org/cla/pla/azc01091.htm",
+    "collection": "greek-classics",
+    "originalLanguage": "Ancient Greek",
+    "rights": "Ancient Greek original and historical Spanish edition; source transcription terms apply; project-produced local narration",
+    "text": "texts/greek_platon_criton.txt",
+    "cover": "covers/greek_platon_criton.webp",
+    "wordCount": 5217,
+    "minutes": 29,
+    "englishTranslation": "translations/greek-platon-criton.en.json"
+  },
+  {
+    "id": "greek-homero-odisea-canto-ix",
+    "title": "Odisea: el cíclope",
+    "author": "Homero",
+    "translator": "Luis Segalá y Estalella",
+    "editionYear": 1910,
+    "difficulty": "C1",
+    "difficultyNote": "Epic narration with historical spelling, mythology, long sentences, and elevated vocabulary.",
+    "genre": "Epic poetry",
+    "tags": [
+      "Grecia",
+      "aventura",
+      "Ulises",
+      "Polifemo",
+      "Odisea"
+    ],
+    "description": "Odysseus enters the Cyclops' cave and survives through nerve, deception, and a dangerous boast.",
+    "source": "https://www.gutenberg.org/ebooks/58221.txt.utf-8",
+    "collection": "greek-classics",
+    "originalLanguage": "Ancient Greek",
+    "rights": "Ancient Greek original and historical Spanish edition; source transcription terms apply; project-produced local narration",
+    "text": "texts/greek_homero_odisea_canto_ix.txt",
+    "cover": "covers/greek_homero_odisea_canto_ix.webp",
+    "wordCount": 5644,
+    "minutes": 31,
+    "englishTranslation": "translations/greek-homero-odisea-canto-ix.en.json"
+  },
+  {
+    "id": "greek-homero-odisea-canto-xii",
+    "title": "Odisea: sirenas, Escila y Caribdis",
+    "author": "Homero",
+    "translator": "Luis Segalá y Estalella",
+    "editionYear": 1910,
+    "difficulty": "C1",
+    "difficultyNote": "Epic narration with dense mythological references and elevated early-twentieth-century prose.",
+    "genre": "Epic poetry",
+    "tags": [
+      "Grecia",
+      "aventura",
+      "sirenas",
+      "Escila",
+      "Caribdis",
+      "Odisea"
+    ],
+    "description": "Odysseus sails past the Sirens and between two monsters before his crew makes one fatal choice.",
+    "source": "https://www.gutenberg.org/ebooks/58221.txt.utf-8",
+    "collection": "greek-classics",
+    "originalLanguage": "Ancient Greek",
+    "rights": "Ancient Greek original and historical Spanish edition; source transcription terms apply; project-produced local narration",
+    "text": "texts/greek_homero_odisea_canto_xii.txt",
+    "cover": "covers/greek_homero_odisea_canto_xii.webp",
+    "wordCount": 4566,
+    "minutes": 25,
+    "englishTranslation": "translations/greek-homero-odisea-canto-xii.en.json"
   }
 ]

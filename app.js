@@ -45,6 +45,7 @@ const downloadReviewedAnki = document.querySelector("#downloadReviewedAnki");
 const themeSelect = document.querySelector("#themeSelect");
 const highlightSelect = document.querySelector("#highlightSelect");
 const textModeSelect = document.querySelector("#textModeSelect");
+const translationLayoutSelect = document.querySelector("#translationLayoutSelect");
 const settingsMenu = document.querySelector("#settingsMenu");
 const appearanceControls = settingsMenu.querySelector(".appearance-controls");
 const textSize = document.querySelector("#textSize");
@@ -59,8 +60,9 @@ const canvas = document.querySelector("#waveform");
 const ctx = canvas.getContext("2d");
 const systemThemeQuery = window.matchMedia?.("(prefers-color-scheme: dark)") || null;
 const themeOptions = ["system", "paper", "mist", "night"];
-const appearanceSettingsVersion = 3;
+const appearanceSettingsVersion = 4;
 const difficultyOrder = ["A2", "B1", "B2", "C1"];
+const collectionOptions = ["all", "stories", "bible", "greek-classics"];
 const difficultyLabels = {
   A2: "Early reader",
   B1: "Intermediate",
@@ -82,6 +84,7 @@ let selectedWordButton = null;
 let definitionRequestId = 0;
 let trackLoadId = 0;
 let translationCache = loadTranslationCache();
+const translationRequests = new Map();
 let sharedGlossary = {};
 let progressCache = loadProgressCache();
 let studyLog = loadStudyLog();
@@ -90,6 +93,9 @@ let sliderPreviewTimer = 0;
 let draggingAppearanceSlider = false;
 let isReadMode = false;
 let catalogSettings = loadCatalogSettings();
+let translationObserver = null;
+let translationRenderId = 0;
+let savedTranslationBlocks = [];
 
 applyAppearanceSettings();
 drawWaveform(0);
@@ -195,6 +201,7 @@ transcriptFile.addEventListener("change", async () => {
   try {
     const text = await file.text();
     const parsed = parseTranscript(text, file.name);
+    savedTranslationBlocks = [];
     setWords(parsed, hasValidTimings(parsed));
     status(`${file.name} loaded with ${parsed.length.toLocaleString()} words.`);
   } catch {
@@ -210,6 +217,7 @@ usePastedText.addEventListener("click", () => {
   }
   const parsed = tokenizeUntimed(text);
   assignApproximateTimes(parsed);
+  savedTranslationBlocks = [];
   setWords(parsed, false);
   status("Pasted text loaded. Highlighting is approximate because no word timings were provided.");
 });
@@ -275,6 +283,14 @@ textModeSelect.addEventListener("change", () => {
   appearanceSettings.textMode = textModeSelect.value;
   saveAppearanceSettings(appearanceSettings);
   applyAppearanceSettings();
+});
+
+translationLayoutSelect.addEventListener("change", () => {
+  appearanceSettings.translationLayout = translationLayoutSelect.value;
+  saveAppearanceSettings(appearanceSettings);
+  applyAppearanceSettings();
+  renderWords();
+  updateProgress();
 });
 
 textSize.addEventListener("input", () => {
@@ -537,6 +553,7 @@ document.addEventListener("visibilitychange", () => {
 function setAudioSource(src, message) {
   audio.pause();
   words = [];
+  savedTranslationBlocks = [];
   reader.replaceChildren();
   hideWordPopover();
   definition.innerHTML = `<p class="muted">Tap a word for an English meaning.</p>`;
@@ -569,7 +586,7 @@ async function loadLibrary() {
         id: track.id || track.audio || track.text || track.transcript,
         title: track.title || track.audio || track.text || track.transcript,
         difficulty: difficultyOrder.includes(track.difficulty) ? track.difficulty : "C1",
-        collection: track.collection === "bible" ? "bible" : "stories",
+        collection: collectionOptions.includes(track.collection) && track.collection !== "all" ? track.collection : "stories",
         minutes: Number(track.minutes) || 0
       }));
     renderTrackList();
@@ -628,10 +645,14 @@ async function loadTrack(track, updateHistory = true) {
   }
 
   try {
-    const response = await fetch(transcriptPath);
+    const [response, savedBlocks] = await Promise.all([
+      fetch(transcriptPath),
+      loadSavedTrackTranslation(track)
+    ]);
     if (!response.ok) throw new Error("Transcript not found");
     const text = await response.text();
     if (loadId !== trackLoadId || activeTrackId !== track.id) return;
+    savedTranslationBlocks = savedBlocks;
     const parsed = parseTranscript(track.text ? stripCatalogTextHeader(text, track) : text, transcriptPath);
     const precise = Boolean(track.audio) && hasValidTimings(parsed);
     setWords(parsed, precise);
@@ -647,11 +668,25 @@ async function loadTrack(track, updateHistory = true) {
   }
 }
 
+async function loadSavedTrackTranslation(track) {
+  if (!track.englishTranslation) return [];
+  try {
+    const response = await fetch(track.englishTranslation);
+    if (!response.ok) return [];
+    const payload = await response.json();
+    if (payload?.trackId !== track.id || !Array.isArray(payload.blocks)) return [];
+    return payload.blocks;
+  } catch {
+    return [];
+  }
+}
+
 function clearAudioSource() {
   activeTrackId && saveActiveProgress(true);
   audio.removeAttribute("src");
   audio.load();
   words = [];
+  savedTranslationBlocks = [];
   reader.replaceChildren();
   hideWordPopover();
   definition.innerHTML = `<p class="muted">Tap a word for an English meaning.</p>`;
@@ -747,7 +782,11 @@ function renderTrackList() {
         track.author,
         track.genre,
         track.description,
-        track.collection === "bible" ? "biblia bible" : "cuentos stories",
+        track.collection === "bible"
+          ? "biblia bible escritura scripture"
+          : track.collection === "greek-classics"
+            ? "clasicos clásicos griegos grecia greek classics philosophy filosofía mythology mitologia mitología"
+            : "cuentos stories relatos",
         ...(Array.isArray(track.tags) ? track.tags : [])
       ].filter(Boolean).join(" ")).includes(query);
     })
@@ -759,7 +798,7 @@ function renderTrackList() {
   if (!visibleTracks.length) {
     trackList.innerHTML = `
       <div class="empty-catalog">
-        <h2>No stories match</h2>
+        <h2>No readings match</h2>
         <p>Try another title, format, or reading level.</p>
         <button type="button" data-clear-catalog>Clear filters</button>
       </div>`;
@@ -897,7 +936,7 @@ function updateLevelFilters() {
 }
 
 function selectCollection(collection) {
-  catalogSettings.collection = ["all", "stories", "bible"].includes(collection) ? collection : "all";
+  catalogSettings.collection = collectionOptions.includes(collection) ? collection : "all";
   saveCatalogSettings();
   updateCollectionTabs();
   renderTrackList();
@@ -921,7 +960,7 @@ function loadCatalogSettings() {
       format: ["all", "listen", "read"].includes(saved.format) ? saved.format : "all",
       sort: ["difficulty", "title", "author", "length"].includes(saved.sort) ? saved.sort : "difficulty",
       level: ["all", ...difficultyOrder].includes(saved.level) ? saved.level : "all",
-      collection: ["all", "stories", "bible"].includes(saved.collection) ? saved.collection : "all"
+      collection: collectionOptions.includes(saved.collection) ? saved.collection : "all"
     };
   } catch {
     return { search: "", format: "all", sort: "difficulty", level: "all", collection: "all" };
@@ -1066,11 +1105,23 @@ function wordWeight(text) {
 }
 
 function renderWords() {
+  translationRenderId += 1;
+  const renderId = translationRenderId;
+  translationObserver?.disconnect();
+  translationObserver = null;
   reader.replaceChildren();
   hideWordPopover();
   const fragment = document.createDocumentFragment();
-  let paragraph = document.createElement("p");
+  const bilingual = appearanceSettings.translationLayout !== "spanish-only";
+  const translationTargets = [];
+  const translationSources = [];
+  currentWordIndex = -1;
+  readWordCount = -1;
+  let pair = createReadingPair();
+  let paragraph = pair.spanish;
+  let paragraphText = "";
   let sentenceCount = 0;
+  let blockIndex = 0;
 
   words.forEach((word, index) => {
     const span = document.createElement("button");
@@ -1080,19 +1131,211 @@ function renderWords() {
     span.tabIndex = index === 0 ? 0 : -1;
     span.textContent = word.text;
     paragraph.append(span);
-    paragraph.append(document.createTextNode(word.separator || " "));
+    const separator = word.separator || " ";
+    paragraph.append(document.createTextNode(separator));
+    paragraphText += `${word.text}${separator}`;
 
-    if (/[.!?…]["')\]]*$/.test(word.text)) {
+    if (/[.!?…]["')\]]*\s*$/.test(`${word.text}${separator}`)) {
       sentenceCount += 1;
     }
     if (sentenceCount >= 4 && index < words.length - 1) {
-      fragment.append(paragraph);
-      paragraph = document.createElement("p");
+      finishReadingPair(pair, paragraphText, bilingual, translationTargets, translationSources, fragment, blockIndex);
+      blockIndex += 1;
+      pair = createReadingPair();
+      paragraph = pair.spanish;
+      paragraphText = "";
       sentenceCount = 0;
     }
   });
-  if (paragraph.childNodes.length) fragment.append(paragraph);
+  if (paragraph.childNodes.length) {
+    finishReadingPair(pair, paragraphText, bilingual, translationTargets, translationSources, fragment, blockIndex);
+  }
   reader.append(fragment);
+  reader.classList.toggle("has-translation", bilingual);
+  reader.classList.toggle("is-side-by-side", appearanceSettings.translationLayout === "side-by-side");
+
+  if (bilingual) {
+    translationTargets.forEach((target, index) => {
+      target.before = translationSources[target.blockIndex - 1] || "";
+      target.after = translationSources[target.blockIndex + 1] || "";
+    });
+    observeTranslationTargets(translationTargets, renderId);
+  }
+}
+
+function createReadingPair() {
+  const container = document.createElement("section");
+  container.className = "translation-pair";
+  const spanish = document.createElement("p");
+  spanish.className = "spanish-text";
+  spanish.lang = "es";
+  container.append(spanish);
+  return { container, spanish };
+}
+
+function finishReadingPair(pair, sourceText, bilingual, targets, sources, fragment, blockIndex) {
+  const source = sourceText.trim();
+  sources.push(source);
+  if (bilingual) {
+    const english = document.createElement("p");
+    english.className = "english-translation";
+    english.lang = "en";
+    const saved = savedTranslationBlocks[blockIndex];
+    if (saved?.translation && normalizedTranslationSource(saved.source) === normalizedTranslationSource(source)) {
+      english.textContent = saved.translation;
+      english.setAttribute("aria-busy", "false");
+    } else {
+      english.classList.add("is-loading");
+      english.setAttribute("aria-busy", "true");
+      english.innerHTML = `<span class="translation-placeholder">Translating…</span>`;
+      targets.push({ element: english, source, blockIndex });
+    }
+    pair.container.append(english);
+  }
+  fragment.append(pair.container);
+}
+
+function normalizedTranslationSource(value) {
+  return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+function observeTranslationTargets(targets, renderId) {
+  if (!("IntersectionObserver" in window)) {
+    targets.forEach((target) => loadReadingTranslation(target, renderId));
+    return;
+  }
+
+  const sources = new WeakMap(targets.map((target) => [target.element, target]));
+  translationObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      observer.unobserve(entry.target);
+      const target = sources.get(entry.target);
+      if (target) loadReadingTranslation(target, renderId);
+    });
+  }, { rootMargin: "500px 0px" });
+  targets.forEach((target) => translationObserver.observe(target.element));
+}
+
+async function loadReadingTranslation(target, renderId) {
+  const { element, source, before = "", after = "" } = target;
+  element.classList.add("is-loading");
+  element.classList.remove("has-error");
+  element.setAttribute("aria-busy", "true");
+  element.innerHTML = `<span class="translation-placeholder">Translating…</span>`;
+  try {
+    const translated = await translateReadingText(source, before, after);
+    if (renderId !== translationRenderId || !element.isConnected) return;
+    element.textContent = translated;
+    element.classList.remove("is-loading");
+    element.setAttribute("aria-busy", "false");
+  } catch {
+    if (renderId !== translationRenderId || !element.isConnected) return;
+    element.classList.remove("is-loading");
+    element.classList.add("has-error");
+    element.setAttribute("aria-busy", "false");
+    element.innerHTML = `<span>Translation unavailable.</span> <button type="button" class="translation-retry">Retry</button>`;
+    element.querySelector(".translation-retry")?.addEventListener("click", () => {
+      loadReadingTranslation(target, renderId);
+    });
+  }
+}
+
+async function translateReadingText(source, outerBefore = "", outerAfter = "") {
+  const chunks = splitTranslationText(source, 300);
+  const translated = [];
+  for (let index = 0; index < chunks.length; index += 1) {
+    const chunk = chunks[index];
+    const before = [outerBefore, ...chunks.slice(0, index)].filter(Boolean).join(" ");
+    const after = [...chunks.slice(index + 1), outerAfter].filter(Boolean).join(" ");
+    const contextualRequest = buildContextualTranslationRequest(escapeHtml(chunk), before, after, "b");
+    translated.push(await fetchTranslation(contextualRequest, {
+      targetTag: "b",
+      fallbackText: chunk
+    }));
+  }
+  return translated.join(" ");
+}
+
+function splitTranslationText(text, maxBytes) {
+  const sentences = text.match(/[^.!?…]+[.!?…]+["')\]]*|[^.!?…]+$/g) || [text];
+  const chunks = [];
+  let current = "";
+
+  for (const sentence of sentences) {
+    const cleanSentence = sentence.trim();
+    if (!cleanSentence) continue;
+    const combined = current ? `${current} ${cleanSentence}` : cleanSentence;
+    if (utf8ByteLength(combined) <= maxBytes) {
+      current = combined;
+      continue;
+    }
+    if (current) {
+      chunks.push(current);
+      current = "";
+    }
+    if (utf8ByteLength(cleanSentence) <= maxBytes) {
+      current = cleanSentence;
+      continue;
+    }
+    const sentenceChunks = splitTextByBytes(cleanSentence, maxBytes);
+    chunks.push(...sentenceChunks.slice(0, -1));
+    current = sentenceChunks.at(-1) || "";
+  }
+  if (current) chunks.push(current);
+  return chunks;
+}
+
+function splitTextByBytes(text, maxBytes) {
+  const chunks = [];
+  let current = "";
+  for (const word of text.trim().split(/\s+/).filter(Boolean)) {
+    const candidate = current ? `${current} ${word}` : word;
+    if (current && utf8ByteLength(candidate) > maxBytes) {
+      chunks.push(current);
+      current = word;
+    } else {
+      current = candidate;
+    }
+  }
+  if (current) chunks.push(current);
+  return chunks;
+}
+
+function buildContextualTranslationRequest(targetHTML, beforeText, afterText, targetTag) {
+  const beforeWords = beforeText.trim().split(/\s+/).filter(Boolean);
+  const afterWords = afterText.trim().split(/\s+/).filter(Boolean);
+  const prefix = [];
+  const suffix = [];
+  const markedTarget = `<${targetTag}>${targetHTML}</${targetTag}>`;
+  let canAddBefore = true;
+  let canAddAfter = true;
+
+  const compose = (nextPrefix = prefix, nextSuffix = suffix) => [
+    nextPrefix.length ? escapeHtml(nextPrefix.join(" ")) : "",
+    markedTarget,
+    nextSuffix.length ? escapeHtml(nextSuffix.join(" ")) : ""
+  ].filter(Boolean).join(" ");
+
+  while ((beforeWords.length && canAddBefore) || (afterWords.length && canAddAfter)) {
+    if (beforeWords.length && canAddBefore) {
+      const word = beforeWords.pop();
+      const nextPrefix = [word, ...prefix];
+      if (utf8ByteLength(compose(nextPrefix, suffix)) <= 480) prefix.unshift(word);
+      else canAddBefore = false;
+    }
+    if (afterWords.length && canAddAfter) {
+      const word = afterWords.shift();
+      const nextSuffix = [...suffix, word];
+      if (utf8ByteLength(compose(prefix, nextSuffix)) <= 480) suffix.push(word);
+      else canAddAfter = false;
+    }
+  }
+  return compose();
+}
+
+function utf8ByteLength(value) {
+  return new TextEncoder().encode(value).length;
 }
 
 function tick() {
@@ -1175,7 +1418,8 @@ async function showDefinition(word, anchor) {
   
   const normalized = normalizeWord(word.text);
   const contextHTML = contextSentenceForWord(word.index);
-  const instant = sharedGlossary[normalized] || getCachedTranslation(contextHTML);
+  const contextualRequest = contextualRequestForWord(word.index, contextHTML);
+  const instant = sharedGlossary[normalized] || getCachedTranslation(contextualRequest);
   
   if (instant) {
     renderDefinition(contextHTML, instant, anchor, true);
@@ -1192,7 +1436,10 @@ async function showDefinition(word, anchor) {
   }
 
   try {
-    const translated = await fetchTranslation(contextHTML);
+    const translated = await fetchTranslation(contextualRequest, {
+      targetTag: "i",
+      fallbackText: contextHTML
+    });
     if (requestId === definitionRequestId) {
       renderDefinition(contextHTML, translated, anchor, true);
       logStudiedWord(word, translated);
@@ -1302,11 +1549,7 @@ function logStudiedWord(word, meaning) {
 
 function contextSentenceForWord(index) {
   if (!Number.isFinite(index) || !words[index]) return "";
-  let start = index;
-  while (start > 0 && start > index - 3 && !endsSentence(words[start - 1])) start -= 1;
-
-  let end = index;
-  while (end < words.length - 1 && end < index + 1 && !endsSentence(words[end])) end += 1;
+  const { start, end } = contextRangeForWord(index);
 
   return words
     .slice(start, end + 1)
@@ -1315,6 +1558,32 @@ function contextSentenceForWord(index) {
       const text = absoluteIndex === index ? `<b>${escapeHtml(word.text)}</b>` : escapeHtml(word.text);
       return `${text}${escapeHtml(word.separator || " ")}`;
     })
+    .join("")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function contextRangeForWord(index) {
+  let start = index;
+  while (start > 0 && start > index - 3 && !endsSentence(words[start - 1])) start -= 1;
+
+  let end = index;
+  while (end < words.length - 1 && end < index + 1 && !endsSentence(words[end])) end += 1;
+
+  return { start, end };
+}
+
+function contextualRequestForWord(index, targetHTML) {
+  const { start, end } = contextRangeForWord(index);
+  const before = plainTextForWords(Math.max(0, start - 60), start);
+  const after = plainTextForWords(end + 1, Math.min(words.length, end + 61));
+  return buildContextualTranslationRequest(targetHTML, before, after, "i");
+}
+
+function plainTextForWords(start, end) {
+  return words
+    .slice(start, end)
+    .map((word) => `${word.text}${word.separator || " "}`)
     .join("")
     .replace(/\s+/g, " ")
     .trim();
@@ -1423,25 +1692,53 @@ function getCachedTranslation(context) {
   return translationCache[context] || "";
 }
 
-async function fetchTranslation(context) {
+async function fetchTranslation(context, options = {}) {
   const cached = getCachedTranslation(context);
   if (cached) return cached;
+  if (translationRequests.has(context)) return translationRequests.get(context);
 
-  const controller = new AbortController();
-  const timeoutId = window.setTimeout(() => controller.abort(), 4500);
-  try {
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(context)}&langpair=es|en`;
-    const response = await fetch(url, { signal: controller.signal });
-    if (!response.ok) throw new Error("Lookup failed");
-    const data = await response.json();
-    const translated = data?.responseData?.translatedText;
-    if (!translated) throw new Error("No translation returned");
-    translationCache[context] = translated;
-    saveTranslationCache(translationCache);
-    return translated;
-  } finally {
-    window.clearTimeout(timeoutId);
-  }
+  const request = (async () => {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 4500);
+    try {
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(context)}&langpair=es|en`;
+      const response = await fetch(url, { signal: controller.signal });
+      if (!response.ok) throw new Error("Lookup failed");
+      const data = await response.json();
+      const rawTranslation = data?.responseData?.translatedText;
+      if (!rawTranslation) throw new Error("No translation returned");
+      const decodedTranslation = decodeHtmlEntities(String(rawTranslation));
+      let translated = decodedTranslation;
+      if (options.targetTag) {
+        translated = extractMarkedTranslation(decodedTranslation, options.targetTag);
+        if (!translated && options.fallbackText) {
+          translated = await fetchTranslation(options.fallbackText);
+        }
+        if (!translated) throw new Error("Translation target marker was not returned");
+      }
+      translationCache[context] = translated;
+      saveTranslationCache(translationCache);
+      return translated;
+    } finally {
+      window.clearTimeout(timeoutId);
+      translationRequests.delete(context);
+    }
+  })();
+  translationRequests.set(context, request);
+  return request;
+}
+
+function extractMarkedTranslation(value, tagName) {
+  const safeTag = String(tagName).replace(/[^a-z0-9]/gi, "");
+  if (!safeTag) return "";
+  const match = value.match(new RegExp(`<${safeTag}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${safeTag}>`, "i"));
+  return match?.[1]?.trim() || "";
+}
+
+function decodeHtmlEntities(value) {
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = value;
+  return textarea.value;
 }
 
 function drawWaveform(progress) {
@@ -1663,6 +1960,7 @@ function loadAppearanceSettings() {
       theme: themeOptions.includes(saved.theme) ? saved.theme : defaults.theme,
       highlight: ["sage", "sky", "rose", "underline", "none"].includes(saved.highlight) ? saved.highlight : defaults.highlight,
       textMode: ["dim-passed", "dim-upcoming"].includes(saved.textMode) ? saved.textMode : defaults.textMode,
+      translationLayout: ["spanish-only", "side-by-side", "english-below"].includes(saved.translationLayout) ? saved.translationLayout : defaults.translationLayout,
       textSize: numberInRange(saved.textSize, 80, 140, defaults.textSize),
       lineHeight: numberInRange(saved.lineHeight, 1.4, 2.2, defaults.lineHeight),
       font: ["serif", "sans", "accessible"].includes(saved.font) ? saved.font : defaults.font,
@@ -1679,6 +1977,7 @@ function defaultAppearanceSettings() {
     theme: "system",
     highlight: "sage",
     textMode: "dim-passed",
+    translationLayout: "spanish-only",
     textSize: 100,
     lineHeight: 1.8,
     font: "serif",
@@ -1711,6 +2010,8 @@ function applyAppearanceSettings() {
   document.documentElement.dataset.theme = resolveTheme(appearanceSettings.theme);
   document.documentElement.dataset.highlight = appearanceSettings.highlight;
   document.documentElement.dataset.textMode = appearanceSettings.textMode;
+  document.documentElement.dataset.translationLayout = appearanceSettings.translationLayout;
+  app.dataset.translationLayout = appearanceSettings.translationLayout;
   document.documentElement.dataset.readerFont = appearanceSettings.font;
   document.documentElement.dataset.readerWidth = appearanceSettings.readerWidth;
   document.documentElement.style.setProperty("--reader-font-size", `${1.6 * appearanceSettings.textSize / 100}rem`);
@@ -1718,6 +2019,7 @@ function applyAppearanceSettings() {
   themeSelect.value = appearanceSettings.theme;
   highlightSelect.value = appearanceSettings.highlight;
   textModeSelect.value = appearanceSettings.textMode;
+  translationLayoutSelect.value = appearanceSettings.translationLayout;
   textSize.value = appearanceSettings.textSize;
   textSizeValue.value = `${appearanceSettings.textSize}%`;
   lineHeight.value = appearanceSettings.lineHeight;

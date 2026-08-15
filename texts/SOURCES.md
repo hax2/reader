@@ -24,3 +24,20 @@ The Bible shelf uses selected chapters from [La Biblia en Español Sencillo](htt
 The imported text comes from the publisher's narration-friendly chapter archive.
 Verse numbers are omitted there; this project normalizes the chapter headings but
 does not rewrite the passage text.
+
+## Greek classics in Spanish
+
+- Homer's [Odyssey](https://www.gutenberg.org/ebooks/58221), cantos IX and XII,
+  translated by Luis Segalá y Estalella (1910). The Project Gutenberg UTF-8 text
+  supplies the complete cantos; illustration labels and printed verse numbers are
+  omitted for narration.
+- Plato's [Critón](https://www.filosofia.org/cla/pla/azc01091.htm), translated by
+  Patricio de Azcárate (1871). The introductory editorial argument is omitted.
+- Plato's [allegory of the cave](https://www.filosofia.org/cla/pla/azf08051.htm),
+  from book VII of the Republic, translated by Patricio de Azcárate (1872).
+- Epicurus's [Letter to Menoeceus](https://es.wikisource.org/wiki/Carta_de_Epicuro_a_Meneceo),
+  from the Spanish Wikisource electronic edition.
+
+The ancient originals and named historical translations are public-domain works.
+Wikisource transcriptions are available under CC BY-SA 4.0; Project Gutenberg's
+distribution terms accompany its source edition.
