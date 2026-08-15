@@ -1358,14 +1358,25 @@ h2 {
 
 .english-translation {
   color: var(--muted);
-  font-size: 0.82em;
-  line-height: calc(var(--reader-line-height) + 0.08);
+  font-size: 1em;
+  line-height: var(--reader-line-height);
 }
 
 :root[data-translation-layout="english-below"] .english-translation {
   margin-top: 0.72em;
   padding-left: 1em;
   border-left: 3px solid var(--line);
+  font-size: 0.78em;
+  line-height: calc(var(--reader-line-height) + 0.08);
+}
+
+:root[data-translation-layout="english-below"] .reader.has-translation .translation-pair {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+:root[data-translation-layout="english-below"] .translation-pair + .translation-pair {
+  margin-top: 0.9em;
 }
 
 .english-translation.is-loading,

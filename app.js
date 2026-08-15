@@ -96,6 +96,7 @@ let catalogSettings = loadCatalogSettings();
 let translationObserver = null;
 let translationRenderId = 0;
 let savedTranslationBlocks = [];
+let savedTranslationLookup = new Map();
 
 applyAppearanceSettings();
 drawWaveform(0);
@@ -201,7 +202,7 @@ transcriptFile.addEventListener("change", async () => {
   try {
     const text = await file.text();
     const parsed = parseTranscript(text, file.name);
-    savedTranslationBlocks = [];
+    setSavedTranslationBlocks([]);
     setWords(parsed, hasValidTimings(parsed));
     status(`${file.name} loaded with ${parsed.length.toLocaleString()} words.`);
   } catch {
@@ -217,7 +218,7 @@ usePastedText.addEventListener("click", () => {
   }
   const parsed = tokenizeUntimed(text);
   assignApproximateTimes(parsed);
-  savedTranslationBlocks = [];
+  setSavedTranslationBlocks([]);
   setWords(parsed, false);
   status("Pasted text loaded. Highlighting is approximate because no word timings were provided.");
 });
@@ -553,7 +554,7 @@ document.addEventListener("visibilitychange", () => {
 function setAudioSource(src, message) {
   audio.pause();
   words = [];
-  savedTranslationBlocks = [];
+  setSavedTranslationBlocks([]);
   reader.replaceChildren();
   hideWordPopover();
   definition.innerHTML = `<p class="muted">Tap a word for an English meaning.</p>`;
@@ -652,7 +653,7 @@ async function loadTrack(track, updateHistory = true) {
     if (!response.ok) throw new Error("Transcript not found");
     const text = await response.text();
     if (loadId !== trackLoadId || activeTrackId !== track.id) return;
-    savedTranslationBlocks = savedBlocks;
+    setSavedTranslationBlocks(savedBlocks);
     const parsed = parseTranscript(track.text ? stripCatalogTextHeader(text, track) : text, transcriptPath);
     const precise = Boolean(track.audio) && hasValidTimings(parsed);
     setWords(parsed, precise);
@@ -681,12 +682,32 @@ async function loadSavedTrackTranslation(track) {
   }
 }
 
+function setSavedTranslationBlocks(blocks) {
+  savedTranslationBlocks = Array.isArray(blocks) ? blocks : [];
+  savedTranslationLookup = new Map();
+  for (const block of savedTranslationBlocks) {
+    const source = String(block?.source || "").trim();
+    const translation = String(block?.translation || "").trim();
+    if (!source || !translation) continue;
+    savedTranslationLookup.set(normalizedTranslationSource(source), translation);
+
+    const sourceSentences = splitTranslationSentences(source);
+    if (sourceSentences.length < 2) continue;
+    const translatedSentences = fitTranslationSentences(translation, sourceSentences.length);
+    sourceSentences.forEach((sentence, index) => {
+      if (translatedSentences[index]) {
+        savedTranslationLookup.set(normalizedTranslationSource(sentence), translatedSentences[index]);
+      }
+    });
+  }
+}
+
 function clearAudioSource() {
   activeTrackId && saveActiveProgress(true);
   audio.removeAttribute("src");
   audio.load();
   words = [];
-  savedTranslationBlocks = [];
+  setSavedTranslationBlocks([]);
   reader.replaceChildren();
   hideWordPopover();
   definition.innerHTML = `<p class="muted">Tap a word for an English meaning.</p>`;
@@ -1122,6 +1143,7 @@ function renderWords() {
   let paragraphText = "";
   let sentenceCount = 0;
   let blockIndex = 0;
+  const sentencesPerPair = appearanceSettings.translationLayout === "english-below" ? 1 : 4;
 
   words.forEach((word, index) => {
     const span = document.createElement("button");
@@ -1138,7 +1160,7 @@ function renderWords() {
     if (/[.!?…]["')\]]*\s*$/.test(`${word.text}${separator}`)) {
       sentenceCount += 1;
     }
-    if (sentenceCount >= 4 && index < words.length - 1) {
+    if (sentenceCount >= sentencesPerPair && index < words.length - 1) {
       finishReadingPair(pair, paragraphText, bilingual, translationTargets, translationSources, fragment, blockIndex);
       blockIndex += 1;
       pair = createReadingPair();
@@ -1180,9 +1202,9 @@ function finishReadingPair(pair, sourceText, bilingual, targets, sources, fragme
     const english = document.createElement("p");
     english.className = "english-translation";
     english.lang = "en";
-    const saved = savedTranslationBlocks[blockIndex];
-    if (saved?.translation && normalizedTranslationSource(saved.source) === normalizedTranslationSource(source)) {
-      english.textContent = saved.translation;
+    const savedTranslation = savedTranslationLookup.get(normalizedTranslationSource(source));
+    if (savedTranslation) {
+      english.textContent = savedTranslation;
       english.setAttribute("aria-busy", "false");
     } else {
       english.classList.add("is-loading");
@@ -1197,6 +1219,58 @@ function finishReadingPair(pair, sourceText, bilingual, targets, sources, fragme
 
 function normalizedTranslationSource(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+function splitTranslationSentences(value) {
+  const text = normalizedTranslationSource(value);
+  if (!text) return [];
+  return (text.match(/[^.!?…]+(?:[.!?…]+["')\]]*|$)/g) || [text])
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
+}
+
+function fitTranslationSentences(translation, desiredCount) {
+  const sentences = splitTranslationSentences(translation);
+  if (desiredCount < 1 || !sentences.length) return [];
+
+  while (sentences.length > desiredCount) {
+    let mergeIndex = 0;
+    let shortestPair = Number.POSITIVE_INFINITY;
+    for (let index = 0; index < sentences.length - 1; index += 1) {
+      const pairLength = sentences[index].length + sentences[index + 1].length;
+      if (pairLength < shortestPair) {
+        shortestPair = pairLength;
+        mergeIndex = index;
+      }
+    }
+    sentences.splice(mergeIndex, 2, `${sentences[mergeIndex]} ${sentences[mergeIndex + 1]}`);
+  }
+
+  while (sentences.length < desiredCount) {
+    const splitIndex = sentences.reduce(
+      (longest, sentence, index) => sentence.length > sentences[longest].length ? index : longest,
+      0
+    );
+    const parts = splitTranslationSentence(sentences[splitIndex]);
+    if (parts.length < 2) break;
+    sentences.splice(splitIndex, 1, ...parts);
+  }
+  return sentences;
+}
+
+function splitTranslationSentence(sentence) {
+  const candidates = [...sentence.matchAll(/[,;:—–]\s+/g)]
+    .map((match) => match.index + match[0].length)
+    .filter((index) => index > sentence.length * 0.25 && index < sentence.length * 0.75);
+  let splitAt = candidates.sort((a, b) => Math.abs(a - sentence.length / 2) - Math.abs(b - sentence.length / 2))[0];
+  if (!splitAt) {
+    const spaces = [...sentence.matchAll(/\s+/g)]
+      .map((match) => match.index + match[0].length)
+      .filter((index) => index > sentence.length * 0.3 && index < sentence.length * 0.7);
+    splitAt = spaces.sort((a, b) => Math.abs(a - sentence.length / 2) - Math.abs(b - sentence.length / 2))[0];
+  }
+  if (!splitAt) return [sentence];
+  return [sentence.slice(0, splitAt).trim(), sentence.slice(splitAt).trim()].filter(Boolean);
 }
 
 function observeTranslationTargets(targets, renderId) {
