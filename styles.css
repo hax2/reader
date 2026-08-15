@@ -3357,18 +3357,18 @@ textarea {
 }
 
 /* ==========================================================================
-   PRE-READING VOCABULARY WARMUP STYLES
+   PRE-READING VOCABULARY WARMUP STYLES (COMPACT & RESPONSIVE)
    ========================================================================== */
 
 .vocab-warmup {
   max-width: var(--reader-max-width);
-  margin: 0 auto 32px;
+  margin: 0 auto 24px;
   background: var(--panel);
   border: 1px solid var(--reader-border);
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow: var(--shadow);
   overflow: hidden;
-  transition: all 200ms ease;
+  transition: all 180ms ease;
 }
 
 .vocab-warmup-shell {
@@ -3378,10 +3378,10 @@ textarea {
 
 .vocab-warmup-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 18px 22px;
+  gap: 12px;
+  padding: 12px 18px;
   background: var(--panel);
   border-bottom: 1px solid var(--line);
   cursor: pointer;
@@ -3393,21 +3393,22 @@ textarea {
 }
 
 .vocab-warmup-title-wrap {
-  display: grid;
-  gap: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .vocab-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  width: fit-content;
-  padding: 3px 10px;
+  gap: 5px;
+  padding: 2px 8px;
   background: var(--wash);
   color: var(--accent);
   border: 1px solid var(--line);
   border-radius: 9999px;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -3418,8 +3419,8 @@ textarea {
 }
 
 .vocab-warmup-heading {
-  margin: 4px 0 0;
-  font-size: 1.15rem;
+  margin: 0;
+  font-size: 0.96rem;
   font-weight: 800;
   color: var(--ink);
   letter-spacing: -0.01em;
@@ -3427,32 +3428,30 @@ textarea {
 }
 
 .vocab-warmup-subtitle {
-  margin: 0;
-  font-size: 0.84rem;
-  color: var(--muted);
-  line-height: 1.4;
+  display: none;
 }
 
 .vocab-warmup-actions {
   display: flex;
   align-items: center;
+  gap: 8px;
   flex-shrink: 0;
 }
 
 .vocab-collapse-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 32px;
-  padding: 0 12px;
+  gap: 5px;
+  min-height: 28px;
+  padding: 0 10px;
   background: var(--wash);
   color: var(--soft-ink);
   border: 1px solid var(--line);
   border-radius: 9999px;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 160ms ease;
+  transition: all 140ms ease;
 }
 
 .vocab-collapse-btn:hover {
@@ -3462,7 +3461,7 @@ textarea {
 }
 
 .vocab-collapse-btn .chevron-icon {
-  transition: transform 200ms ease;
+  transition: transform 180ms ease;
 }
 
 .vocab-warmup.is-collapsed .vocab-collapse-btn .chevron-icon {
@@ -3470,59 +3469,58 @@ textarea {
 }
 
 .vocab-warmup-body {
-  padding: 18px 22px 20px;
+  padding: 14px 18px 16px;
   background: var(--paper);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .vocab-warmup.is-collapsed .vocab-warmup-body {
   display: none;
 }
 
-/* Vocab Cards Grid */
+/* Compact Cards Grid */
 .vocab-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 12px;
+  gap: 10px;
 }
 
 .vocab-card {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 14px 16px;
+  gap: 5px;
+  padding: 10px 12px;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-  transition: all 180ms ease;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  transition: all 160ms ease;
 }
 
 .vocab-card:hover {
   border-color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.vocab-card-top {
+.vocab-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
 }
 
-.vocab-word-group {
+.vocab-term-row {
   display: flex;
   align-items: baseline;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .vocab-word {
   font-family: var(--reader-font-family);
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--ink);
 }
@@ -3530,12 +3528,12 @@ textarea {
 .vocab-freq-pill {
   display: inline-flex;
   align-items: center;
-  padding: 1px 6px;
+  padding: 1px 5px;
   background: var(--wash);
   color: var(--accent);
   border: 1px solid var(--line);
   border-radius: 9999px;
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 800;
 }
 
@@ -3543,14 +3541,14 @@ textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   min-height: 0;
   padding: 0;
   background: transparent;
   color: var(--muted);
   border: 1px solid transparent;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
   transition: all 140ms ease;
 }
@@ -3558,39 +3556,43 @@ textarea {
 .vocab-save-btn:hover {
   background: var(--wash);
   color: var(--accent);
-  border-color: var(--line);
 }
 
 .vocab-save-btn.is-saved {
   color: #10b981;
   background: rgba(16, 185, 129, 0.12);
-  border-color: rgba(16, 185, 129, 0.3);
+  border-color: rgba(16, 185, 129, 0.25);
 }
 
 .vocab-meaning {
   margin: 0;
-  color: var(--soft-ink);
-  font-size: 0.88rem;
-  font-weight: 600;
-  line-height: 1.35;
+  color: var(--accent);
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.25;
 }
 
 .vocab-meaning.is-loading {
   color: var(--muted);
   font-style: italic;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 500;
 }
 
 .vocab-context {
   margin: 0;
-  padding: 8px 10px;
+  padding: 4px 8px;
   background: var(--paper);
-  border-left: 3px solid var(--accent);
-  border-radius: 5px;
-  font-size: 0.8rem;
-  line-height: 1.45;
+  border-left: 2.5px solid var(--accent);
+  border-radius: 4px;
+  font-size: 0.76rem;
+  font-style: italic;
+  line-height: 1.35;
   color: var(--muted);
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transition: background 140ms ease;
 }
 
@@ -3602,34 +3604,29 @@ textarea {
 .vocab-highlight {
   background: var(--highlight-bg);
   color: var(--highlight-text);
-  padding: 1px 3px;
-  border-radius: 3px;
+  padding: 0 2px;
+  border-radius: 2px;
   font-weight: 750;
-}
-
-.vocab-card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 2px;
 }
 
 .vocab-jump-btn {
+  align-self: flex-start;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   min-height: 0;
   padding: 0;
   background: transparent;
-  color: var(--accent);
-  font-size: 0.74rem;
-  font-weight: 750;
+  border: none;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 120ms ease;
+  transition: color 120ms ease;
 }
 
 .vocab-jump-btn:hover {
-  color: var(--accent-dark);
+  color: var(--accent);
   text-decoration: underline;
 }
 
@@ -3638,13 +3635,13 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
   padding-top: 6px;
   border-top: 1px solid var(--line);
 }
 
 .vocab-count-indicator {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: var(--muted);
 }
 
@@ -3655,21 +3652,21 @@ textarea {
 .vocab-start-reading-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 36px;
-  padding: 0 16px;
+  gap: 5px;
+  min-height: 30px;
+  padding: 0 12px;
   background: var(--accent);
   color: var(--button-ink);
-  border-radius: 7px;
-  font-size: 0.82rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.78rem;
   font-weight: 750;
   cursor: pointer;
-  transition: all 160ms ease;
+  transition: all 140ms ease;
 }
 
 .vocab-start-reading-btn:hover {
   background: var(--accent-dark);
-  transform: translateY(-1px);
 }
 
 /* Flash pulse animation when jumping from card to story */
@@ -3693,6 +3690,30 @@ textarea {
 .word.is-vocab-flash {
   animation: vocabFlashPulse 1.4s ease-out;
   border-radius: 4px;
+}
+
+@media (max-width: 860px) {
+  .vocab-warmup {
+    margin: 0 0 18px;
+    border-radius: 10px;
+  }
+
+  .vocab-warmup-header {
+    padding: 10px 14px;
+  }
+
+  .vocab-warmup-body {
+    padding: 10px 14px 12px;
+  }
+
+  .vocab-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .vocab-context {
+    white-space: normal;
+  }
 }
 
 

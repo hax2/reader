@@ -2839,17 +2839,17 @@ const SPANISH_IDIOMS = [
   { phrase: "por fin", meaning: "finally, at last" },
   { phrase: "a menudo", meaning: "often, frequently" },
   { phrase: "a través de", meaning: "through, across" },
-  { phrase: "darse cuenta", meaning: "to realize, to become aware" },
-  { phrase: "echar de menos", meaning: "to miss (someone or something)" },
-  { phrase: "tener en cuenta", meaning: "to take into account, keep in mind" },
+  { phrase: "darse cuenta", meaning: "to realize, become aware" },
+  { phrase: "echar de menos", meaning: "to miss (someone/something)" },
+  { phrase: "tener en cuenta", meaning: "to take into account" },
   { phrase: "a punto de", meaning: "on the verge of, about to" },
   { phrase: "en medio de", meaning: "in the middle of, amid" },
-  { phrase: "de vez en cuando", meaning: "from time to time, once in a while" },
+  { phrase: "de vez en cuando", meaning: "from time to time" },
   { phrase: "al fin y al cabo", meaning: "after all, in the end" },
   { phrase: "por lo tanto", meaning: "therefore, consequently" },
   { phrase: "hacer caso", meaning: "to pay attention, to heed" },
-  { phrase: "tener lugar", meaning: "to take place, to occur" },
-  { phrase: "valer la pena", meaning: "to be worth the effort / trouble" },
+  { phrase: "tener lugar", meaning: "to take place, to happen" },
+  { phrase: "valer la pena", meaning: "to be worth the effort" },
   { phrase: "llevar a cabo", meaning: "to carry out, execute" },
   { phrase: "a pesar de", meaning: "despite, in spite of" },
   { phrase: "en cambio", meaning: "on the other hand, instead" },
@@ -2857,8 +2857,99 @@ const SPANISH_IDIOMS = [
   { phrase: "al principio", meaning: "at first, in the beginning" }
 ];
 
+const LITERARY_VOCAB_MAP = {
+  lisonjas: "flattery, excessive praise",
+  lisonja: "flattery, flattering compliment",
+  lisonjear: "to flatter, praise insincerely",
+  digiero: "I digest, I assimilate",
+  digerir: "to digest, to assimilate",
+  azabache: "jet-black, pitch-black",
+  escarabajo: "beetle",
+  escarabajos: "beetles",
+  algodón: "cotton",
+  cuervo: "crow, raven",
+  astuto: "cunning, crafty, shrewd",
+  astuta: "cunning, crafty, shrewd",
+  adulación: "adulation, brown-nosing",
+  adulador: "flatterer, sycophant",
+  aduladores: "flatterers, sycophants",
+  queso: "cheese",
+  pico: "beak, bill (of a bird)",
+  hazaña: "deed, heroic feat",
+  hazañas: "deeds, heroic feats",
+  soberbia: "pride, arrogance",
+  soberbio: "proud, arrogant, splendid",
+  vano: "vain, futile, empty",
+  vana: "vain, futile, empty",
+  donoso: "graceful, witty, charming",
+  caverna: "cave, cavern",
+  morada: "dwelling, abode, residence",
+  cautivo: "captive, prisoner",
+  cautivos: "captives, prisoners",
+  tinieblas: "darkness, deep gloom",
+  resplandor: "brightness, radiance, glow",
+  desdicha: "misfortune, unhappiness",
+  desvelo: "sleeplessness, care, concern",
+  recelo: "suspicion, misgiving, distrust",
+  alboroto: "commotion, uproar, fuss",
+  antorcha: "torch",
+  manantial: "spring, water source",
+  penumbra: "semi-darkness, twilight",
+  rocío: "dew",
+  sendero: "path, trail, footpath",
+  susurro: "whisper, rustle, murmur",
+  torbellino: "whirlwind, vortex",
+  crepúsculo: "twilight, dusk",
+  estremecimiento: "shiver, shudder, tremor",
+  semblante: "countenance, expression",
+  tenue: "faint, delicate, subtle",
+  umbrío: "shady, shadowy",
+  yerto: "stiff, rigid, frozen",
+  efímero: "ephemeral, short-lived",
+  lúgubre: "gloomy, dismal, mournful",
+  vislumbrar: "to catch a glimpse of",
+  zalamería: "fawning, sweet talk"
+};
+
 function escapeRegex(string) {
   return String(string).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function extractShortContext(wordsList, wordIndex, targetWord) {
+  if (!wordsList || !wordsList[wordIndex]) return "";
+  const start = Math.max(0, wordIndex - 3);
+  const end = Math.min(wordsList.length - 1, wordIndex + 3);
+
+  return wordsList
+    .slice(start, end + 1)
+    .map((w) => {
+      const isMatch =
+        normalizeWord(w.text) === normalizeWord(targetWord) ||
+        (targetWord.includes(" ") && targetWord.toLowerCase().includes(w.text.toLowerCase()));
+      return isMatch ? `<mark class="vocab-highlight">${escapeHtml(w.text)}</mark>` : escapeHtml(w.text);
+    })
+    .join(" ");
+}
+
+async function fetchSingleWordMeaning(word) {
+  const norm = normalizeWord(word);
+  if (LITERARY_VOCAB_MAP[norm]) return LITERARY_VOCAB_MAP[norm];
+  if (sharedGlossary[norm] && sharedGlossary[norm].trim()) return sharedGlossary[norm].trim();
+
+  try {
+    const raw = await fetchTranslation(norm);
+    if (!raw) return "";
+    const clean = String(raw)
+      .replace(/<[^>]+>/g, "")
+      .replace(/&[a-z]+;/gi, " ")
+      .trim();
+    if (clean.length > 50) {
+      return clean.slice(0, 45).trim() + "…";
+    }
+    return clean;
+  } catch {
+    return "";
+  }
 }
 
 function extractUncommonVocab(wordsList) {
@@ -2877,11 +2968,7 @@ function extractUncommonVocab(wordsList) {
         0,
         wordsList.findIndex((w) => fullTextLower.slice(0, pos).trim().split(/\s+/).length <= w.index)
       );
-      const contextSentence = contextSentenceForWord(approxIdx >= 0 ? approxIdx : 0);
-      const marked = contextSentence.replace(
-        new RegExp(`(${escapeRegex(idiom.phrase)})`, "gi"),
-        '<mark class="vocab-highlight">$1</mark>'
-      );
+      const shortContext = extractShortContext(wordsList, approxIdx >= 0 ? approxIdx : 0, idiom.phrase);
       extracted.push({
         word: idiom.phrase,
         normalized: idiomNorm,
@@ -2889,7 +2976,7 @@ function extractUncommonVocab(wordsList) {
         meaning: idiom.meaning,
         frequency: 1,
         index: approxIdx >= 0 ? approxIdx : 0,
-        contextSentence: marked,
+        contextSentence: shortContext,
         isPhrase: true,
         score: 95
       });
@@ -2930,39 +3017,35 @@ function extractUncommonVocab(wordsList) {
     else if (data.count <= 6) score += 10;
     else score += 4;
 
-    const hasGlossary = Boolean(sharedGlossary[norm]);
-    if (hasGlossary) score += 28;
+    const hasKnownDef = Boolean(LITERARY_VOCAB_MAP[norm] || (sharedGlossary[norm] && sharedGlossary[norm].trim()));
+    if (hasKnownDef) score += 35;
 
     // Morphological patterns common in rich Spanish literature
     if (/(?:eza|ura|umbre|miento|oso|osa|able|ible|ivo|iva|ante|iente|ero|era|ista)$/.test(norm)) {
       score += 10;
     }
 
-    candidates.push({ ...data, score, hasGlossary });
+    candidates.push({ ...data, score, hasKnownDef });
   }
 
   candidates.sort((a, b) => b.score - a.score);
 
-  // Take top candidates
-  const maxWords = Math.max(4, 10 - extracted.length);
+  // Take top 6 to 8 candidates max so it stays clean and concise
+  const maxWords = Math.min(6, Math.max(3, 8 - extracted.length));
   const selected = candidates.slice(0, maxWords);
 
   for (const cand of selected) {
-    const contextHTML = contextSentenceForWord(cand.firstIndex);
-    const markedContext = contextHTML.replace(
-      new RegExp(`(<b>${escapeRegex(cand.word)}<\\/b>|${escapeRegex(cand.word)})`, "i"),
-      '<mark class="vocab-highlight">$1</mark>'
-    );
-    const instantMeaning = sharedGlossary[cand.normalized] || "";
+    const shortContext = extractShortContext(wordsList, cand.firstIndex, cand.word);
+    const meaning = LITERARY_VOCAB_MAP[cand.normalized] || (sharedGlossary[cand.normalized] ? sharedGlossary[cand.normalized].trim() : "");
 
     extracted.push({
       word: cand.word,
       normalized: cand.normalized,
       displayWord: cand.word,
-      meaning: instantMeaning,
+      meaning: meaning,
       frequency: cand.count,
       index: cand.firstIndex,
-      contextSentence: markedContext,
+      contextSentence: shortContext,
       isPhrase: false,
       score: cand.score
     });
@@ -2974,7 +3057,7 @@ function extractUncommonVocab(wordsList) {
 async function renderVocabWarmup() {
   if (!vocabWarmup || !vocabWarmupList) return;
 
-  if (appearanceSettings.vocabWarmup === "off" || words.length < 15) {
+  if (appearanceSettings.vocabWarmup === "off" || !words || words.length < 15) {
     vocabWarmup.hidden = true;
     return;
   }
@@ -2996,7 +3079,7 @@ async function renderVocabWarmup() {
   }
 
   if (vocabCountIndicator) {
-    vocabCountIndicator.innerHTML = `Showing <strong>${items.length} key ${items.length === 1 ? "word" : "words & phrases"}</strong> for this reading`;
+    vocabCountIndicator.innerHTML = `Showing <strong>${items.length} key ${items.length === 1 ? "word" : "words"}</strong> for this reading`;
   }
 
   items.forEach((item) => {
@@ -3012,25 +3095,23 @@ async function renderVocabWarmup() {
     );
 
     card.innerHTML = `
-      <div class="vocab-card-top">
-        <div class="vocab-word-group">
+      <div class="vocab-card-header">
+        <div class="vocab-term-row">
           <strong class="vocab-word">${escapeHtml(item.displayWord)}</strong>
-          ${item.frequency > 1 ? `<span class="vocab-freq-pill" title="Appears ${item.frequency} times in this text">${item.frequency}× in text</span>` : ""}
+          ${item.frequency > 1 ? `<span class="vocab-freq-pill">${item.frequency}×</span>` : ""}
         </div>
         <button class="vocab-save-btn ${isSaved ? "is-saved" : ""}" type="button" aria-label="Save to study cards" title="${isSaved ? "Saved to study cards" : "Save to Anki study cards"}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
         </button>
       </div>
       <p class="vocab-meaning ${item.meaning ? "" : "is-loading"}">${item.meaning ? escapeHtml(item.meaning) : "Looking up translation…"}</p>
       <div class="vocab-context" title="Click to view in story">
         <span>“${item.contextSentence || escapeHtml(item.displayWord)}”</span>
       </div>
-      <div class="vocab-card-footer">
-        <button class="vocab-jump-btn" type="button">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-          <span>Jump to word in text</span>
-        </button>
-      </div>
+      <button class="vocab-jump-btn" type="button">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>Jump to text</span>
+      </button>
     `;
 
     // Handle Jump to Word in story
@@ -3065,8 +3146,7 @@ async function renderVocabWarmup() {
 
     // Asynchronously resolve missing definitions
     if (!item.meaning) {
-      const contextRequest = contextualRequestForWord(item.index, item.contextSentence || item.word);
-      fetchTranslation(contextRequest, { fallbackText: item.word })
+      fetchSingleWordMeaning(item.word)
         .then((trans) => {
           if (trans) {
             item.meaning = trans;
