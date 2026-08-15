@@ -2330,6 +2330,9 @@ function goToOnboardingStep(stepNumber) {
     sec.classList.toggle("is-active", idx + 1 === step);
   });
 
+  const controlsPane = onboardingBody?.querySelector(".onboarding-controls-pane");
+  if (controlsPane) controlsPane.scrollTop = 0;
+
   if (onboardingPrevBtn) onboardingPrevBtn.disabled = step === 1;
 
   if (step === 4) {
@@ -2358,6 +2361,11 @@ function setMobileOnboardingView(viewName) {
     mobileTabPreview.classList.toggle("is-active", !isControls);
     mobileTabPreview.setAttribute("aria-selected", String(!isControls));
   }
+
+  const activePane = onboardingBody.querySelector(
+    isControls ? ".onboarding-controls-pane" : ".onboarding-preview-pane"
+  );
+  if (activePane) activePane.scrollTop = 0;
 }
 
 function updateDemoPreview() {
@@ -3098,37 +3106,17 @@ async function renderVocabWarmup() {
       <div class="vocab-card-header">
         <div class="vocab-term-row">
           <strong class="vocab-word">${escapeHtml(item.displayWord)}</strong>
-          ${item.frequency > 1 ? `<span class="vocab-freq-pill">${item.frequency}×</span>` : ""}
+          ${item.frequency > 1 ? `<span class="vocab-freq-pill">${item.frequency}× in text</span>` : ""}
         </div>
         <button class="vocab-save-btn ${isSaved ? "is-saved" : ""}" type="button" aria-label="Save to study cards" title="${isSaved ? "Saved to study cards" : "Save to Anki study cards"}">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
         </button>
       </div>
       <p class="vocab-meaning ${item.meaning ? "" : "is-loading"}">${item.meaning ? escapeHtml(item.meaning) : "Looking up translation…"}</p>
-      <div class="vocab-context" title="Click to view in story">
+      <div class="vocab-context">
         <span>“${item.contextSentence || escapeHtml(item.displayWord)}”</span>
       </div>
-      <button class="vocab-jump-btn" type="button">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-        <span>Jump to text</span>
-      </button>
     `;
-
-    // Handle Jump to Word in story
-    const handleJump = (e) => {
-      e.stopPropagation();
-      const targetWord = reader.querySelector(`.word[data-index="${item.index}"]`);
-      if (targetWord) {
-        targetWord.scrollIntoView({ behavior: "smooth", block: "center" });
-        targetWord.classList.remove("is-vocab-flash");
-        void targetWord.offsetWidth;
-        targetWord.classList.add("is-vocab-flash");
-        setTimeout(() => targetWord.classList.remove("is-vocab-flash"), 1600);
-      }
-    };
-
-    card.querySelector(".vocab-jump-btn")?.addEventListener("click", handleJump);
-    card.querySelector(".vocab-context")?.addEventListener("click", handleJump);
 
     // Handle Save to study log / Anki
     const saveBtn = card.querySelector(".vocab-save-btn");
@@ -3201,5 +3189,4 @@ if (startReadingFromVocabBtn) {
     reader.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 }
-
 

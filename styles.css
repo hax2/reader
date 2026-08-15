@@ -3088,12 +3088,16 @@ textarea {
 }
 
 .onboarding-skip-btn {
+  min-height: 40px;
+  padding: 0 8px;
   color: var(--muted);
+  background: transparent;
   font-size: 0.84rem;
 }
 
 .onboarding-skip-btn:hover {
   color: var(--ink);
+  background: var(--wash);
 }
 
 .onboarding-nav-actions {
@@ -3143,12 +3147,16 @@ textarea {
 @media (max-width: 860px) {
   .onboarding-dialog {
     width: min(720px, calc(100vw - 20px));
-    max-height: calc(100vh - 20px);
+    max-height: calc(100dvh - 20px);
   }
 
   .onboarding-shell {
-    height: calc(100vh - 20px);
-    max-height: calc(100vh - 20px);
+    /* The mobile tab switcher is an additional child between the step nav and
+       body, so it needs its own row. Without this, it takes over the flexible
+       content row and pushes the wizard body off-screen. */
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    height: calc(100dvh - 20px);
+    max-height: calc(100dvh - 20px);
   }
 
   .onboarding-mobile-tabs {
@@ -3166,7 +3174,7 @@ textarea {
     align-items: center;
     justify-content: center;
     gap: 6px;
-    min-height: 34px;
+    min-height: 40px;
     padding: 0 12px;
     background: var(--wash);
     border: 1px solid var(--line);
@@ -3207,6 +3215,8 @@ textarea {
     min-height: 0;
     overflow-y: auto;
     padding: 16px 20px 24px;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .onboarding-body[data-mobile-view="controls"] .onboarding-preview-pane {
@@ -3226,6 +3236,8 @@ textarea {
     border-top: 0;
     padding: 16px 20px 20px;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .mobile-demo-sample-bar {
@@ -3308,21 +3320,21 @@ textarea {
 @media (max-width: 600px) {
   .onboarding-dialog {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     max-width: 100vw;
-    max-height: 100vh;
+    max-height: 100dvh;
     margin: 0;
     border-radius: 0;
     border: none;
   }
 
   .onboarding-shell {
-    height: 100vh;
-    max-height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
   }
 
   .onboarding-header {
-    padding: 14px 16px 10px;
+    padding: calc(12px + env(safe-area-inset-top)) 16px 10px;
   }
 
   .onboarding-header h2 {
@@ -3336,7 +3348,8 @@ textarea {
 
   .step-pill {
     padding: 3px 6px;
-    min-height: 28px;
+    min-width: 36px;
+    min-height: 36px;
   }
 
   .onboarding-body[data-mobile-view="controls"] .onboarding-controls-pane {
@@ -3352,7 +3365,64 @@ textarea {
   }
 
   .onboarding-footer {
-    padding: 12px 16px;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 420px) {
+  .onboarding-title-group .eyebrow {
+    display: none;
+  }
+
+  .onboarding-header h2 {
+    font-size: 1.05rem;
+  }
+
+  .onboarding-mobile-tabs {
+    padding-inline: 12px;
+  }
+
+  .mobile-demo-sample-bar {
+    padding: 10px;
+  }
+
+  .mobile-sample-header {
+    align-items: flex-start;
+  }
+
+  .mobile-preview-switch-btn {
+    max-width: 10rem;
+    text-align: right;
+  }
+
+  .segmented-control {
+    flex-direction: column;
+  }
+
+  .segment-btn {
+    width: 100%;
+    min-height: 40px;
+  }
+
+  .onboarding-footer {
+    gap: 8px;
+  }
+
+  .onboarding-skip-btn {
+    display: none;
+  }
+
+  .onboarding-nav-actions {
+    width: 100%;
+  }
+
+  .onboarding-nav-actions .primary-button {
+    flex: 1;
+  }
+
+  .finish-btn {
+    min-width: 0;
+    padding-inline: 12px;
   }
 }
 
@@ -3609,27 +3679,6 @@ textarea {
   font-weight: 750;
 }
 
-.vocab-jump-btn {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 0;
-  padding: 0;
-  background: transparent;
-  border: none;
-  color: var(--muted);
-  font-size: 0.72rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: color 120ms ease;
-}
-
-.vocab-jump-btn:hover {
-  color: var(--accent);
-  text-decoration: underline;
-}
-
 /* Vocab Warmup Footer */
 .vocab-warmup-footer {
   display: flex;
@@ -3715,5 +3764,3 @@ textarea {
     white-space: normal;
   }
 }
-
-
