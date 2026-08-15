@@ -155,6 +155,14 @@
                   <option value="wide">Wide</option>
                 </select>
               </label>
+              <label>
+                <span>Vocab warmup</span>
+                <select id="vocabWarmupSelect">
+                  <option value="always">Always show</option>
+                  <option value="collapsed">Collapsed</option>
+                  <option value="off">Off</option>
+                </select>
+              </label>
             </div>
           </details>
         </header>
@@ -221,6 +229,37 @@
       <section class="workspace">
         <section class="reader-shell" aria-label="Transcript reader">
           <div id="readingMeta" class="reading-meta" hidden></div>
+          <section id="vocabWarmup" class="vocab-warmup" aria-label="Key vocabulary preparation" hidden>
+            <div class="vocab-warmup-shell">
+              <header class="vocab-warmup-header">
+                <div class="vocab-warmup-title-wrap">
+                  <div class="vocab-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <span>Pre-reading vocabulary</span>
+                  </div>
+                  <h2 class="vocab-warmup-heading">Key words &amp; phrases</h2>
+                  <p class="vocab-warmup-subtitle">Lower-frequency words found in this reading. Review their meanings before reading to boost comprehension.</p>
+                </div>
+                <div class="vocab-warmup-actions">
+                  <button id="toggleVocabWarmupCollapse" class="vocab-collapse-btn" type="button" aria-expanded="true" aria-controls="vocabWarmupBody">
+                    <span class="collapse-label">Hide list</span>
+                    <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                  </button>
+                </div>
+              </header>
+
+              <div id="vocabWarmupBody" class="vocab-warmup-body">
+                <div id="vocabWarmupList" class="vocab-cards-grid" role="list"></div>
+                <footer class="vocab-warmup-footer">
+                  <div id="vocabCountIndicator" class="vocab-count-indicator"></div>
+                  <button id="startReadingFromVocabBtn" class="vocab-start-reading-btn" type="button">
+                    <span>Start reading</span>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                  </button>
+                </footer>
+              </div>
+            </div>
+          </section>
           <div id="status" class="status" role="status" aria-live="polite">Choose a hosted reading to begin.</div>
           <article id="reader" class="reader" lang="es"></article>
         </section>
@@ -494,6 +533,33 @@
                   <button type="button" class="speed-chip" data-setting="playbackRate" data-value="1.1" role="radio" aria-checked="false">1.10×</button>
                   <button type="button" class="speed-chip" data-setting="playbackRate" data-value="1.25" role="radio" aria-checked="false">1.25×</button>
                   <button type="button" class="speed-chip" data-setting="playbackRate" data-value="1.5" role="radio" aria-checked="false">1.50×</button>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="group-label">Pre-reading Vocabulary Warmup</label>
+                <div class="option-grid vocab-preview-options" role="radiogroup" aria-label="Pre-reading vocabulary warmup">
+                  <button type="button" class="option-card is-selected" data-setting="vocabWarmup" data-value="always" role="radio" aria-checked="true">
+                    <div class="option-info">
+                      <strong class="option-title">Always show before story (Recommended)</strong>
+                      <span class="option-desc">Preview lower-frequency words &amp; phrases with translations before the text starts so you are prepared.</span>
+                    </div>
+                    <span class="check-badge" aria-hidden="true">✓</span>
+                  </button>
+                  <button type="button" class="option-card" data-setting="vocabWarmup" data-value="collapsed" role="radio" aria-checked="false">
+                    <div class="option-info">
+                      <strong class="option-title">Collapsed banner</strong>
+                      <span class="option-desc">Keep warmup collapsed into a discrete button that you can expand anytime.</span>
+                    </div>
+                    <span class="check-badge" aria-hidden="true">✓</span>
+                  </button>
+                  <button type="button" class="option-card" data-setting="vocabWarmup" data-value="off" role="radio" aria-checked="false">
+                    <div class="option-info">
+                      <strong class="option-title">Off (Direct to story)</strong>
+                      <span class="option-desc">Go directly to the story text without displaying pre-reading vocabulary.</span>
+                    </div>
+                    <span class="check-badge" aria-hidden="true">✓</span>
+                  </button>
                 </div>
               </div>
             </section>

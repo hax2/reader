@@ -54,7 +54,13 @@ const lineHeight = document.querySelector("#lineHeight");
 const lineHeightValue = document.querySelector("#lineHeightValue");
 const fontSelect = document.querySelector("#fontSelect");
 const readerWidthSelect = document.querySelector("#readerWidthSelect");
+const vocabWarmupSelect = document.querySelector("#vocabWarmupSelect");
 const resetAppearance = document.querySelector("#resetAppearance");
+const vocabWarmup = document.querySelector("#vocabWarmup");
+const vocabWarmupList = document.querySelector("#vocabWarmupList");
+const toggleVocabWarmupCollapse = document.querySelector("#toggleVocabWarmupCollapse");
+const startReadingFromVocabBtn = document.querySelector("#startReadingFromVocabBtn");
+const vocabCountIndicator = document.querySelector("#vocabCountIndicator");
 const wordPopover = document.querySelector("#wordPopover");
 const canvas = document.querySelector("#waveform");
 const ctx = canvas.getContext("2d");
@@ -321,6 +327,14 @@ readerWidthSelect.addEventListener("change", () => {
   saveAppearanceSettings(appearanceSettings);
   applyAppearanceSettings();
 });
+
+if (vocabWarmupSelect) {
+  vocabWarmupSelect.addEventListener("change", () => {
+    appearanceSettings.vocabWarmup = vocabWarmupSelect.value;
+    saveAppearanceSettings(appearanceSettings);
+    applyAppearanceSettings();
+  });
+}
 
 resetAppearance.addEventListener("click", () => {
   const playbackRate = appearanceSettings.playbackRate;
@@ -1015,6 +1029,7 @@ function setWords(nextWords, precise) {
   currentWordIndex = -1;
   readWordCount = -1;
   renderWords();
+  renderVocabWarmup();
   updateProgress();
 }
 
@@ -2046,6 +2061,7 @@ function loadAppearanceSettings() {
       lineHeight: numberInRange(saved.lineHeight, 1.4, 2.2, defaults.lineHeight),
       font: ["serif", "sans", "accessible"].includes(saved.font) ? saved.font : defaults.font,
       readerWidth: ["narrow", "standard", "wide"].includes(saved.readerWidth) ? saved.readerWidth : defaults.readerWidth,
+      vocabWarmup: ["always", "collapsed", "off"].includes(saved.vocabWarmup) ? saved.vocabWarmup : defaults.vocabWarmup,
       playbackRate: SPEED_RATES.includes(Number(saved.playbackRate)) ? Number(saved.playbackRate) : defaults.playbackRate
     };
   } catch {
@@ -2063,6 +2079,7 @@ function defaultAppearanceSettings() {
     lineHeight: 1.8,
     font: "serif",
     readerWidth: "standard",
+    vocabWarmup: "always",
     playbackRate: 1
   };
 }
@@ -2107,6 +2124,8 @@ function applyAppearanceSettings() {
   lineHeightValue.value = appearanceSettings.lineHeight.toFixed(1);
   fontSelect.value = appearanceSettings.font;
   readerWidthSelect.value = appearanceSettings.readerWidth;
+  if (vocabWarmupSelect) vocabWarmupSelect.value = appearanceSettings.vocabWarmup;
+  updateVocabWarmupVisibility();
   updateSpeedButton(appearanceSettings.playbackRate);
   audio.playbackRate = appearanceSettings.playbackRate;
   drawWaveform(audio.duration ? (audio.currentTime || 0) / audio.duration : 0);
@@ -2204,6 +2223,7 @@ let onboardingState = {
   textMode: "dim-passed",
   translationLayout: "spanish-only",
   playbackRate: 1,
+  vocabWarmup: "always",
   catalogLevel: "all",
   catalogFormat: "all",
   isPlayingDemo: false,
@@ -2224,6 +2244,7 @@ function openOnboarding(initialStep = 1) {
     textMode: appearanceSettings.textMode || "dim-passed",
     translationLayout: appearanceSettings.translationLayout || "spanish-only",
     playbackRate: appearanceSettings.playbackRate || 1,
+    vocabWarmup: appearanceSettings.vocabWarmup || "always",
     catalogLevel: catalogSettings.level || "all",
     catalogFormat: catalogSettings.format || "all",
     isPlayingDemo: false,
@@ -2518,11 +2539,14 @@ function renderOnboardingSummary() {
   const levelNames = { all: "All Levels", B1: "B1 Intermediate", B2: "B2 Upper Intermediate", C1: "C1 Advanced" };
   const formatNames = { all: "All Formats", listen: "Listen & Read", read: "Read Only" };
 
+  const vocabNames = { always: "Always Show", collapsed: "Collapsed", off: "Off" };
+
   const badges = [
     { label: "Theme", val: themeNames[onboardingState.theme] || "System" },
     { label: "Typeface", val: `${fontNames[onboardingState.font]} (${onboardingState.textSize}%)` },
     { label: "Highlight", val: highlightNames[onboardingState.highlight] || "Sage" },
     { label: "Layout", val: transNames[onboardingState.translationLayout] || "Immersion" },
+    { label: "Vocab Warmup", val: vocabNames[onboardingState.vocabWarmup] || "Always Show" },
     { label: "Audio Rate", val: `${onboardingState.playbackRate}×` },
     { label: "Reading Level", val: levelNames[onboardingState.catalogLevel] || "All Levels" },
     { label: "Format", val: formatNames[onboardingState.catalogFormat] || "All Formats" }
@@ -2550,6 +2574,7 @@ function finishOnboarding() {
   appearanceSettings.textMode = onboardingState.textMode;
   appearanceSettings.translationLayout = onboardingState.translationLayout;
   appearanceSettings.playbackRate = onboardingState.playbackRate;
+  appearanceSettings.vocabWarmup = onboardingState.vocabWarmup;
 
   saveAppearanceSettings(appearanceSettings);
 
@@ -2689,4 +2714,365 @@ if (onboardingDialog) {
     applyAppearanceSettings();
   });
 }
+
+/* ==========================================================================
+   PRE-READING VOCABULARY EXTRACTION & WARMUP ENGINE
+   ========================================================================== */
+
+const HIGH_FREQ_SPANISH = new Set([
+  "el", "la", "los", "las", "un", "una", "unos", "unas", "este", "esta", "estos", "estas",
+  "ese", "esa", "esos", "esas", "aquel", "aquella", "aquellos", "aquellas", "mi", "mis",
+  "tu", "tus", "su", "sus", "nuestro", "nuestra", "nuestros", "nuestras", "vuestro", "vuestra",
+  "yo", "tu", "tú", "el", "él", "ella", "ellos", "ellas", "nosotros", "nosotras", "vosotros",
+  "usted", "ustedes", "me", "te", "se", "nos", "os", "le", "les", "lo", "la", "los", "las",
+  "que", "qué", "quien", "quién", "quienes", "quiénes", "cual", "cuál", "cuales", "cuáles",
+  "algo", "nada", "alguien", "nadie", "alguno", "alguna", "algunos", "algunas", "ninguno", "ninguna",
+  "todo", "toda", "todos", "todas", "otro", "otra", "otros", "otras", "mismo", "misma", "mismos",
+  "a", "al", "del", "de", "en", "con", "por", "para", "sin", "sobre", "entre", "hasta", "desde",
+  "hacia", "contra", "tras", "bajo", "ante", "según", "y", "e", "o", "u", "ni", "pero", "sino",
+  "porque", "pues", "aunque", "como", "si", "cuando", "donde", "dónde", "mientras", "así",
+  "no", "si", "sí", "ya", "muy", "más", "menos", "tan", "tanto", "tanta", "tantos", "tantas",
+  "bien", "mal", "aquí", "allí", "ahí", "acá", "allá", "ahora", "luego", "después", "antes",
+  "siempre", "nunca", "jamás", "hoy", "ayer", "mañana", "casi", "solo", "sólo", "solamente",
+  "también", "tampoco", "quizá", "quizás", "tal", "vez", "veces", "demasiado", "mucho", "mucha",
+  "muchos", "muchas", "poco", "poca", "pocos", "pocas",
+  "ser", "es", "son", "era", "eran", "fue", "fueron", "sea", "sean", "siendo", "sido", "somos", "eres",
+  "estar", "está", "están", "estaba", "estaban", "estuvo", "estuvieron", "esté", "estén", "estado", "estamos", "estás",
+  "haber", "hay", "había", "habían", "hubo", "hubieron", "haya", "hayan", "habido", "he", "has", "ha", "hemos", "han",
+  "tener", "tiene", "tienen", "tenía", "tenían", "tuvo", "tuvieron", "tenga", "tengan", "tenido", "tenemos", "tienes",
+  "hacer", "hace", "hacen", "hacía", "hacían", "hizo", "hicieron", "haga", "hagan", "hecho", "hacemos", "haces",
+  "ir", "va", "van", "iba", "iban", "fue", "fueron", "vaya", "vayan", "ido", "vamos", "vas",
+  "decir", "dice", "dicen", "decía", "decían", "dijo", "dijeron", "diga", "digan", "dicho", "decimos", "dices",
+  "ver", "ve", "ven", "veía", "veían", "vio", "vieron", "vea", "vean", "visto", "vemos", "ves",
+  "dar", "da", "dan", "daba", "daban", "dio", "dieron", "dé", "den", "dado", "damos", "das",
+  "poder", "puede", "pueden", "podía", "podían", "pudo", "pudieron", "pueda", "puedan", "podido", "podemos", "puedes",
+  "saber", "sabe", "saben", "sabía", "sabían", "supo", "supieron", "sepa", "sepan", "sabido", "sabemos", "sabes",
+  "querer", "quiere", "quieren", "quería", "querían", "quiso", "quisieron", "quiera", "querido", "queremos", "quieres",
+  "llegar", "llega", "llegan", "llegaba", "llegó", "llegaron",
+  "pasar", "pasa", "pasan", "pasaba", "pasó", "pasaron",
+  "deber", "debe", "deben", "debía", "debió",
+  "poner", "pone", "ponen", "ponía", "puso", "pusieron", "puesto",
+  "parecer", "parece", "parecen", "parecía", "pareció",
+  "quedar", "queda", "quedan", "quedaba", "quedó", "quedaron",
+  "creer", "cree", "creen", "creía", "creyó",
+  "hablar", "habla", "hablan", "hablaba", "habló",
+  "llevar", "lleva", "llevan", "llevaba", "llevó",
+  "dejar", "deja", "dejan", "dejaba", "dejó",
+  "seguir", "sigue", "siguen", "seguía", "siguió",
+  "encontrar", "encuentra", "encuentran", "encontraba", "encontró",
+  "llamar", "llama", "llaman", "llamaba", "llamó",
+  "venir", "viene", "vienen", "venía", "vino", "vinieron",
+  "pensar", "piensa", "piensan", "pensaba", "pensó",
+  "salir", "sale", "salen", "salía", "salió", "salieron",
+  "volver", "vuelve", "vuelven", "volvía", "volvió", "vuelto",
+  "tomar", "toma", "toman", "tomaba", "tomó",
+  "conocer", "conoce", "conocen", "conocía", "conoció",
+  "vivir", "vive", "viven", "vivía", "vivió",
+  "sentir", "siente", "sienten", "sentía", "sintió",
+  "tratar", "trata", "tratan", "trataba", "trató",
+  "mirar", "mira", "miran", "miraba", "miró",
+  "contar", "cuenta", "cuentan", "contaba", "contó",
+  "empezar", "empieza", "empiezan", "empezaba", "empezó",
+  "esperar", "espera", "esperan", "esperaba", "esperó",
+  "buscar", "busca", "buscan", "buscaba", "buscó",
+  "entrar", "entra", "entran", "entraba", "entró",
+  "escribir", "escribe", "escriben", "escribía", "escribió", "escrito",
+  "perder", "pierde", "pierden", "perdía", "perdió", "perdido",
+  "cosa", "cosas", "año", "años", "día", "días", "tiempo", "tiempos", "hombre", "hombres",
+  "mujer", "mujeres", "vida", "vidas", "momento", "momentos", "forma", "formas", "casa", "casas",
+  "mundo", "mundos", "lugar", "lugares", "caso", "casos", "mano", "manos", "parte", "partes",
+  "lado", "lados", "palabra", "palabras", "noche", "noches", "padre", "madre", "hijo", "hija",
+  "ojos", "cabeza", "cuerpo", "voz", "camino", "hora", "horas", "persona", "personas"
+]);
+
+const SPANISH_IDIOMS = [
+  { phrase: "de repente", meaning: "suddenly, all of a sudden" },
+  { phrase: "sin embargo", meaning: "however, nevertheless" },
+  { phrase: "poco a poco", meaning: "little by little, gradually" },
+  { phrase: "por fin", meaning: "finally, at last" },
+  { phrase: "a menudo", meaning: "often, frequently" },
+  { phrase: "a través de", meaning: "through, across" },
+  { phrase: "darse cuenta", meaning: "to realize, to become aware" },
+  { phrase: "echar de menos", meaning: "to miss (someone or something)" },
+  { phrase: "tener en cuenta", meaning: "to take into account, keep in mind" },
+  { phrase: "a punto de", meaning: "on the verge of, about to" },
+  { phrase: "en medio de", meaning: "in the middle of, amid" },
+  { phrase: "de vez en cuando", meaning: "from time to time, once in a while" },
+  { phrase: "al fin y al cabo", meaning: "after all, in the end" },
+  { phrase: "por lo tanto", meaning: "therefore, consequently" },
+  { phrase: "hacer caso", meaning: "to pay attention, to heed" },
+  { phrase: "tener lugar", meaning: "to take place, to occur" },
+  { phrase: "valer la pena", meaning: "to be worth the effort / trouble" },
+  { phrase: "llevar a cabo", meaning: "to carry out, execute" },
+  { phrase: "a pesar de", meaning: "despite, in spite of" },
+  { phrase: "en cambio", meaning: "on the other hand, instead" },
+  { phrase: "de nuevo", meaning: "again, once more" },
+  { phrase: "al principio", meaning: "at first, in the beginning" }
+];
+
+function escapeRegex(string) {
+  return String(string).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function extractUncommonVocab(wordsList) {
+  if (!wordsList || wordsList.length < 15) return [];
+
+  const fullTextLower = wordsList.map((w) => normalizeWord(w.text)).join(" ");
+  const extracted = [];
+  const seenWords = new Set();
+
+  // 1. Detect key multi-word idioms in the text
+  for (const idiom of SPANISH_IDIOMS) {
+    const idiomNorm = idiom.phrase.toLowerCase();
+    const pos = fullTextLower.indexOf(idiomNorm);
+    if (pos !== -1) {
+      const approxIdx = Math.max(
+        0,
+        wordsList.findIndex((w) => fullTextLower.slice(0, pos).trim().split(/\s+/).length <= w.index)
+      );
+      const contextSentence = contextSentenceForWord(approxIdx >= 0 ? approxIdx : 0);
+      const marked = contextSentence.replace(
+        new RegExp(`(${escapeRegex(idiom.phrase)})`, "gi"),
+        '<mark class="vocab-highlight">$1</mark>'
+      );
+      extracted.push({
+        word: idiom.phrase,
+        normalized: idiomNorm,
+        displayWord: idiom.phrase,
+        meaning: idiom.meaning,
+        frequency: 1,
+        index: approxIdx >= 0 ? approxIdx : 0,
+        contextSentence: marked,
+        isPhrase: true,
+        score: 95
+      });
+      idiom.phrase.split(/\s+/).forEach((part) => seenWords.add(normalizeWord(part)));
+    }
+  }
+
+  // 2. Frequency counting and candidate gathering
+  const wordOccurrences = new Map();
+  wordsList.forEach((wordObj, index) => {
+    const raw = wordObj.text.trim();
+    const clean = normalizeWord(raw);
+    if (!clean || clean.length < 4 || /^\d+$/.test(clean)) return;
+    if (HIGH_FREQ_SPANISH.has(clean) || seenWords.has(clean)) return;
+
+    if (!wordOccurrences.has(clean)) {
+      wordOccurrences.set(clean, {
+        word: raw.replace(/[.,;:!?¡¿"()«»]/g, ""),
+        normalized: clean,
+        count: 0,
+        firstIndex: index
+      });
+    }
+    wordOccurrences.get(clean).count += 1;
+  });
+
+  // 3. Scoring words by rarity & learner utility
+  const candidates = [];
+  for (const [norm, data] of wordOccurrences.entries()) {
+    let score = 0;
+    const length = norm.length;
+    score += Math.min(length * 2.5, 25);
+
+    // Prefer words that appear 1 to 4 times (key specialized vocabulary in text)
+    if (data.count === 1) score += 14;
+    else if (data.count === 2) score += 20;
+    else if (data.count === 3) score += 16;
+    else if (data.count <= 6) score += 10;
+    else score += 4;
+
+    const hasGlossary = Boolean(sharedGlossary[norm]);
+    if (hasGlossary) score += 28;
+
+    // Morphological patterns common in rich Spanish literature
+    if (/(?:eza|ura|umbre|miento|oso|osa|able|ible|ivo|iva|ante|iente|ero|era|ista)$/.test(norm)) {
+      score += 10;
+    }
+
+    candidates.push({ ...data, score, hasGlossary });
+  }
+
+  candidates.sort((a, b) => b.score - a.score);
+
+  // Take top candidates
+  const maxWords = Math.max(4, 10 - extracted.length);
+  const selected = candidates.slice(0, maxWords);
+
+  for (const cand of selected) {
+    const contextHTML = contextSentenceForWord(cand.firstIndex);
+    const markedContext = contextHTML.replace(
+      new RegExp(`(<b>${escapeRegex(cand.word)}<\\/b>|${escapeRegex(cand.word)})`, "i"),
+      '<mark class="vocab-highlight">$1</mark>'
+    );
+    const instantMeaning = sharedGlossary[cand.normalized] || "";
+
+    extracted.push({
+      word: cand.word,
+      normalized: cand.normalized,
+      displayWord: cand.word,
+      meaning: instantMeaning,
+      frequency: cand.count,
+      index: cand.firstIndex,
+      contextSentence: markedContext,
+      isPhrase: false,
+      score: cand.score
+    });
+  }
+
+  return extracted;
+}
+
+async function renderVocabWarmup() {
+  if (!vocabWarmup || !vocabWarmupList) return;
+
+  if (appearanceSettings.vocabWarmup === "off" || words.length < 15) {
+    vocabWarmup.hidden = true;
+    return;
+  }
+
+  const items = extractUncommonVocab(words);
+  if (!items.length) {
+    vocabWarmup.hidden = true;
+    return;
+  }
+
+  vocabWarmupList.replaceChildren();
+
+  const isCollapsed = appearanceSettings.vocabWarmup === "collapsed";
+  vocabWarmup.classList.toggle("is-collapsed", isCollapsed);
+  if (toggleVocabWarmupCollapse) {
+    toggleVocabWarmupCollapse.setAttribute("aria-expanded", String(!isCollapsed));
+    const label = toggleVocabWarmupCollapse.querySelector(".collapse-label");
+    if (label) label.textContent = isCollapsed ? "Show key words" : "Hide list";
+  }
+
+  if (vocabCountIndicator) {
+    vocabCountIndicator.innerHTML = `Showing <strong>${items.length} key ${items.length === 1 ? "word" : "words & phrases"}</strong> for this reading`;
+  }
+
+  items.forEach((item) => {
+    const card = document.createElement("article");
+    card.className = "vocab-card";
+    card.dataset.word = item.word;
+    card.dataset.index = String(item.index);
+
+    const studyKey = `${normalizeWord(item.word)}:::`;
+    const isSaved = Boolean(
+      studyLog[studyKey] ||
+        Object.values(studyLog).some((e) => normalizeWord(e.word) === normalizeWord(item.word))
+    );
+
+    card.innerHTML = `
+      <div class="vocab-card-top">
+        <div class="vocab-word-group">
+          <strong class="vocab-word">${escapeHtml(item.displayWord)}</strong>
+          ${item.frequency > 1 ? `<span class="vocab-freq-pill" title="Appears ${item.frequency} times in this text">${item.frequency}× in text</span>` : ""}
+        </div>
+        <button class="vocab-save-btn ${isSaved ? "is-saved" : ""}" type="button" aria-label="Save to study cards" title="${isSaved ? "Saved to study cards" : "Save to Anki study cards"}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+        </button>
+      </div>
+      <p class="vocab-meaning ${item.meaning ? "" : "is-loading"}">${item.meaning ? escapeHtml(item.meaning) : "Looking up translation…"}</p>
+      <div class="vocab-context" title="Click to view in story">
+        <span>“${item.contextSentence || escapeHtml(item.displayWord)}”</span>
+      </div>
+      <div class="vocab-card-footer">
+        <button class="vocab-jump-btn" type="button">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span>Jump to word in text</span>
+        </button>
+      </div>
+    `;
+
+    // Handle Jump to Word in story
+    const handleJump = (e) => {
+      e.stopPropagation();
+      const targetWord = reader.querySelector(`.word[data-index="${item.index}"]`);
+      if (targetWord) {
+        targetWord.scrollIntoView({ behavior: "smooth", block: "center" });
+        targetWord.classList.remove("is-vocab-flash");
+        void targetWord.offsetWidth;
+        targetWord.classList.add("is-vocab-flash");
+        setTimeout(() => targetWord.classList.remove("is-vocab-flash"), 1600);
+      }
+    };
+
+    card.querySelector(".vocab-jump-btn")?.addEventListener("click", handleJump);
+    card.querySelector(".vocab-context")?.addEventListener("click", handleJump);
+
+    // Handle Save to study log / Anki
+    const saveBtn = card.querySelector(".vocab-save-btn");
+    saveBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const wordObj = words[item.index] || { text: item.word, index: item.index };
+      const currentMeaning = card.querySelector(".vocab-meaning")?.textContent || item.meaning || item.word;
+      logStudiedWord(wordObj, currentMeaning);
+      saveBtn.classList.add("is-saved");
+      saveBtn.querySelector("svg")?.setAttribute("fill", "currentColor");
+      saveBtn.title = "Saved to study cards";
+    });
+
+    vocabWarmupList.append(card);
+
+    // Asynchronously resolve missing definitions
+    if (!item.meaning) {
+      const contextRequest = contextualRequestForWord(item.index, item.contextSentence || item.word);
+      fetchTranslation(contextRequest, { fallbackText: item.word })
+        .then((trans) => {
+          if (trans) {
+            item.meaning = trans;
+            const meaningEl = card.querySelector(".vocab-meaning");
+            if (meaningEl) {
+              meaningEl.textContent = trans;
+              meaningEl.classList.remove("is-loading");
+            }
+          }
+        })
+        .catch(() => {
+          const meaningEl = card.querySelector(".vocab-meaning");
+          if (meaningEl) {
+            meaningEl.textContent = "Tap word in reader for definition";
+            meaningEl.classList.remove("is-loading");
+          }
+        });
+    }
+  });
+
+  vocabWarmup.hidden = false;
+}
+
+function updateVocabWarmupVisibility() {
+  if (!vocabWarmup) return;
+  if (appearanceSettings.vocabWarmup === "off") {
+    vocabWarmup.hidden = true;
+  } else if (words && words.length >= 15) {
+    vocabWarmup.hidden = false;
+    const isCollapsed = appearanceSettings.vocabWarmup === "collapsed";
+    vocabWarmup.classList.toggle("is-collapsed", isCollapsed);
+    if (toggleVocabWarmupCollapse) {
+      toggleVocabWarmupCollapse.setAttribute("aria-expanded", String(!isCollapsed));
+      const label = toggleVocabWarmupCollapse.querySelector(".collapse-label");
+      if (label) label.textContent = isCollapsed ? "Show key words" : "Hide list";
+    }
+  }
+}
+
+if (toggleVocabWarmupCollapse) {
+  toggleVocabWarmupCollapse.addEventListener("click", () => {
+    vocabWarmup.classList.toggle("is-collapsed");
+    const isCollapsed = vocabWarmup.classList.contains("is-collapsed");
+    toggleVocabWarmupCollapse.setAttribute("aria-expanded", String(!isCollapsed));
+    const label = toggleVocabWarmupCollapse.querySelector(".collapse-label");
+    if (label) label.textContent = isCollapsed ? "Show key words" : "Hide list";
+  });
+}
+
+if (startReadingFromVocabBtn) {
+  startReadingFromVocabBtn.addEventListener("click", () => {
+    reader.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
+
 
