@@ -2049,8 +2049,8 @@ textarea {
    ========================================================================== */
 
 .onboarding-dialog {
-  width: min(1080px, calc(100vw - 28px));
-  max-width: 1080px;
+  width: min(760px, calc(100vw - 28px));
+  max-width: 760px;
   max-height: calc(100vh - 28px);
   margin: auto;
   padding: 0;
@@ -2171,7 +2171,7 @@ textarea {
 /* Split Pane Body */
 .onboarding-body {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(0, 1fr);
   min-height: 0;
   overflow: hidden;
 }
@@ -2404,6 +2404,125 @@ textarea {
 
 .font-accessible {
   font-family: Atkinson Hyperlegible, Verdana, Arial, sans-serif;
+}
+
+.type-choice {
+  align-items: stretch;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px 48px 14px 16px;
+}
+
+.type-choice .option-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.type-sample {
+  color: var(--ink);
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.text-size-options {
+  grid-template-columns: 1fr 1fr;
+}
+
+.size-choice {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr) 24px;
+  align-items: center;
+  gap: 12px;
+}
+
+.size-choice-label {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.size-sample {
+  color: var(--ink);
+  font-family: var(--reader-font-family);
+  line-height: 1.35;
+}
+
+.size-sample-small { font-size: 0.9rem; }
+.size-sample-regular { font-size: 1.05rem; }
+.size-sample-large { font-size: 1.25rem; }
+.size-sample-extra { font-size: 1.4rem; }
+
+.choice-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: transparent;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 900;
+  transition: all 140ms ease;
+}
+
+.type-choice .choice-indicator {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+}
+
+.option-card.is-selected .choice-indicator {
+  color: var(--button-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.focus-demo-labels,
+.focus-demo-line {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.focus-demo-labels {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.focus-demo-line {
+  margin-top: 4px;
+  padding: 10px;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.focus-demo-line mark {
+  padding: 2px 4px;
+  color: var(--highlight-text);
+  background: var(--highlight-bg);
+  border-radius: 3px;
+  font-weight: 750;
+}
+
+.focus-demo-line .demo-dimmed {
+  opacity: 0.32;
 }
 
 /* Level Tags */
@@ -3136,12 +3255,62 @@ textarea {
    RESPONSIVE STYLES FOR ONBOARDING
    ========================================================================== */
 
-.onboarding-mobile-tabs {
-  display: none;
+.mobile-demo-sample-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
 }
 
-.mobile-demo-sample-bar {
-  display: none;
+.mobile-sample-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+.mobile-sample-card {
+  padding: 10px 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  transition: all 160ms ease;
+}
+
+.mobile-sample-text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.mobile-sample-mark {
+  padding: 1px 4px;
+  background: var(--highlight-bg);
+  color: var(--highlight-text);
+  border-radius: 3px;
+  font-weight: 750;
+}
+
+:root[data-highlight="underline"] .mobile-sample-mark,
+:root[data-highlight="underline"] .focus-demo-line mark {
+  padding-inline: 1px;
+  color: inherit;
+  background: transparent;
+  border-bottom: 3px solid var(--accent);
+  border-radius: 0;
+}
+
+:root[data-highlight="none"] .mobile-sample-mark,
+:root[data-highlight="none"] .focus-demo-line mark {
+  padding-inline: 1px;
+  color: inherit;
+  background: transparent;
 }
 
 @media (max-width: 860px) {
@@ -3151,51 +3320,9 @@ textarea {
   }
 
   .onboarding-shell {
-    /* The mobile tab switcher is an additional child between the step nav and
-       body, so it needs its own row. Without this, it takes over the flexible
-       content row and pushes the wizard body off-screen. */
-    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
     height: calc(100dvh - 20px);
     max-height: calc(100dvh - 20px);
-  }
-
-  .onboarding-mobile-tabs {
-    display: flex;
-    gap: 8px;
-    padding: 6px 18px 8px;
-    background: var(--panel);
-    border-bottom: 1px solid var(--line);
-    flex-shrink: 0;
-  }
-
-  .mobile-tab-btn {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    min-height: 40px;
-    padding: 0 12px;
-    background: var(--wash);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    color: var(--muted);
-    font-size: 0.8rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 140ms ease;
-  }
-
-  .mobile-tab-btn.is-active {
-    background: var(--accent);
-    color: var(--button-ink);
-    border-color: var(--accent);
-    box-shadow: 0 2px 8px rgba(49, 95, 186, 0.25);
-  }
-
-  .mobile-tab-btn.is-active .live-dot {
-    background: #ffffff;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
   }
 
   .onboarding-body {
@@ -3209,7 +3336,7 @@ textarea {
   }
 
   /* When on controls tab: show controls, hide preview */
-  .onboarding-body[data-mobile-view="controls"] .onboarding-controls-pane {
+  .onboarding-controls-pane {
     display: block;
     flex: 1;
     min-height: 0;
@@ -3217,95 +3344,6 @@ textarea {
     padding: 16px 20px 24px;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-  }
-
-  .onboarding-body[data-mobile-view="controls"] .onboarding-preview-pane {
-    display: none;
-  }
-
-  /* When on preview tab: hide controls, show full-width preview */
-  .onboarding-body[data-mobile-view="preview"] .onboarding-controls-pane {
-    display: none;
-  }
-
-  .onboarding-body[data-mobile-view="preview"] .onboarding-preview-pane {
-    display: flex;
-    flex: 1;
-    min-height: 0;
-    border-left: 0;
-    border-top: 0;
-    padding: 16px 20px 20px;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .mobile-demo-sample-bar {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 18px;
-    padding: 12px 14px;
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-  }
-
-  .mobile-sample-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .mobile-sample-tag {
-    font-size: 0.7rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--accent);
-  }
-
-  .mobile-preview-switch-btn {
-    min-height: 0;
-    padding: 0;
-    background: transparent;
-    border: none;
-    color: var(--accent);
-    font-size: 0.76rem;
-    font-weight: 750;
-    cursor: pointer;
-  }
-
-  .mobile-preview-switch-btn:hover {
-    text-decoration: underline;
-  }
-
-  .mobile-sample-card {
-    padding: 10px 14px;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    transition: all 160ms ease;
-  }
-
-  .mobile-sample-text {
-    margin: 0;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: var(--ink);
-  }
-
-  .mobile-sample-mark {
-    background: var(--highlight-bg);
-    color: var(--highlight-text);
-    padding: 1px 4px;
-    border-radius: 3px;
-    font-weight: 750;
-  }
-
-  .sliders-grid {
-    grid-template-columns: 1fr;
   }
 
   .onboarding-steps-nav .step-label {
@@ -3352,16 +3390,20 @@ textarea {
     min-height: 36px;
   }
 
-  .onboarding-body[data-mobile-view="controls"] .onboarding-controls-pane {
+  .onboarding-controls-pane {
     padding: 14px 16px 20px;
-  }
-
-  .onboarding-body[data-mobile-view="preview"] .onboarding-preview-pane {
-    padding: 14px 16px 18px;
   }
 
   .option-card {
     padding: 12px 14px;
+  }
+
+  .type-choice {
+    padding-right: 48px;
+  }
+
+  .text-size-options {
+    grid-template-columns: 1fr;
   }
 
   .onboarding-footer {
@@ -3378,21 +3420,12 @@ textarea {
     font-size: 1.05rem;
   }
 
-  .onboarding-mobile-tabs {
-    padding-inline: 12px;
-  }
-
   .mobile-demo-sample-bar {
     padding: 10px;
   }
 
-  .mobile-sample-header {
-    align-items: flex-start;
-  }
-
-  .mobile-preview-switch-btn {
-    max-width: 10rem;
-    text-align: right;
+  .text-size-options {
+    grid-template-columns: 1fr;
   }
 
   .segmented-control {

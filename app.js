@@ -2152,11 +2152,6 @@ const onboardingFinishBtn = document.querySelector("#onboardingFinishBtn");
 const onboardingStepPills = [...document.querySelectorAll(".step-pill")];
 const onboardingStepSections = [...document.querySelectorAll(".onboarding-step-section")];
 const onboardingOptionCards = [...document.querySelectorAll(".onboarding-dialog .option-card, .onboarding-dialog .segment-btn, .onboarding-dialog .highlight-chip, .onboarding-dialog .speed-chip")];
-const onboardingTextSize = document.querySelector("#onboardingTextSize");
-const onboardingTextSizeValue = document.querySelector("#onboardingTextSizeValue");
-const onboardingLineHeight = document.querySelector("#onboardingLineHeight");
-const onboardingLineHeightValue = document.querySelector("#onboardingLineHeightValue");
-const onboardingPresetChips = [...document.querySelectorAll(".onboarding-dialog .preset-chip")];
 const onboardingDemoFrame = document.querySelector("#onboardingDemoFrame");
 const demoPlayBtn = document.querySelector("#demoPlayBtn");
 const demoProgressFill = document.querySelector("#demoProgressFill");
@@ -2168,14 +2163,11 @@ const demoWordPopover = document.querySelector("#demoWordPopover");
 const demoPopoverWord = document.querySelector("#demoPopoverWord");
 const demoPopoverDef = document.querySelector("#demoPopoverDef");
 const previewStatusBadge = document.querySelector("#previewStatusBadge");
-const onboardingSummaryBadges = document.querySelector("#onboardingSummaryBadges");
 const onboardingBody = document.querySelector("#onboardingBody");
-const mobileTabControls = document.querySelector("#mobileTabControls");
-const mobileTabPreview = document.querySelector("#mobileTabPreview");
-const mobileJumpToPreviewBtn = document.querySelector("#mobileJumpToPreviewBtn");
 const mobileSampleCard = document.querySelector("#mobileSampleCard");
 const mobileSampleText = document.querySelector("#mobileSampleText");
 const mobileSampleMark = document.querySelector("#mobileSampleMark");
+const ONBOARDING_STEP_COUNT = 3;
 
 const DEMO_EXCERPT_WORDS = [
   { word: "Platero", separator: " ", def: "Platero (the silver donkey in Juan Ramón Jiménez's classic)", start: 0.0, dur: 0.5 },
@@ -2295,28 +2287,10 @@ function syncOnboardingControlsWithState() {
     card.setAttribute("aria-checked", matches ? "true" : "false");
   });
 
-  if (onboardingTextSize && onboardingTextSizeValue) {
-    onboardingTextSize.value = onboardingState.textSize;
-    onboardingTextSizeValue.value = `${onboardingState.textSize}%`;
-    updatePresetChips("size", onboardingState.textSize);
-  }
-
-  if (onboardingLineHeight && onboardingLineHeightValue) {
-    onboardingLineHeight.value = onboardingState.lineHeight;
-    onboardingLineHeightValue.value = onboardingState.lineHeight.toFixed(1);
-    updatePresetChips("height", onboardingState.lineHeight);
-  }
-}
-
-function updatePresetChips(type, val) {
-  onboardingPresetChips.filter((c) => c.dataset.slider === type).forEach((c) => {
-    const chipVal = Number(c.dataset.val);
-    c.classList.toggle("is-active", Math.abs(chipVal - val) < 0.05);
-  });
 }
 
 function goToOnboardingStep(stepNumber) {
-  const step = Math.min(4, Math.max(1, stepNumber));
+  const step = Math.min(ONBOARDING_STEP_COUNT, Math.max(1, stepNumber));
   onboardingState.step = step;
 
   onboardingStepPills.forEach((pill, idx) => {
@@ -2334,10 +2308,9 @@ function goToOnboardingStep(stepNumber) {
 
   if (onboardingPrevBtn) onboardingPrevBtn.disabled = step === 1;
 
-  if (step === 4) {
+  if (step === ONBOARDING_STEP_COUNT) {
     if (onboardingNextBtn) onboardingNextBtn.hidden = true;
     if (onboardingFinishBtn) onboardingFinishBtn.hidden = false;
-    renderOnboardingSummary();
   } else {
     if (onboardingNextBtn) {
       onboardingNextBtn.hidden = false;
@@ -2347,40 +2320,20 @@ function goToOnboardingStep(stepNumber) {
   }
 }
 
-function setMobileOnboardingView(viewName) {
-  if (!onboardingBody) return;
-  const isControls = viewName === "controls";
-  onboardingBody.dataset.mobileView = isControls ? "controls" : "preview";
-
-  if (mobileTabControls) {
-    mobileTabControls.classList.toggle("is-active", isControls);
-    mobileTabControls.setAttribute("aria-selected", String(isControls));
-  }
-  if (mobileTabPreview) {
-    mobileTabPreview.classList.toggle("is-active", !isControls);
-    mobileTabPreview.setAttribute("aria-selected", String(!isControls));
-  }
-
-  const activePane = onboardingBody.querySelector(
-    isControls ? ".onboarding-controls-pane" : ".onboarding-preview-pane"
-  );
-  if (activePane) activePane.scrollTop = 0;
-}
-
 function updateDemoPreview() {
-  if (!onboardingDemoFrame) return;
-
   const resolvedTheme = resolveTheme(onboardingState.theme);
-  onboardingDemoFrame.dataset.demoTheme = resolvedTheme;
-  onboardingDemoFrame.dataset.demoHighlight = onboardingState.highlight;
-  onboardingDemoFrame.dataset.demoTextMode = onboardingState.textMode;
-  onboardingDemoFrame.dataset.demoFont = onboardingState.font;
-  onboardingDemoFrame.dataset.demoWidth = onboardingState.readerWidth;
-  onboardingDemoFrame.dataset.demoTranslation = onboardingState.translationLayout;
+  if (onboardingDemoFrame) {
+    onboardingDemoFrame.dataset.demoTheme = resolvedTheme;
+    onboardingDemoFrame.dataset.demoHighlight = onboardingState.highlight;
+    onboardingDemoFrame.dataset.demoTextMode = onboardingState.textMode;
+    onboardingDemoFrame.dataset.demoFont = onboardingState.font;
+    onboardingDemoFrame.dataset.demoWidth = onboardingState.readerWidth;
+    onboardingDemoFrame.dataset.demoTranslation = onboardingState.translationLayout;
 
-  const fontSizeRem = (1.45 * onboardingState.textSize / 100).toFixed(2);
-  onboardingDemoFrame.style.setProperty("--demo-font-size", `${fontSizeRem}rem`);
-  onboardingDemoFrame.style.setProperty("--demo-line-height", onboardingState.lineHeight);
+    const fontSizeRem = (1.45 * onboardingState.textSize / 100).toFixed(2);
+    onboardingDemoFrame.style.setProperty("--demo-font-size", `${fontSizeRem}rem`);
+    onboardingDemoFrame.style.setProperty("--demo-line-height", onboardingState.lineHeight);
+  }
 
   if (demoSpeedDisplay) {
     demoSpeedDisplay.textContent = `${onboardingState.playbackRate}×`;
@@ -2570,41 +2523,6 @@ function hideDemoWordPopover() {
   demoSpanishText?.querySelectorAll(".demo-word").forEach((w) => w.classList.remove("is-selected"));
 }
 
-function renderOnboardingSummary() {
-  if (!onboardingSummaryBadges) return;
-
-  const themeNames = { paper: "Paper", mist: "Mist", night: "Night", system: "System" };
-  const fontNames = { serif: "Book Serif", sans: "Clean Sans", accessible: "Accessible Sans" };
-  const highlightNames = { sage: "Sage Wash", sky: "Sky Wash", rose: "Rose Wash", underline: "Underline", none: "None" };
-  const transNames = { "spanish-only": "Spanish Immersion", "side-by-side": "Side by Side", "english-below": "English Underneath" };
-  const levelNames = { all: "All Levels", B1: "B1 Intermediate", B2: "B2 Upper Intermediate", C1: "C1 Advanced" };
-  const formatNames = { all: "All Formats", listen: "Listen & Read", read: "Read Only" };
-
-  const vocabNames = { always: "Always Show", collapsed: "Collapsed", off: "Off" };
-
-  const badges = [
-    { label: "Theme", val: themeNames[onboardingState.theme] || "System" },
-    { label: "Typeface", val: `${fontNames[onboardingState.font]} (${onboardingState.textSize}%)` },
-    { label: "Highlight", val: highlightNames[onboardingState.highlight] || "Sage" },
-    { label: "Layout", val: transNames[onboardingState.translationLayout] || "Immersion" },
-    { label: "Vocab Warmup", val: vocabNames[onboardingState.vocabWarmup] || "Always Show" },
-    { label: "Audio Rate", val: `${onboardingState.playbackRate}×` },
-    { label: "Reading Level", val: levelNames[onboardingState.catalogLevel] || "All Levels" },
-    { label: "Format", val: formatNames[onboardingState.catalogFormat] || "All Formats" }
-  ];
-
-  onboardingSummaryBadges.innerHTML = badges
-    .map(
-      (b) => `
-    <span class="summary-badge-item">
-      <span>${b.label}:</span>
-      <strong>${b.val}</strong>
-    </span>
-  `
-    )
-    .join("");
-}
-
 function finishOnboarding() {
   appearanceSettings.theme = onboardingState.theme;
   appearanceSettings.font = onboardingState.font;
@@ -2663,7 +2581,7 @@ if (onboardingPrevBtn) {
 
 if (onboardingNextBtn) {
   onboardingNextBtn.addEventListener("click", () => {
-    if (onboardingState.step < 4) {
+    if (onboardingState.step < ONBOARDING_STEP_COUNT) {
       goToOnboardingStep(onboardingState.step + 1);
     } else {
       finishOnboarding();
@@ -2678,7 +2596,7 @@ if (onboardingFinishBtn) {
 onboardingStepPills.forEach((pill) => {
   pill.addEventListener("click", () => {
     const step = Number(pill.dataset.step);
-    if (step >= 1 && step <= 4) goToOnboardingStep(step);
+    if (step >= 1 && step <= ONBOARDING_STEP_COUNT) goToOnboardingStep(step);
   });
 });
 
@@ -2688,8 +2606,8 @@ onboardingOptionCards.forEach((card) => {
     const value = card.dataset.value;
     if (!setting) return;
 
-    if (setting === "playbackRate") {
-      onboardingState.playbackRate = Number(value);
+    if (setting === "playbackRate" || setting === "textSize") {
+      onboardingState[setting] = Number(value);
     } else {
       onboardingState[setting] = value;
     }
@@ -2702,46 +2620,6 @@ onboardingOptionCards.forEach((card) => {
     });
 
     updateDemoPreview();
-    if (onboardingState.step === 4) {
-      renderOnboardingSummary();
-    }
-  });
-});
-
-if (onboardingTextSize && onboardingTextSizeValue) {
-  onboardingTextSize.addEventListener("input", () => {
-    onboardingState.textSize = Number(onboardingTextSize.value);
-    onboardingTextSizeValue.value = `${onboardingState.textSize}%`;
-    updatePresetChips("size", onboardingState.textSize);
-    updateDemoPreview();
-  });
-}
-
-if (onboardingLineHeight && onboardingLineHeightValue) {
-  onboardingLineHeight.addEventListener("input", () => {
-    onboardingState.lineHeight = Number(onboardingLineHeight.value);
-    onboardingLineHeightValue.value = onboardingState.lineHeight.toFixed(1);
-    updatePresetChips("height", onboardingState.lineHeight);
-    updateDemoPreview();
-  });
-}
-
-onboardingPresetChips.forEach((chip) => {
-  chip.addEventListener("click", () => {
-    const type = chip.dataset.slider;
-    const val = Number(chip.dataset.val);
-    if (type === "size" && onboardingTextSize && onboardingTextSizeValue) {
-      onboardingTextSize.value = val;
-      onboardingState.textSize = val;
-      onboardingTextSizeValue.value = `${val}%`;
-      updatePresetChips("size", val);
-    } else if (type === "height" && onboardingLineHeight && onboardingLineHeightValue) {
-      onboardingLineHeight.value = val;
-      onboardingState.lineHeight = val;
-      onboardingLineHeightValue.value = val.toFixed(1);
-      updatePresetChips("height", val);
-    }
-    updateDemoPreview();
   });
 });
 
@@ -2749,22 +2627,9 @@ if (demoPlayBtn) {
   demoPlayBtn.addEventListener("click", () => toggleDemoSimulation());
 }
 
-if (mobileTabControls) {
-  mobileTabControls.addEventListener("click", () => setMobileOnboardingView("controls"));
-}
-
-if (mobileTabPreview) {
-  mobileTabPreview.addEventListener("click", () => setMobileOnboardingView("preview"));
-}
-
-if (mobileJumpToPreviewBtn) {
-  mobileJumpToPreviewBtn.addEventListener("click", () => setMobileOnboardingView("preview"));
-}
-
 if (onboardingDialog) {
   onboardingDialog.addEventListener("close", () => {
     pauseDemoSimulation();
-    setMobileOnboardingView("controls");
     applyAppearanceSettings();
   });
 }
@@ -3193,4 +3058,3 @@ if (startReadingFromVocabBtn) {
     }
   });
 }
-

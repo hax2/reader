@@ -459,19 +459,23 @@
               </div>
 
               <div class="control-group">
-                <label class="group-label">Focus &amp; Text Dimming</label>
+                <label class="group-label">Keep your place while listening</label>
                 <div class="option-grid focus-options" role="radiogroup" aria-label="Focus mode">
                   <button type="button" class="option-card is-selected" data-setting="textMode" data-value="dim-passed" role="radio" aria-checked="true">
                     <div class="option-info">
-                      <strong class="option-title">Dim passed words</strong>
-                      <span class="focus-demo-line" aria-hidden="true"><span class="demo-dimmed">Platero es</span> <mark>pequeño</mark> <span>y suave.</span></span>
+                      <strong class="option-title">Fade words already heard</strong>
+                      <span class="option-desc">Your eye stays on the current word and what comes next.</span>
+                      <span class="focus-demo-labels" aria-hidden="true"><span>Heard</span><span>Now</span><span>Next</span></span>
+                      <span class="focus-demo-line" aria-hidden="true"><span class="demo-dimmed">Platero era</span><mark>pequeño</mark><span>y suave</span></span>
                     </div>
                     <span class="choice-indicator" aria-hidden="true">✓</span>
                   </button>
                   <button type="button" class="option-card" data-setting="textMode" data-value="dim-upcoming" role="radio" aria-checked="false">
                     <div class="option-info">
-                      <strong class="option-title">Dim upcoming words</strong>
-                      <span class="focus-demo-line" aria-hidden="true"><span>Platero es</span> <mark>pequeño</mark> <span class="demo-dimmed">y suave.</span></span>
+                      <strong class="option-title">Fade words coming next</strong>
+                      <span class="option-desc">Your eye stays tightly focused on the word being spoken.</span>
+                      <span class="focus-demo-labels" aria-hidden="true"><span>Heard</span><span>Now</span><span>Next</span></span>
+                      <span class="focus-demo-line" aria-hidden="true"><span>Platero era</span><mark>pequeño</mark><span class="demo-dimmed">y suave</span></span>
                     </div>
                     <span class="choice-indicator" aria-hidden="true">✓</span>
                   </button>
