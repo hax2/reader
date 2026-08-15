@@ -533,13 +533,18 @@ function renderTrackList() {
     button.dataset.trackId = track.id;
     button.style.setProperty("--progress", `${percent}%`);
     button.innerHTML = `
-      <span class="track-main">
+      <div class="track-cover-wrapper">
+        <div class="track-cover">
+          ${track.cover ? `<img src="${escapeHtml(track.cover)}" alt="Cover for ${escapeHtml(track.title)}" loading="lazy">` : `<div class="track-cover-placeholder"></div>`}
+        </div>
+        <span class="track-progress" aria-hidden="true"><span></span></span>
+      </div>
+      <div class="track-info">
         <span class="track-title">${escapeHtml(track.title)}</span>
+        ${track.author ? `<span class="track-author">${escapeHtml(track.author)}</span>` : ""}
         <span class="track-meta">${track.transcript ? "Synced transcript" : "Audio only"}</span>
         <span class="track-progress-label">${progressLabel(saved)}</span>
-      </span>
-      <span class="track-action" aria-hidden="true">&rarr;</span>
-      <span class="track-progress" aria-hidden="true"><span></span></span>
+      </div>
     `;
     fragment.append(button);
   }

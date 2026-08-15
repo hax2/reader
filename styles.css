@@ -242,33 +242,33 @@ h2 {
 
 .track-list {
   display: grid;
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 32px 24px;
 }
 
 .track-card {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 42px;
-  align-items: center;
-  gap: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
   width: 100%;
-  min-height: 108px;
-  padding: 22px;
+  min-height: auto;
+  padding: 0;
   overflow: hidden;
   color: var(--ink);
   text-align: left;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  box-shadow: 0 10px 24px rgba(29, 36, 32, 0.05);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .track-card:hover,
 .track-card.active {
   color: var(--ink);
-  background: var(--track-hover);
-  border-color: var(--track-active-border);
-  box-shadow: var(--shadow);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .track-card:focus-visible,
@@ -284,44 +284,81 @@ h2 {
   outline-offset: 3px;
 }
 
-.track-main {
-  min-width: 0;
+.track-cover-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(29, 36, 32, 0.08);
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+  border: 1px solid var(--line);
+}
+
+.track-card:hover .track-cover-wrapper,
+.track-card.active .track-cover-wrapper {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(29, 36, 32, 0.15);
+  border-color: var(--track-active-border);
+}
+
+.track-cover {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: var(--wash);
+}
+
+.track-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.track-cover-placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--wash);
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .track-title {
-  display: block;
-  overflow-wrap: anywhere;
-  font-size: clamp(1.18rem, 3vw, 1.65rem);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 1.15rem;
   font-weight: 820;
-  line-height: 1.18;
+  line-height: 1.25;
+  margin-bottom: 6px;
+}
+
+.track-author {
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 6px;
 }
 
 .track-meta,
 .track-progress-label {
   display: block;
-  margin-top: 7px;
+  margin-top: 0;
   color: var(--muted);
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   font-weight: 650;
-}
-
-.track-action {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  color: var(--accent-dark);
-  background: var(--wash);
-  font-size: 1.35rem;
-  font-weight: 750;
 }
 
 .track-progress {
   position: absolute;
   inset: auto 0 0;
   height: 4px;
-  background: var(--track-progress-bg);
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 2;
 }
 
 .track-progress span {
