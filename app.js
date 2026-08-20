@@ -713,7 +713,7 @@ function setSavedTranslationBlocks(blocks) {
 
     const sourceSentences = splitTranslationSentences(source);
     if (sourceSentences.length < 2) continue;
-    const translatedSentences = fitTranslationSentences(translation, sourceSentences.length);
+    const translatedSentences = fitTranslationSentences(translation, sourceSentences);
     sourceSentences.forEach((sentence, index) => {
       if (translatedSentences[index]) {
         savedTranslationLookup.set(normalizedTranslationSource(sentence), translatedSentences[index]);
@@ -1178,7 +1178,7 @@ function renderWords() {
     paragraph.append(document.createTextNode(separator));
     paragraphText += `${word.text}${separator}`;
 
-    if (/[.!?…]["')\]]*\s*$/.test(`${word.text}${separator}`)) {
+    if (/[.!?…]["')\]»”]*\s*$/.test(`${word.text}${separator}`)) {
       sentenceCount += 1;
     }
     if (sentenceCount >= sentencesPerPair && index < words.length - 1) {
@@ -1245,27 +1245,15 @@ function normalizedTranslationSource(value) {
 function splitTranslationSentences(value) {
   const text = normalizedTranslationSource(value);
   if (!text) return [];
-  return (text.match(/[^.!?…]+(?:[.!?…]+["')\]]*|$)/g) || [text])
+  return (text.match(/[^.!?…]+(?:[.!?…]+["')\]»”]*|$)/g) || [text])
     .map((sentence) => sentence.trim())
     .filter(Boolean);
 }
 
-function fitTranslationSentences(translation, desiredCount) {
-  const sentences = splitTranslationSentences(translation);
+function fitTranslationSentences(translation, sourceSentences) {
+  let sentences = splitTranslationSentences(translation);
+  const desiredCount = sourceSentences.length;
   if (desiredCount < 1 || !sentences.length) return [];
-
-  while (sentences.length > desiredCount) {
-    let mergeIndex = 0;
-    let shortestPair = Number.POSITIVE_INFINITY;
-    for (let index = 0; index < sentences.length - 1; index += 1) {
-      const pairLength = sentences[index].length + sentences[index + 1].length;
-      if (pairLength < shortestPair) {
-        shortestPair = pairLength;
-        mergeIndex = index;
-      }
-    }
-    sentences.splice(mergeIndex, 2, `${sentences[mergeIndex]} ${sentences[mergeIndex + 1]}`);
-  }
 
   while (sentences.length < desiredCount) {
     const splitIndex = sentences.reduce(
@@ -1276,6 +1264,66 @@ function fitTranslationSentences(translation, desiredCount) {
     if (parts.length < 2) break;
     sentences.splice(splitIndex, 1, ...parts);
   }
+
+  if (sentences.length > desiredCount) {
+    const sourceLengths = sourceSentences.map(s => s.length);
+    const sourceTotal = sourceLengths.reduce((a, b) => a + b, 0);
+    const targetLengths = sentences.map(s => s.length);
+    const targetTotal = targetLengths.reduce((a, b) => a + b, 0);
+
+    function getPartitions(arr, k) {
+      if (k === 1) return [[arr]];
+      if (arr.length === k) return [arr.map(x => [x])];
+      if (arr.length < k) return [];
+      
+      const partitions = [];
+      for (let i = 1; i <= arr.length - k + 1; i++) {
+        const firstGroup = arr.slice(0, i);
+        const rest = arr.slice(i);
+        const subPartitions = getPartitions(rest, k - 1);
+        for (const sub of subPartitions) {
+          partitions.push([firstGroup, ...sub]);
+        }
+      }
+      return partitions;
+    }
+
+    while (sentences.length - desiredCount > 10) {
+      let mergeIndex = 0;
+      let shortestPair = Number.POSITIVE_INFINITY;
+      for (let index = 0; index < sentences.length - 1; index += 1) {
+        const pairLength = sentences[index].length + sentences[index + 1].length;
+        if (pairLength < shortestPair) {
+          shortestPair = pairLength;
+          mergeIndex = index;
+        }
+      }
+      sentences.splice(mergeIndex, 2, `${sentences[mergeIndex]} ${sentences[mergeIndex + 1]}`);
+    }
+
+    const partitions = getPartitions(sentences, desiredCount);
+    let bestCost = Infinity;
+    let bestPartition = null;
+
+    for (const p of partitions) {
+      let cost = 0;
+      for (let i = 0; i < desiredCount; i++) {
+        const groupLength = p[i].reduce((sum, s) => sum + s.length, 0);
+        const sRatio = sourceLengths[i] / sourceTotal;
+        const tRatio = groupLength / targetTotal;
+        cost += Math.pow(sRatio - tRatio, 2);
+      }
+      if (cost < bestCost) {
+        bestCost = cost;
+        bestPartition = p;
+      }
+    }
+
+    if (bestPartition) {
+      sentences = bestPartition.map(group => group.join(' '));
+    }
+  }
+
   return sentences;
 }
 
