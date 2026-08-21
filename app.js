@@ -84,6 +84,8 @@ let tracks = [];
 let activeTrackId = "";
 let activeAudioSource = "";
 let pendingResumeTime = 0;
+let resumeRetryTimer = 0;
+let resumeListenerCleanup = null;
 let lastProgressSave = 0;
 let selectedWordButton = null;
 let definitionRequestId = 0;
@@ -102,6 +104,7 @@ let translationObserver = null;
 let translationRenderId = 0;
 let savedTranslationBlocks = [];
 let savedTranslationLookup = new Map();
+let vocabWarmupItemCount = 0;
 
 applyAppearanceSettings();
 drawWaveform(0);
@@ -158,7 +161,7 @@ backToLibrary.addEventListener("click", () => {
 });
 
 window.addEventListener("popstate", () => {
-  const routeId = decodeURIComponent(location.hash.slice(1));
+  const routeId = safeDecodeHash();
   const track = tracks.find((item) => item.id === routeId);
   if (track) loadTrack(track, false);
   else showLibrary(false);
@@ -193,8 +196,10 @@ audioFile.addEventListener("change", () => {
   objectUrl = URL.createObjectURL(file);
   activeTrackId = "";
   activeAudioSource = objectUrl;
+  pendingResumeTime = 0;
   appTitle.textContent = file.name;
   readingMeta.hidden = true;
+  updateMediaSession({ title: file.name, author: "", cover: "" });
   app.dataset.media = "audio";
   setReadMode(false);
   showReader();
@@ -248,7 +253,7 @@ ankiCardList.addEventListener("input", (event) => {
   if (!entry) return;
 
   const value = field.value;
-  if (field.dataset.field === "context") entry.context = escapeHtml(value);
+  if (field.dataset.field === "context") entry.context = htmlToText(value);
   else entry[field.dataset.field] = value;
   if (field.dataset.field === "word") {
     entry.normalized = normalizeWord(value);
@@ -332,6 +337,7 @@ if (vocabWarmupSelect) {
     appearanceSettings.vocabWarmup = vocabWarmupSelect.value;
     saveAppearanceSettings(appearanceSettings);
     applyAppearanceSettings();
+    renderVocabWarmup();
   });
 }
 
@@ -426,11 +432,13 @@ document.addEventListener("keydown", (event) => {
 
   switch (event.key) {
     case "ArrowLeft":
+      if (!audio.src) return;
       event.preventDefault();
       audio.currentTime = Math.max(0, audio.currentTime - 10);
       updateProgress();
       break;
     case "ArrowRight":
+      if (!audio.src) return;
       event.preventDefault();
       audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10);
       updateProgress();
@@ -490,6 +498,7 @@ document.addEventListener("keydown", (event) => {
 audio.addEventListener("play", () => {
   playIcon.innerHTML = PAUSE_ICON;
   playPause.setAttribute("aria-label", "Pause");
+  setMediaSessionPlaybackState("playing");
   tick();
 });
 
@@ -497,6 +506,7 @@ audio.addEventListener("pause", () => {
   playIcon.innerHTML = PLAY_ICON;
   playPause.setAttribute("aria-label", "Play");
   cancelAnimationFrame(rafId);
+  setMediaSessionPlaybackState("paused");
   updateProgress();
 });
 
@@ -508,18 +518,20 @@ audio.addEventListener("loadedmetadata", () => {
   skipForward.disabled = false;
   durationEl.textContent = formatTime(audio.duration);
   if (words.length && !hasValidTimings(words)) assignApproximateTimes(words);
-  if (pendingResumeTime > 0 && audio.duration) {
-    audio.currentTime = Math.min(pendingResumeTime, Math.max(0, audio.duration - 1));
-    pendingResumeTime = 0;
-  }
+  applyResumePosition();
   drawWaveform(0);
   updateProgress();
+});
+
+audio.addEventListener("canplay", () => {
+  applyResumePosition();
 });
 
 audio.addEventListener("ended", () => {
   playIcon.innerHTML = PLAY_ICON;
   playPause.setAttribute("aria-label", "Play");
   saveActiveProgress(true);
+  setMediaSessionPlaybackState("paused");
   updateProgress();
 });
 
@@ -528,6 +540,77 @@ seek.addEventListener("input", () => {
   saveActiveProgress(true);
   updateProgress();
 });
+
+const mediaSession = "mediaSession" in navigator ? navigator.mediaSession : null;
+
+if (mediaSession) {
+  const guardedAction = (handler) => () => {
+    if (!audio.src || !audio.duration) return;
+    handler();
+  };
+  const actionHandlers = {
+    play: () => audio.play().catch(() => {}),
+    pause: () => audio.pause(),
+    stop: () => audio.pause(),
+    seekbackward: guardedAction(() => {
+      audio.currentTime = Math.max(0, audio.currentTime - 10);
+      updateProgress();
+    }),
+    seekforward: guardedAction(() => {
+      audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+      updateProgress();
+    }),
+    seekto: (details) => {
+      if (!audio.src || !audio.duration) return;
+      if (typeof details?.seekTime !== "number" || !Number.isFinite(details.seekTime)) return;
+      audio.currentTime = Math.min(Math.max(0, details.seekTime), audio.duration);
+      updateProgress();
+    }
+  };
+  for (const [action, handler] of Object.entries(actionHandlers)) {
+    try {
+      mediaSession.setActionHandler(action, handler);
+    } catch {
+      // Some actions are unsupported on certain platforms; skip only those.
+    }
+  }
+}
+
+function coverMimeType(src) {
+  const extension = String(src).split(".").pop()?.toLowerCase();
+  return { jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png", webp: "image/webp", gif: "image/gif" }[extension] || "";
+}
+
+function updateMediaSession(track) {
+  if (!mediaSession || typeof MediaMetadata === "undefined") return;
+  if (!track) {
+    mediaSession.metadata = null;
+    return;
+  }
+  let artwork = [];
+  if (track.cover) {
+    const type = coverMimeType(track.cover);
+    artwork = [{
+      src: new URL(track.cover, document.baseURI).href,
+      sizes: "848x1264",
+      ...(type ? { type } : {})
+    }];
+  }
+  mediaSession.metadata = new MediaMetadata({
+    title: track.title || "",
+    artist: track.author || "",
+    album: "Spanish Listening Reader",
+    artwork
+  });
+}
+
+function setMediaSessionPlaybackState(state) {
+  try {
+    mediaSession.playbackState = state;
+  } catch {
+    // playbackState assignment is optional.
+  }
+}
 
 reader.addEventListener("click", (event) => {
   const target = event.target.closest(".word");
@@ -567,6 +650,9 @@ document.addEventListener("visibilitychange", () => {
 function setAudioSource(src, message) {
   audio.pause();
   words = [];
+  cancelResumeRetry();
+  vocabWarmupItemCount = 0;
+  if (vocabWarmup) vocabWarmup.hidden = true;
   setSavedTranslationBlocks([]);
   reader.replaceChildren();
   hideWordPopover();
@@ -611,7 +697,7 @@ async function loadLibrary() {
 
 async function initialize() {
   await Promise.all([loadLibrary(), loadSharedGlossary()]);
-  const routeId = decodeURIComponent(location.hash.slice(1));
+  const routeId = safeDecodeHash();
   const routeTrack = tracks.find((track) => track.id === routeId);
   if (routeTrack) {
     await loadTrack(routeTrack, false);
@@ -640,9 +726,15 @@ async function loadTrack(track, updateHistory = true) {
   const loadId = ++trackLoadId;
   activeTrackId = track.id;
   activeAudioSource = track.audio || "";
-  pendingResumeTime = progressCache[activeTrackId]?.time || 0;
+  const savedProgress = progressCache[activeTrackId];
+  pendingResumeTime = savedProgress?.time || 0;
+  if (track.audio && savedProgress?.duration && savedProgress.time / savedProgress.duration >= 0.97) {
+    pendingResumeTime = 0;
+  }
+  const resumeAt = track.audio ? pendingResumeTime : 0;
   appTitle.textContent = track.title;
   renderReadingMeta(track);
+  updateMediaSession(track);
   showReader();
   if (updateHistory && location.hash.slice(1) !== encodeURIComponent(track.id)) {
     history.pushState({ trackId: track.id }, "", `#${encodeURIComponent(track.id)}`);
@@ -678,7 +770,7 @@ async function loadTrack(track, updateHistory = true) {
     const precise = Boolean(track.audio) && hasValidTimings(parsed);
     setWords(parsed, precise);
     if (track.audio) {
-      const resumeMessage = pendingResumeTime > 0 ? ` Resuming at ${formatTime(pendingResumeTime)}.` : "";
+      const resumeMessage = resumeAt > 0 ? ` Resuming at ${formatTime(resumeAt)}.` : "";
       status(`${track.title} loaded with ${parsed.length.toLocaleString()} synced words.${resumeMessage}`);
     } else {
       status(`${track.title} · ${parsed.length.toLocaleString()} words · about ${track.minutes || readingMinutes(parsed.length)} min to read.`);
@@ -724,13 +816,17 @@ function setSavedTranslationBlocks(blocks) {
 
 function clearAudioSource() {
   activeTrackId && saveActiveProgress(true);
+  cancelResumeRetry();
   audio.removeAttribute("src");
   audio.load();
   words = [];
+  vocabWarmupItemCount = 0;
+  if (vocabWarmup) vocabWarmup.hidden = true;
   setSavedTranslationBlocks([]);
   reader.replaceChildren();
   hideWordPopover();
   definition.innerHTML = `<p class="muted">Tap a word for an English meaning.</p>`;
+  updateMediaSession(null);
   pendingResumeTime = 0;
   currentWordIndex = -1;
   readWordCount = -1;
@@ -953,6 +1049,15 @@ function compareTitle(a, b) {
 
 function normalizeSearch(value) {
   return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("es").trim();
+}
+
+function safeDecodeHash() {
+  const raw = location.hash.slice(1);
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
 }
 
 function difficultyDescription(level) {
@@ -1626,11 +1731,7 @@ function renderDefinition(word, translation, anchor = selectedWordButton, allowH
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
       audio.currentTime = wordData.start;
-      if (isReadMode) {
-        isReadMode = false;
-        app.dataset.mode = "listen";
-        if (readModeLabel) readModeLabel.textContent = "Read";
-      }
+      if (isReadMode) setReadMode(false);
       audio.play().catch(() => {});
       hideWordPopover();
     });
@@ -1680,7 +1781,7 @@ function logStudiedWord(word, meaning) {
     word: word.text,
     normalized,
     meaning: htmlToText(meaning),
-    context,
+    context: contextText,
     reading,
     firstSeenAt: previous.firstSeenAt || new Date().toISOString(),
     lastSeenAt: new Date().toISOString(),
@@ -1808,7 +1909,7 @@ function downloadAnkiCards() {
   const rows = entries.map((entry) => [
     entry.word,
     entry.meaning,
-    entry.context,
+    htmlToText(entry.context),
     entry.reading
   ].map(tsvField).join("\t"));
   const blob = new Blob([`${rows.join("\n")}\n`], {
@@ -1918,6 +2019,46 @@ function roundRect(context, x, y, width, height, radius) {
   context.arcTo(x, y + height, x, y, radius);
   context.arcTo(x, y, x + width, y, radius);
   context.closePath();
+}
+
+function applyResumePosition() {
+  if (pendingResumeTime <= 0 || !audio.duration || !Number.isFinite(audio.duration)) return;
+  if (resumeRetryTimer) return;
+  const target = Math.min(pendingResumeTime, Math.max(0, audio.duration - 1));
+  const confirmSeek = () => {
+    if (Math.abs(audio.currentTime - target) < 0.75) {
+      pendingResumeTime = 0;
+      cancelResumeRetry();
+    }
+  };
+  resumeListenerCleanup = () => {
+    audio.removeEventListener("seeked", confirmSeek);
+    audio.removeEventListener("timeupdate", confirmSeek);
+    audio.removeEventListener("canplay", confirmSeek);
+  };
+  audio.addEventListener("seeked", confirmSeek);
+  audio.addEventListener("timeupdate", confirmSeek);
+  audio.addEventListener("canplay", confirmSeek);
+  audio.currentTime = target;
+  // Chromium can drop seeks issued while its media pipeline is still
+  // starting up; retry once shortly if the first attempt did not stick.
+  resumeRetryTimer = window.setTimeout(() => {
+    resumeRetryTimer = 0;
+    resumeListenerCleanup?.();
+    resumeListenerCleanup = null;
+    if (pendingResumeTime > 0 && audio.duration && Number.isFinite(audio.duration)) {
+      const retryTarget = Math.min(pendingResumeTime, Math.max(0, audio.duration - 1));
+      pendingResumeTime = 0;
+      audio.currentTime = retryTarget;
+    }
+  }, 250);
+}
+
+function cancelResumeRetry() {
+  window.clearTimeout(resumeRetryTimer);
+  resumeRetryTimer = 0;
+  resumeListenerCleanup?.();
+  resumeListenerCleanup = null;
 }
 
 function hasValidTimings(list) {
@@ -2977,12 +3118,10 @@ function extractUncommonVocab(wordsList) {
 async function renderVocabWarmup() {
   if (!vocabWarmup || !vocabWarmupList) return;
 
-  if (appearanceSettings.vocabWarmup === "off" || !words || words.length < 15) {
-    vocabWarmup.hidden = true;
-    return;
-  }
-
-  const items = extractUncommonVocab(words);
+  const items = appearanceSettings.vocabWarmup === "off" || !words || words.length < 15
+    ? []
+    : extractUncommonVocab(words);
+  vocabWarmupItemCount = items.length;
   if (!items.length) {
     vocabWarmup.hidden = true;
     return;
@@ -3067,17 +3206,17 @@ async function renderVocabWarmup() {
 
 function updateVocabWarmupVisibility() {
   if (!vocabWarmup) return;
-  if (appearanceSettings.vocabWarmup === "off") {
+  if (appearanceSettings.vocabWarmup === "off" || !words || words.length < 15 || vocabWarmupItemCount === 0) {
     vocabWarmup.hidden = true;
-  } else if (words && words.length >= 15) {
-    vocabWarmup.hidden = false;
-    const isCollapsed = appearanceSettings.vocabWarmup === "collapsed";
-    vocabWarmup.classList.toggle("is-collapsed", isCollapsed);
-    if (toggleVocabWarmupCollapse) {
-      toggleVocabWarmupCollapse.setAttribute("aria-expanded", String(!isCollapsed));
-      const label = toggleVocabWarmupCollapse.querySelector(".collapse-label");
-      if (label) label.textContent = isCollapsed ? "Show key words" : "Hide list";
-    }
+    return;
+  }
+  vocabWarmup.hidden = false;
+  const isCollapsed = appearanceSettings.vocabWarmup === "collapsed";
+  vocabWarmup.classList.toggle("is-collapsed", isCollapsed);
+  if (toggleVocabWarmupCollapse) {
+    toggleVocabWarmupCollapse.setAttribute("aria-expanded", String(!isCollapsed));
+    const label = toggleVocabWarmupCollapse.querySelector(".collapse-label");
+    if (label) label.textContent = isCollapsed ? "Show key words" : "Hide list";
   }
 }
 
