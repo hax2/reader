@@ -31,13 +31,10 @@ const durationEl = document.querySelector("#duration");
 const reader = document.querySelector("#reader");
 const passagePractice = document.querySelector("#passagePractice");
 const passageHeading = document.querySelector("#passageHeading");
-const passagePrompt = document.querySelector("#passagePrompt");
-const passageText = document.querySelector("#passageText");
 const passageStatus = document.querySelector("#passageStatus");
 const previousPassage = document.querySelector("#previousPassage");
 const replayPassage = document.querySelector("#replayPassage");
 const nextPassage = document.querySelector("#nextPassage");
-const revealPassage = document.querySelector("#revealPassage");
 const statusEl = document.querySelector("#status");
 const readingMeta = document.querySelector("#readingMeta");
 const pasteTranscript = document.querySelector("#pasteTranscript");
@@ -111,7 +108,6 @@ let readerMode = "listen";
 let isReadMode = false;
 let passages = [];
 let passageIndex = -1;
-let passageRevealed = false;
 let handlingPassageBoundary = false;
 let waitingAtBoundary = false;
 let pendingPassageIndex = -1;
@@ -467,19 +463,8 @@ readerModeSelector.addEventListener("keydown", (event) => {
 });
 
 previousPassage.addEventListener("click", () => movePassage(-1, true));
-replayPassage.addEventListener("click", () => {
-  if (passageRevealed) setPassageRevealed(false);
-  playCurrentPassage();
-});
+replayPassage.addEventListener("click", () => playCurrentPassage());
 nextPassage.addEventListener("click", () => movePassage(1, true));
-revealPassage.addEventListener("click", () => setPassageRevealed(!passageRevealed));
-
-passageText.addEventListener("click", (event) => {
-  const target = event.target.closest(".word");
-  if (!target) return;
-  event.stopPropagation();
-  showDefinition(words[Number(target.dataset.index)], target);
-});
 
 document.addEventListener("keydown", (event) => {
   const tag = event.target.tagName;
@@ -501,11 +486,6 @@ document.addEventListener("keydown", (event) => {
     if (key === "r") {
       event.preventDefault();
       playCurrentPassage();
-      return;
-    }
-    if (key === "t") {
-      event.preventDefault();
-      setPassageRevealed(!passageRevealed);
       return;
     }
   }
@@ -955,8 +935,6 @@ function setReadMode(enabled) {
   setReaderMode(enabled ? "read" : "listen");
 }
 
-const PASSAGE_PROMPT_DEFAULT = "Listen without reading. Replay as often as you need.";
-const PASSAGE_PROMPT_REVEALED = "Tap any word for its meaning.";
 const PASSAGE_MIN_SECONDS = 7;
 const PASSAGE_TARGET_SECONDS = 14;
 const PASSAGE_MAX_SECONDS = 21;
@@ -1005,12 +983,11 @@ function enterPassagesMode() {
 
 function exitPassagesMode() {
   passagePractice.hidden = true;
-  passageText.replaceChildren();
   passageStatus.textContent = "";
   handlingPassageBoundary = false;
   waitingAtBoundary = false;
   passageIndex = -1;
-  passageRevealed = false;
+  if (words.length) renderWords();
 }
 
 function buildPassages(list) {
@@ -1092,27 +1069,11 @@ function findPassageAt(time) {
 function setPassageIndex(index) {
   passageIndex = Math.max(0, Math.min(passages.length - 1, index));
   waitingAtBoundary = false;
-  setPassageRevealed(false);
-  renderPassage();
-  passageHeading.textContent = `Passage ${passageIndex + 1} of ${passages.length}`;
-  passageStatus.textContent = `Passage ${passageIndex + 1} of ${passages.length}.`;
-}
-
-function renderPassage() {
   const passage = passages[passageIndex];
-  if (!passage) return;
-  passageText.replaceChildren();
-  for (let i = passage.startWordIndex; i <= passage.endWordIndex; i += 1) {
-    const word = words[i];
-    if (!word) continue;
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "word";
-    button.dataset.index = String(i);
-    button.tabIndex = -1;
-    button.textContent = word.text;
-    passageText.append(button, document.createTextNode(word.separator || " "));
-  }
+  if (passage) renderWords(passage.startWordIndex, passage.endWordIndex);
+  const label = `Passage ${passageIndex + 1} of ${passages.length}`;
+  passageHeading.textContent = label;
+  passageStatus.textContent = `${label}.`;
 }
 
 function movePassage(delta, play = true) {
@@ -1150,15 +1111,6 @@ function seekToPassageStart() {
   }
 }
 
-function setPassageRevealed(revealed) {
-  passageRevealed = Boolean(revealed);
-  passageText.hidden = !passageRevealed;
-  revealPassage.setAttribute("aria-pressed", String(passageRevealed));
-  revealPassage.textContent = passageRevealed ? "Hide Spanish" : "Reveal Spanish";
-  passagePrompt.textContent = passageRevealed ? PASSAGE_PROMPT_REVEALED : PASSAGE_PROMPT_DEFAULT;
-  if (!passageRevealed) highlightPassageWord(-1);
-}
-
 function handlePassagePlayback(time) {
   const passage = passages[passageIndex];
   if (!passage) return;
@@ -1181,15 +1133,6 @@ function handlePassagePlayback(time) {
     const activeIndex = findPassageAt(time);
     if (activeIndex >= 0 && activeIndex !== passageIndex) setPassageIndex(activeIndex);
   }
-  highlightPassageWord(time);
-}
-
-function highlightPassageWord(time) {
-  if (!passageRevealed) return;
-  passageText.querySelectorAll(".word.current").forEach((el) => el.classList.remove("current"));
-  if (time < 0) return;
-  const index = findWordAt(time);
-  if (index >= 0) passageText.querySelector(`[data-index="${index}"]`)?.classList.add("current");
 }
 
 function renderReadingMeta(track) {
@@ -1576,7 +1519,7 @@ function wordWeight(text) {
   return Math.max(0.7, Math.min(2.8, text.length / 4));
 }
 
-function renderWords() {
+function renderWords(startIndex = 0, endIndex = words.length - 1) {
   translationRenderId += 1;
   const renderId = translationRenderId;
   translationObserver?.disconnect();
@@ -1596,12 +1539,13 @@ function renderWords() {
   let blockIndex = 0;
   const sentencesPerPair = appearanceSettings.translationLayout === "english-below" ? 1 : 4;
 
-  words.forEach((word, index) => {
+  for (let index = Math.max(0, startIndex); index <= endIndex && index < words.length; index += 1) {
+    const word = words[index];
     const span = document.createElement("button");
     span.type = "button";
     span.className = "word";
     span.dataset.index = String(index);
-    span.tabIndex = index === 0 ? 0 : -1;
+    span.tabIndex = index === startIndex ? 0 : -1;
     span.textContent = word.text;
     paragraph.append(span);
     const separator = word.separator || " ";
@@ -1611,7 +1555,7 @@ function renderWords() {
     if (/[.!?…]["')\]»”]*\s*$/.test(`${word.text}${separator}`)) {
       sentenceCount += 1;
     }
-    if (sentenceCount >= sentencesPerPair && index < words.length - 1) {
+    if (sentenceCount >= sentencesPerPair && index < endIndex) {
       finishReadingPair(pair, paragraphText, bilingual, translationTargets, translationSources, fragment, blockIndex);
       blockIndex += 1;
       pair = createReadingPair();
@@ -1619,7 +1563,7 @@ function renderWords() {
       paragraphText = "";
       sentenceCount = 0;
     }
-  });
+  }
   if (paragraph.childNodes.length) {
     finishReadingPair(pair, paragraphText, bilingual, translationTargets, translationSources, fragment, blockIndex);
   }
@@ -1931,7 +1875,7 @@ function updateProgress() {
 
 function updateCurrentWord(time) {
   if (!words.length) return;
-  if (isReadMode || readerMode === "passages") return;
+  if (isReadMode) return;
   const index = findWordAt(time);
   const endedCount = countEndedWords(time);
   if (index === currentWordIndex && endedCount === readWordCount) return;

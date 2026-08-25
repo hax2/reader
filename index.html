@@ -12,9 +12,7 @@
       <section class="library-panel screen" aria-labelledby="library-title">
         <header class="topbar">
           <div class="topbar-main">
-            <p class="eyebrow">Lecturas</p>
-            <h1 id="library-title">Listen to Spanish. Read at your own pace.</h1>
-            <p class="library-intro">Choose a reading and press play. The text follows along, and every word is tappable when you need help.</p>
+            <h1 id="library-title" class="visually-hidden">Readings</h1>
           </div>
           <div class="topbar-actions">
             <button id="openOnboardingBtn" class="onboarding-launch-btn" type="button" aria-label="Open reading preferences">
@@ -229,16 +227,8 @@
         <section class="workspace">
           <section class="reader-shell" aria-label="Transcript reader">
             <div id="readingMeta" class="reading-meta" hidden></div>
-            <section id="passagePractice" class="passage-practice" aria-labelledby="passageHeading" hidden>
-              <header class="passage-header">
-                <div>
-                  <p class="eyebrow">Focused listening</p>
-                  <h2 id="passageHeading" tabindex="-1">Passage 1 of 1</h2>
-                </div>
-                <button id="revealPassage" class="passage-reveal" type="button" aria-pressed="false">Reveal Spanish</button>
-              </header>
-              <p id="passagePrompt" class="passage-prompt">Listen without reading. Replay as often as you need.</p>
-              <p id="passageText" class="passage-text" lang="es" hidden></p>
+            <section id="passagePractice" class="passage-practice" aria-label="Passage practice" hidden>
+              <p id="passageHeading" class="passage-heading" tabindex="-1">Passage 1 of 1</p>
               <div class="passage-actions" role="group" aria-label="Passage controls">
                 <button id="previousPassage" type="button">Previous</button>
                 <button id="replayPassage" class="passage-primary" type="button">Listen again</button>
