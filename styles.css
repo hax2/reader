@@ -1006,55 +1006,170 @@ h2 {
   display: none !important;
 }
 
-/* Mode toggle (Read / Listen) */
-.mode-toggle {
+/* Reader mode selector (Listen / Passages / Read) */
+.mode-selector {
   display: flex;
   align-items: center;
-  gap: 5px;
-  min-height: 32px;
-  padding: 0 10px 0 8px;
+  gap: 2px;
+  padding: 2px;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--wash);
+  flex-shrink: 0;
+}
+
+.mode-selector [role="radio"] {
+  min-height: 28px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
   color: var(--muted);
   font-size: 0.76rem;
   font-weight: 750;
   letter-spacing: 0.01em;
   cursor: pointer;
+  transition: color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.mode-selector [role="radio"]:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+.mode-selector [role="radio"][aria-checked="true"] {
+  color: var(--accent);
+  background: var(--panel);
+  box-shadow: 0 1px 4px rgba(29, 36, 32, 0.14);
+}
+
+.mode-selector [role="radio"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.mode-selector [role="radio"]:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Passage practice panel */
+.passage-practice {
+  max-width: var(--reader-max-width);
+  margin: 0 auto 18px;
+  padding: 20px 22px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  box-shadow: var(--reader-shadow);
+}
+
+.passage-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.passage-header h2 {
+  margin: 2px 0 0;
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.passage-header h2:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.passage-reveal {
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--wash);
+  color: var(--soft-ink);
+  font-size: 0.76rem;
+  font-weight: 750;
+  cursor: pointer;
   transition: all 180ms ease;
   flex-shrink: 0;
 }
 
-.mode-toggle:hover {
-  color: var(--ink);
-  border-color: var(--muted);
-  background: var(--panel);
-}
-
-.mode-toggle .mode-icon-listen {
-  display: none;
-}
-
-[data-mode="read"] .mode-toggle {
+.passage-reveal:hover {
   color: var(--accent);
   border-color: var(--accent);
   background: var(--selection-bg);
 }
 
-[data-mode="read"] .mode-toggle .mode-icon-read {
-  display: none;
+.passage-reveal[aria-pressed="true"] {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--selection-bg);
 }
 
-[data-mode="read"] .mode-toggle .mode-icon-listen {
-  display: block;
+.passage-prompt {
+  margin: 10px 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
 }
 
-[data-mode="read"] .mode-toggle .mode-label::after {
-  content: 'Listen';
+.passage-text {
+  margin: 14px 0 0;
+  font-family: var(--reader-font-family);
+  font-size: calc(var(--reader-font-size) * 0.82);
+  line-height: var(--reader-line-height);
+  color: var(--ink);
 }
 
-[data-mode="read"] .mode-toggle .mode-label {
-  font-size: 0;
+.passage-text .word {
+  text-align: left;
+}
+
+.passage-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.passage-actions button {
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--soft-ink);
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.passage-actions button:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: var(--muted);
+}
+
+.passage-actions button:focus-visible,
+.passage-reveal:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.passage-primary {
+  color: var(--button-ink) !important;
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+.passage-primary:hover {
+  background: var(--accent-dark) !important;
+  border-color: var(--accent-dark) !important;
+  color: var(--button-ink) !important;
 }
 
 /* Read mode states */
@@ -1064,7 +1179,7 @@ h2 {
 }
 
 [data-media="text"] .listen-panel,
-[data-media="text"] .mode-toggle {
+[data-media="text"] .mode-selector {
   display: none;
 }
 
@@ -1136,18 +1251,18 @@ h2 {
     display: none !important;
   }
 
-  .mode-toggle {
-    padding: 0 8px 0 6px;
-    min-height: 28px;
+  .mode-selector [role="radio"] {
+    padding: 0 9px;
+    min-height: 26px;
     font-size: 0.72rem;
   }
 
-  .mode-toggle .mode-label {
-    display: none;
+  .passage-practice {
+    padding: 16px 16px 14px;
   }
 
-  [data-mode="read"] .mode-toggle .mode-label {
-    display: none;
+  .passage-header {
+    flex-direction: column;
   }
 }
 

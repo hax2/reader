@@ -20,8 +20,8 @@ const SPEED_RATES = speedOptions.map((option) => Number(option.dataset.rate));
 const playIcon = document.querySelector("#playIcon");
 const skipBack = document.querySelector("#skipBack");
 const skipForward = document.querySelector("#skipForward");
-const readModeToggle = document.querySelector("#readModeToggle");
-const readModeLabel = readModeToggle?.querySelector(".mode-label");
+const readerModeSelector = document.querySelector("#readerModeSelector");
+const readerModeButtons = [...readerModeSelector.querySelectorAll("[data-reader-mode]")];
 
 const PLAY_ICON = `<svg class="play-glyph" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>`;
 const PAUSE_ICON = `<svg class="pause-glyph" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="5" y="4" width="4.5" height="16" rx="1"></rect><rect x="14.5" y="4" width="4.5" height="16" rx="1"></rect></svg>`;
@@ -29,6 +29,15 @@ const seek = document.querySelector("#seek");
 const currentTimeEl = document.querySelector("#currentTime");
 const durationEl = document.querySelector("#duration");
 const reader = document.querySelector("#reader");
+const passagePractice = document.querySelector("#passagePractice");
+const passageHeading = document.querySelector("#passageHeading");
+const passagePrompt = document.querySelector("#passagePrompt");
+const passageText = document.querySelector("#passageText");
+const passageStatus = document.querySelector("#passageStatus");
+const previousPassage = document.querySelector("#previousPassage");
+const replayPassage = document.querySelector("#replayPassage");
+const nextPassage = document.querySelector("#nextPassage");
+const revealPassage = document.querySelector("#revealPassage");
 const statusEl = document.querySelector("#status");
 const readingMeta = document.querySelector("#readingMeta");
 const pasteTranscript = document.querySelector("#pasteTranscript");
@@ -98,7 +107,14 @@ let studyLog = loadStudyLog();
 let appearanceSettings = loadAppearanceSettings();
 let sliderPreviewTimer = 0;
 let draggingAppearanceSlider = false;
+let readerMode = "listen";
 let isReadMode = false;
+let passages = [];
+let passageIndex = -1;
+let passageRevealed = false;
+let handlingPassageBoundary = false;
+let waitingAtBoundary = false;
+let pendingPassageIndex = -1;
 let catalogSettings = loadCatalogSettings();
 let translationObserver = null;
 let translationRenderId = 0;
@@ -109,6 +125,7 @@ let vocabWarmupItemCount = 0;
 applyAppearanceSettings();
 drawWaveform(0);
 updateStudyControls();
+syncModeSelector();
 initialize();
 
 librarySearch.value = catalogSettings.search;
@@ -197,6 +214,7 @@ audioFile.addEventListener("change", () => {
   activeTrackId = "";
   activeAudioSource = objectUrl;
   pendingResumeTime = 0;
+  pendingPassageIndex = -1;
   appTitle.textContent = file.name;
   readingMeta.hidden = true;
   updateMediaSession({ title: file.name, author: "", cover: "" });
@@ -402,6 +420,7 @@ if (systemThemeQuery?.addEventListener) {
 playPause.addEventListener("click", () => {
   if (!audio.src) return;
   if (audio.paused) {
+    if (readerMode === "passages") seekToPassageStart();
     audio.play().catch(() => status("Playback could not be started."));
   } else {
     audio.pause();
@@ -410,25 +429,86 @@ playPause.addEventListener("click", () => {
 
 skipBack.addEventListener("click", () => {
   if (!audio.src || !audio.duration) return;
+  if (readerMode === "passages") {
+    movePassage(-1, true);
+    return;
+  }
   audio.currentTime = Math.max(0, audio.currentTime - 10);
   updateProgress();
 });
 
 skipForward.addEventListener("click", () => {
   if (!audio.src || !audio.duration) return;
+  if (readerMode === "passages") {
+    movePassage(1, true);
+    return;
+  }
   audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
   updateProgress();
 });
 
-readModeToggle.addEventListener("click", () => {
-  if (app.dataset.media === "text") return;
-  setReadMode(!isReadMode);
+readerModeSelector.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-reader-mode]");
+  if (!button || app.dataset.media === "text") return;
+  setReaderMode(button.dataset.readerMode);
+});
+
+readerModeSelector.addEventListener("keydown", (event) => {
+  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+  event.preventDefault();
+  const current = Math.max(0, readerModeButtons.indexOf(document.activeElement));
+  const next = event.key === "Home"
+    ? 0
+    : event.key === "End"
+      ? readerModeButtons.length - 1
+      : (current + (event.key === "ArrowRight" ? 1 : -1) + readerModeButtons.length) % readerModeButtons.length;
+  readerModeButtons[next].focus();
+  setReaderMode(readerModeButtons[next].dataset.readerMode);
+});
+
+previousPassage.addEventListener("click", () => movePassage(-1, true));
+replayPassage.addEventListener("click", () => {
+  if (passageRevealed) setPassageRevealed(false);
+  playCurrentPassage();
+});
+nextPassage.addEventListener("click", () => movePassage(1, true));
+revealPassage.addEventListener("click", () => setPassageRevealed(!passageRevealed));
+
+passageText.addEventListener("click", (event) => {
+  const target = event.target.closest(".word");
+  if (!target) return;
+  event.stopPropagation();
+  showDefinition(words[Number(target.dataset.index)], target);
 });
 
 document.addEventListener("keydown", (event) => {
   const tag = event.target.tagName;
   if (tag === "BUTTON" || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || event.target.isContentEditable) return;
   if (app.dataset.view !== "reader") return;
+
+  if (readerMode === "passages") {
+    const key = event.key.toLowerCase();
+    if (key === "arrowleft" || key === "p") {
+      event.preventDefault();
+      movePassage(-1, true);
+      return;
+    }
+    if (key === "arrowright" || key === "n") {
+      event.preventDefault();
+      movePassage(1, true);
+      return;
+    }
+    if (key === "r") {
+      event.preventDefault();
+      playCurrentPassage();
+      return;
+    }
+    if (key === "t") {
+      event.preventDefault();
+      setPassageRevealed(!passageRevealed);
+      return;
+    }
+  }
 
   switch (event.key) {
     case "ArrowLeft":
@@ -447,6 +527,7 @@ document.addEventListener("keydown", (event) => {
       event.preventDefault();
       if (!audio.src) return;
       if (audio.paused) {
+        if (readerMode === "passages") seekToPassageStart();
         audio.play().catch(() => {});
       } else {
         audio.pause();
@@ -553,10 +634,18 @@ if (mediaSession) {
     pause: () => audio.pause(),
     stop: () => audio.pause(),
     seekbackward: guardedAction(() => {
+      if (readerMode === "passages") {
+        movePassage(-1);
+        return;
+      }
       audio.currentTime = Math.max(0, audio.currentTime - 10);
       updateProgress();
     }),
     seekforward: guardedAction(() => {
+      if (readerMode === "passages") {
+        movePassage(1);
+        return;
+      }
       audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
       updateProgress();
     }),
@@ -650,6 +739,8 @@ document.addEventListener("visibilitychange", () => {
 function setAudioSource(src, message) {
   audio.pause();
   words = [];
+  passages = [];
+  passageIndex = -1;
   cancelResumeRetry();
   vocabWarmupItemCount = 0;
   if (vocabWarmup) vocabWarmup.hidden = true;
@@ -723,6 +814,9 @@ async function loadTrack(track, updateHistory = true) {
   activeAudioSource = track.audio || "";
   const savedProgress = progressCache[activeTrackId];
   pendingResumeTime = savedProgress?.time || 0;
+  pendingPassageIndex = Number.isInteger(savedProgress?.passageIndex) && savedProgress.passageIndex >= 0
+    ? savedProgress.passageIndex
+    : -1;
   if (track.audio && savedProgress?.duration && savedProgress.time / savedProgress.duration >= 0.97) {
     pendingResumeTime = 0;
   }
@@ -815,6 +909,8 @@ function clearAudioSource() {
   audio.removeAttribute("src");
   audio.load();
   words = [];
+  passages = [];
+  passageIndex = -1;
   vocabWarmupItemCount = 0;
   if (vocabWarmup) vocabWarmup.hidden = true;
   setSavedTranslationBlocks([]);
@@ -856,13 +952,244 @@ function showReader() {
 }
 
 function setReadMode(enabled) {
-  isReadMode = enabled;
-  app.dataset.mode = enabled ? "read" : "listen";
-  readModeToggle.setAttribute("aria-pressed", String(enabled));
-  readModeToggle.setAttribute("aria-label", enabled ? "Switch to listening mode" : "Switch to reading mode");
-  readModeToggle.title = enabled ? "Listen with highlighting" : "Read without listening";
-  if (readModeLabel) readModeLabel.textContent = enabled ? "" : "Read";
-  if (enabled) audio.pause();
+  setReaderMode(enabled ? "read" : "listen");
+}
+
+const PASSAGE_PROMPT_DEFAULT = "Listen without reading. Replay as often as you need.";
+const PASSAGE_PROMPT_REVEALED = "Tap any word for its meaning.";
+const PASSAGE_MIN_SECONDS = 7;
+const PASSAGE_TARGET_SECONDS = 14;
+const PASSAGE_MAX_SECONDS = 21;
+const PASSAGE_MAX_WORDS = 50;
+
+function setReaderMode(mode) {
+  if (!["listen", "passages", "read"].includes(mode)) return;
+  if (mode === readerMode && mode !== "passages") return;
+  if (mode === "passages" && (!audio.src || !passages.length)) {
+    status("Passages need a synced transcript for this audio, so they are unavailable here.");
+    return;
+  }
+  readerMode = mode;
+  isReadMode = mode === "read";
+  app.dataset.mode = isReadMode ? "read" : "listen";
+  syncModeSelector();
+  if (mode === "passages") enterPassagesMode();
+  else exitPassagesMode();
+}
+
+function syncModeSelector() {
+  readerModeButtons.forEach((button) => {
+    const active = button.dataset.readerMode === readerMode;
+    button.setAttribute("aria-checked", String(active));
+    button.tabIndex = active ? 0 : -1;
+    button.disabled = button.dataset.readerMode === "passages" && !passages.length;
+    button.title = button.dataset.readerMode === "passages" && !passages.length
+      ? "Needs audio with synced word timings"
+      : "";
+  });
+}
+
+function enterPassagesMode() {
+  if (!passages.length) {
+    setReaderMode("listen");
+    return;
+  }
+  let index = pendingPassageIndex >= 0 && pendingPassageIndex < passages.length
+    ? pendingPassageIndex
+    : findPassageAt(audio.currentTime || pendingResumeTime || 0);
+  pendingPassageIndex = -1;
+  if (index < 0) index = 0;
+  passagePractice.hidden = false;
+  setPassageIndex(index);
+}
+
+function exitPassagesMode() {
+  passagePractice.hidden = true;
+  passageText.replaceChildren();
+  passageStatus.textContent = "";
+  handlingPassageBoundary = false;
+  waitingAtBoundary = false;
+  passageIndex = -1;
+  passageRevealed = false;
+}
+
+function buildPassages(list) {
+  if (!list.length || !hasValidTimings(list)) return [];
+  const spans = [];
+  const lastIndex = list.length - 1;
+  let start = 0;
+  while (start <= lastIndex) {
+    let end = start;
+    while (end < lastIndex && list[end].end - list[start].start < PASSAGE_MIN_SECONDS) end += 1;
+    if (end < lastIndex) {
+      let bestEnd = -1;
+      let bestScore = 0;
+      for (let probe = end; probe < lastIndex; probe += 1) {
+        const elapsed = list[probe].end - list[start].start;
+        const count = probe - start + 1;
+        if (elapsed > PASSAGE_TARGET_SECONDS || count > PASSAGE_MAX_WORDS) break;
+        const score = passageBoundaryScore(list, probe);
+        if (score > bestScore) {
+          bestScore = score;
+          bestEnd = probe;
+        }
+      }
+      if (bestEnd >= 0) {
+        end = bestEnd;
+      } else {
+        while (end < lastIndex) {
+          const elapsed = list[end].end - list[start].start;
+          const count = end - start + 1;
+          if (elapsed >= PASSAGE_MAX_SECONDS || count >= PASSAGE_MAX_WORDS) break;
+          end += 1;
+          if (elapsed >= PASSAGE_TARGET_SECONDS && passageBoundaryScore(list, end) > 0) break;
+        }
+      }
+    }
+    spans.push(createPassage(list, start, end));
+    start = end + 1;
+  }
+  return spans;
+}
+
+function passageBoundaryScore(list, index) {
+  const word = list[index];
+  const next = list[index + 1];
+  const tail = `${word.text}${word.separator || ""}`;
+  let score = 0;
+  if (/[.!?…]["')\]»”]*\s*$/.test(tail)) score += 4;
+  else if (/[,;:…]["')\]]*\s*$/.test(tail)) score += 1;
+  if (next && Number.isFinite(next.start) && Number.isFinite(word.end) && next.start - word.end >= 0.55) score += 2;
+  return score;
+}
+
+function createPassage(list, startWordIndex, endWordIndex) {
+  return {
+    startWordIndex,
+    endWordIndex,
+    startTime: Math.max(0, list[startWordIndex].start - 0.15),
+    endTime: list[endWordIndex].end + 0.25
+  };
+}
+
+function findPassageAt(time) {
+  if (!passages.length || !Number.isFinite(time)) return -1;
+  let low = 0;
+  let high = passages.length - 1;
+  let found = -1;
+  while (low <= high) {
+    const mid = (low + high) >> 1;
+    if (passages[mid].startTime <= time) {
+      found = mid;
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  return found;
+}
+
+function setPassageIndex(index) {
+  passageIndex = Math.max(0, Math.min(passages.length - 1, index));
+  waitingAtBoundary = false;
+  setPassageRevealed(false);
+  renderPassage();
+  passageHeading.textContent = `Passage ${passageIndex + 1} of ${passages.length}`;
+  passageStatus.textContent = `Passage ${passageIndex + 1} of ${passages.length}.`;
+}
+
+function renderPassage() {
+  const passage = passages[passageIndex];
+  if (!passage) return;
+  passageText.replaceChildren();
+  for (let i = passage.startWordIndex; i <= passage.endWordIndex; i += 1) {
+    const word = words[i];
+    if (!word) continue;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "word";
+    button.dataset.index = String(i);
+    button.tabIndex = -1;
+    button.textContent = word.text;
+    passageText.append(button, document.createTextNode(word.separator || " "));
+  }
+}
+
+function movePassage(delta, play = true) {
+  if (!passages.length) return;
+  const next = passageIndex + delta;
+  if (next < 0) {
+    passageStatus.textContent = "You're on the first passage.";
+    return;
+  }
+  if (next >= passages.length) {
+    passageStatus.textContent = "That was the last passage.";
+    return;
+  }
+  if (play && audio.src) {
+    audio.currentTime = Math.max(0, Math.min(passages[next].startTime, (audio.duration || Infinity) - 0.01));
+  }
+  setPassageIndex(next);
+  if (play && audio.src) audio.play().catch(() => status("Playback could not be started."));
+}
+
+function playCurrentPassage() {
+  const passage = passages[passageIndex];
+  if (!passage || !audio.src) return;
+  waitingAtBoundary = false;
+  audio.currentTime = Math.max(0, Math.min(passage.startTime, (audio.duration || Infinity) - 0.01));
+  audio.play().catch(() => status("Playback could not be started."));
+}
+
+function seekToPassageStart() {
+  const passage = passages[passageIndex];
+  if (!passage || !audio.duration || !Number.isFinite(audio.duration)) return;
+  const end = Math.min(passage.endTime, audio.duration);
+  if (waitingAtBoundary || audio.currentTime < passage.startTime - 0.05 || audio.currentTime >= end) {
+    audio.currentTime = Math.max(0, Math.min(passage.startTime, audio.duration - 0.01));
+  }
+}
+
+function setPassageRevealed(revealed) {
+  passageRevealed = Boolean(revealed);
+  passageText.hidden = !passageRevealed;
+  revealPassage.setAttribute("aria-pressed", String(passageRevealed));
+  revealPassage.textContent = passageRevealed ? "Hide Spanish" : "Reveal Spanish";
+  passagePrompt.textContent = passageRevealed ? PASSAGE_PROMPT_REVEALED : PASSAGE_PROMPT_DEFAULT;
+  if (!passageRevealed) highlightPassageWord(-1);
+}
+
+function handlePassagePlayback(time) {
+  const passage = passages[passageIndex];
+  if (!passage) return;
+  if (!audio.paused && !audio.seeking && !handlingPassageBoundary) {
+    const end = audio.duration ? Math.min(passage.endTime, audio.duration) : passage.endTime;
+    if (time >= end) {
+      handlingPassageBoundary = true;
+      try {
+        audio.pause();
+        waitingAtBoundary = true;
+        passageStatus.textContent = `Passage ${passageIndex + 1} complete.`;
+      } finally {
+        handlingPassageBoundary = false;
+      }
+      return;
+    }
+  }
+  const insideCurrent = time >= passage.startTime - 0.001 && time <= passage.endTime;
+  if (!insideCurrent) {
+    const activeIndex = findPassageAt(time);
+    if (activeIndex >= 0 && activeIndex !== passageIndex) setPassageIndex(activeIndex);
+  }
+  highlightPassageWord(time);
+}
+
+function highlightPassageWord(time) {
+  if (!passageRevealed) return;
+  passageText.querySelectorAll(".word.current").forEach((el) => el.classList.remove("current"));
+  if (time < 0) return;
+  const index = findWordAt(time);
+  if (index >= 0) passageText.querySelector(`[data-index="${index}"]`)?.classList.add("current");
 }
 
 function renderReadingMeta(track) {
@@ -1125,6 +1452,9 @@ function setWords(nextWords, precise) {
     });
     assignApproximateTimes(words);
   }
+  passages = buildPassages(words);
+  passageIndex = -1;
+  syncModeSelector();
   currentWordIndex = -1;
   readWordCount = -1;
   renderWords();
@@ -1595,12 +1925,13 @@ function updateProgress() {
   seek.setAttribute("aria-valuetext", `${formatTime(current)} of ${formatTime(duration)}`);
   drawWaveform(duration ? current / duration : 0);
   updateCurrentWord(current);
+  if (readerMode === "passages") handlePassagePlayback(current);
   saveActiveProgress(false);
 }
 
 function updateCurrentWord(time) {
   if (!words.length) return;
-  if (isReadMode) return;
+  if (isReadMode || readerMode === "passages") return;
   const index = findWordAt(time);
   const endedCount = countEndedWords(time);
   if (index === currentWordIndex && endedCount === readWordCount) return;
@@ -1726,7 +2057,7 @@ function renderDefinition(word, translation, anchor = selectedWordButton, allowH
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
       audio.currentTime = wordData.start;
-      if (isReadMode) setReadMode(false);
+      if (readerMode !== "listen") setReadMode(false);
       audio.play().catch(() => {});
       hideWordPopover();
     });
@@ -2113,7 +2444,8 @@ function saveActiveProgress(force) {
   progressCache[activeTrackId] = {
     time: Math.max(0, Math.min(time, audio.duration)),
     duration: audio.duration,
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
+    ...(readerMode === "passages" && passageIndex >= 0 ? { passageIndex } : {})
   };
   saveProgressCache(progressCache);
   if (app.dataset.view === "library") renderTrackList();
@@ -3228,7 +3560,7 @@ if (toggleVocabWarmupCollapse) {
 if (startReadingFromVocabBtn) {
   startReadingFromVocabBtn.addEventListener("click", () => {
     if (audio.src) {
-      if (isReadMode) {
+      if (readerMode !== "listen") {
         setReadMode(false);
       }
       audio.play().catch(() => {
