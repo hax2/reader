@@ -701,11 +701,6 @@ async function initialize() {
   const routeTrack = tracks.find((track) => track.id === routeId);
   if (routeTrack) {
     await loadTrack(routeTrack, false);
-  } else {
-    const hasSeenOnboarding = localStorage.getItem("spanish-reader-onboarding-v1");
-    if (!hasSeenOnboarding) {
-      openOnboarding(1);
-    }
   }
 }
 
@@ -2761,7 +2756,7 @@ if (closeOnboardingBtn) {
 }
 
 if (onboardingSkipBtn) {
-  onboardingSkipBtn.addEventListener("click", () => closeOnboarding(true));
+  onboardingSkipBtn.addEventListener("click", () => closeOnboarding(false));
 }
 
 if (onboardingPrevBtn) {
