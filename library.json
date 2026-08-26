@@ -764,5 +764,145 @@
     "transcript": "greek_homero_odisea_canto_xii.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
     "mediaVersion": "f3fda65e8785173e"
+  },
+  {
+    "id": "quijote-p1-s01",
+    "title": "Don Quijote I.01: Un hidalgo de La Mancha",
+    "author": "Miguel de Cervantes Saavedra",
+    "year": 1605,
+    "part": 1,
+    "chapters": [
+      1,
+      2
+    ],
+    "difficulty": "C1",
+    "difficultyNote": "Golden-Age prose with archaic forms, inverted syntax, and period vocabulary.",
+    "genre": "Novel",
+    "tags": [
+      "La Mancha",
+      "Rocinante",
+      "Dulcinea",
+      "locura"
+    ],
+    "collection": "don-quijote",
+    "source": "https://www.gutenberg.org/ebooks/2000",
+    "rights": "Public-domain work (1605/1615); Project Gutenberg transcription; project-produced local narration",
+    "description": "A reading-obsessed hidalgo renames himself a knight and rides out at dawn on his first adventure.",
+    "cover": "covers/quijote_p1_s01.webp",
+    "text": "texts/quijote_p1_s01.txt",
+    "wordCount": 4118,
+    "minutes": 23
+  },
+  {
+    "id": "quijote-p1-s02",
+    "title": "Don Quijote I.02: La orden de caballería",
+    "author": "Miguel de Cervantes Saavedra",
+    "year": 1605,
+    "part": 1,
+    "chapters": [
+      3,
+      4
+    ],
+    "difficulty": "C1",
+    "difficultyNote": "Golden-Age prose with archaic forms, inverted syntax, and period vocabulary.",
+    "genre": "Novel",
+    "tags": [
+      "venta",
+      "caballería",
+      "Andrés",
+      "aventura"
+    ],
+    "collection": "don-quijote",
+    "source": "https://www.gutenberg.org/ebooks/2000",
+    "rights": "Public-domain work (1605/1615); Project Gutenberg transcription; project-produced local narration",
+    "description": "An innkeeper's joke knights don Quijote, who then defends a beaten boy and charges a caravan of merchants.",
+    "cover": "covers/quijote_p1_s02.webp",
+    "text": "texts/quijote_p1_s02.txt",
+    "wordCount": 4785,
+    "minutes": 27
+  },
+  {
+    "id": "quijote-p1-s03",
+    "title": "Don Quijote I.03: El escrutinio de la biblioteca",
+    "author": "Miguel de Cervantes Saavedra",
+    "year": 1605,
+    "part": 1,
+    "chapters": [
+      5,
+      6
+    ],
+    "difficulty": "C1",
+    "difficultyNote": "Golden-Age prose with archaic forms, inverted syntax, and period vocabulary.",
+    "genre": "Novel",
+    "tags": [
+      "biblioteca",
+      "cura",
+      "barbero",
+      "libros"
+    ],
+    "collection": "don-quijote",
+    "source": "https://www.gutenberg.org/ebooks/2000",
+    "rights": "Public-domain work (1605/1615); Project Gutenberg transcription; project-produced local narration",
+    "description": "Beaten on the road, the knight is carried home while the cura and the barbero purge his library of books of chivalry.",
+    "cover": "covers/quijote_p1_s03.webp",
+    "text": "texts/quijote_p1_s03.txt",
+    "wordCount": 4143,
+    "minutes": 23
+  },
+  {
+    "id": "quijote-p1-s04",
+    "title": "Don Quijote I.04: Los molinos de viento",
+    "author": "Miguel de Cervantes Saavedra",
+    "year": 1605,
+    "part": 1,
+    "chapters": [
+      7,
+      8
+    ],
+    "difficulty": "C1",
+    "difficultyNote": "Golden-Age prose with archaic forms, inverted syntax, and period vocabulary.",
+    "genre": "Novel",
+    "tags": [
+      "Sancho Panza",
+      "molinos",
+      "gigantes",
+      "aventura"
+    ],
+    "collection": "don-quijote",
+    "source": "https://www.gutenberg.org/ebooks/2000",
+    "rights": "Public-domain work (1605/1615); Project Gutenberg transcription; project-produced local narration",
+    "description": "With Sancho Panza on his donkey, don Quijote charges the famous windmills he refuses to see as anything but giants.",
+    "cover": "covers/quijote_p1_s04.webp",
+    "text": "texts/quijote_p1_s04.txt",
+    "wordCount": 4874,
+    "minutes": 27
+  },
+  {
+    "id": "quijote-p1-s05",
+    "title": "Don Quijote I.05: La batalla con el vizcaíno",
+    "author": "Miguel de Cervantes Saavedra",
+    "year": 1605,
+    "part": 1,
+    "chapters": [
+      9,
+      10
+    ],
+    "difficulty": "C1",
+    "difficultyNote": "Golden-Age prose with archaic forms, inverted syntax, and period vocabulary.",
+    "genre": "Novel",
+    "tags": [
+      "vizcaíno",
+      "batalla",
+      "Cide Hamete",
+      "historia"
+    ],
+    "collection": "don-quijote",
+    "source": "https://www.gutenberg.org/ebooks/2000",
+    "rights": "Public-domain work (1605/1615); Project Gutenberg transcription; project-produced local narration",
+    "description": "The story resumes from a found manuscript as swords are drawn against the Biscayan, ending in an uneasy truce.",
+    "cover": "covers/quijote_p1_s05.webp",
+    "text": "texts/quijote_p1_s05.txt",
+    "wordCount": 3908,
+    "minutes": 22
   }
 ]

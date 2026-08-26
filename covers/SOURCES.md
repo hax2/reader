@@ -41,3 +41,18 @@ garden, the fire and exit of Plato's cave, Socrates speaking with Crito in priso
 Odysseus escaping beneath the Cyclops' rams, and the ship passing the Sirens,
 Scylla, and Charybdis. They contain no typography and are stored as centered
 848 × 1264 WebP derivatives.
+
+The Don Quijote covers are public-domain engravings by Gustave Doré from the
+1863 edition of the novel, downloaded from Wikimedia Commons and stored as
+centered 848 × 1264 WebP derivatives:
+
+- `quijote_p1_s01.webp` — the hidalgo's book-filled imagination
+  (https://commons.wikimedia.org/wiki/File:Don_Quixote_1.jpg)
+- `quijote_p1_s02.webp` — don Quijote defends the beaten Andrés
+  (https://commons.wikimedia.org/wiki/File:Don_Quixote_3.jpg)
+- `quijote_p1_s03.webp` — the knight prostrate after the merchants' mules
+  (https://commons.wikimedia.org/wiki/File:Don_Quixote_4.jpg)
+- `quijote_p1_s04.webp` — the windmill charge
+  (https://commons.wikimedia.org/wiki/File:Adventure_with_the_Windmills.jpg)
+- `quijote_p1_s05.webp` — the aftermath of the fight with the Biscayan
+  (https://commons.wikimedia.org/wiki/File:Don_Quixote_10.jpg)

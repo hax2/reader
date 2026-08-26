@@ -75,7 +75,7 @@ const systemThemeQuery = window.matchMedia?.("(prefers-color-scheme: dark)") || 
 const themeOptions = ["system", "paper", "mist", "night"];
 const appearanceSettingsVersion = 4;
 const difficultyOrder = ["A2", "B1", "B2", "C1"];
-const collectionOptions = ["all", "stories", "bible", "greek-classics"];
+const collectionOptions = ["all", "stories", "bible", "greek-classics", "don-quijote"];
 const difficultyLabels = {
   A2: "Early reader",
   B1: "Intermediate",
@@ -1247,7 +1247,9 @@ function renderTrackList() {
           ? "biblia bible escritura scripture"
           : track.collection === "greek-classics"
             ? "clasicos clásicos griegos grecia greek classics philosophy filosofía mythology mitologia mitología"
-            : "cuentos stories relatos",
+            : track.collection === "don-quijote"
+              ? "quijote quixote cervantes mancha sancho panza novela novel"
+              : "cuentos stories relatos",
         ...(Array.isArray(track.tags) ? track.tags : [])
       ].filter(Boolean).join(" ")).includes(query);
     })
