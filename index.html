@@ -227,8 +227,15 @@
         <section class="workspace">
           <section class="reader-shell" aria-label="Transcript reader">
             <div id="readingMeta" class="reading-meta" hidden></div>
-            <section id="passagePractice" class="passage-practice" aria-label="Passage practice" hidden>
-              <p id="passageHeading" class="passage-heading" tabindex="-1">Passage 1 of 1</p>
+            <section id="passagePractice" class="passage-practice" aria-labelledby="passageHeading" hidden>
+              <header class="passage-header">
+                <div>
+                  <p class="eyebrow">Focused listening</p>
+                  <h2 id="passageHeading" tabindex="-1">Passage 1 of 1</h2>
+                </div>
+                <button id="revealPassage" class="passage-reveal" type="button" aria-pressed="false">Reveal Spanish</button>
+              </header>
+              <p id="passagePrompt" class="passage-prompt">Listen without reading. Replay as often as you need.</p>
               <div class="passage-actions" role="group" aria-label="Passage controls">
                 <button id="previousPassage" type="button">Previous</button>
                 <button id="replayPassage" class="passage-primary" type="button">Listen again</button>

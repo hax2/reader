@@ -1044,49 +1044,80 @@ h2 {
   cursor: not-allowed;
 }
 
-/* Passage practice controls */
+/* Passage practice panel */
 .passage-practice {
   max-width: var(--reader-max-width);
-  margin: 0 auto 14px;
-  padding: 10px 14px;
+  margin: 0 auto 18px;
+  padding: 20px 22px 18px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 16px;
   background: var(--panel);
+  box-shadow: var(--reader-shadow);
+}
+
+.passage-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
 }
 
-.passage-heading {
-  margin: 0;
-  font-size: 0.82rem;
-  font-weight: 750;
-  color: var(--muted);
-  white-space: nowrap;
+.passage-header h2 {
+  margin: 2px 0 0;
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--ink);
 }
 
-.passage-heading:focus-visible {
+.passage-header h2:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
+.passage-reveal {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--wash);
+  color: var(--soft-ink);
+  font-size: 0.78rem;
+  font-weight: 750;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.passage-reveal:hover,
+.passage-reveal[aria-pressed="true"] {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--selection-bg);
+}
+
+.passage-prompt {
+  margin: 10px 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
 .passage-actions {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   flex-wrap: wrap;
+  margin-top: 16px;
 }
 
 .passage-actions button {
-  min-height: 34px;
-  padding: 0 14px;
+  min-height: 38px;
+  padding: 0 16px;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--panel);
   color: var(--soft-ink);
-  font-size: 0.8rem;
+  font-size: 0.84rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 180ms ease;
@@ -1097,9 +1128,15 @@ h2 {
   border-color: var(--muted);
 }
 
-.passage-actions button:focus-visible {
+.passage-actions button:focus-visible,
+.passage-reveal:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+.passage-actions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .passage-primary {
@@ -1112,6 +1149,10 @@ h2 {
   background: var(--accent-dark) !important;
   border-color: var(--accent-dark) !important;
   color: var(--button-ink) !important;
+}
+
+[data-reader-mode="passages"] .vocab-warmup {
+  display: none;
 }
 
 /* Read mode states */
@@ -1200,13 +1241,11 @@ h2 {
   }
 
   .passage-practice {
-    border-radius: 22px;
-    flex-direction: column;
-    align-items: stretch;
+    padding: 16px 16px 14px;
   }
 
-  .passage-actions {
-    justify-content: center;
+  .passage-header {
+    flex-direction: column;
   }
 }
 

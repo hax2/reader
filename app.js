@@ -31,10 +31,12 @@ const durationEl = document.querySelector("#duration");
 const reader = document.querySelector("#reader");
 const passagePractice = document.querySelector("#passagePractice");
 const passageHeading = document.querySelector("#passageHeading");
+const passagePrompt = document.querySelector("#passagePrompt");
 const passageStatus = document.querySelector("#passageStatus");
 const previousPassage = document.querySelector("#previousPassage");
 const replayPassage = document.querySelector("#replayPassage");
 const nextPassage = document.querySelector("#nextPassage");
+const revealPassage = document.querySelector("#revealPassage");
 const statusEl = document.querySelector("#status");
 const readingMeta = document.querySelector("#readingMeta");
 const pasteTranscript = document.querySelector("#pasteTranscript");
@@ -108,9 +110,12 @@ let readerMode = "listen";
 let isReadMode = false;
 let passages = [];
 let passageIndex = -1;
+let passageRevealed = false;
 let handlingPassageBoundary = false;
 let waitingAtBoundary = false;
 let pendingPassageIndex = -1;
+let renderedWordStartIndex = 0;
+let renderedWordEndIndex = -1;
 let catalogSettings = loadCatalogSettings();
 let translationObserver = null;
 let translationRenderId = 0;
@@ -314,7 +319,7 @@ translationLayoutSelect.addEventListener("change", () => {
   appearanceSettings.translationLayout = translationLayoutSelect.value;
   saveAppearanceSettings(appearanceSettings);
   applyAppearanceSettings();
-  renderWords();
+  renderReaderForCurrentMode();
   updateProgress();
 });
 
@@ -463,8 +468,12 @@ readerModeSelector.addEventListener("keydown", (event) => {
 });
 
 previousPassage.addEventListener("click", () => movePassage(-1, true));
-replayPassage.addEventListener("click", () => playCurrentPassage());
+replayPassage.addEventListener("click", () => {
+  setPassageRevealed(false);
+  playCurrentPassage();
+});
 nextPassage.addEventListener("click", () => movePassage(1, true));
+revealPassage.addEventListener("click", () => setPassageRevealed(!passageRevealed));
 
 document.addEventListener("keydown", (event) => {
   const tag = event.target.tagName;
@@ -485,7 +494,13 @@ document.addEventListener("keydown", (event) => {
     }
     if (key === "r") {
       event.preventDefault();
+      setPassageRevealed(false);
       playCurrentPassage();
+      return;
+    }
+    if (key === "t") {
+      event.preventDefault();
+      setPassageRevealed(!passageRevealed);
       return;
     }
   }
@@ -578,7 +593,11 @@ audio.addEventListener("loadedmetadata", () => {
   skipBack.disabled = false;
   skipForward.disabled = false;
   durationEl.textContent = formatTime(audio.duration);
-  if (words.length && !hasValidTimings(words)) assignApproximateTimes(words);
+  if (words.length && !hasValidTimings(words)) {
+    assignApproximateTimes(words);
+    passages = buildPassages(words);
+    syncModeSelector();
+  }
   applyResumePosition();
   drawWaveform(0);
   updateProgress();
@@ -610,7 +629,10 @@ if (mediaSession) {
     handler();
   };
   const actionHandlers = {
-    play: () => audio.play().catch(() => {}),
+    play: () => {
+      if (readerMode === "passages") seekToPassageStart();
+      audio.play().catch(() => {});
+    },
     pause: () => audio.pause(),
     stop: () => audio.pause(),
     seekbackward: guardedAction(() => {
@@ -950,12 +972,14 @@ function setReaderMode(mode) {
   readerMode = mode;
   isReadMode = mode === "read";
   app.dataset.mode = isReadMode ? "read" : "listen";
+  app.dataset.readerMode = mode;
   syncModeSelector();
   if (mode === "passages") enterPassagesMode();
   else exitPassagesMode();
 }
 
 function syncModeSelector() {
+  app.dataset.readerMode = readerMode;
   readerModeButtons.forEach((button) => {
     const active = button.dataset.readerMode === readerMode;
     button.setAttribute("aria-checked", String(active));
@@ -977,8 +1001,14 @@ function enterPassagesMode() {
     : findPassageAt(audio.currentTime || pendingResumeTime || 0);
   pendingPassageIndex = -1;
   if (index < 0) index = 0;
+  audio.pause();
+  hideWordPopover();
+  definition.innerHTML = `<p class="muted">Reveal the passage, then tap a word for its meaning.</p>`;
   passagePractice.hidden = false;
   setPassageIndex(index);
+  const passage = passages[passageIndex];
+  if (passage && audio.duration) audio.currentTime = Math.min(passage.startTime, audio.duration - 0.01);
+  updateProgress();
 }
 
 function exitPassagesMode() {
@@ -987,6 +1017,8 @@ function exitPassagesMode() {
   handlingPassageBoundary = false;
   waitingAtBoundary = false;
   passageIndex = -1;
+  passageRevealed = false;
+  reader.hidden = false;
   if (words.length) renderWords();
 }
 
@@ -1041,11 +1073,17 @@ function passageBoundaryScore(list, index) {
 }
 
 function createPassage(list, startWordIndex, endWordIndex) {
+  const wordEnd = list[endWordIndex].end;
+  const nextWordStart = list[endWordIndex + 1]?.start;
+  const paddedEnd = Number.isFinite(nextWordStart)
+    ? Math.min(wordEnd + 0.25, nextWordStart)
+    : wordEnd + 0.25;
+  const guard = Math.min(0.04, Math.max(0, paddedEnd - wordEnd));
   return {
     startWordIndex,
     endWordIndex,
     startTime: Math.max(0, list[startWordIndex].start - 0.15),
-    endTime: list[endWordIndex].end + 0.25
+    endTime: paddedEnd - guard
   };
 }
 
@@ -1071,9 +1109,30 @@ function setPassageIndex(index) {
   waitingAtBoundary = false;
   const passage = passages[passageIndex];
   if (passage) renderWords(passage.startWordIndex, passage.endWordIndex);
+  setPassageRevealed(false);
   const label = `Passage ${passageIndex + 1} of ${passages.length}`;
   passageHeading.textContent = label;
   passageStatus.textContent = `${label}.`;
+  previousPassage.disabled = passageIndex === 0;
+  nextPassage.disabled = passageIndex === passages.length - 1;
+}
+
+function renderReaderForCurrentMode() {
+  const passage = readerMode === "passages" ? passages[passageIndex] : null;
+  if (passage) renderWords(passage.startWordIndex, passage.endWordIndex);
+  else renderWords();
+  reader.hidden = readerMode === "passages" && !passageRevealed;
+}
+
+function setPassageRevealed(revealed) {
+  passageRevealed = Boolean(revealed);
+  reader.hidden = readerMode === "passages" && !passageRevealed;
+  revealPassage.setAttribute("aria-pressed", String(passageRevealed));
+  revealPassage.textContent = passageRevealed ? "Hide Spanish" : "Reveal Spanish";
+  passagePrompt.textContent = passageRevealed
+    ? "Tap any word for its meaning. Hide the text before your next attempt."
+    : "Listen without reading. Replay as often as you need.";
+  if (passageRevealed) updateCurrentWord(audio.currentTime || 0);
 }
 
 function movePassage(delta, play = true) {
@@ -1527,7 +1586,9 @@ function renderWords(startIndex = 0, endIndex = words.length - 1) {
   reader.replaceChildren();
   hideWordPopover();
   const fragment = document.createDocumentFragment();
-  const bilingual = appearanceSettings.translationLayout !== "spanish-only";
+  renderedWordStartIndex = Math.max(0, startIndex);
+  renderedWordEndIndex = Math.min(endIndex, words.length - 1);
+  const bilingual = readerMode !== "passages" && appearanceSettings.translationLayout !== "spanish-only";
   const translationTargets = [];
   const translationSources = [];
   currentWordIndex = -1;
@@ -1539,13 +1600,13 @@ function renderWords(startIndex = 0, endIndex = words.length - 1) {
   let blockIndex = 0;
   const sentencesPerPair = appearanceSettings.translationLayout === "english-below" ? 1 : 4;
 
-  for (let index = Math.max(0, startIndex); index <= endIndex && index < words.length; index += 1) {
+  for (let index = renderedWordStartIndex; index <= renderedWordEndIndex; index += 1) {
     const word = words[index];
     const span = document.createElement("button");
     span.type = "button";
     span.className = "word";
     span.dataset.index = String(index);
-    span.tabIndex = index === startIndex ? 0 : -1;
+    span.tabIndex = index === renderedWordStartIndex ? 0 : -1;
     span.textContent = word.text;
     paragraph.append(span);
     const separator = word.separator || " ";
@@ -1876,12 +1937,19 @@ function updateProgress() {
 function updateCurrentWord(time) {
   if (!words.length) return;
   if (isReadMode) return;
+  if (readerMode === "passages" && !passageRevealed) return;
   const index = findWordAt(time);
-  const endedCount = countEndedWords(time);
+  const endedCount = Math.max(
+    renderedWordStartIndex,
+    Math.min(countEndedWords(time), renderedWordEndIndex + 1)
+  );
   if (index === currentWordIndex && endedCount === readWordCount) return;
   if (currentWordIndex >= 0) reader.querySelector(`[data-index="${currentWordIndex}"]`)?.classList.remove("current");
-  const firstChanged = Math.max(0, Math.min(readWordCount < 0 ? 0 : readWordCount, endedCount));
-  const lastChanged = Math.max(readWordCount, endedCount);
+  const previousEndedCount = readWordCount < renderedWordStartIndex
+    ? renderedWordStartIndex
+    : Math.min(readWordCount, renderedWordEndIndex + 1);
+  const firstChanged = Math.min(previousEndedCount, endedCount);
+  const lastChanged = Math.max(previousEndedCount, endedCount);
   for (let wordIndex = firstChanged; wordIndex < lastChanged; wordIndex += 1) {
     reader.querySelector(`[data-index="${wordIndex}"]`)?.classList.toggle("read", wordIndex < endedCount);
   }
