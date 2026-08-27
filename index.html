@@ -104,7 +104,7 @@
                 <span>Text mode</span>
                 <select id="textModeSelect">
                   <option value="dim-passed">Dim passed</option>
-                  <option value="dim-upcoming">Dim upcoming</option>
+                  <option value="dim-upcoming" selected>Dim upcoming</option>
                 </select>
               </label>
               <label>
@@ -112,7 +112,7 @@
                 <select id="translationLayoutSelect">
                   <option value="spanish-only">Spanish only</option>
                   <option value="side-by-side">Side by side</option>
-                  <option value="english-below">English underneath</option>
+                  <option value="english-below" selected>English underneath</option>
                 </select>
               </label>
               <label>
@@ -122,7 +122,7 @@
                   <option value="sky">Sky wash</option>
                   <option value="rose">Rose wash</option>
                   <option value="underline">Underline</option>
-                  <option value="none">None</option>
+                  <option value="none" selected>None</option>
                 </select>
               </label>
               <label>
@@ -456,7 +456,7 @@
               <div class="control-group">
                 <label class="group-label">Word Highlight Style</label>
                 <div class="highlight-pills" role="radiogroup" aria-label="Highlight style">
-                  <button type="button" class="highlight-chip is-selected" data-setting="highlight" data-value="sage" role="radio" aria-checked="true">
+                  <button type="button" class="highlight-chip" data-setting="highlight" data-value="sage" role="radio" aria-checked="false">
                     <span class="chip-dot dot-sage"></span> Sage wash
                   </button>
                   <button type="button" class="highlight-chip" data-setting="highlight" data-value="sky" role="radio" aria-checked="false">
@@ -468,7 +468,7 @@
                   <button type="button" class="highlight-chip" data-setting="highlight" data-value="underline" role="radio" aria-checked="false">
                     <span class="chip-dot dot-underline"></span> Underline
                   </button>
-                  <button type="button" class="highlight-chip" data-setting="highlight" data-value="none" role="radio" aria-checked="false">
+                  <button type="button" class="highlight-chip is-selected" data-setting="highlight" data-value="none" role="radio" aria-checked="true">
                     <span class="chip-dot dot-none"></span> None
                   </button>
                 </div>
@@ -477,7 +477,7 @@
               <div class="control-group">
                 <label class="group-label">Keep your place while listening</label>
                 <div class="option-grid focus-options" role="radiogroup" aria-label="Focus mode">
-                  <button type="button" class="option-card is-selected" data-setting="textMode" data-value="dim-passed" role="radio" aria-checked="true">
+                  <button type="button" class="option-card" data-setting="textMode" data-value="dim-passed" role="radio" aria-checked="false">
                     <div class="option-info">
                       <strong class="option-title">Fade words already heard</strong>
                       <span class="focus-demo-labels" aria-hidden="true"><span>Heard</span><span>Now</span><span>Next</span></span>
@@ -485,7 +485,7 @@
                     </div>
                     <span class="choice-indicator" aria-hidden="true">✓</span>
                   </button>
-                  <button type="button" class="option-card" data-setting="textMode" data-value="dim-upcoming" role="radio" aria-checked="false">
+                  <button type="button" class="option-card is-selected" data-setting="textMode" data-value="dim-upcoming" role="radio" aria-checked="true">
                     <div class="option-info">
                       <strong class="option-title">Fade words coming next</strong>
                       <span class="focus-demo-labels" aria-hidden="true"><span>Heard</span><span>Now</span><span>Next</span></span>
@@ -499,7 +499,7 @@
               <div class="control-group">
                 <label class="group-label">Translation Display</label>
                 <div class="option-grid translation-options" role="radiogroup" aria-label="Translation layout">
-                  <button type="button" class="option-card is-selected" data-setting="translationLayout" data-value="spanish-only" role="radio" aria-checked="true">
+                  <button type="button" class="option-card" data-setting="translationLayout" data-value="spanish-only" role="radio" aria-checked="false">
                     <div class="option-info">
                       <strong class="option-title">Spanish only (Immersion)</strong>
                       <span class="option-desc">Pure Spanish text; tap any word for instant English definitions and vocabulary review.</span>
@@ -511,7 +511,7 @@
                       <span class="option-desc">Dual columns with aligned English translations running parallel to the Spanish text.</span>
                     </div>
                   </button>
-                  <button type="button" class="option-card" data-setting="translationLayout" data-value="english-below" role="radio" aria-checked="false">
+                  <button type="button" class="option-card is-selected" data-setting="translationLayout" data-value="english-below" role="radio" aria-checked="true">
                     <div class="option-info">
                       <strong class="option-title">English underneath</strong>
                       <span class="option-desc">Interlinear translation directly beneath each Spanish sentence block.</span>
