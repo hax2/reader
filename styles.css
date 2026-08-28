@@ -3707,7 +3707,7 @@ textarea {
 
 .vocab-collapse-btn:focus-visible,
 .vocab-save-btn:focus-visible,
-.vocab-continue-btn:focus-visible {
+.vocab-start-reading-btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
@@ -3890,7 +3890,7 @@ textarea {
   line-height: 1.4;
 }
 
-.vocab-continue-btn {
+.vocab-start-reading-btn {
   display: inline-flex;
   align-items: center;
   min-height: 38px;
@@ -3904,7 +3904,7 @@ textarea {
   font-weight: 750;
 }
 
-.vocab-continue-btn:hover {
+.vocab-start-reading-btn:hover {
   color: var(--button-ink);
   background: var(--accent-dark);
 }
@@ -3970,7 +3970,7 @@ textarea {
     flex-direction: column;
   }
 
-  .vocab-continue-btn {
+  .vocab-start-reading-btn {
     width: 100%;
     justify-content: center;
   }

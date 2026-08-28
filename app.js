@@ -69,7 +69,7 @@ const vocabWarmupList = document.querySelector("#vocabWarmupList");
 const vocabWarmupCount = document.querySelector("#vocabWarmupCount");
 const vocabWarmupSubtitle = document.querySelector("#vocabWarmupSubtitle");
 const toggleVocabWarmupCollapse = document.querySelector("#toggleVocabWarmupCollapse");
-const continueToReaderBtn = document.querySelector("#continueToReaderBtn");
+const startReadingFromVocabBtn = document.querySelector("#startReadingFromVocabBtn");
 const wordPopover = document.querySelector("#wordPopover");
 const canvas = document.querySelector("#waveform");
 const ctx = canvas.getContext("2d");
@@ -577,6 +577,7 @@ audio.addEventListener("play", () => {
   playIcon.innerHTML = PAUSE_ICON;
   playPause.setAttribute("aria-label", "Pause");
   setMediaSessionPlaybackState("playing");
+  scrollCurrentWordIntoView();
   tick();
 });
 
@@ -585,7 +586,7 @@ audio.addEventListener("pause", () => {
   playPause.setAttribute("aria-label", "Play");
   cancelAnimationFrame(rafId);
   setMediaSessionPlaybackState("paused");
-  updateProgress();
+  updateProgress({ scrollReader: false });
 });
 
 audio.addEventListener("loadedmetadata", () => {
@@ -602,7 +603,7 @@ audio.addEventListener("loadedmetadata", () => {
   }
   applyResumePosition();
   drawWaveform(0);
-  updateProgress();
+  updateProgress({ scrollReader: false });
 });
 
 audio.addEventListener("canplay", () => {
@@ -1465,7 +1466,7 @@ function setWords(nextWords, precise) {
   readWordCount = -1;
   renderWords();
   renderVocabWarmup();
-  updateProgress();
+  updateProgress({ scrollReader: false });
 }
 
 function parseTranscript(text, name) {
@@ -1925,7 +1926,7 @@ function tick() {
   rafId = requestAnimationFrame(tick);
 }
 
-function updateProgress() {
+function updateProgress({ scrollReader = true } = {}) {
   const duration = audio.duration || 0;
   const current = audio.currentTime || 0;
   seek.value = String(current);
@@ -1933,12 +1934,12 @@ function updateProgress() {
   durationEl.textContent = formatTime(duration);
   seek.setAttribute("aria-valuetext", `${formatTime(current)} of ${formatTime(duration)}`);
   drawWaveform(duration ? current / duration : 0);
-  updateCurrentWord(current);
+  updateCurrentWord(current, scrollReader);
   if (readerMode === "passages") handlePassagePlayback(current);
   saveActiveProgress(false);
 }
 
-function updateCurrentWord(time) {
+function updateCurrentWord(time, scrollReader = true) {
   if (!words.length) return;
   if (isReadMode) return;
   if (readerMode === "passages" && !passageRevealed) return;
@@ -1959,15 +1960,18 @@ function updateCurrentWord(time) {
   }
   currentWordIndex = index;
   readWordCount = endedCount;
-  if (index >= 0) {
-    const active = reader.querySelector(`[data-index="${index}"]`);
-    active?.classList.add("current");
-    active?.scrollIntoView({
-      block: "center",
-      inline: "nearest",
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
-    });
-  }
+  if (index < 0) return;
+  reader.querySelector(`[data-index="${index}"]`)?.classList.add("current");
+  if (scrollReader) scrollCurrentWordIntoView();
+}
+
+function scrollCurrentWordIntoView() {
+  if (currentWordIndex < 0) return;
+  reader.querySelector(`[data-index="${currentWordIndex}"]`)?.scrollIntoView({
+    block: "center",
+    inline: "nearest",
+    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+  });
 }
 
 function setWordTabStop(button) {
@@ -3584,8 +3588,15 @@ if (toggleVocabWarmupCollapse) {
   });
 }
 
-if (continueToReaderBtn) {
-  continueToReaderBtn.addEventListener("click", () => {
+if (startReadingFromVocabBtn) {
+  startReadingFromVocabBtn.addEventListener("click", () => {
+    if (audio.src) {
+      if (readerMode !== "listen") setReadMode(false);
+      audio.play().catch(() => {
+        status("Playback could not be started.");
+      });
+      return;
+    }
     reader.scrollIntoView({ behavior: "smooth", block: "start" });
     reader.querySelector(".word")?.focus({ preventScroll: true });
   });
