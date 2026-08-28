@@ -66,8 +66,10 @@ const vocabWarmupSelect = document.querySelector("#vocabWarmupSelect");
 const resetAppearance = document.querySelector("#resetAppearance");
 const vocabWarmup = document.querySelector("#vocabWarmup");
 const vocabWarmupList = document.querySelector("#vocabWarmupList");
+const vocabWarmupCount = document.querySelector("#vocabWarmupCount");
+const vocabWarmupSubtitle = document.querySelector("#vocabWarmupSubtitle");
 const toggleVocabWarmupCollapse = document.querySelector("#toggleVocabWarmupCollapse");
-const startReadingFromVocabBtn = document.querySelector("#startReadingFromVocabBtn");
+const continueToReaderBtn = document.querySelector("#continueToReaderBtn");
 const wordPopover = document.querySelector("#wordPopover");
 const canvas = document.querySelector("#waveform");
 const ctx = canvas.getContext("2d");
@@ -2608,7 +2610,7 @@ function defaultAppearanceSettings() {
     lineHeight: 1.8,
     font: "serif",
     readerWidth: "standard",
-    vocabWarmup: "always",
+    vocabWarmup: "collapsed",
     playbackRate: 1
   };
 }
@@ -2751,7 +2753,7 @@ let onboardingState = {
   textMode: "dim-upcoming",
   translationLayout: "english-below",
   playbackRate: 1,
-  vocabWarmup: "always",
+  vocabWarmup: "collapsed",
   catalogLevel: "all",
   catalogFormat: "all",
   isPlayingDemo: false,
@@ -2772,7 +2774,7 @@ function openOnboarding(initialStep = 1) {
     textMode: appearanceSettings.textMode || "dim-upcoming",
     translationLayout: appearanceSettings.translationLayout || "english-below",
     playbackRate: appearanceSettings.playbackRate || 1,
-    vocabWarmup: appearanceSettings.vocabWarmup || "always",
+    vocabWarmup: appearanceSettings.vocabWarmup || "collapsed",
     catalogLevel: catalogSettings.level || "all",
     catalogFormat: catalogSettings.format || "all",
     isPlayingDemo: false,
@@ -3470,17 +3472,25 @@ async function renderVocabWarmup() {
 
   vocabWarmupList.replaceChildren();
 
+  if (vocabWarmupCount) {
+    vocabWarmupCount.textContent = `${items.length} ${items.length === 1 ? "word" : "words"}`;
+  }
+  if (vocabWarmupSubtitle) {
+    vocabWarmupSubtitle.textContent = `${items.length} useful ${items.length === 1 ? "word was" : "words were"} picked from this text.`;
+  }
+
   const isCollapsed = appearanceSettings.vocabWarmup === "collapsed";
   vocabWarmup.classList.toggle("is-collapsed", isCollapsed);
   if (toggleVocabWarmupCollapse) {
     toggleVocabWarmupCollapse.setAttribute("aria-expanded", String(!isCollapsed));
     const label = toggleVocabWarmupCollapse.querySelector(".collapse-label");
-    if (label) label.textContent = isCollapsed ? "Show key words" : "Hide list";
+    if (label) label.textContent = isCollapsed ? "Review words" : "Hide preview";
   }
 
-  items.forEach((item) => {
+  items.forEach((item, itemIndex) => {
     const card = document.createElement("article");
     card.className = "vocab-card";
+    card.setAttribute("role", "listitem");
     card.dataset.word = item.word;
     card.dataset.index = String(item.index);
 
@@ -3491,17 +3501,20 @@ async function renderVocabWarmup() {
     );
 
     card.innerHTML = `
-      <div class="vocab-card-header">
-        <div class="vocab-term-row">
-          <strong class="vocab-word">${escapeHtml(item.displayWord)}</strong>
+      <span class="vocab-card-number" aria-hidden="true">${String(itemIndex + 1).padStart(2, "0")}</span>
+      <div class="vocab-card-content">
+        <div class="vocab-card-header">
+          <div class="vocab-term-row">
+            <strong class="vocab-word" lang="es">${escapeHtml(item.displayWord)}</strong>
+            ${item.isPhrase ? `<span class="vocab-phrase-label">phrase</span>` : ""}
+          </div>
+          <button class="vocab-save-btn ${isSaved ? "is-saved" : ""}" type="button" aria-label="${isSaved ? "Saved" : "Save"} ${escapeHtml(item.displayWord)} to study cards" title="${isSaved ? "Saved to study cards" : "Save to study cards"}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+            <span class="vocab-save-label">${isSaved ? "Saved" : "Save"}</span>
+          </button>
         </div>
-        <button class="vocab-save-btn ${isSaved ? "is-saved" : ""}" type="button" aria-label="Save to study cards" title="${isSaved ? "Saved to study cards" : "Save to Anki study cards"}">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="${isSaved ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-        </button>
-      </div>
-      <p class="vocab-meaning ${item.meaning ? "" : "is-loading"}">${item.meaning ? escapeHtml(item.meaning) : "Looking up translation…"}</p>
-      <div class="vocab-context">
-        <span>“${item.contextSentence || escapeHtml(item.displayWord)}”</span>
+        <p class="vocab-meaning ${item.meaning ? "" : "is-loading"}">${item.meaning ? escapeHtml(item.meaning) : "Finding a definition…"}</p>
+        <p class="vocab-context" lang="es">“${item.contextSentence || escapeHtml(item.displayWord)}”</p>
       </div>
     `;
 
@@ -3514,6 +3527,9 @@ async function renderVocabWarmup() {
       logStudiedWord(wordObj, currentMeaning);
       saveBtn.classList.add("is-saved");
       saveBtn.querySelector("svg")?.setAttribute("fill", "currentColor");
+      const saveLabel = saveBtn.querySelector(".vocab-save-label");
+      if (saveLabel) saveLabel.textContent = "Saved";
+      saveBtn.setAttribute("aria-label", `Saved ${item.displayWord} to study cards`);
       saveBtn.title = "Saved to study cards";
     });
 
@@ -3523,13 +3539,10 @@ async function renderVocabWarmup() {
     if (!item.meaning) {
       fetchSingleWordMeaning(item.word)
         .then((trans) => {
-          if (trans) {
-            item.meaning = trans;
-            const meaningEl = card.querySelector(".vocab-meaning");
-            if (meaningEl) {
-              meaningEl.textContent = trans;
-              meaningEl.classList.remove("is-loading");
-            }
+          const meaningEl = card.querySelector(".vocab-meaning");
+          if (meaningEl) {
+            meaningEl.textContent = trans || "Definition available in the text.";
+            meaningEl.classList.remove("is-loading");
           }
         })
         .catch(() => {
@@ -3557,7 +3570,7 @@ function updateVocabWarmupVisibility() {
   if (toggleVocabWarmupCollapse) {
     toggleVocabWarmupCollapse.setAttribute("aria-expanded", String(!isCollapsed));
     const label = toggleVocabWarmupCollapse.querySelector(".collapse-label");
-    if (label) label.textContent = isCollapsed ? "Show key words" : "Hide list";
+    if (label) label.textContent = isCollapsed ? "Review words" : "Hide preview";
   }
 }
 
@@ -3567,22 +3580,13 @@ if (toggleVocabWarmupCollapse) {
     const isCollapsed = vocabWarmup.classList.contains("is-collapsed");
     toggleVocabWarmupCollapse.setAttribute("aria-expanded", String(!isCollapsed));
     const label = toggleVocabWarmupCollapse.querySelector(".collapse-label");
-    if (label) label.textContent = isCollapsed ? "Show key words" : "Hide list";
+    if (label) label.textContent = isCollapsed ? "Review words" : "Hide preview";
   });
 }
 
-if (startReadingFromVocabBtn) {
-  startReadingFromVocabBtn.addEventListener("click", () => {
-    if (audio.src) {
-      if (readerMode !== "listen") {
-        setReadMode(false);
-      }
-      audio.play().catch(() => {
-        status("Playback could not be started.");
-      });
-      updateCurrentWord(audio.currentTime || 0);
-    } else {
-      reader.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+if (continueToReaderBtn) {
+  continueToReaderBtn.addEventListener("click", () => {
+    reader.scrollIntoView({ behavior: "smooth", block: "start" });
+    reader.querySelector(".word")?.focus({ preventScroll: true });
   });
 }
