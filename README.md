@@ -10,6 +10,25 @@ The difficulty labels are reading guidance, not formal CEFR certifications. Orig
 
 Open `index.html` in a browser, or serve the folder with any static server.
 
+## Personal books
+
+Readers can choose **Add a book** to import a UTF-8 `.txt`/`.md` file or paste
+Spanish text. Personal books are stored in IndexedDB, remain private to that
+browser and device, and appear under **My books**. Removing one deletes its text
+and saved reading progress from the browser. The current import limit is 2 MB
+per book.
+
+This local-first design keeps the GitHub Pages deployment static and supports
+copyrighted personal material without uploading it. EPUB/PDF parsing and
+cross-device sync would require a later parser or account-backed storage layer.
+
+Text-only and personal books also support **Listen** mode through the browser's
+Web Speech API. The player offers the Spanish voices installed or exposed by the
+browser, speed control, sentence navigation, word-position seeking, and saved
+progress. Word-boundary events drive word-level highlighting when the selected voice
+provides them; the current sentence is highlighted as a fallback when it does
+not. Voice availability and quality depend on the browser and operating system.
+
 ## Publish on GitHub Pages
 
 Push these files to a GitHub repository, then enable Pages from the repository root in **Settings -> Pages**.

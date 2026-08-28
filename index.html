@@ -15,6 +15,10 @@
             <h1 id="library-title" class="visually-hidden">Readings</h1>
           </div>
           <div class="topbar-actions">
+            <button id="addBookBtn" class="add-book-btn" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 0 4 4.5v15"></path><line x1="13" y1="7" x2="13" y2="13"></line><line x1="10" y1="10" x2="16" y2="10"></line></svg>
+              <span>Add a book</span>
+            </button>
             <button id="openOnboardingBtn" class="onboarding-launch-btn" type="button" aria-label="Open reading preferences">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
               <span>Preferences</span>
@@ -28,6 +32,7 @@
           <button id="collection-greek-classics" type="button" class="collection-tab" role="tab" aria-selected="false" aria-controls="trackList" tabindex="-1" data-collection="greek-classics">Greek classics</button>
 
           <button id="collection-don-quijote" type="button" class="collection-tab" role="tab" aria-selected="false" aria-controls="trackList" tabindex="-1" data-collection="don-quijote">Don Quijote</button>
+          <button id="collection-my-books" type="button" class="collection-tab" role="tab" aria-selected="false" aria-controls="trackList" tabindex="-1" data-collection="my-books">My books</button>
         </div>
         <div class="catalog-tools" role="search" aria-label="Find a reading">
           <label class="search-field">
@@ -55,6 +60,7 @@
         </div>
         <div class="level-filters" aria-label="Filter by reading level">
           <button type="button" class="level-filter is-selected" data-level="all" aria-pressed="true">All levels</button>
+          <button type="button" class="level-filter" data-level="A2" aria-pressed="false">A2</button>
           <button type="button" class="level-filter" data-level="B1" aria-pressed="false">B1</button>
           <button type="button" class="level-filter" data-level="B2" aria-pressed="false">B2</button>
           <button type="button" class="level-filter" data-level="C1" aria-pressed="false">C1</button>
@@ -198,6 +204,13 @@
                   <button type="button" role="menuitemradio" data-rate="1.5">1.50×</button>
                   <button type="button" role="menuitemradio" data-rate="2">2×</button>
                 </div>
+                <label id="ttsVoiceControl" class="tts-voice-control" hidden>
+                  <span class="visually-hidden">Browser voice</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+                  <select id="ttsVoiceSelect" aria-label="Browser voice">
+                    <option value="">Loading Spanish voices…</option>
+                  </select>
+                </label>
               </div>
               <div class="player-transport">
                 <button id="skipBack" class="skip-button" type="button" aria-label="Skip back 10 seconds" title="Skip back 10s" disabled>
@@ -312,6 +325,59 @@
         </aside>
       </section>
     </main>
+    <dialog id="addBookDialog" class="add-book-dialog" aria-labelledby="addBookDialogTitle">
+      <form id="addBookForm" class="add-book-shell">
+        <header class="add-book-header">
+          <div>
+            <p class="eyebrow">Your private library</p>
+            <h2 id="addBookDialogTitle">Add a book</h2>
+            <p>Import plain Spanish text. It stays in this browser and is never uploaded.</p>
+          </div>
+          <button id="closeAddBookBtn" class="utility-button" type="button" aria-label="Close add book dialog">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+          </button>
+        </header>
+        <div class="add-book-body">
+          <div class="add-book-fields">
+            <label>
+              <span>Title</span>
+              <input id="bookTitle" name="title" type="text" maxlength="160" required autocomplete="off" placeholder="Book title">
+            </label>
+            <label>
+              <span>Author <small>optional</small></span>
+              <input id="bookAuthor" name="author" type="text" maxlength="120" autocomplete="off" placeholder="Author name">
+            </label>
+            <label>
+              <span>Reading level</span>
+              <select id="bookDifficulty" name="difficulty">
+                <option value="A2">A2 · Early reader</option>
+                <option value="B1">B1 · Intermediate</option>
+                <option value="B2" selected>B2 · Upper intermediate</option>
+                <option value="C1">C1 · Advanced</option>
+              </select>
+            </label>
+          </div>
+          <label class="book-file-pick">
+            <span>Choose a text file</span>
+            <small>UTF-8 .txt or .md, up to 2 MB</small>
+            <input id="bookFile" type="file" accept=".txt,.md,text/plain,text/markdown">
+          </label>
+          <div class="add-book-divider"><span>or paste the text</span></div>
+          <label class="book-text-field">
+            <span>Spanish text</span>
+            <textarea id="bookText" name="text" rows="10" required placeholder="Paste the book or reading here…"></textarea>
+          </label>
+          <p id="addBookError" class="add-book-error" role="alert" hidden></p>
+        </div>
+        <footer class="add-book-footer">
+          <p>Personal books are available only on this device and browser.</p>
+          <div>
+            <button id="cancelAddBookBtn" type="button">Cancel</button>
+            <button class="primary-action" type="submit">Save to My books</button>
+          </div>
+        </footer>
+      </form>
+    </dialog>
     <dialog id="onboardingDialog" class="onboarding-dialog" aria-labelledby="onboardingDialogTitle">
       <div class="onboarding-shell">
         <header class="onboarding-header">

@@ -11,11 +11,24 @@ const librarySort = document.querySelector("#librarySort");
 const levelFilters = [...document.querySelectorAll(".level-filter")];
 const collectionTabs = [...document.querySelectorAll(".collection-tab")];
 const catalogSummary = document.querySelector("#catalogSummary");
+const addBookBtn = document.querySelector("#addBookBtn");
+const addBookDialog = document.querySelector("#addBookDialog");
+const addBookForm = document.querySelector("#addBookForm");
+const closeAddBookBtn = document.querySelector("#closeAddBookBtn");
+const cancelAddBookBtn = document.querySelector("#cancelAddBookBtn");
+const bookTitle = document.querySelector("#bookTitle");
+const bookAuthor = document.querySelector("#bookAuthor");
+const bookDifficulty = document.querySelector("#bookDifficulty");
+const bookFile = document.querySelector("#bookFile");
+const bookText = document.querySelector("#bookText");
+const addBookError = document.querySelector("#addBookError");
 const playPause = document.querySelector("#playPause");
 const playbackRateButton = document.querySelector("#playbackRate");
 const playbackRateValue = playbackRateButton.querySelector(".speed-value");
 const speedMenu = document.querySelector("#speedMenu");
 const speedOptions = [...speedMenu.querySelectorAll("[data-rate]")];
+const ttsVoiceControl = document.querySelector("#ttsVoiceControl");
+const ttsVoiceSelect = document.querySelector("#ttsVoiceSelect");
 const SPEED_RATES = speedOptions.map((option) => Number(option.dataset.rate));
 const playIcon = document.querySelector("#playIcon");
 const skipBack = document.querySelector("#skipBack");
@@ -77,7 +90,11 @@ const systemThemeQuery = window.matchMedia?.("(prefers-color-scheme: dark)") || 
 const themeOptions = ["system", "paper", "mist", "night"];
 const appearanceSettingsVersion = 4;
 const difficultyOrder = ["A2", "B1", "B2", "C1"];
-const collectionOptions = ["all", "stories", "bible", "greek-classics", "don-quijote"];
+const collectionOptions = ["all", "stories", "bible", "greek-classics", "don-quijote", "my-books"];
+const personalBooksDatabase = "spanish-reader-personal-library";
+const personalBooksStore = "books";
+const maxPersonalBookBytes = 2 * 1024 * 1024;
+const speechSynthesisSupported = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
 const difficultyLabels = {
   A2: "Early reader",
   B1: "Intermediate",
@@ -91,6 +108,8 @@ let readWordCount = -1;
 let rafId = 0;
 let objectUrl = "";
 let tracks = [];
+let hostedTracks = [];
+let personalBooks = [];
 let activeTrackId = "";
 let activeAudioSource = "";
 let pendingResumeTime = 0;
@@ -124,12 +143,21 @@ let translationRenderId = 0;
 let savedTranslationBlocks = [];
 let savedTranslationLookup = new Map();
 let vocabWarmupItemCount = 0;
+let ttsVoices = [];
+let ttsChunks = [];
+let ttsChunkIndex = 0;
+let ttsWordIndex = 0;
+let ttsUtterance = null;
+let ttsState = "idle";
+let ttsSessionId = 0;
+let ttsResumeAfterSeek = false;
 
 applyAppearanceSettings();
 drawWaveform(0);
 updateStudyControls();
 syncModeSelector();
 initialize();
+initializeSpeechVoices();
 
 librarySearch.value = catalogSettings.search;
 formatFilter.value = catalogSettings.format;
@@ -180,6 +208,92 @@ backToLibrary.addEventListener("click", () => {
   showLibrary();
 });
 
+addBookBtn.addEventListener("click", () => {
+  hideAddBookError();
+  addBookDialog.showModal();
+  bookTitle.focus();
+});
+
+closeAddBookBtn.addEventListener("click", () => addBookDialog.close());
+
+cancelAddBookBtn.addEventListener("click", () => {
+  resetAddBookForm();
+  addBookDialog.close();
+});
+
+addBookDialog.addEventListener("click", (event) => {
+  if (event.target === addBookDialog) addBookDialog.close();
+});
+
+bookFile.addEventListener("change", async () => {
+  const file = bookFile.files?.[0];
+  if (!file) return;
+  hideAddBookError();
+  if (file.size > maxPersonalBookBytes) {
+    showAddBookError("That file is larger than 2 MB. Choose a smaller plain-text file.");
+    bookFile.value = "";
+    return;
+  }
+  try {
+    bookText.value = await file.text();
+    if (!bookTitle.value.trim()) {
+      bookTitle.value = file.name.replace(/\.(?:txt|md)$/i, "").replace(/[_-]+/g, " ").trim();
+    }
+  } catch {
+    showAddBookError("That file could not be read as plain text.");
+  }
+});
+
+addBookForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  hideAddBookError();
+  const text = bookText.value.trim();
+  const title = bookTitle.value.trim();
+  if (!title || !text) {
+    showAddBookError("Add a title and some Spanish text before saving.");
+    return;
+  }
+  if (new Blob([text]).size > maxPersonalBookBytes) {
+    showAddBookError("This text is larger than 2 MB. Split it into smaller books before importing.");
+    return;
+  }
+
+  const parsed = tokenizeUntimed(text);
+  if (!parsed.length) {
+    showAddBookError("The book needs at least one readable word.");
+    return;
+  }
+
+  const book = {
+    id: createPersonalBookId(),
+    title,
+    author: bookAuthor.value.trim(),
+    difficulty: difficultyOrder.includes(bookDifficulty.value) ? bookDifficulty.value : "B2",
+    collection: "my-books",
+    description: "Added to your private library",
+    customText: text,
+    wordCount: parsed.length,
+    minutes: readingMinutes(parsed.length),
+    personal: true,
+    addedAt: new Date().toISOString()
+  };
+
+  const submitButton = addBookForm.querySelector('[type="submit"]');
+  submitButton.disabled = true;
+  try {
+    await savePersonalBook(book);
+    personalBooks.push(book);
+    refreshTracks();
+    resetAddBookForm();
+    addBookDialog.close();
+    selectCollection("my-books");
+  } catch {
+    showAddBookError("This browser could not save the book. Check that site storage is available and try again.");
+  } finally {
+    submitButton.disabled = false;
+  }
+});
+
 window.addEventListener("popstate", () => {
   const routeId = safeDecodeHash();
   const track = tracks.find((item) => item.id === routeId);
@@ -188,6 +302,12 @@ window.addEventListener("popstate", () => {
 });
 
 trackList.addEventListener("click", (event) => {
+  if (event.target.closest("[data-open-add-book]")) {
+    hideAddBookError();
+    addBookDialog.showModal();
+    bookTitle.focus();
+    return;
+  }
   if (event.target.closest("[data-clear-catalog]")) {
     catalogSettings = { search: "", format: "all", sort: "difficulty", level: "all", collection: "all" };
     librarySearch.value = "";
@@ -198,6 +318,12 @@ trackList.addEventListener("click", (event) => {
     saveCatalogSettings();
     renderTrackList();
     librarySearch.focus();
+    return;
+  }
+  const deleteButton = event.target.closest("[data-delete-personal-book]");
+  if (deleteButton) {
+    const track = personalBooks.find((item) => item.id === deleteButton.dataset.deletePersonalBook);
+    if (track) removePersonalBook(track);
     return;
   }
   const button = event.target.closest(".track-card");
@@ -211,6 +337,7 @@ audioFile.addEventListener("change", () => {
   if (!file) return;
   if (objectUrl) URL.revokeObjectURL(objectUrl);
   audio.pause();
+  stopTextToSpeech({ preservePosition: true });
   trackLoadId += 1;
   saveActiveProgress(true);
   objectUrl = URL.createObjectURL(file);
@@ -322,7 +449,8 @@ translationLayoutSelect.addEventListener("change", () => {
   saveAppearanceSettings(appearanceSettings);
   applyAppearanceSettings();
   renderReaderForCurrentMode();
-  updateProgress();
+  if (app.dataset.media === "text") updateTtsProgress({ highlight: readerMode === "listen", scrollReader: false });
+  else updateProgress();
 });
 
 textSize.addEventListener("input", () => {
@@ -364,8 +492,10 @@ if (vocabWarmupSelect) {
 
 resetAppearance.addEventListener("click", () => {
   const playbackRate = appearanceSettings.playbackRate;
+  const ttsVoiceURI = appearanceSettings.ttsVoiceURI;
   appearanceSettings = defaultAppearanceSettings();
   appearanceSettings.playbackRate = playbackRate;
+  appearanceSettings.ttsVoiceURI = ttsVoiceURI;
   saveAppearanceSettings(appearanceSettings);
   applyAppearanceSettings();
 });
@@ -421,6 +551,10 @@ if (systemThemeQuery?.addEventListener) {
 }
 
 playPause.addEventListener("click", () => {
+  if (app.dataset.media === "text") {
+    toggleTextToSpeech();
+    return;
+  }
   if (!audio.src) return;
   if (audio.paused) {
     if (readerMode === "passages") seekToPassageStart();
@@ -431,6 +565,10 @@ playPause.addEventListener("click", () => {
 });
 
 skipBack.addEventListener("click", () => {
+  if (app.dataset.media === "text") {
+    moveTtsChunk(-1);
+    return;
+  }
   if (!audio.src || !audio.duration) return;
   if (readerMode === "passages") {
     movePassage(-1, true);
@@ -441,6 +579,10 @@ skipBack.addEventListener("click", () => {
 });
 
 skipForward.addEventListener("click", () => {
+  if (app.dataset.media === "text") {
+    moveTtsChunk(1);
+    return;
+  }
   if (!audio.src || !audio.duration) return;
   if (readerMode === "passages") {
     movePassage(1, true);
@@ -452,7 +594,7 @@ skipForward.addEventListener("click", () => {
 
 readerModeSelector.addEventListener("click", (event) => {
   const button = event.target.closest("[data-reader-mode]");
-  if (!button || app.dataset.media === "text") return;
+  if (!button) return;
   setReaderMode(button.dataset.readerMode);
 });
 
@@ -509,18 +651,34 @@ document.addEventListener("keydown", (event) => {
 
   switch (event.key) {
     case "ArrowLeft":
+      if (app.dataset.media === "text") {
+        event.preventDefault();
+        moveTtsChunk(-1);
+        return;
+      }
       if (!audio.src) return;
       event.preventDefault();
       audio.currentTime = Math.max(0, audio.currentTime - 10);
       updateProgress();
       break;
     case "ArrowRight":
+      if (app.dataset.media === "text") {
+        event.preventDefault();
+        moveTtsChunk(1);
+        return;
+      }
       if (!audio.src) return;
       event.preventDefault();
       audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10);
       updateProgress();
       break;
     case " ":
+      if (app.dataset.media === "text") {
+        if (readerMode !== "listen") return;
+        event.preventDefault();
+        toggleTextToSpeech();
+        return;
+      }
       event.preventDefault();
       if (!audio.src) return;
       if (audio.paused) {
@@ -543,6 +701,13 @@ speedMenu.addEventListener("click", (event) => {
   setPlaybackRate(Number(option.dataset.rate));
   setSpeedMenuOpen(false);
   playbackRateButton.focus();
+});
+
+ttsVoiceSelect.addEventListener("change", () => {
+  appearanceSettings.ttsVoiceURI = ttsVoiceSelect.value;
+  saveAppearanceSettings(appearanceSettings);
+  if (ttsState === "playing") restartTextToSpeech(true);
+  else if (ttsState === "paused") restartTextToSpeech(false);
 });
 
 speedMenu.addEventListener("keydown", (event) => {
@@ -619,9 +784,22 @@ audio.addEventListener("ended", () => {
 });
 
 seek.addEventListener("input", () => {
+  if (app.dataset.media === "text") {
+    seekTextToSpeech(Number(seek.value));
+    return;
+  }
   audio.currentTime = Number(seek.value);
   saveActiveProgress(true);
   updateProgress();
+});
+
+seek.addEventListener("change", () => {
+  if (app.dataset.media !== "text") return;
+  saveActiveProgress(true);
+  if (ttsResumeAfterSeek) {
+    ttsResumeAfterSeek = false;
+    speakTextFromWord(ttsWordIndex);
+  }
 });
 
 const mediaSession = "mediaSession" in navigator ? navigator.mediaSession : null;
@@ -633,27 +811,43 @@ if (mediaSession) {
   };
   const actionHandlers = {
     play: () => {
+      if (app.dataset.media === "text") {
+        if (ttsState !== "playing") toggleTextToSpeech();
+        return;
+      }
       if (readerMode === "passages") seekToPassageStart();
       audio.play().catch(() => {});
     },
-    pause: () => audio.pause(),
-    stop: () => audio.pause(),
-    seekbackward: guardedAction(() => {
+    pause: () => app.dataset.media === "text" ? pauseTextToSpeech() : audio.pause(),
+    stop: () => app.dataset.media === "text" ? stopTextToSpeech({ preservePosition: true }) : audio.pause(),
+    seekbackward: () => {
+      if (app.dataset.media === "text") {
+        moveTtsChunk(-1);
+        return;
+      }
+      guardedAction(() => {
       if (readerMode === "passages") {
         movePassage(-1);
         return;
       }
       audio.currentTime = Math.max(0, audio.currentTime - 10);
       updateProgress();
-    }),
-    seekforward: guardedAction(() => {
+      })();
+    },
+    seekforward: () => {
+      if (app.dataset.media === "text") {
+        moveTtsChunk(1);
+        return;
+      }
+      guardedAction(() => {
       if (readerMode === "passages") {
         movePassage(1);
         return;
       }
       audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
       updateProgress();
-    }),
+      })();
+    },
     seekto: (details) => {
       if (!audio.src || !audio.duration) return;
       if (typeof details?.seekTime !== "number" || !Number.isFinite(details.seekTime)) return;
@@ -736,13 +930,18 @@ window.addEventListener("resize", () => {
   if (selectedWordButton && !wordPopover.hidden) positionWordPopover(selectedWordButton);
 });
 
-window.addEventListener("pagehide", () => saveActiveProgress(true));
+window.addEventListener("pagehide", () => {
+  saveActiveProgress(true);
+  stopTextToSpeech({ preservePosition: true });
+});
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") saveActiveProgress(true);
 });
 
 function setAudioSource(src, message) {
   audio.pause();
+  stopTextToSpeech({ preservePosition: true });
+  resetTextToSpeechUi();
   words = [];
   passages = [];
   passageIndex = -1;
@@ -769,34 +968,156 @@ function setAudioSource(src, message) {
   status(message);
 }
 
+function normalizeTrack(track) {
+  return {
+    ...track,
+    id: track.id || track.audio || track.text || track.transcript,
+    title: track.title || track.audio || track.text || track.transcript || "Untitled",
+    difficulty: difficultyOrder.includes(track.difficulty) ? track.difficulty : "C1",
+    collection: collectionOptions.includes(track.collection) && track.collection !== "all" ? track.collection : "stories",
+    minutes: Number(track.minutes) || 0
+  };
+}
+
+function refreshTracks() {
+  tracks = [...hostedTracks, ...personalBooks].map(normalizeTrack);
+  renderTrackList();
+}
+
 async function loadLibrary() {
   try {
     const response = await fetch("library.json", { cache: "no-store" });
     if (!response.ok) throw new Error("No library");
     const library = await response.json();
     if (!Array.isArray(library)) throw new Error("Invalid library");
-    tracks = library
+    hostedTracks = library
       .filter((track) => track.audio || track.text || track.transcript)
-      .map((track) => ({
-        ...track,
-        id: track.id || track.audio || track.text || track.transcript,
-        title: track.title || track.audio || track.text || track.transcript,
-        difficulty: difficultyOrder.includes(track.difficulty) ? track.difficulty : "C1",
-        collection: collectionOptions.includes(track.collection) && track.collection !== "all" ? track.collection : "stories",
-        minutes: Number(track.minutes) || 0
-      }));
-    renderTrackList();
+      .map(normalizeTrack);
   } catch {
-    trackList.innerHTML = `<p class="muted">No hosted readings found. Add audio files and run <code>python3 scripts/build_library.py</code>.</p>`;
+    hostedTracks = [];
   }
+  refreshTracks();
+}
+
+async function loadPersonalBooks() {
+  try {
+    const books = await readPersonalBooks();
+    personalBooks = books
+      .filter((book) => book?.id && book?.title && book?.customText)
+      .map((book) => normalizeTrack({ ...book, personal: true, collection: "my-books" }))
+      .sort((a, b) => Date.parse(b.addedAt || 0) - Date.parse(a.addedAt || 0));
+  } catch {
+    personalBooks = [];
+  }
+  refreshTracks();
 }
 
 async function initialize() {
-  await Promise.all([loadLibrary(), loadSharedGlossary()]);
+  await Promise.all([loadLibrary(), loadPersonalBooks(), loadSharedGlossary()]);
   const routeId = safeDecodeHash();
   const routeTrack = tracks.find((track) => track.id === routeId);
   if (routeTrack) {
     await loadTrack(routeTrack, false);
+  }
+}
+
+function openPersonalBooksDatabase() {
+  return new Promise((resolve, reject) => {
+    if (!window.indexedDB) {
+      reject(new Error("IndexedDB is unavailable"));
+      return;
+    }
+    const request = indexedDB.open(personalBooksDatabase, 1);
+    request.onupgradeneeded = () => {
+      if (!request.result.objectStoreNames.contains(personalBooksStore)) {
+        request.result.createObjectStore(personalBooksStore, { keyPath: "id" });
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error || new Error("Could not open personal library"));
+  });
+}
+
+async function readPersonalBooks() {
+  const database = await openPersonalBooksDatabase();
+  try {
+    return await new Promise((resolve, reject) => {
+      const request = database.transaction(personalBooksStore, "readonly").objectStore(personalBooksStore).getAll();
+      request.onsuccess = () => resolve(request.result || []);
+      request.onerror = () => reject(request.error || new Error("Could not read personal library"));
+    });
+  } finally {
+    database.close();
+  }
+}
+
+async function savePersonalBook(book) {
+  const database = await openPersonalBooksDatabase();
+  try {
+    await new Promise((resolve, reject) => {
+      const transaction = database.transaction(personalBooksStore, "readwrite");
+      transaction.objectStore(personalBooksStore).put(book);
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error || new Error("Could not save personal book"));
+      transaction.onabort = () => reject(transaction.error || new Error("Could not save personal book"));
+    });
+  } finally {
+    database.close();
+  }
+}
+
+async function deletePersonalBook(id) {
+  const database = await openPersonalBooksDatabase();
+  try {
+    await new Promise((resolve, reject) => {
+      const transaction = database.transaction(personalBooksStore, "readwrite");
+      transaction.objectStore(personalBooksStore).delete(id);
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error || new Error("Could not remove personal book"));
+      transaction.onabort = () => reject(transaction.error || new Error("Could not remove personal book"));
+    });
+  } finally {
+    database.close();
+  }
+}
+
+function createPersonalBookId() {
+  const unique = crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return `personal-${unique}`;
+}
+
+function resetAddBookForm() {
+  addBookForm.reset();
+  bookDifficulty.value = "B2";
+  hideAddBookError();
+}
+
+function showAddBookError(message) {
+  addBookError.textContent = message;
+  addBookError.hidden = false;
+}
+
+function hideAddBookError() {
+  addBookError.hidden = true;
+  addBookError.textContent = "";
+}
+
+async function removePersonalBook(track) {
+  if (!window.confirm(`Remove “${track.title}” from My books?`)) return;
+  try {
+    await deletePersonalBook(track.id);
+    const wasActive = activeTrackId === track.id;
+    personalBooks = personalBooks.filter((book) => book.id !== track.id);
+    delete progressCache[track.id];
+    saveProgressCache(progressCache);
+    if (wasActive) {
+      activeTrackId = "";
+      clearAudioSource();
+      showLibrary();
+    }
+    refreshTracks();
+  } catch {
+    window.alert("The book could not be removed. Try again.");
   }
 }
 
@@ -814,6 +1135,7 @@ async function loadSharedGlossary() {
 async function loadTrack(track, updateHistory = true) {
   audio.pause();
   saveActiveProgress(true);
+  stopTextToSpeech({ preservePosition: true });
   const loadId = ++trackLoadId;
   activeTrackId = track.id;
   activeAudioSource = track.audio || "";
@@ -839,9 +1161,18 @@ async function loadTrack(track, updateHistory = true) {
     setAudioSource(track.audio, `${track.title} loaded.`);
   } else {
     clearAudioSource();
+    updateMediaSession(track);
     status(`Opening ${track.title}…`);
   }
   renderTrackList();
+
+  if (track.customText) {
+    setSavedTranslationBlocks([]);
+    const parsed = tokenizeUntimed(track.customText);
+    setWords(parsed, false);
+    status(`${track.title} · ${parsed.length.toLocaleString()} words · about ${track.minutes || readingMinutes(parsed.length)} min to read.`);
+    return;
+  }
 
   const transcriptPath = track.audio ? track.transcript : (track.text || track.transcript);
   if (!transcriptPath) {
@@ -909,7 +1240,6 @@ function setSavedTranslationBlocks(blocks) {
 }
 
 function clearAudioSource() {
-  activeTrackId && saveActiveProgress(true);
   cancelResumeRetry();
   audio.removeAttribute("src");
   audio.load();
@@ -940,6 +1270,7 @@ function clearAudioSource() {
 function showLibrary(updateHistory = true) {
   audio.pause();
   saveActiveProgress(true);
+  stopTextToSpeech({ preservePosition: true });
   app.dataset.view = "library";
   document.title = "Spanish Listening Reader";
   if (updateHistory && location.hash) {
@@ -968,10 +1299,11 @@ const PASSAGE_MAX_WORDS = 50;
 function setReaderMode(mode) {
   if (!["listen", "passages", "read"].includes(mode)) return;
   if (mode === readerMode && mode !== "passages") return;
-  if (mode === "passages" && (!audio.src || !passages.length)) {
+  if (mode === "passages" && (app.dataset.media === "text" || !audio.src || !passages.length)) {
     status("Passages need a synced transcript for this audio, so they are unavailable here.");
     return;
   }
+  if (app.dataset.media === "text" && mode === "read" && ttsState === "playing") pauseTextToSpeech();
   readerMode = mode;
   isReadMode = mode === "read";
   app.dataset.mode = isReadMode ? "read" : "listen";
@@ -979,6 +1311,12 @@ function setReaderMode(mode) {
   syncModeSelector();
   if (mode === "passages") enterPassagesMode();
   else exitPassagesMode();
+  if (app.dataset.media === "text" && mode === "listen" && words.length) {
+    updateTtsProgress({ highlight: true, scrollReader: false });
+    if (!speechSynthesisSupported) {
+      status("Browser text-to-speech is unavailable here. You can still read and use the vocabulary tools.");
+    }
+  }
 }
 
 function syncModeSelector() {
@@ -987,10 +1325,13 @@ function syncModeSelector() {
     const active = button.dataset.readerMode === readerMode;
     button.setAttribute("aria-checked", String(active));
     button.tabIndex = active ? 0 : -1;
-    button.disabled = button.dataset.readerMode === "passages" && !passages.length;
-    button.title = button.dataset.readerMode === "passages" && !passages.length
+    const passagesUnavailable = button.dataset.readerMode === "passages" && (app.dataset.media === "text" || !passages.length);
+    button.disabled = passagesUnavailable;
+    button.title = passagesUnavailable
       ? "Needs audio with synced word timings"
-      : "";
+      : app.dataset.media === "text" && button.dataset.readerMode === "listen"
+        ? "Listen with a browser voice"
+        : "";
   });
 }
 
@@ -1252,7 +1593,9 @@ function renderTrackList() {
             ? "clasicos clásicos griegos grecia greek classics philosophy filosofía mythology mitologia mitología"
             : track.collection === "don-quijote"
               ? "quijote quixote cervantes mancha sancho panza novela novel"
-              : "cuentos stories relatos",
+              : track.collection === "my-books"
+                ? "mis libros my books personal private"
+                : "cuentos stories relatos",
         ...(Array.isArray(track.tags) ? track.tags : [])
       ].filter(Boolean).join(" ")).includes(query);
     })
@@ -1262,6 +1605,15 @@ function renderTrackList() {
   catalogSummary.textContent = visibleTracks.length === tracks.length ? countLabel : `${countLabel} of ${tracks.length}`;
 
   if (!visibleTracks.length) {
+    if (catalogSettings.collection === "my-books" && !personalBooks.length) {
+      trackList.innerHTML = `
+        <div class="empty-catalog">
+          <h2>Your shelf is ready</h2>
+          <p>Add a plain-text Spanish book to read it with the same vocabulary and translation tools.</p>
+          <button type="button" data-open-add-book>Add your first book</button>
+        </div>`;
+      return;
+    }
     trackList.innerHTML = `
       <div class="empty-catalog">
         <h2>No readings match</h2>
@@ -1327,14 +1679,18 @@ function renderTrackList() {
 
 function createTrackCard(track) {
     const saved = progressCache[track.id] || {};
-    const percent = saved.duration ? Math.min(100, Math.round((saved.time / saved.duration) * 100)) : 0;
+    const percent = track.audio
+      ? saved.duration ? Math.min(100, Math.round((saved.time / saved.duration) * 100)) : 0
+      : saved.wordCount ? Math.min(100, Math.round((saved.wordIndex / saved.wordCount) * 100)) : 0;
+    const shell = document.createElement("article");
+    shell.className = `track-card-shell${track.personal ? " is-personal" : ""}`;
     const button = document.createElement("button");
     button.type = "button";
     button.className = `track-card${track.id === activeTrackId ? " active" : ""}`;
     button.dataset.trackId = track.id;
     if (track.id === activeTrackId) button.setAttribute("aria-current", "true");
     button.style.setProperty("--progress", `${percent}%`);
-    const formatLabel = track.audio ? "Listen & read" : "Read";
+    const formatLabel = track.personal ? "My book" : track.audio ? "Listen & read" : "Read";
     const timeLabel = track.minutes ? `${track.minutes} min` : "Short read";
     button.innerHTML = `
       <div class="track-cover-wrapper">
@@ -1350,7 +1706,7 @@ function createTrackCard(track) {
         <span class="track-title">${escapeHtml(track.title)}</span>
         ${track.author ? `<span class="track-author">${escapeHtml(track.author)}</span>` : ""}
         ${track.description ? `<span class="track-description">${escapeHtml(track.description)}</span>` : ""}
-        <span class="track-progress-label">${track.audio ? progressLabel(saved) : "Ready to read"}</span>
+        <span class="track-progress-label">${track.audio ? progressLabel(saved) : textProgressLabel(saved)}</span>
       </div>
     `;
     const coverImage = button.querySelector(".track-cover img");
@@ -1362,7 +1718,18 @@ function createTrackCard(track) {
       placeholder.append(title);
       coverImage.parentElement?.replaceChildren(placeholder);
     }, { once: true });
-    return button;
+    shell.append(button);
+    if (track.personal) {
+      const removeButton = document.createElement("button");
+      removeButton.type = "button";
+      removeButton.className = "personal-book-delete";
+      removeButton.dataset.deletePersonalBook = track.id;
+      removeButton.setAttribute("aria-label", `Remove ${track.title} from My books`);
+      removeButton.title = "Remove from My books";
+      removeButton.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14H6L5 6"></path><path d="M8 6V4h8v2"></path></svg>`;
+      shell.append(removeButton);
+    }
+    return shell;
 }
 
 function compareTracks(a, b) {
@@ -1466,7 +1833,12 @@ function setWords(nextWords, precise) {
   readWordCount = -1;
   renderWords();
   renderVocabWarmup();
-  updateProgress({ scrollReader: false });
+  if (app.dataset.media === "text") {
+    configureTextToSpeech();
+  } else {
+    resetTextToSpeechUi();
+    updateProgress({ scrollReader: false });
+  }
 }
 
 function parseTranscript(text, name) {
@@ -1565,6 +1937,333 @@ function tokenizeUntimed(text) {
     }
   }
   return parsed;
+}
+
+function initializeSpeechVoices() {
+  if (!speechSynthesisSupported) {
+    ttsVoiceSelect.replaceChildren(new Option("Browser TTS unavailable", ""));
+    ttsVoiceSelect.disabled = true;
+    return;
+  }
+  refreshSpeechVoices();
+  window.speechSynthesis.addEventListener?.("voiceschanged", refreshSpeechVoices);
+}
+
+function refreshSpeechVoices() {
+  if (!speechSynthesisSupported) return;
+  const available = window.speechSynthesis.getVoices();
+  if (!available.length) {
+    ttsVoiceSelect.replaceChildren(new Option("Loading Spanish voices…", ""));
+    ttsVoiceSelect.disabled = true;
+    return;
+  }
+  const spanishVoices = available.filter((voice) => /^es(?:-|$)/i.test(voice.lang));
+  ttsVoices = (spanishVoices.length ? spanishVoices : available).sort((a, b) => {
+    if (a.default !== b.default) return a.default ? -1 : 1;
+    return `${a.lang} ${a.name}`.localeCompare(`${b.lang} ${b.name}`);
+  });
+  const preferred = ttsVoices.find((voice) => voice.voiceURI === appearanceSettings.ttsVoiceURI)
+    || ttsVoices.find((voice) => voice.default)
+    || ttsVoices[0];
+  ttsVoiceSelect.replaceChildren(...ttsVoices.map((voice) => {
+    const option = new Option(`${voice.name} · ${voice.lang}`, voice.voiceURI);
+    option.selected = voice.voiceURI === preferred?.voiceURI;
+    return option;
+  }));
+  ttsVoiceSelect.disabled = !ttsVoices.length;
+  if (preferred && appearanceSettings.ttsVoiceURI !== preferred.voiceURI) {
+    appearanceSettings.ttsVoiceURI = preferred.voiceURI;
+    saveAppearanceSettings(appearanceSettings);
+  }
+}
+
+function configureTextToSpeech() {
+  stopTextToSpeech({ preservePosition: false });
+  ttsResumeAfterSeek = false;
+  ttsChunks = buildTtsChunks(words);
+  const saved = progressCache[activeTrackId] || {};
+  ttsWordIndex = saved.wordCount === words.length && Number.isInteger(saved.wordIndex)
+    ? Math.max(0, Math.min(saved.wordIndex, words.length))
+    : 0;
+  ttsChunkIndex = findTtsChunkAtWord(Math.min(ttsWordIndex, Math.max(0, words.length - 1)));
+  ttsVoiceControl.hidden = false;
+  seek.min = "0";
+  seek.max = String(Math.max(0, words.length - 1));
+  seek.step = "1";
+  seek.disabled = !speechSynthesisSupported || !words.length;
+  playPause.disabled = !speechSynthesisSupported || !words.length;
+  skipBack.disabled = !speechSynthesisSupported || ttsChunks.length < 2;
+  skipForward.disabled = !speechSynthesisSupported || ttsChunks.length < 2;
+  skipBack.setAttribute("aria-label", "Previous sentence");
+  skipBack.title = "Previous sentence";
+  skipForward.setAttribute("aria-label", "Next sentence");
+  skipForward.title = "Next sentence";
+  updateTtsProgress({ highlight: false, scrollReader: false });
+  syncModeSelector();
+}
+
+function resetTextToSpeechUi() {
+  ttsVoiceControl.hidden = true;
+  ttsChunks = [];
+  ttsWordIndex = 0;
+  ttsChunkIndex = 0;
+  ttsState = "idle";
+  ttsResumeAfterSeek = false;
+  seek.step = "0.01";
+  skipBack.setAttribute("aria-label", "Skip back 10 seconds");
+  skipBack.title = "Skip back 10s";
+  skipForward.setAttribute("aria-label", "Skip forward 10 seconds");
+  skipForward.title = "Skip forward 10s";
+}
+
+function buildTtsChunks(list) {
+  const chunks = [];
+  let startWord = 0;
+  let characterCount = 0;
+  for (let index = 0; index < list.length; index += 1) {
+    const spoken = `${list[index].text}${list[index].separator || " "}`;
+    characterCount += spoken.length;
+    const sentenceEnd = /[.!?…]["')\]»”]*\s*$/u.test(spoken);
+    const hardBreak = characterCount >= 650 || index - startWord >= 110;
+    if (!sentenceEnd && !hardBreak && index < list.length - 1) continue;
+    chunks.push(createTtsChunk(list, startWord, index));
+    startWord = index + 1;
+    characterCount = 0;
+  }
+  return chunks;
+}
+
+function createTtsChunk(list, startWord, endWord) {
+  let text = "";
+  const offsets = [];
+  for (let index = startWord; index <= endWord; index += 1) {
+    offsets.push({ charIndex: text.length, wordIndex: index });
+    text += `${list[index].text}${list[index].separator || (index < endWord ? " " : "")}`;
+  }
+  return { startWord, endWord, text: text.trimEnd(), offsets };
+}
+
+function createTtsSegment(chunk, startWord) {
+  if (startWord <= chunk.startWord) return chunk;
+  return createTtsChunk(words, startWord, chunk.endWord);
+}
+
+function selectedTtsVoice() {
+  return ttsVoices.find((voice) => voice.voiceURI === ttsVoiceSelect.value) || ttsVoices[0] || null;
+}
+
+function toggleTextToSpeech() {
+  if (!speechSynthesisSupported || !words.length) {
+    status("Browser text-to-speech is unavailable here. You can still read and use the vocabulary tools.");
+    return;
+  }
+  if (readerMode !== "listen") setReaderMode("listen");
+  if (ttsState === "playing") {
+    pauseTextToSpeech();
+    return;
+  }
+  if (ttsState === "paused") {
+    window.speechSynthesis.resume();
+    ttsState = "playing";
+    updateTtsPlaybackUi();
+    return;
+  }
+  if (ttsWordIndex >= words.length) ttsWordIndex = 0;
+  speakTextFromWord(ttsWordIndex);
+}
+
+function speakTextFromWord(wordIndex) {
+  if (!speechSynthesisSupported || !ttsChunks.length) return;
+  ttsResumeAfterSeek = false;
+  const nextWord = Math.max(0, Math.min(Math.floor(wordIndex), words.length - 1));
+  const sessionId = ++ttsSessionId;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.resume();
+  clearTtsFallbackHighlight();
+  ttsState = "playing";
+  ttsWordIndex = nextWord;
+  ttsChunkIndex = findTtsChunkAtWord(nextWord);
+  updateTtsPlaybackUi();
+  speakTtsChunk(ttsChunkIndex, nextWord, sessionId);
+}
+
+function speakTtsChunk(chunkIndex, startWord, sessionId) {
+  if (sessionId !== ttsSessionId || chunkIndex < 0 || chunkIndex >= ttsChunks.length) return;
+  const chunk = ttsChunks[chunkIndex];
+  const segment = createTtsSegment(chunk, Math.max(chunk.startWord, startWord));
+  const utterance = new SpeechSynthesisUtterance(segment.text);
+  const voice = selectedTtsVoice();
+  if (voice) utterance.voice = voice;
+  utterance.lang = voice?.lang || "es-ES";
+  utterance.rate = appearanceSettings.playbackRate;
+  utterance.pitch = 1;
+  ttsUtterance = utterance;
+
+  utterance.onstart = () => {
+    if (sessionId !== ttsSessionId) return;
+    ttsState = "playing";
+    setTtsFallbackHighlight(segment.startWord, segment.endWord);
+    setTtsWord(segment.startWord, true);
+    updateTtsPlaybackUi();
+  };
+
+  utterance.onboundary = (event) => {
+    if (sessionId !== ttsSessionId || !Number.isFinite(event.charIndex)) return;
+    if (event.name !== "sentence") clearTtsFallbackHighlight();
+    setTtsWord(wordAtTtsCharacter(segment.offsets, event.charIndex), true);
+  };
+
+  utterance.onend = () => {
+    if (sessionId !== ttsSessionId) return;
+    clearTtsFallbackHighlight();
+    setTtsWord(segment.endWord, false);
+    const nextChunk = chunkIndex + 1;
+    if (nextChunk < ttsChunks.length) {
+      ttsChunkIndex = nextChunk;
+      speakTtsChunk(nextChunk, ttsChunks[nextChunk].startWord, sessionId);
+      return;
+    }
+    ttsWordIndex = words.length;
+    ttsState = "idle";
+    ttsUtterance = null;
+    updateTtsProgress({ highlight: false, scrollReader: false });
+    saveActiveProgress(true);
+    setMediaSessionPlaybackState("paused");
+    status(`${appTitle.textContent} finished.`);
+  };
+
+  utterance.onerror = (event) => {
+    if (sessionId !== ttsSessionId || ["canceled", "interrupted"].includes(event.error)) return;
+    clearTtsFallbackHighlight();
+    ttsState = "idle";
+    ttsUtterance = null;
+    updateTtsPlaybackUi();
+    status("This browser voice stopped unexpectedly. Try another voice or a slower speed.");
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function pauseTextToSpeech() {
+  if (!speechSynthesisSupported || ttsState !== "playing") return;
+  window.speechSynthesis.pause();
+  ttsState = "paused";
+  updateTtsPlaybackUi();
+  saveActiveProgress(true);
+}
+
+function stopTextToSpeech({ preservePosition = false } = {}) {
+  if (!speechSynthesisSupported) return;
+  ttsSessionId += 1;
+  window.speechSynthesis.cancel();
+  ttsUtterance = null;
+  ttsState = "idle";
+  clearTtsFallbackHighlight();
+  if (!preservePosition) ttsWordIndex = 0;
+  updateTtsPlaybackUi();
+}
+
+function restartTextToSpeech(autoplay) {
+  const wordIndex = Math.min(ttsWordIndex, Math.max(0, words.length - 1));
+  stopTextToSpeech({ preservePosition: true });
+  if (autoplay) speakTextFromWord(wordIndex);
+  else updateTtsProgress({ highlight: readerMode === "listen", scrollReader: false });
+}
+
+function seekTextToSpeech(wordIndex) {
+  if (ttsState === "playing") ttsResumeAfterSeek = true;
+  stopTextToSpeech({ preservePosition: true });
+  ttsWordIndex = Math.max(0, Math.min(Math.floor(wordIndex), Math.max(0, words.length - 1)));
+  ttsChunkIndex = findTtsChunkAtWord(ttsWordIndex);
+  updateTtsProgress({ highlight: readerMode === "listen", scrollReader: true });
+  saveActiveProgress(false);
+}
+
+function moveTtsChunk(direction) {
+  if (!ttsChunks.length) return;
+  const wasPlaying = ttsState === "playing";
+  let currentChunk = findTtsChunkAtWord(Math.min(ttsWordIndex, Math.max(0, words.length - 1)));
+  if (direction < 0 && ttsWordIndex > ttsChunks[currentChunk].startWord + 2) {
+    // First press returns to the beginning of the current sentence.
+  } else {
+    currentChunk = Math.max(0, Math.min(currentChunk + direction, ttsChunks.length - 1));
+  }
+  stopTextToSpeech({ preservePosition: true });
+  ttsChunkIndex = currentChunk;
+  ttsWordIndex = ttsChunks[currentChunk].startWord;
+  updateTtsProgress({ highlight: readerMode === "listen", scrollReader: true });
+  saveActiveProgress(true);
+  if (wasPlaying) speakTextFromWord(ttsWordIndex);
+}
+
+function findTtsChunkAtWord(wordIndex) {
+  if (!ttsChunks.length) return 0;
+  let low = 0;
+  let high = ttsChunks.length - 1;
+  while (low <= high) {
+    const middle = Math.floor((low + high) / 2);
+    const chunk = ttsChunks[middle];
+    if (wordIndex < chunk.startWord) high = middle - 1;
+    else if (wordIndex > chunk.endWord) low = middle + 1;
+    else return middle;
+  }
+  return Math.max(0, Math.min(low, ttsChunks.length - 1));
+}
+
+function wordAtTtsCharacter(offsets, charIndex) {
+  let low = 0;
+  let high = offsets.length - 1;
+  let match = offsets[0]?.wordIndex || 0;
+  while (low <= high) {
+    const middle = Math.floor((low + high) / 2);
+    if (offsets[middle].charIndex <= charIndex) {
+      match = offsets[middle].wordIndex;
+      low = middle + 1;
+    } else {
+      high = middle - 1;
+    }
+  }
+  return match;
+}
+
+function setTtsFallbackHighlight(startWord, endWord) {
+  clearTtsFallbackHighlight();
+  for (let index = startWord; index <= endWord; index += 1) {
+    reader.querySelector(`[data-index="${index}"]`)?.classList.add("tts-fallback");
+  }
+}
+
+function clearTtsFallbackHighlight() {
+  reader.querySelectorAll(".word.tts-fallback").forEach((word) => word.classList.remove("tts-fallback"));
+}
+
+function setTtsWord(wordIndex, scrollReader) {
+  if (!words.length) return;
+  ttsWordIndex = Math.max(0, Math.min(wordIndex, words.length - 1));
+  applyCurrentWord(ttsWordIndex, ttsWordIndex, scrollReader);
+  updateTtsProgress({ highlight: false, scrollReader: false });
+  saveActiveProgress(false);
+}
+
+function updateTtsProgress({ highlight = false, scrollReader = false } = {}) {
+  const total = words.length;
+  const position = Math.max(0, Math.min(ttsWordIndex, total));
+  seek.value = String(Math.min(position, Math.max(0, total - 1)));
+  currentTimeEl.textContent = total ? `Word ${Math.min(position + 1, total).toLocaleString()}` : "Word 0";
+  durationEl.textContent = total.toLocaleString();
+  seek.setAttribute("aria-valuetext", total ? `Word ${Math.min(position + 1, total)} of ${total}` : "No text loaded");
+  drawWaveform(total ? position / Math.max(1, total - 1) : 0);
+  if (highlight && position < total) applyCurrentWord(position, position, scrollReader);
+  updateTtsPlaybackUi();
+}
+
+function updateTtsPlaybackUi() {
+  if (app.dataset.media !== "text") return;
+  const playing = ttsState === "playing";
+  playIcon.innerHTML = playing ? PAUSE_ICON : PLAY_ICON;
+  playPause.setAttribute("aria-label", playing ? "Pause browser voice" : ttsState === "paused" ? "Resume browser voice" : "Play with browser voice");
+  playPause.title = playPause.getAttribute("aria-label");
+  setMediaSessionPlaybackState(playing ? "playing" : "paused");
 }
 
 function assignApproximateTimes(list) {
@@ -1948,6 +2647,10 @@ function updateCurrentWord(time, scrollReader = true) {
     renderedWordStartIndex,
     Math.min(countEndedWords(time), renderedWordEndIndex + 1)
   );
+  applyCurrentWord(index, endedCount, scrollReader);
+}
+
+function applyCurrentWord(index, endedCount, scrollReader = true) {
   if (index === currentWordIndex && endedCount === readWordCount) return;
   if (currentWordIndex >= 0) reader.querySelector(`[data-index="${currentWordIndex}"]`)?.classList.remove("current");
   const previousEndedCount = readWordCount < renderedWordStartIndex
@@ -2070,6 +2773,15 @@ function renderDefinition(word, translation, anchor = selectedWordButton, allowH
     if (!btn || !selectedWordButton) return;
     const wordIndex = Number(selectedWordButton.dataset.index);
     const wordData = words[wordIndex];
+    if (app.dataset.media === "text" && wordData && speechSynthesisSupported) {
+      btn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (readerMode !== "listen") setReaderMode("listen");
+        speakTextFromWord(wordIndex);
+        hideWordPopover();
+      });
+      return;
+    }
     if (!wordData || !Number.isFinite(wordData.start)) {
       btn.style.display = "none";
       return;
@@ -2452,7 +3164,28 @@ function progressLabel(saved) {
   return `${formatTime(saved.time)} of ${formatTime(saved.duration)} · ${percent}%`;
 }
 
+function textProgressLabel(saved) {
+  if (!saved?.wordCount || !saved?.wordIndex) return "Ready to read or listen";
+  const percent = Math.min(100, Math.round((saved.wordIndex / saved.wordCount) * 100));
+  if (percent >= 100) return "Completed";
+  return `${Number(saved.wordIndex).toLocaleString()} of ${Number(saved.wordCount).toLocaleString()} words · ${percent}%`;
+}
+
 function saveActiveProgress(force) {
+  if (app.dataset.media === "text") {
+    if (!activeTrackId || !words.length) return;
+    const now = Date.now();
+    if (!force && now - lastProgressSave < 1500) return;
+    lastProgressSave = now;
+    progressCache[activeTrackId] = {
+      wordIndex: Math.max(0, Math.min(ttsWordIndex, words.length)),
+      wordCount: words.length,
+      updatedAt: new Date().toISOString()
+    };
+    saveProgressCache(progressCache);
+    if (app.dataset.view === "library") renderTrackList();
+    return;
+  }
   if (app.dataset.media !== "audio" || !activeTrackId || !audio.duration || !Number.isFinite(audio.duration)) return;
   const expectedSource = activeAudioSource ? new URL(activeAudioSource, document.baseURI).href : "";
   if (!expectedSource || audio.currentSrc !== expectedSource) return;
@@ -2533,10 +3266,14 @@ function formatPlaybackRate(rate) {
 }
 
 function setPlaybackRate(rate) {
+  const restartSpeech = app.dataset.media === "text" && ttsState === "playing";
+  const resetPausedSpeech = app.dataset.media === "text" && ttsState === "paused";
   audio.playbackRate = rate;
   appearanceSettings.playbackRate = rate;
   saveAppearanceSettings(appearanceSettings);
   updateSpeedButton(rate);
+  if (restartSpeech) restartTextToSpeech(true);
+  else if (resetPausedSpeech) restartTextToSpeech(false);
 }
 
 function setSpeedMenuOpen(isOpen) {
@@ -2597,7 +3334,8 @@ function loadAppearanceSettings() {
       font: ["serif", "sans", "accessible"].includes(saved.font) ? saved.font : defaults.font,
       readerWidth: ["narrow", "standard", "wide"].includes(saved.readerWidth) ? saved.readerWidth : defaults.readerWidth,
       vocabWarmup: ["always", "collapsed", "off"].includes(saved.vocabWarmup) ? saved.vocabWarmup : defaults.vocabWarmup,
-      playbackRate: SPEED_RATES.includes(Number(saved.playbackRate)) ? Number(saved.playbackRate) : defaults.playbackRate
+      playbackRate: SPEED_RATES.includes(Number(saved.playbackRate)) ? Number(saved.playbackRate) : defaults.playbackRate,
+      ttsVoiceURI: String(saved.ttsVoiceURI || "")
     };
   } catch {
     return defaultAppearanceSettings();
@@ -2615,7 +3353,8 @@ function defaultAppearanceSettings() {
     font: "serif",
     readerWidth: "standard",
     vocabWarmup: "collapsed",
-    playbackRate: 1
+    playbackRate: 1,
+    ttsVoiceURI: ""
   };
 }
 
@@ -3590,6 +4329,11 @@ if (toggleVocabWarmupCollapse) {
 
 if (startReadingFromVocabBtn) {
   startReadingFromVocabBtn.addEventListener("click", () => {
+    if (app.dataset.media === "text" && speechSynthesisSupported) {
+      if (readerMode !== "listen") setReaderMode("listen");
+      toggleTextToSpeech();
+      return;
+    }
     if (audio.src) {
       if (readerMode !== "listen") setReadMode(false);
       audio.play().catch(() => {
