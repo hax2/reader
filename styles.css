@@ -866,6 +866,10 @@ h2 {
   color: var(--muted);
 }
 
+.tts-voice-control[hidden] {
+  display: none;
+}
+
 .tts-voice-control select {
   width: min(190px, 22vw);
   min-height: 36px;
