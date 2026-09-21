@@ -17,6 +17,8 @@ import time
 import wave
 from pathlib import Path
 
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
+
 MODEL_IDS = {
     "1.7B": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
     "0.6B": "Qwen/Qwen3-TTS-12Hz-0.6B-Base",
@@ -211,6 +213,7 @@ def ensure_cuda_library_path() -> None:
     environment["LD_LIBRARY_PATH"] = ":".join(
         [*(str(path) for path in library_dirs), *([inherited] if inherited else [])]
     )
+    environment["PYTORCH_CUDA_ALLOC_CONF"] = os.environ.get("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
     environment[marker] = "1"
     os.execve(sys.executable, [sys.executable, *sys.argv], environment)
 

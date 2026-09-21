@@ -477,18 +477,30 @@ def narrate(text_path: Path, args: argparse.Namespace, api_key: str) -> None:
     cache_dir.mkdir(parents=True, exist_ok=True)
     chunk_info: list[tuple[str, Path, float]] = []
 
-    print(f"{text_path}: {len(chunks)} chunks")
-    for index, chunk in enumerate(chunks, 1):
-        wav_path = cache_dir / f"{index:03}.wav"
-        if not wav_path.exists():
-            print(f"  Generating chunk {index}/{len(chunks)}...")
+    print(f"{text_path}: {len(chunks)} chunks", flush=True)
+    missing = [
+        (index, chunk, cache_dir / f"{index:03}.wav")
+        for index, chunk in enumerate(chunks, 1)
+        if not (cache_dir / f"{index:03}.wav").exists()
+    ]
+    if missing:
+        def fetch_chunk(item: tuple[int, str, Path]) -> None:
+            idx, chk, wav_p = item
+            print(f"  Generating chunk {idx}/{len(chunks)}...", flush=True)
             pcm, rate = generate_audio(
                 api_key=api_key,
                 model=args.model,
                 voice=args.voice,
-                text=f"{DEFAULT_INSTRUCTION}\n\n{chunk}",
+                text=f"{DEFAULT_INSTRUCTION}\n\n{chk}",
             )
-            write_wav(wav_path, pcm, rate)
+            write_wav(wav_p, pcm, rate)
+            print(f"  Finished chunk {idx}/{len(chunks)}", flush=True)
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
+            list(pool.map(fetch_chunk, missing))
+
+    for index, chunk in enumerate(chunks, 1):
+        wav_path = cache_dir / f"{index:03}.wav"
         duration = wav_duration(wav_path)
         chunk_info.append((chunk, wav_path, duration))
 
