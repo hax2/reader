@@ -1,10 +1,10 @@
 import React from "react";
-import type { Passage } from "../types";
 
 export interface PassagePracticeProps {
   passageIndex: number;
   totalPassages: number;
   passageRevealed: boolean;
+  passageStatusText?: string;
   onToggleReveal: () => void;
   onReplay: () => void;
   onPrevious: () => void;
@@ -15,6 +15,7 @@ export const PassagePractice: React.FC<PassagePracticeProps> = ({
   passageIndex,
   totalPassages,
   passageRevealed,
+  passageStatusText,
   onToggleReveal,
   onReplay,
   onPrevious,
@@ -49,7 +50,7 @@ export const PassagePractice: React.FC<PassagePracticeProps> = ({
           : "Listen without reading. Replay as often as you need."}
       </p>
 
-      <div className="passage-actions">
+      <div className="passage-actions" role="group" aria-label="Passage controls">
         <button
           id="previousPassage"
           type="button"
@@ -58,8 +59,13 @@ export const PassagePractice: React.FC<PassagePracticeProps> = ({
         >
           Previous
         </button>
-        <button id="replayPassage" type="button" onClick={onReplay}>
-          Replay passage
+        <button
+          id="replayPassage"
+          className="passage-primary"
+          type="button"
+          onClick={onReplay}
+        >
+          Listen again
         </button>
         <button
           id="nextPassage"
@@ -67,12 +73,12 @@ export const PassagePractice: React.FC<PassagePracticeProps> = ({
           disabled={passageIndex >= totalPassages - 1}
           onClick={onNext}
         >
-          Next
+          Got it — next
         </button>
       </div>
 
       <p id="passageStatus" className="visually-hidden" role="status" aria-live="polite">
-        {label}.
+        {passageStatusText || `${label}.`}
       </p>
     </section>
   );

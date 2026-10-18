@@ -46,18 +46,39 @@ export const DEMO_ENGLISH_TEXT =
 
 export interface OnboardingState {
   step: number;
-  theme: "system" | "paper" | "mist" | "night";
-  font: "serif" | "sans" | "accessible";
+  theme: AppearanceSettings["theme"];
+  font: AppearanceSettings["font"];
   textSize: number;
   lineHeight: number;
-  readerWidth: "narrow" | "standard" | "wide";
-  highlight: string;
-  textMode: "all" | "dim-upcoming";
-  translationLayout: "off" | "english-below" | "side-by-side";
+  readerWidth: AppearanceSettings["readerWidth"];
+  highlight: AppearanceSettings["highlight"];
+  textMode: AppearanceSettings["textMode"];
+  translationLayout: AppearanceSettings["translationLayout"];
   playbackRate: number;
-  vocabWarmup: "collapsed" | "expanded" | "hidden";
+  vocabWarmup: AppearanceSettings["vocabWarmup"];
   catalogLevel: string;
-  catalogFormat: "all" | "listen" | "read";
+  catalogFormat: CatalogSettings["format"];
+}
+
+function applyAppearanceToDom(settings: {
+  theme: AppearanceSettings["theme"];
+  highlight: AppearanceSettings["highlight"];
+  textMode: AppearanceSettings["textMode"];
+  translationLayout: AppearanceSettings["translationLayout"];
+  font: AppearanceSettings["font"];
+  readerWidth: AppearanceSettings["readerWidth"];
+  textSize: number;
+  lineHeight: number;
+}) {
+  const resolvedTheme = resolveTheme(settings.theme);
+  document.documentElement.dataset.theme = resolvedTheme;
+  document.documentElement.dataset.highlight = settings.highlight;
+  document.documentElement.dataset.textMode = settings.textMode;
+  document.documentElement.dataset.translationLayout = settings.translationLayout;
+  document.documentElement.dataset.readerFont = settings.font;
+  document.documentElement.dataset.readerWidth = settings.readerWidth;
+  document.documentElement.style.setProperty("--reader-font-size", `${(1.6 * settings.textSize) / 100}rem`);
+  document.documentElement.style.setProperty("--reader-line-height", String(settings.lineHeight));
 }
 
 export function useOnboardingDemo({
@@ -72,8 +93,8 @@ export function useOnboardingDemo({
   const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState<OnboardingState>({
     step: 1,
-    theme: (initialAppearance.theme as OnboardingState["theme"]) || "system",
-    font: (initialAppearance.font as OnboardingState["font"]) || "serif",
+    theme: initialAppearance.theme || "system",
+    font: initialAppearance.font || "serif",
     textSize: initialAppearance.textSize || 100,
     lineHeight: initialAppearance.lineHeight || 1.8,
     readerWidth: initialAppearance.readerWidth || "standard",
@@ -81,7 +102,7 @@ export function useOnboardingDemo({
     textMode: initialAppearance.textMode || "dim-upcoming",
     translationLayout: initialAppearance.translationLayout || "english-below",
     playbackRate: initialAppearance.playbackRate || 1,
-    vocabWarmup: (initialAppearance.vocabWarmup as OnboardingState["vocabWarmup"]) || "collapsed",
+    vocabWarmup: initialAppearance.vocabWarmup || "collapsed",
     catalogLevel: initialCatalog.level || "all",
     catalogFormat: initialCatalog.format || "all"
   });
@@ -93,11 +114,16 @@ export function useOnboardingDemo({
 
   const demoRafIdRef = useRef<number>(0);
   const demoLastTimestampRef = useRef<number>(0);
-  const sliderPreviewTimerRef = useRef<number>(0);
   const isPlayingRef = useRef(false);
   const currentTimeRef = useRef(0);
   isPlayingRef.current = isPlayingDemo;
   currentTimeRef.current = demoCurrentTime;
+
+  // Live ambience feedback on background document while onboarding is open
+  useEffect(() => {
+    if (!isOpen) return;
+    applyAppearanceToDom(state);
+  }, [isOpen, state]);
 
   const pauseDemoSimulation = useCallback(() => {
     setIsPlayingDemo(false);
@@ -182,11 +208,10 @@ export function useOnboardingDemo({
 
   const openOnboarding = useCallback(
     (step = 1) => {
-      setState((prev) => ({
-        ...prev,
+      setState({
         step,
-        theme: (initialAppearance.theme as OnboardingState["theme"]) || "system",
-        font: (initialAppearance.font as OnboardingState["font"]) || "serif",
+        theme: initialAppearance.theme || "system",
+        font: initialAppearance.font || "serif",
         textSize: initialAppearance.textSize || 100,
         lineHeight: initialAppearance.lineHeight || 1.8,
         readerWidth: initialAppearance.readerWidth || "standard",
@@ -194,34 +219,21 @@ export function useOnboardingDemo({
         textMode: initialAppearance.textMode || "dim-upcoming",
         translationLayout: initialAppearance.translationLayout || "english-below",
         playbackRate: initialAppearance.playbackRate || 1,
-        vocabWarmup: (initialAppearance.vocabWarmup as OnboardingState["vocabWarmup"]) || "collapsed",
+        vocabWarmup: initialAppearance.vocabWarmup || "collapsed",
         catalogLevel: initialCatalog.level || "all",
         catalogFormat: initialCatalog.format || "all"
-      }));
+      });
       setIsOpen(true);
       resetDemoSimulation();
     },
     [initialAppearance, initialCatalog, resetDemoSimulation]
   );
 
-  const closeOnboarding = useCallback(
-    (saveCurrent = false) => {
-      pauseDemoSimulation();
-      setIsOpen(false);
-      safeSetLocalStorage("spanish-reader-onboarding-v1", { completed: true, timestamp: Date.now() });
-      if (saveCurrent) {
-        finishOnboarding();
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [pauseDemoSimulation]
-  );
-
   const finishOnboarding = useCallback(() => {
     const updatedAppearance: AppearanceSettings = {
       ...initialAppearance,
-      theme: state.theme === "system" ? "system" : state.theme,
-      font: state.font === "accessible" ? "sans" : state.font,
+      theme: state.theme,
+      font: state.font,
       textSize: state.textSize,
       lineHeight: state.lineHeight,
       readerWidth: state.readerWidth,
@@ -244,47 +256,27 @@ export function useOnboardingDemo({
     onSave(updatedAppearance, updatedCatalog);
   }, [initialAppearance, initialCatalog, onSave, pauseDemoSimulation, state]);
 
+  const closeOnboarding = useCallback(
+    (saveCurrent = false) => {
+      if (saveCurrent) {
+        finishOnboarding();
+      } else {
+        applyAppearanceToDom(initialAppearance);
+        pauseDemoSimulation();
+        setIsOpen(false);
+        safeSetLocalStorage("spanish-reader-onboarding-v1", { completed: true, timestamp: Date.now() });
+      }
+    },
+    [finishOnboarding, initialAppearance, pauseDemoSimulation]
+  );
+
   const goToOnboardingStep = useCallback((step: number) => {
     setState((prev) => ({ ...prev, step: Math.min(3, Math.max(1, step)) }));
-  }, []);
-
-  const updateDemoPreview = useCallback(() => {
-    // Handled reactively via state
-  }, []);
-
-  const beginSliderPreview = useCallback((_slider?: HTMLElement) => {
-    window.clearTimeout(sliderPreviewTimerRef.current);
-  }, []);
-
-  const scheduleSliderPreviewEnd = useCallback(() => {
-    window.clearTimeout(sliderPreviewTimerRef.current);
-    sliderPreviewTimerRef.current = window.setTimeout(() => {}, 700);
-  }, []);
-
-  const endSliderPreview = useCallback(() => {
-    window.clearTimeout(sliderPreviewTimerRef.current);
-  }, []);
-
-  const renderDemoWords = useCallback(() => {
-    // React handles rendering of DEMO_EXCERPT_WORDS
-  }, []);
-
-  const updateDemoProgressUI = useCallback(() => {
-    // React handles progress bar rendering reactively
-  }, []);
-
-  const highlightDemoWord = useCallback((index: number) => {
-    setActiveWordIndex(index);
-  }, []);
-
-  const syncOnboardingControlsWithState = useCallback(() => {
-    // React state handles syncing
   }, []);
 
   useEffect(() => {
     return () => {
       if (demoRafIdRef.current) cancelAnimationFrame(demoRafIdRef.current);
-      if (sliderPreviewTimerRef.current) window.clearTimeout(sliderPreviewTimerRef.current);
     };
   }, []);
 
@@ -305,15 +297,6 @@ export function useOnboardingDemo({
     resetDemoSimulation,
     showDemoWordPopover,
     hideDemoWordPopover,
-    finishOnboarding,
-    updateDemoPreview,
-    renderDemoWords,
-    tickDemoSimulation,
-    updateDemoProgressUI,
-    highlightDemoWord,
-    syncOnboardingControlsWithState,
-    beginSliderPreview,
-    scheduleSliderPreviewEnd,
-    endSliderPreview
+    finishOnboarding
   };
 }

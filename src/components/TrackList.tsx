@@ -16,8 +16,37 @@ export interface TrackListProps {
   onClearFilters: () => void;
 }
 
-export function renderTrackList(props?: TrackListProps): React.ReactElement | null {
-  return props ? <TrackList {...props} /> : null;
+export function getVisibleTracks(tracks: Track[], catalogSettings: CatalogSettings): Track[] {
+  const query = normalizeSearch(catalogSettings.search);
+  return tracks
+    .filter((track) => {
+      if (catalogSettings.collection !== "all" && track.collection !== catalogSettings.collection) return false;
+      if (catalogSettings.level !== "all" && track.difficulty !== catalogSettings.level) return false;
+      if (catalogSettings.format === "listen" && !track.audio) return false;
+      if (catalogSettings.format === "read" && track.audio) return false;
+      if (!query) return true;
+      return normalizeSearch(
+        [
+          track.title,
+          track.author,
+          track.genre,
+          track.description,
+          track.collection === "bible"
+            ? "biblia bible escritura scripture"
+            : track.collection === "greek-classics"
+              ? "clasicos clásicos griegos grecia greek classics philosophy filosofía mythology mitologia mitología"
+              : track.collection === "don-quijote"
+                ? "quijote quixote cervantes mancha sancho panza novela novel"
+                : track.collection === "my-books"
+                  ? "mis libros my books personal private"
+                  : "cuentos stories relatos",
+          ...(Array.isArray(track.tags) ? track.tags : [])
+        ]
+          .filter(Boolean)
+          .join(" ")
+      ).includes(query);
+    })
+    .sort((a, b) => compareTracks(a, b, catalogSettings.sort));
 }
 
 export const TrackList: React.FC<TrackListProps> = ({
@@ -40,35 +69,7 @@ export const TrackList: React.FC<TrackListProps> = ({
   }
 
   const query = normalizeSearch(catalogSettings.search);
-  const visibleTracks = tracks
-    .filter((track) => {
-      if (catalogSettings.collection !== "all" && track.collection !== catalogSettings.collection) return false;
-      if (catalogSettings.level !== "all" && track.difficulty !== catalogSettings.level) return false;
-      if (catalogSettings.format === "listen" && !track.audio) return false;
-      if (catalogSettings.format === "read" && track.audio) return false;
-      if (!query) return true;
-      return normalizeSearch(
-        [
-          track.title,
-          track.author,
-          (track as { genre?: string }).genre,
-          track.description,
-          track.collection === "bible"
-            ? "biblia bible escritura scripture"
-            : track.collection === "greek-classics"
-              ? "clasicos clásicos griegos grecia greek classics philosophy filosofía mythology mitologia mitología"
-              : track.collection === "don-quijote"
-                ? "quijote quixote cervantes mancha sancho panza novela novel"
-                : track.collection === "my-books"
-                  ? "mis libros my books personal private"
-                  : "cuentos stories relatos",
-          ...(Array.isArray((track as { tags?: string[] }).tags) ? (track as { tags?: string[] }).tags! : [])
-        ]
-          .filter(Boolean)
-          .join(" ")
-      ).includes(query);
-    })
-    .sort((a, b) => compareTracks(a, b, catalogSettings.sort));
+  const visibleTracks = getVisibleTracks(tracks, catalogSettings);
 
   if (!visibleTracks.length) {
     if (catalogSettings.collection === "my-books" && !personalBooks.length) {
@@ -107,7 +108,7 @@ export const TrackList: React.FC<TrackListProps> = ({
   const continueTracks = showingDefaultCatalog
     ? tracks
         .filter((track) => {
-          const saved = progressCache[track.id] as { time?: number; duration?: number; wordIndex?: number; wordCount?: number } | undefined;
+          const saved = progressCache[track.id];
           if (track.audio) {
             return (
               (saved?.time || 0) > 0 &&

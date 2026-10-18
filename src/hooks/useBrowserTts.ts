@@ -98,46 +98,6 @@ export function wordAtTtsCharacter(offsets: TtsOffset[], charIndex: number): num
   return match;
 }
 
-export function initializeSpeechVoices(
-  onVoices: (voices: SpeechSynthesisVoice[]) => void
-): () => void {
-  if (!speechSynthesisSupported) return () => {};
-  const load = () => {
-    const available = window.speechSynthesis.getVoices().filter(isUsableSpeechVoice);
-    onVoices(available);
-  };
-  load();
-  window.speechSynthesis.addEventListener?.("voiceschanged", load);
-  return () => {
-    window.speechSynthesis.removeEventListener?.("voiceschanged", load);
-  };
-}
-
-export function configureTextToSpeech(
-  words: WordToken[],
-  onChunks: (chunks: TtsChunk[]) => void
-): void {
-  const chunks = buildTtsChunks(words);
-  onChunks(chunks);
-}
-
-export function resetTextToSpeechUi(): void {
-  if (speechSynthesisSupported) {
-    window.speechSynthesis.cancel();
-  }
-}
-
-export function updateTtsProgress(
-  wordIndex: number,
-  onWordChange?: (index: number) => void
-): void {
-  onWordChange?.(wordIndex);
-}
-
-export function updateTtsPlaybackUi(isPlaying: boolean): void {
-  setMediaSessionPlaybackState(isPlaying ? "playing" : "paused");
-}
-
 export function useBrowserTts({
   words,
   appearanceSettings,
@@ -147,7 +107,7 @@ export function useBrowserTts({
 }: {
   words: WordToken[];
   appearanceSettings: AppearanceSettings;
-  onWordChange?: (wordIndex: number) => void;
+  onWordChange?: (wordIndex: number, scrollReader: boolean) => void;
   onStatusChange?: (msg: string) => void;
   readerRef: React.RefObject<HTMLElement | null>;
 }) {
@@ -213,26 +173,30 @@ export function useBrowserTts({
       return `${a.lang} ${a.name}`.localeCompare(`${b.lang} ${b.name}`);
     });
     setVoices(sorted);
+    if (!selectedVoiceURI && sorted[0]?.voiceURI) {
+      setSelectedVoiceURI(sorted[0].voiceURI);
+    }
     return sorted;
-  }, []);
+  }, [selectedVoiceURI]);
 
   useEffect(() => {
     if (!speechSynthesisSupported) return;
     const loaded = refreshSpeechVoices();
+    let timer = 0;
     if (!loaded.length) {
       let attempts = 0;
       const retry = () => {
         attempts += 1;
         const res = refreshSpeechVoices();
         if (!res.length && attempts < 6) {
-          window.setTimeout(retry, 350 * attempts);
+          timer = window.setTimeout(retry, 350 * attempts);
         }
       };
-      const timer = window.setTimeout(retry, 250);
-      return () => window.clearTimeout(timer);
+      timer = window.setTimeout(retry, 250);
     }
     window.speechSynthesis.addEventListener?.("voiceschanged", refreshSpeechVoices);
     return () => {
+      if (timer) window.clearTimeout(timer);
       window.speechSynthesis.removeEventListener?.("voiceschanged", refreshSpeechVoices);
     };
   }, [refreshSpeechVoices]);
@@ -256,7 +220,7 @@ export function useBrowserTts({
       if (!words.length) return;
       const clamped = Math.max(0, Math.min(index, words.length - 1));
       setTtsWordIndex(clamped);
-      onWordChange?.(clamped);
+      onWordChange?.(clamped, scrollReader);
     },
     [onWordChange, words.length]
   );
@@ -415,12 +379,12 @@ export function useBrowserTts({
       window.speechSynthesis.resume();
       clearTtsFallbackHighlight();
       setTtsState("playing");
-      setTtsWordIndex(nextWord);
+      setTtsWord(nextWord, true);
       const cIndex = findTtsChunkAtWord(chunks, nextWord);
       chunkIndexRef.current = cIndex;
       speakTtsChunk(cIndex, nextWord, sessionId);
     },
-    [chunks, clearTtsFallbackHighlight, clearTtsWordTimer, speakTtsChunk, words.length]
+    [chunks, clearTtsFallbackHighlight, clearTtsWordTimer, setTtsWord, speakTtsChunk, words.length]
   );
 
   const pauseTextToSpeech = useCallback(() => {
@@ -479,13 +443,13 @@ export function useBrowserTts({
       const wasPlaying = ttsState === "playing";
       stopTextToSpeech({ preservePosition: true });
       const clamped = Math.max(0, Math.min(Math.floor(wordIndex), Math.max(0, words.length - 1)));
-      setTtsWordIndex(clamped);
+      setTtsWord(clamped, false);
       chunkIndexRef.current = findTtsChunkAtWord(chunks, clamped);
       if (wasPlaying) {
         speakTextFromWord(clamped);
       }
     },
-    [chunks, speakTextFromWord, stopTextToSpeech, ttsState, words.length]
+    [chunks, setTtsWord, speakTextFromWord, stopTextToSpeech, ttsState, words.length]
   );
 
   const moveTtsChunk = useCallback(
@@ -501,10 +465,10 @@ export function useBrowserTts({
       stopTextToSpeech({ preservePosition: true });
       chunkIndexRef.current = currentChunk;
       const newWordIndex = chunks[currentChunk].startWord;
-      setTtsWordIndex(newWordIndex);
+      setTtsWord(newWordIndex, true);
       if (wasPlaying) speakTextFromWord(newWordIndex);
     },
-    [chunks, speakTextFromWord, stopTextToSpeech, ttsState, ttsWordIndex, words.length]
+    [chunks, setTtsWord, speakTextFromWord, stopTextToSpeech, ttsState, ttsWordIndex, words.length]
   );
 
   return {
@@ -513,6 +477,7 @@ export function useBrowserTts({
     setSelectedVoiceURI,
     ttsState,
     ttsWordIndex,
+    setTtsWordIndex,
     chunks,
     toggleTextToSpeech,
     speakTextFromWord,

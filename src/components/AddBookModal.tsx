@@ -1,33 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { createPersonalBookId, savePersonalBook } from "../utils/storage";
-import { difficultyOrder } from "../utils/constants";
+import { difficultyOrder, maxPersonalBookBytes } from "../utils/constants";
 import { readingMinutes } from "../utils/text";
+import { tokenizeUntimed } from "../utils/tokenization";
 import type { PersonalBook } from "../types";
 
 export interface AddBookModalProps {
   isOpen: boolean;
   onClose: () => void;
   onBookAdded: (book: PersonalBook) => void;
-}
-
-export function resetAddBookForm(
-  setTitle?: (v: string) => void,
-  setText?: (v: string) => void,
-  setDifficulty?: (v: string) => void,
-  setError?: (v: string) => void
-): void {
-  setTitle?.("");
-  setText?.("");
-  setDifficulty?.("B2");
-  setError?.("");
-}
-
-export function showAddBookError(setError: (v: string) => void, message: string): void {
-  setError(message);
-}
-
-export function hideAddBookError(setError: (v: string) => void): void {
-  setError("");
 }
 
 export const AddBookModal: React.FC<AddBookModalProps> = ({
@@ -39,201 +20,251 @@ export const AddBookModal: React.FC<AddBookModalProps> = ({
   const [author, setAuthor] = useState("");
   const [difficulty, setDifficulty] = useState("B2");
   const [text, setText] = useState("");
-  const [coverDataUrl, setCoverDataUrl] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const titleInputRef = useRef<HTMLInputElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
 
-  if (!isOpen) return null;
-
-  const handleTextFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (file.size > 2 * 1024 * 1024) {
-      setError("File exceeds 2MB limit.");
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = String(event.target?.result || "");
-      setText(result);
-      if (!title) {
-        const guessedTitle = file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ");
-        setTitle(guessedTitle);
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (isOpen) {
+      if (!dialog.open) {
+        try {
+          dialog.showModal();
+        } catch {
+          dialog.setAttribute("open", "");
+        }
       }
-    };
-    reader.readAsText(file);
+      setError("");
+      window.setTimeout(() => titleInputRef.current?.focus(), 0);
+    } else if (dialog.open) {
+      dialog.close();
+    }
+  }, [isOpen]);
+
+  const resetForm = () => {
+    setTitle("");
+    setAuthor("");
+    setDifficulty("B2");
+    setText("");
+    setError("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleCoverFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTextFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setCoverDataUrl(String(event.target?.result || ""));
-    };
-    reader.readAsDataURL(file);
+    setError("");
+    if (file.size > maxPersonalBookBytes) {
+      setError("That file is larger than 2 MB. Choose a smaller plain-text file.");
+      e.target.value = "";
+      return;
+    }
+    try {
+      const fileText = await file.text();
+      setText(fileText);
+      if (!title.trim()) {
+        setTitle(file.name.replace(/\.(?:txt|md)$/i, "").replace(/[_-]+/g, " ").trim());
+      }
+    } catch {
+      setError("That file could not be read as plain text.");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) {
-      setError("Please provide a title.");
+    setError("");
+    const trimmedText = text.trim();
+    const trimmedTitle = title.trim();
+    if (!trimmedTitle || !trimmedText) {
+      setError("Add a title and some Spanish text before saving.");
       return;
     }
-    if (!text.trim()) {
-      setError("Please provide Spanish text or choose a text file.");
+    if (new Blob([trimmedText]).size > maxPersonalBookBytes) {
+      setError("This text is larger than 2 MB. Split it into smaller books before importing.");
       return;
     }
+
+    const parsed = tokenizeUntimed(trimmedText);
+    if (!parsed.length) {
+      setError("The book needs at least one readable word.");
+      return;
+    }
+
+    const newBook: PersonalBook = {
+      id: createPersonalBookId(),
+      title: trimmedTitle,
+      author: author.trim(),
+      difficulty: (difficultyOrder as readonly string[]).includes(difficulty) ? difficulty : "B2",
+      collection: "my-books",
+      description: "Added to your private library",
+      customText: trimmedText,
+      wordCount: parsed.length,
+      minutes: readingMinutes(parsed.length),
+      personal: true,
+      addedAt: new Date().toISOString()
+    };
 
     setIsSubmitting(true);
-    setError("");
-
     try {
-      const wordsCount = text.trim().split(/\s+/).length;
-      const newBook: PersonalBook = {
-        id: createPersonalBookId(),
-        title: title.trim(),
-        author: author.trim() || undefined,
-        difficulty,
-        collection: "my-books",
-        personal: true,
-        customText: text.trim(),
-        cover: coverDataUrl || undefined,
-        minutes: readingMinutes(wordsCount),
-        addedAt: new Date().toISOString()
-      };
-
       await savePersonalBook(newBook);
+      resetForm();
       onBookAdded(newBook);
       onClose();
-    } catch (err: unknown) {
-      setError((err as Error).message || "Could not save personal book.");
+    } catch {
+      setError("This browser could not save the book. Check that site storage is available and try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="dialog-overlay" onClick={onClose}>
-      <dialog
-        id="addBookDialog"
-        className="add-book-dialog is-open"
-        open
-        onClick={(e) => e.stopPropagation()}
-        aria-labelledby="addBookDialogTitle"
-      >
-        <form id="addBookForm" className="add-book-shell" onSubmit={handleSubmit}>
-          <header className="add-book-header">
-            <div>
-              <p className="eyebrow">Your private library</p>
-              <h2 id="addBookDialogTitle">Add a book</h2>
-              <p>Import plain Spanish text. It stays in this browser and is never uploaded.</p>
-            </div>
-            <button
-              id="closeAddBookBtn"
-              className="utility-button"
-              type="button"
-              aria-label="Close add book dialog"
-              onClick={onClose}
+    <dialog
+      id="addBookDialog"
+      ref={dialogRef}
+      className="add-book-dialog"
+      aria-labelledby="addBookDialogTitle"
+      onCancel={(e) => {
+        e.preventDefault();
+        onClose();
+      }}
+      onClick={(e) => {
+        if (e.target === dialogRef.current) onClose();
+      }}
+    >
+      <form id="addBookForm" className="add-book-shell" onSubmit={handleSubmit}>
+        <header className="add-book-header">
+          <div>
+            <p className="eyebrow">Your private library</p>
+            <h2 id="addBookDialogTitle">Add a book</h2>
+            <p>Import plain Spanish text. It stays in this browser and is never uploaded.</p>
+          </div>
+          <button
+            id="closeAddBookBtn"
+            className="utility-button"
+            type="button"
+            aria-label="Close add book dialog"
+            onClick={onClose}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              aria-hidden="true"
             >
-              ✕
-            </button>
-          </header>
+              <line x1="6" y1="6" x2="18" y2="18" />
+              <line x1="18" y1="6" x2="6" y2="18" />
+            </svg>
+          </button>
+        </header>
 
-          <div className="add-book-body">
-            {error && (
-              <p id="addBookError" className="error-banner">
-                {error}
-              </p>
-            )}
-
+        <div className="add-book-body">
+          <div className="add-book-fields">
             <label>
-              <span>Title *</span>
+              <span>Title</span>
               <input
                 id="bookTitle"
+                ref={titleInputRef}
+                name="title"
+                type="text"
+                maxLength={160}
                 required
-                placeholder="e.g. La metamorfosis"
+                autoComplete="off"
+                placeholder="Book title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </label>
-
             <label>
-              <span>Author</span>
+              <span>
+                Author <small>optional</small>
+              </span>
               <input
                 id="bookAuthor"
-                placeholder="e.g. Franz Kafka"
+                name="author"
+                type="text"
+                maxLength={120}
+                autoComplete="off"
+                placeholder="Author name"
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
               />
             </label>
-
             <label>
-              <span>Difficulty level</span>
+              <span>Reading level</span>
               <select
                 id="bookDifficulty"
+                name="difficulty"
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value)}
               >
-                {difficultyOrder.map((level) => (
-                  <option key={level} value={level}>
-                    {level}
-                  </option>
-                ))}
+                <option value="A2">A2 · Early reader</option>
+                <option value="B1">B1 · Intermediate</option>
+                <option value="B2">B2 · Upper intermediate</option>
+                <option value="C1">C1 · Advanced</option>
               </select>
-            </label>
-
-            <label>
-              <span>Text file (.txt)</span>
-              <input
-                id="bookFile"
-                type="file"
-                accept=".txt,text/plain"
-                onChange={handleTextFileChange}
-              />
-            </label>
-
-            <label>
-              <span>Or paste Spanish text *</span>
-              <textarea
-                id="bookText"
-                rows={6}
-                placeholder="Paste your plain-text Spanish here…"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-              />
-            </label>
-
-            <label>
-              <span>Cover image (optional)</span>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleCoverFileChange}
-              />
             </label>
           </div>
 
-          <footer className="add-book-footer">
+          <label className="book-file-pick">
+            <span>Choose a text file</span>
+            <small>UTF-8 .txt or .md, up to 2 MB</small>
+            <input
+              id="bookFile"
+              ref={fileInputRef}
+              type="file"
+              accept=".txt,.md,text/plain,text/markdown"
+              onChange={handleTextFileChange}
+            />
+          </label>
+
+          <div className="add-book-divider">
+            <span>or paste the text</span>
+          </div>
+
+          <label className="book-text-field">
+            <span>Spanish text</span>
+            <textarea
+              id="bookText"
+              name="text"
+              rows={10}
+              required
+              placeholder="Paste the book or reading here…"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+          </label>
+
+          <p id="addBookError" className="add-book-error" role="alert" hidden={!error}>
+            {error}
+          </p>
+        </div>
+
+        <footer className="add-book-footer">
+          <p>Personal books are available only on this device and browser.</p>
+          <div>
             <button
               id="cancelAddBookBtn"
-              className="secondary-btn"
               type="button"
-              onClick={onClose}
+              onClick={() => {
+                resetForm();
+                onClose();
+              }}
             >
               Cancel
             </button>
-            <button
-              id="saveAddBookBtn"
-              className="primary-btn"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Saving…" : "Add to My books"}
+            <button className="primary-action" type="submit" disabled={isSubmitting}>
+              Save to My books
             </button>
-          </footer>
-        </form>
-      </dialog>
-    </div>
+          </div>
+        </footer>
+      </form>
+    </dialog>
   );
 };

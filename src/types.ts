@@ -2,12 +2,25 @@ export interface Track {
   id: string;
   title: string;
   author?: string;
+  year?: number;
+  translator?: string;
+  editionYear?: number;
+  originalLanguage?: string;
   difficulty: string;
+  difficultyNote?: string;
+  genre?: string;
+  tags?: string[];
   collection: string;
   minutes: number;
+  wordCount?: number;
+  source?: string;
+  rights?: string;
+  sourceText?: string;
   audio?: string;
   text?: string;
   transcript?: string;
+  audioGenerator?: string;
+  mediaVersion?: string;
   cover?: string;
   description?: string;
   englishTranslation?: string;
@@ -29,15 +42,15 @@ export interface WordToken {
 }
 
 export interface AppearanceSettings {
-  theme: "system" | "paper" | "mist" | "night" | "light" | "dark";
+  theme: "system" | "paper" | "mist" | "night";
   highlight: string;
-  textMode: "all" | "dim-upcoming";
-  translationLayout: "off" | "english-below" | "side-by-side";
+  textMode: "dim-passed" | "dim-upcoming";
+  translationLayout: "spanish-only" | "side-by-side" | "english-below";
   textSize: number;
   lineHeight: number;
   font: "serif" | "sans" | "accessible";
   readerWidth: "narrow" | "standard" | "wide";
-  vocabWarmup: "collapsed" | "expanded" | "hidden";
+  vocabWarmup: "always" | "collapsed" | "off";
   playbackRate: number;
   ttsVoiceURI: string;
 }
@@ -74,7 +87,9 @@ export interface PersonalBook {
   id: string;
   title: string;
   author?: string;
+  description?: string;
   customText: string;
+  wordCount?: number;
   addedAt: string;
   cover?: string;
   difficulty?: string;
@@ -113,4 +128,4 @@ export interface ProgressEntry {
 export type ProgressCache = Record<string, ProgressEntry>;
 
 export type ReaderMode = "read" | "listen" | "passages";
-export type TranslationLayout = "off" | "english-below" | "side-by-side";
+export type TranslationLayout = "spanish-only" | "side-by-side" | "english-below";

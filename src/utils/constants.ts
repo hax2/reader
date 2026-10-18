@@ -27,7 +27,7 @@ export const speechSynthesisSupported =
   "speechSynthesis" in window &&
   "SpeechSynthesisUtterance" in window;
 
-export const SPEED_RATES = [0.85, 0.9, 0.95, 1, 1.05, 1.1, 1.15, 1.25];
+export const SPEED_RATES = [0.75, 0.9, 0.95, 1, 1.05, 1.1, 1.25, 1.5, 2];
 
 export const PASSAGE_MIN_SECONDS = 7;
 export const PASSAGE_TARGET_SECONDS = 14;

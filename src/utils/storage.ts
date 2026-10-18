@@ -375,10 +375,10 @@ export function loadAppearanceSettings(): AppearanceSettings {
       highlight: ["sage", "sky", "rose", "underline", "none"].includes(saved.highlight)
         ? saved.highlight
         : defaults.highlight,
-      textMode: ["all", "dim-upcoming"].includes(saved.textMode)
+      textMode: ["dim-passed", "dim-upcoming"].includes(saved.textMode)
         ? saved.textMode
         : defaults.textMode,
-      translationLayout: ["off", "side-by-side", "english-below"].includes(saved.translationLayout)
+      translationLayout: ["spanish-only", "side-by-side", "english-below"].includes(saved.translationLayout)
         ? saved.translationLayout
         : defaults.translationLayout,
       textSize: numberInRange(saved.textSize, 80, 140, defaults.textSize),
@@ -387,7 +387,7 @@ export function loadAppearanceSettings(): AppearanceSettings {
       readerWidth: ["narrow", "standard", "wide"].includes(saved.readerWidth)
         ? saved.readerWidth
         : defaults.readerWidth,
-      vocabWarmup: ["collapsed", "expanded", "hidden"].includes(saved.vocabWarmup)
+      vocabWarmup: ["always", "collapsed", "off"].includes(saved.vocabWarmup)
         ? saved.vocabWarmup
         : defaults.vocabWarmup,
       playbackRate: SPEED_RATES.includes(Number(saved.playbackRate))

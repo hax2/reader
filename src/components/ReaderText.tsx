@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useMemo, useState } from "react";
+import React, { useEffect, useRef, useMemo, useState, useCallback } from "react";
 import { lookupSavedTranslation, translateReadingText } from "../utils/translations";
+import { setWordTabStop } from "../hooks/useWordSync";
 import type { WordToken, AppearanceSettings, ReaderMode, Passage } from "../types";
 
 export interface ReaderTextProps {
@@ -10,91 +11,6 @@ export interface ReaderTextProps {
   passageRevealed: boolean;
   appearanceSettings: AppearanceSettings;
   onWordClick: (word: WordToken, anchor: HTMLButtonElement) => void;
-}
-
-export interface ReadingTarget {
-  element: HTMLElement;
-  source: string;
-  blockIndex: number;
-  before?: string;
-  after?: string;
-}
-
-export function createReadingPair(): { container: HTMLElement; spanish: HTMLElement } {
-  const container = document.createElement("section");
-  container.className = "translation-pair";
-  const spanish = document.createElement("p");
-  spanish.className = "spanish-text";
-  spanish.lang = "es";
-  container.append(spanish);
-  return { container, spanish };
-}
-
-export function finishReadingPair(
-  pair: { container: HTMLElement; spanish: HTMLElement },
-  sourceText: string,
-  bilingual: boolean,
-  targets: ReadingTarget[],
-  sources: string[],
-  fragment: DocumentFragment,
-  blockIndex: number
-): void {
-  const source = sourceText.trim();
-  sources.push(source);
-  if (bilingual) {
-    const english = document.createElement("p");
-    english.className = "english-translation";
-    english.lang = "en";
-    const savedTranslation = lookupSavedTranslation(source);
-    if (savedTranslation) {
-      english.textContent = savedTranslation;
-      english.setAttribute("aria-busy", "false");
-    } else {
-      english.classList.add("is-loading");
-      english.setAttribute("aria-busy", "true");
-      english.innerHTML = `<span class="translation-placeholder">Translating…</span>`;
-      targets.push({ element: english, source, blockIndex });
-    }
-    pair.container.append(english);
-  }
-  fragment.append(pair.container);
-}
-
-export async function loadReadingTranslation(
-  target: ReadingTarget,
-  renderId?: number
-): Promise<void> {
-  const translated = await translateReadingText(target.source, target.before, target.after);
-  if (translated) {
-    target.element.textContent = translated;
-    target.element.classList.remove("is-loading");
-    target.element.setAttribute("aria-busy", "false");
-  }
-}
-
-export function observeTranslationTargets(
-  targets: ReadingTarget[],
-  renderId?: number
-): IntersectionObserver | null {
-  if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
-    targets.forEach((target) => loadReadingTranslation(target, renderId));
-    return null;
-  }
-  const sources = new WeakMap(targets.map((target) => [target.element, target]));
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      obs.unobserve(entry.target);
-      const target = sources.get(entry.target as HTMLElement);
-      if (target) loadReadingTranslation(target, renderId);
-    });
-  }, { rootMargin: "500px 0px" });
-  targets.forEach((target) => observer.observe(target.element));
-  return observer;
-}
-
-export function renderWords(props?: ReaderTextProps): React.ReactElement | null {
-  return props ? <ReaderText {...props} /> : null;
 }
 
 interface ReadingPairData {
@@ -113,13 +29,15 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
   onWordClick
 }) => {
   const [translations, setTranslations] = useState<Record<number, string>>({});
+  const [failedBlocks, setFailedBlocks] = useState<Record<number, boolean>>({});
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const renderIdRef = useRef<number>(0);
 
   const startIndex = readerMode === "passages" && passage ? passage.startWordIndex : 0;
   const endIndex = readerMode === "passages" && passage ? passage.endWordIndex : words.length - 1;
 
   const bilingual =
-    readerMode !== "passages" && appearanceSettings.translationLayout !== "off";
+    readerMode !== "passages" && appearanceSettings.translationLayout !== "spanish-only";
   const sentencesPerPair =
     appearanceSettings.translationLayout === "english-below" ? 1 : 4;
 
@@ -164,10 +82,37 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
     return result;
   }, [endIndex, sentencesPerPair, startIndex, words]);
 
+  const fetchBlockTranslation = useCallback(
+    (blockIndex: number, source: string, before: string, after: string, currentRenderId: number) => {
+      setFailedBlocks((prev) => {
+        if (!prev[blockIndex]) return prev;
+        const next = { ...prev };
+        delete next[blockIndex];
+        return next;
+      });
+      translateReadingText(source, before, after)
+        .then((trans) => {
+          if (currentRenderId !== renderIdRef.current) return;
+          if (trans) {
+            setTranslations((prev) => ({ ...prev, [blockIndex]: trans }));
+          } else {
+            setFailedBlocks((prev) => ({ ...prev, [blockIndex]: true }));
+          }
+        })
+        .catch(() => {
+          if (currentRenderId !== renderIdRef.current) return;
+          setFailedBlocks((prev) => ({ ...prev, [blockIndex]: true }));
+        });
+    },
+    []
+  );
+
   // Load saved translations or observe for async translation
   useEffect(() => {
+    const currentRenderId = ++renderIdRef.current;
     if (!bilingual || !pairs.length) {
       setTranslations({});
+      setFailedBlocks({});
       return;
     }
 
@@ -186,14 +131,13 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
     });
 
     setTranslations(initial);
+    setFailedBlocks({});
 
     if (!uncomputed.length) return;
 
     if (typeof IntersectionObserver === "undefined") {
       uncomputed.forEach(({ blockIndex, source, before, after }) => {
-        translateReadingText(source, before, after).then((trans) => {
-          if (trans) setTranslations((prev) => ({ ...prev, [blockIndex]: trans }));
-        });
+        fetchBlockTranslation(blockIndex, source, before, after, currentRenderId);
       });
       return;
     }
@@ -208,9 +152,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
           const bIndex = Number(target.dataset.blockIndex);
           const item = uncomputed.find((u) => u.blockIndex === bIndex);
           if (item) {
-            translateReadingText(item.source, item.before, item.after).then((trans) => {
-              if (trans) setTranslations((prev) => ({ ...prev, [bIndex]: trans }));
-            });
+            fetchBlockTranslation(item.blockIndex, item.source, item.before, item.after, currentRenderId);
           }
         });
       },
@@ -224,52 +166,94 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
     return () => {
       observer.disconnect();
     };
-  }, [bilingual, pairs, readerRef]);
+  }, [bilingual, fetchBlockTranslation, pairs, readerRef]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    const target = (e.target as HTMLElement).closest(".word") as HTMLButtonElement | null;
+    if (!target || !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) return;
+    e.preventDefault();
+    const offset = e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 1;
+    const next = readerRef.current?.querySelector(
+      `[data-index="${Number(target.dataset.index) + offset}"]`
+    ) as HTMLButtonElement | null;
+    if (next) {
+      setWordTabStop(readerRef.current, next);
+      next.focus();
+    }
+  };
 
   const isHidden = readerMode === "passages" && !passageRevealed;
 
   return (
-    <main
+    <article
       id="reader"
-      ref={readerRef}
+      ref={readerRef as React.RefObject<HTMLElement>}
       className={`reader${bilingual ? " has-translation" : ""}${
         appearanceSettings.translationLayout === "side-by-side" ? " is-side-by-side" : ""
       }`}
+      lang="es"
       hidden={isHidden}
+      onKeyDown={handleKeyDown}
     >
-      {pairs.map((pair) => {
+      {pairs.map((pair, idx) => {
         const translationText = translations[pair.blockIndex];
-        const isLoadingTranslation = bilingual && !translationText;
+        const hasError = Boolean(failedBlocks[pair.blockIndex]);
+        const isLoadingTranslation = bilingual && !translationText && !hasError;
 
         return (
           <section key={pair.blockIndex} className="translation-pair">
             <p className="spanish-text" lang="es">
               {pair.words.map((word: WordToken) => (
                 <React.Fragment key={word.index}>
-                  {word.prefix && <span>{word.prefix}</span>}
+                  {word.prefix || ""}
                   <button
                     type="button"
                     className="word"
                     data-index={word.index}
                     tabIndex={word.index === startIndex ? 0 : -1}
-                    onClick={(e) => onWordClick(word, e.currentTarget)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setWordTabStop(readerRef.current, e.currentTarget);
+                      onWordClick(word, e.currentTarget);
+                    }}
                   >
                     {word.text}
                   </button>
-                  <span>{word.separator || " "}</span>
+                  {word.separator || " "}
                 </React.Fragment>
               ))}
             </p>
 
             {bilingual && (
               <p
-                className={`english-translation${isLoadingTranslation ? " is-loading" : ""}`}
+                className={`english-translation${isLoadingTranslation ? " is-loading" : ""}${
+                  hasError ? " has-error" : ""
+                }`}
                 lang="en"
                 data-block-index={pair.blockIndex}
                 aria-busy={isLoadingTranslation ? "true" : "false"}
               >
                 {translationText ? (
                   translationText
+                ) : hasError ? (
+                  <>
+                    <span>Translation unavailable.</span>{" "}
+                    <button
+                      type="button"
+                      className="translation-retry"
+                      onClick={() =>
+                        fetchBlockTranslation(
+                          pair.blockIndex,
+                          pair.sourceText,
+                          pairs[idx - 1]?.sourceText || "",
+                          pairs[idx + 1]?.sourceText || "",
+                          renderIdRef.current
+                        )
+                      }
+                    >
+                      Retry
+                    </button>
+                  </>
                 ) : (
                   <span className="translation-placeholder">Translating…</span>
                 )}
@@ -278,6 +262,6 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
           </section>
         );
       })}
-    </main>
+    </article>
   );
 };

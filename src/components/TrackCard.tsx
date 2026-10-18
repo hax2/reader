@@ -11,24 +11,6 @@ export interface TrackCardProps {
   onDeletePersonalBook?: (track: Track) => void;
 }
 
-export function createTrackCard(
-  track: Track,
-  isActive: boolean = false,
-  progress?: ProgressEntry,
-  onSelect: (track: Track) => void = () => {},
-  onDeletePersonalBook?: (track: Track) => void
-): React.ReactElement {
-  return (
-    <TrackCard
-      track={track}
-      isActive={isActive}
-      progress={progress}
-      onSelect={onSelect}
-      onDeletePersonalBook={onDeletePersonalBook}
-    />
-  );
-}
-
 export const TrackCard: React.FC<TrackCardProps> = ({
   track,
   isActive,
@@ -38,10 +20,10 @@ export const TrackCard: React.FC<TrackCardProps> = ({
 }) => {
   const [imageError, setImageError] = useState(false);
 
-  const duration = (progress as { duration?: number })?.duration || 0;
-  const time = (progress as { time?: number })?.time || 0;
-  const wordCount = (progress as { wordCount?: number })?.wordCount || 0;
-  const wordIndex = (progress as { wordIndex?: number })?.wordIndex || 0;
+  const duration = progress?.duration || 0;
+  const time = progress?.time || 0;
+  const wordCount = progress?.wordCount || 0;
+  const wordIndex = progress?.wordIndex || 0;
 
   const percent = track.audio
     ? duration > 0
@@ -103,7 +85,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({
           {track.author && <span className="track-author">{track.author}</span>}
           {track.description && <span className="track-description">{track.description}</span>}
           <span className="track-progress-label">
-            {track.audio ? progressLabel(progress as { time?: number; duration?: number }) : textProgressLabel(progress as { wordIndex?: number; wordCount?: number })}
+            {track.audio ? progressLabel(progress) : textProgressLabel(progress)}
           </span>
         </div>
       </button>

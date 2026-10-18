@@ -120,6 +120,25 @@ export function useWordSync({
 
   const endIndex = renderedWordEndIndex >= 0 ? renderedWordEndIndex : Math.max(0, words.length - 1);
 
+  const applyWordIndex = useCallback(
+    (wordIndex: number, scrollReader = true) => {
+      if (!words.length || isReadMode) return;
+      const clamped = Math.max(0, Math.min(wordIndex, words.length - 1));
+      applyCurrentWord({
+        reader: readerRef.current,
+        index: clamped,
+        endedCount: clamped,
+        currentWordIndexRef,
+        readWordCountRef,
+        renderedWordStartIndex,
+        renderedWordEndIndex: endIndex,
+        isReadMode,
+        scrollReader
+      });
+    },
+    [endIndex, isReadMode, readerRef, renderedWordStartIndex, words.length]
+  );
+
   const updateCurrentWord = useCallback(
     (time: number, scrollReader = true) => {
       if (!words.length || isReadMode) return;
@@ -196,6 +215,7 @@ export function useWordSync({
   return {
     currentWordIndexRef,
     readWordCountRef,
+    applyWordIndex,
     updateCurrentWord,
     updateProgress,
     resetSyncState

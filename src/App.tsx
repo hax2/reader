@@ -13,9 +13,11 @@ import {
   loadAppearanceSettings,
   saveAppearanceSettings,
   applyAppearanceSettings,
+  defaultAppearanceSettings,
   loadCatalogSettings,
   saveCatalogSettings,
   loadProgressCache,
+  saveProgressCache,
   saveActiveProgress,
   loadStudyLog,
   saveStudyLog,
@@ -25,31 +27,24 @@ import {
 } from "./utils/storage";
 import {
   safeDecodeHash,
-  readingMinutes
+  readingMinutes,
+  hasValidTimings,
+  formatTime
 } from "./utils/text";
 import {
   parseTranscript,
   stripCatalogTextHeader,
   tokenizeUntimed,
-  wordsFromSegment,
-  parseJsonTranscript,
-  parseCueTranscript
+  assignApproximateTimes
 } from "./utils/tokenization";
 import {
   loadSavedTrackTranslation,
   setSavedTranslationBlocks
 } from "./utils/translations";
-import {
-  loadSharedGlossary
-} from "./utils/vocab";
-import {
-  buildPassages,
-  passageBoundaryScore,
-  createPassage,
-  findPassageAt
-} from "./utils/passages";
+import { loadSharedGlossary } from "./utils/vocab";
+import { buildPassages, findPassageAt } from "./utils/passages";
 import { updateMediaSession } from "./utils/mediaSession";
-import { speechSynthesisSupported } from "./utils/constants";
+import { speechSynthesisSupported, difficultyOrder, collectionOptions } from "./utils/constants";
 import { useAudioPlayer } from "./hooks/useAudioPlayer";
 import { useBrowserTts } from "./hooks/useBrowserTts";
 import { useWordSync } from "./hooks/useWordSync";
@@ -57,14 +52,13 @@ import { usePassages } from "./hooks/usePassages";
 import { useOnboardingDemo } from "./hooks/useOnboardingDemo";
 import { TopBar } from "./components/TopBar";
 import { CatalogControls } from "./components/CatalogControls";
-import { TrackList } from "./components/TrackList";
+import { TrackList, getVisibleTracks } from "./components/TrackList";
 import { ReaderTopBar } from "./components/ReaderTopBar";
 import { ReaderText } from "./components/ReaderText";
 import { PlayerBar } from "./components/PlayerBar";
 import { PassagePractice } from "./components/PassagePractice";
 import { VocabWarmup } from "./components/VocabWarmup";
 import { WordPopover } from "./components/WordPopover";
-import { AppearanceModal } from "./components/AppearanceModal";
 import { AnkiReviewModal } from "./components/AnkiReviewModal";
 import { AddBookModal } from "./components/AddBookModal";
 import { OnboardingModal } from "./components/OnboardingModal";
@@ -73,105 +67,40 @@ export function normalizeTrack(track: Partial<Track>): Track {
   const audio = track.audio;
   const text = track.text;
   const transcript = track.transcript;
+  const diff =
+    track.difficulty && (difficultyOrder as readonly string[]).includes(track.difficulty)
+      ? track.difficulty
+      : "C1";
+  const coll =
+    track.collection &&
+    collectionOptions.includes(track.collection as (typeof collectionOptions)[number]) &&
+    track.collection !== "all"
+      ? track.collection
+      : "stories";
   return {
     ...track,
     id: track.id || audio || text || transcript || "unknown",
     title: track.title || audio || text || transcript || "Untitled",
-    difficulty: track.difficulty || "C1",
-    collection: track.collection && track.collection !== "all" ? track.collection : "stories",
+    difficulty: diff,
+    collection: coll,
     minutes: Number(track.minutes) || 0
   } as Track;
-}
-
-export async function initialize(
-  loadLib: () => Promise<Track[]>,
-  loadPersonal: () => Promise<Track[]>,
-  loadGlossary: () => Promise<Record<string, string>>,
-  onTrackFound?: (track: Track) => Promise<void>
-): Promise<Track[]> {
-  const [hosted, personal] = await Promise.all([loadLib(), loadPersonal(), loadGlossary()]);
-  const combined = [...hosted, ...personal].map(normalizeTrack);
-  const routeId = safeDecodeHash();
-  const routeTrack = combined.find((t) => t.id === routeId);
-  if (routeTrack && onTrackFound) {
-    await onTrackFound(routeTrack);
-  }
-  return combined;
-}
-
-export async function removePersonalBook(
-  track: Track,
-  onDeleted: (id: string) => void
-): Promise<void> {
-  if (typeof window !== "undefined" && !window.confirm(`Remove “${track.title}” from My books?`)) return;
-  await deletePersonalBook(track.id);
-  onDeleted(track.id);
-}
-
-export function setReadMode(enabled: boolean, onSetMode: (mode: ReaderMode) => void): void {
-  onSetMode(enabled ? "read" : "listen");
-}
-
-export function syncModeSelector(readerMode: ReaderMode, buttons?: HTMLElement[]): void {
-  buttons?.forEach((btn) => {
-    const active = btn.dataset.readerMode === readerMode;
-    btn.setAttribute("aria-checked", String(active));
-    btn.tabIndex = active ? 0 : -1;
-  });
-}
-
-export function enterPassagesMode(
-  passages: Passage[],
-  currentTime: number,
-  onSetPassageIndex: (idx: number) => void
-): void {
-  const idx = findPassageAt(passages, currentTime);
-  onSetPassageIndex(idx >= 0 ? idx : 0);
-}
-
-export function exitPassagesMode(onSetPassageIndex: (idx: number) => void): void {
-  onSetPassageIndex(-1);
-}
-
-export function renderReaderForCurrentMode(
-  readerMode: ReaderMode,
-  passage: Passage | null,
-  passageRevealed: boolean
-): { isHidden: boolean; passage: Passage | null } {
-  return {
-    isHidden: readerMode === "passages" && !passageRevealed,
-    passage: readerMode === "passages" ? passage : null
-  };
-}
-
-export function renderReadingMeta(track: Track | null): React.ReactElement | null {
-  if (!track) return null;
-  return (
-    <div className="reading-meta">
-      <div className="reading-facts">
-        {track.difficulty && <span>{track.difficulty}</span>}
-        {track.author && <span>{track.author}</span>}
-        {(track as { genre?: string }).genre && <span>{(track as { genre?: string }).genre}</span>}
-        {track.minutes ? <span>{track.minutes} min</span> : null}
-      </div>
-    </div>
-  );
-}
-
-export function status(message: string, onStatus?: (msg: string) => void): void {
-  onStatus?.(message);
 }
 
 export const App: React.FC = () => {
   const [view, setView] = useState<"library" | "reader">("library");
   const [readerMode, setReaderMode] = useState<ReaderMode>("listen");
   const [media, setMedia] = useState<"audio" | "text">("audio");
-  const [statusText, setStatusText] = useState<string>("");
+  const [statusText, setStatusText] = useState<string>(
+    "Choose a story from the library or load your own audio and transcript."
+  );
+  const [passageStatusText, setPassageStatusText] = useState<string>("");
 
   const [hostedTracks, setHostedTracks] = useState<Track[]>([]);
   const [personalBooks, setPersonalBooks] = useState<Track[]>([]);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [activeTrack, setActiveTrack] = useState<Track | null>(null);
+  const [customTitle, setCustomTitle] = useState<string>("");
 
   const [words, setWordsState] = useState<WordToken[]>([]);
   const [passages, setPassagesState] = useState<Passage[]>([]);
@@ -184,12 +113,61 @@ export const App: React.FC = () => {
   const [selectedWord, setSelectedWord] = useState<WordToken | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const [appearanceOpen, setAppearanceOpen] = useState(false);
   const [ankiOpen, setAnkiOpen] = useState(false);
   const [addBookOpen, setAddBookOpen] = useState(false);
+  const [pastedText, setPastedText] = useState("");
 
   const readerRef = useRef<HTMLElement | null>(null);
   const trackLoadIdRef = useRef<number>(0);
+  const objectUrlRef = useRef<string>("");
+  const tracksRef = useRef<Track[]>([]);
+  tracksRef.current = tracks;
+  const activeTrackRef = useRef<Track | null>(null);
+  activeTrackRef.current = activeTrack;
+  const mediaRef = useRef<"audio" | "text">(media);
+  mediaRef.current = media;
+  const wordsRef = useRef<WordToken[]>(words);
+  wordsRef.current = words;
+  const progressCacheRef = useRef<ProgressCache>(progressCache);
+  progressCacheRef.current = progressCache;
+  const readerModeRef = useRef<ReaderMode>(readerMode);
+  readerModeRef.current = readerMode;
+
+  // Passages hook
+  const audioElementRef = useRef<HTMLAudioElement | null>(null);
+  const {
+    passageIndex,
+    passageRevealed,
+    setPassageIndex,
+    setPassageRevealed,
+    movePassage,
+    playCurrentPassage,
+    seekToPassageStart,
+    handlePassagePlayback
+  } = usePassages({
+    passages,
+    audioRef: audioElementRef,
+    onStatus: setPassageStatusText
+  });
+  const passageIndexRef = useRef<number>(passageIndex);
+  passageIndexRef.current = passageIndex;
+
+  // 60fps word sync hook
+  const { updateCurrentWord, applyWordIndex, resetSyncState } = useWordSync({
+    readerRef,
+    audioRef: audioElementRef,
+    words,
+    isPlaying: false, // Synced below via audioPlayer state
+    isReadMode: readerMode === "read",
+    readerMode,
+    passageRevealed,
+    renderedWordStartIndex:
+      readerMode === "passages" && passages[passageIndex] ? passages[passageIndex].startWordIndex : 0,
+    renderedWordEndIndex:
+      readerMode === "passages" && passages[passageIndex]
+        ? passages[passageIndex].endWordIndex
+        : words.length - 1
+  });
 
   // Audio player hook
   const {
@@ -202,27 +180,61 @@ export const App: React.FC = () => {
     formattedDuration,
     play: audioPlay,
     pause: audioPause,
-    togglePlay: audioTogglePlay,
     seek: audioSeek,
     skipBy: audioSkipBy,
     setAudioSource,
     clearAudioSource,
     setPlaybackRate: setAudioPlaybackRate
   } = useAudioPlayer({
-    onTimeUpdate: (time) => {
-      if (readerMode === "passages") {
+    onTimeUpdate: (time, dur) => {
+      if (readerModeRef.current === "passages") {
         handlePassagePlayback(time);
+      }
+      updateCurrentWord(time, false);
+      if (activeTrackRef.current && dur > 0) {
+        saveActiveProgress({
+          activeTrackId: activeTrackRef.current.id,
+          media: "audio",
+          audioDuration: dur,
+          audioCurrentTime: time,
+          audioEnded: false,
+          readerMode: readerModeRef.current,
+          passageIndex: passageIndexRef.current,
+          progressCache: progressCacheRef.current,
+          force: false,
+          onSaved: setProgressCache
+        });
+      }
+    },
+    onPause: () => {
+      const audio = audioElementRef.current;
+      if (activeTrackRef.current && audio && audio.duration > 0) {
+        saveActiveProgress({
+          activeTrackId: activeTrackRef.current.id,
+          media: "audio",
+          audioDuration: audio.duration,
+          audioCurrentTime: audio.currentTime,
+          audioEnded: audio.ended,
+          readerMode: readerModeRef.current,
+          passageIndex: passageIndexRef.current,
+          progressCache: progressCacheRef.current,
+          force: true,
+          onSaved: setProgressCache
+        });
       }
     },
     onEnded: () => {
-      if (activeTrack) {
+      const audio = audioElementRef.current;
+      if (activeTrackRef.current && audio && audio.duration > 0) {
         saveActiveProgress({
-          activeTrackId: activeTrack.id,
+          activeTrackId: activeTrackRef.current.id,
           media: "audio",
-          audioDuration,
-          audioCurrentTime: audioDuration,
+          audioDuration: audio.duration,
+          audioCurrentTime: audio.duration,
           audioEnded: true,
-          progressCache,
+          readerMode: readerModeRef.current,
+          passageIndex: passageIndexRef.current,
+          progressCache: progressCacheRef.current,
           force: true,
           onSaved: setProgressCache
         });
@@ -230,33 +242,38 @@ export const App: React.FC = () => {
     }
   });
 
-  // Passages hook
-  const {
-    passageIndex,
-    passageRevealed,
-    setPassageIndex,
-    setPassageRevealed,
-    movePassage,
-    playCurrentPassage,
-    handlePassagePlayback
-  } = usePassages({
-    passages,
-    audioRef,
-    onStatus: setStatusText
-  });
+  // Sync audioRef with audioElementRef
+  useEffect(() => {
+    audioElementRef.current = audioRef.current;
+  }, [audioRef]);
 
-  // 60fps word sync hook
-  const { updateCurrentWord, resetSyncState } = useWordSync({
-    readerRef,
-    audioRef,
-    words,
-    isPlaying: isAudioPlaying,
-    isReadMode: readerMode === "read",
-    readerMode,
-    passageRevealed,
-    renderedWordStartIndex: readerMode === "passages" && passages[passageIndex] ? passages[passageIndex].startWordIndex : 0,
-    renderedWordEndIndex: readerMode === "passages" && passages[passageIndex] ? passages[passageIndex].endWordIndex : words.length - 1
-  });
+  // Keep 60fps RAF running while audio is playing
+  useEffect(() => {
+    if (!isAudioPlaying || media !== "audio") return;
+    let rafId = 0;
+    const loop = () => {
+      const audio = audioRef.current;
+      if (audio && !audio.paused) {
+        if (readerModeRef.current === "passages") {
+          handlePassagePlayback(audio.currentTime);
+        }
+        updateCurrentWord(audio.currentTime, true);
+        rafId = requestAnimationFrame(loop);
+      }
+    };
+    rafId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafId);
+  }, [isAudioPlaying, media, audioRef, handlePassagePlayback, updateCurrentWord]);
+
+  // If audio metadata loads for untimed words, assign approximate times
+  useEffect(() => {
+    if (media === "audio" && audioDuration > 0 && words.length > 0 && !hasValidTimings(words)) {
+      const cloned = words.map((w) => ({ ...w }));
+      assignApproximateTimes(cloned, audioDuration);
+      setWordsState(cloned);
+      setPassagesState(buildPassages(cloned));
+    }
+  }, [audioDuration, media, words]);
 
   // Browser TTS hook
   const {
@@ -265,21 +282,39 @@ export const App: React.FC = () => {
     setSelectedVoiceURI,
     ttsState,
     ttsWordIndex,
+    setTtsWordIndex,
+    chunks: ttsChunks,
     toggleTextToSpeech,
     speakTextFromWord,
     pauseTextToSpeech,
     stopTextToSpeech,
     restartTextToSpeech,
     seekTextToSpeech,
-    moveTtsChunk,
-    setTtsWord
+    moveTtsChunk
   } = useBrowserTts({
     words,
     appearanceSettings,
-    onWordChange: (idx) => updateCurrentWord(idx, true),
+    onWordChange: (idx, scrollReader) => {
+      if (readerModeRef.current === "listen") {
+        applyWordIndex(idx, scrollReader);
+      }
+      if (activeTrackRef.current && wordsRef.current.length > 0) {
+        saveActiveProgress({
+          activeTrackId: activeTrackRef.current.id,
+          media: "text",
+          wordCount: wordsRef.current.length,
+          wordIndex: idx,
+          progressCache: progressCacheRef.current,
+          force: false,
+          onSaved: setProgressCache
+        });
+      }
+    },
     onStatusChange: setStatusText,
     readerRef
   });
+  const ttsWordIndexRef = useRef<number>(ttsWordIndex);
+  ttsWordIndexRef.current = ttsWordIndex;
 
   // Onboarding demo simulation hook
   const {
@@ -309,10 +344,87 @@ export const App: React.FC = () => {
     }
   });
 
-  // Apply visual settings on change
+  // Apply visual settings on change and listen for OS theme change
   useEffect(() => {
     applyAppearanceSettings(appearanceSettings);
-  }, [appearanceSettings]);
+    setAudioPlaybackRate(appearanceSettings.playbackRate);
+    const mq = window.matchMedia?.("(prefers-color-scheme: dark)");
+    const handleSystemTheme = () => {
+      if (appearanceSettings.theme === "system") {
+        applyAppearanceSettings(appearanceSettings);
+      }
+    };
+    mq?.addEventListener?.("change", handleSystemTheme);
+    return () => mq?.removeEventListener?.("change", handleSystemTheme);
+  }, [appearanceSettings, setAudioPlaybackRate]);
+
+  // Save catalog settings on change
+  const handleUpdateCatalogSettings = useCallback(
+    (updater: CatalogSettings | ((prev: CatalogSettings) => CatalogSettings)) => {
+      setCatalogSettings((prev) => {
+        const next = typeof updater === "function" ? updater(prev) : updater;
+        saveCatalogSettings(next);
+        return next;
+      });
+    },
+    []
+  );
+
+  // Sync document.documentElement.dataset.mode
+  useEffect(() => {
+    document.documentElement.dataset.mode = readerMode === "read" ? "read" : "listen";
+  }, [readerMode]);
+
+  // Flush progress on pagehide / visibilitychange
+  const flushActiveProgress = useCallback(() => {
+    const track = activeTrackRef.current;
+    if (!track) return;
+    if (mediaRef.current === "text") {
+      if (!wordsRef.current.length) return;
+      saveActiveProgress({
+        activeTrackId: track.id,
+        media: "text",
+        wordCount: wordsRef.current.length,
+        wordIndex: ttsWordIndexRef.current,
+        progressCache: progressCacheRef.current,
+        force: true,
+        onSaved: setProgressCache
+      });
+    } else {
+      const audio = audioElementRef.current;
+      if (!audio || !audio.duration || !Number.isFinite(audio.duration)) return;
+      saveActiveProgress({
+        activeTrackId: track.id,
+        media: "audio",
+        audioDuration: audio.duration,
+        audioCurrentTime: audio.ended ? audio.duration : audio.currentTime,
+        audioEnded: audio.ended,
+        readerMode: readerModeRef.current,
+        passageIndex: passageIndexRef.current,
+        progressCache: progressCacheRef.current,
+        force: true,
+        onSaved: setProgressCache
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    const handlePageHide = () => {
+      flushActiveProgress();
+      stopTextToSpeech({ preservePosition: true });
+    };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        flushActiveProgress();
+      }
+    };
+    window.addEventListener("pagehide", handlePageHide);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      window.removeEventListener("pagehide", handlePageHide);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [flushActiveProgress, stopTextToSpeech]);
 
   // Combine hosted tracks and personal books
   const refreshTracks = useCallback((hosted: Track[], personal: Track[]) => {
@@ -352,18 +464,22 @@ export const App: React.FC = () => {
     }
   }, []);
 
-  const showLibrary = useCallback((updateHistory = true) => {
-    audioPause();
-    stopTextToSpeech({ preservePosition: true });
-    setView("library");
-    document.title = "Spanish Listening Reader";
-    if (updateHistory && location.hash) {
-      history.pushState({}, "", `${location.pathname}${location.search}`);
-    }
-    setSelectedWord(null);
-    setAnchorEl(null);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [audioPause, stopTextToSpeech]);
+  const showLibrary = useCallback(
+    (updateHistory = true) => {
+      audioPause();
+      flushActiveProgress();
+      stopTextToSpeech({ preservePosition: true });
+      setView("library");
+      document.title = "Spanish Listening Reader";
+      if (updateHistory && location.hash) {
+        history.pushState({}, "", `${location.pathname}${location.search}`);
+      }
+      setSelectedWord(null);
+      setAnchorEl(null);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    [audioPause, flushActiveProgress, stopTextToSpeech]
+  );
 
   const showReader = useCallback((trackTitle?: string) => {
     setView("reader");
@@ -372,28 +488,53 @@ export const App: React.FC = () => {
   }, []);
 
   // Set words and build passages
-  const setWords = useCallback((nextWords: WordToken[], precise: boolean) => {
-    const indexed = nextWords.map((word, index) => ({ ...word, index }));
-    setWordsState(indexed);
-    resetSyncState();
+  const setWords = useCallback(
+    (nextWords: WordToken[], precise: boolean, savedWordIndex = 0) => {
+      const indexed = nextWords.map((word, index) => ({
+        ...word,
+        index,
+        start: precise ? word.start : Number.NaN,
+        end: precise ? word.end : Number.NaN
+      }));
+      const audio = audioElementRef.current;
+      if (!precise && audio && audio.duration && Number.isFinite(audio.duration)) {
+        assignApproximateTimes(indexed, audio.duration);
+      }
+      setWordsState(indexed);
+      resetSyncState();
 
-    const built = buildPassages(indexed);
-    setPassagesState(built);
-    setPassageIndex(-1);
-  }, [resetSyncState, setPassageIndex]);
+      const built = buildPassages(indexed);
+      setPassagesState(built);
+      setPassageIndex(-1);
+      setTtsWordIndex(savedWordIndex);
+      if (savedWordIndex > 0) {
+        requestAnimationFrame(() => {
+          applyWordIndex(savedWordIndex, false);
+        });
+      }
+    },
+    [applyWordIndex, resetSyncState, setPassageIndex, setTtsWordIndex]
+  );
 
   // Load track
   const loadTrack = useCallback(
     async (track: Track, updateHistory = true) => {
       audioPause();
-      stopTextToSpeech({ preservePosition: true });
+      flushActiveProgress();
+      stopTextToSpeech({ preservePosition: false });
       const loadId = ++trackLoadIdRef.current;
       setActiveTrack(track);
+      setCustomTitle("");
+      setSelectedWord(null);
+      setAnchorEl(null);
       const isAudio = Boolean(track.audio);
       setMedia(isAudio ? "audio" : "text");
 
-      const savedProgress = progressCache[track.id] as { time?: number; duration?: number; passageIndex?: number } | undefined;
-      const pendingTime = savedProgress?.time || 0;
+      const savedProgress = progressCacheRef.current[track.id];
+      let pendingTime = savedProgress?.time || 0;
+      if (isAudio && savedProgress?.duration && pendingTime / savedProgress.duration >= 0.97) {
+        pendingTime = 0;
+      }
       const resumeAt = isAudio ? pendingTime : 0;
 
       updateMediaSession(track);
@@ -417,7 +558,11 @@ export const App: React.FC = () => {
       if (track.customText) {
         setSavedTranslationBlocks([]);
         const parsed = tokenizeUntimed(track.customText);
-        setWords(parsed, false);
+        const savedWordIdx =
+          savedProgress?.wordCount === parsed.length && Number.isInteger(savedProgress?.wordIndex)
+            ? Math.max(0, Math.min(savedProgress.wordIndex!, parsed.length - 1))
+            : 0;
+        setWords(parsed, false, savedWordIdx);
         const voiceHint = speechSynthesisSupported ? " · browser voice ready" : "";
         setStatusText(
           `${track.title} · ${parsed.length.toLocaleString()} words · about ${
@@ -447,11 +592,17 @@ export const App: React.FC = () => {
           track.text ? stripCatalogTextHeader(text, track) : text,
           transcriptPath
         );
-        const precise = Boolean(track.audio) && parsed.length > 0 && Number.isFinite(parsed[0].start);
-        setWords(parsed, precise);
+        const precise = Boolean(track.audio) && hasValidTimings(parsed);
+        const savedWordIdx =
+          !track.audio &&
+          savedProgress?.wordCount === parsed.length &&
+          Number.isInteger(savedProgress?.wordIndex)
+            ? Math.max(0, Math.min(savedProgress.wordIndex!, parsed.length - 1))
+            : 0;
+        setWords(parsed, precise, savedWordIdx);
 
         if (track.audio) {
-          const resumeMessage = resumeAt > 0 ? ` Resuming.` : "";
+          const resumeMessage = resumeAt > 0 ? ` Resuming at ${formatTime(resumeAt)}.` : "";
           setStatusText(
             `${track.title} loaded with ${parsed.length.toLocaleString()} synced words.${resumeMessage}`
           );
@@ -468,10 +619,15 @@ export const App: React.FC = () => {
         setStatusText(`${track.title} loaded, but its transcript could not be loaded.`);
       }
     },
-    [audioPause, clearAudioSource, progressCache, setAudioSource, setWords, showReader, stopTextToSpeech]
+    [audioPause, clearAudioSource, flushActiveProgress, setAudioSource, setWords, showReader, stopTextToSpeech]
   );
 
-  // Initialize
+  // Initialize once on mount
+  const loadTrackRef = useRef(loadTrack);
+  loadTrackRef.current = loadTrack;
+  const showLibraryRef = useRef(showLibrary);
+  showLibraryRef.current = showLibrary;
+
   useEffect(() => {
     let mounted = true;
     (async () => {
@@ -487,17 +643,18 @@ export const App: React.FC = () => {
       const routeId = safeDecodeHash();
       const routeTrack = combined.find((t) => t.id === routeId);
       if (routeTrack) {
-        await loadTrack(routeTrack, false);
+        await loadTrackRef.current(routeTrack, false);
       }
     })();
 
     const handlePopState = () => {
       const hash = safeDecodeHash();
       if (!hash) {
-        showLibrary(false);
+        showLibraryRef.current(false);
       } else {
-        const found = tracks.find((t) => t.id === hash);
-        if (found) loadTrack(found, false);
+        const found = tracksRef.current.find((t) => t.id === hash);
+        if (found) loadTrackRef.current(found, false);
+        else showLibraryRef.current(false);
       }
     };
     window.addEventListener("popstate", handlePopState);
@@ -506,24 +663,220 @@ export const App: React.FC = () => {
       mounted = false;
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [loadLibrary, loadPersonalBooks, loadTrack, showLibrary, tracks]);
+  }, [loadLibrary, loadPersonalBooks]);
 
   // Mode switching
-  const handleSelectReaderMode = (mode: ReaderMode) => {
-    if (mode === "passages" && (media === "text" || !audioRef.current?.src || !passages.length)) {
-      setStatusText("Passages need a synced transcript for this audio.");
+  const handleSelectReaderMode = useCallback(
+    (mode: ReaderMode) => {
+      if (mode === "passages" && (media === "text" || !audioRef.current?.src || !passages.length)) {
+        setStatusText("Passages need a synced transcript for this audio, so they are unavailable here.");
+        return;
+      }
+      if (media === "text" && mode === "read" && ttsState === "playing") {
+        pauseTextToSpeech();
+      }
+      setReaderMode(mode);
+      if (mode === "read") {
+        readerRef.current?.classList.remove("has-reading-position");
+      }
+      if (mode === "passages") {
+        audioPause();
+        setSelectedWord(null);
+        setAnchorEl(null);
+        const savedPassageIdx = activeTrack
+          ? progressCacheRef.current[activeTrack.id]?.passageIndex
+          : undefined;
+        let idx =
+          typeof savedPassageIdx === "number" && savedPassageIdx >= 0 && savedPassageIdx < passages.length
+            ? savedPassageIdx
+            : findPassageAt(passages, audioCurrentTime);
+        if (idx < 0) idx = 0;
+        setPassageIndex(idx);
+        const passage = passages[idx];
+        if (passage && audioDuration > 0) {
+          audioSeek(Math.min(passage.startTime, audioDuration - 0.01));
+        }
+      } else if (media === "text" && mode === "listen" && words.length > 0) {
+        if (ttsWordIndex > 0) {
+          applyWordIndex(ttsWordIndex, false);
+        }
+        if (!speechSynthesisSupported) {
+          setStatusText(
+            "Browser text-to-speech is unavailable here. You can still read and use the vocabulary tools."
+          );
+        }
+      }
+    },
+    [
+      activeTrack,
+      applyWordIndex,
+      audioCurrentTime,
+      audioDuration,
+      audioPause,
+      audioRef,
+      audioSeek,
+      media,
+      passages,
+      pauseTextToSpeech,
+      setPassageIndex,
+      ttsState,
+      ttsWordIndex,
+      words.length
+    ]
+  );
+
+  // Play/Pause unified handler
+  const handleTogglePlay = useCallback(() => {
+    if (media === "text") {
+      if (readerMode !== "listen") setReaderMode("listen");
+      toggleTextToSpeech();
       return;
     }
-    if (media === "text" && mode === "read" && ttsState === "playing") {
-      pauseTextToSpeech();
-    }
-    setReaderMode(mode);
-    if (mode === "passages") {
+    const audio = audioRef.current;
+    if (!audio || !audio.src) return;
+    if (audio.paused) {
+      if (readerMode === "passages") seekToPassageStart();
+      audioPlay();
+    } else {
       audioPause();
-      const idx = findPassageAt(passages, audioCurrentTime);
-      setPassageIndex(idx >= 0 ? idx : 0);
     }
-  };
+  }, [audioPause, audioPlay, audioRef, media, readerMode, seekToPassageStart, toggleTextToSpeech]);
+
+  const handleSkipBack = useCallback(() => {
+    if (media === "text") {
+      moveTtsChunk(-1);
+      return;
+    }
+    if (readerMode === "passages") {
+      movePassage(-1, true);
+      return;
+    }
+    audioSkipBy(-10);
+  }, [audioSkipBy, media, movePassage, moveTtsChunk, readerMode]);
+
+  const handleSkipForward = useCallback(() => {
+    if (media === "text") {
+      moveTtsChunk(1);
+      return;
+    }
+    if (readerMode === "passages") {
+      movePassage(1, true);
+      return;
+    }
+    audioSkipBy(10);
+  }, [audioSkipBy, media, movePassage, moveTtsChunk, readerMode]);
+
+  // Keyboard shortcuts in reader view
+  useEffect(() => {
+    if (view !== "reader") return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      const tag = target?.tagName;
+      if (
+        tag === "BUTTON" ||
+        tag === "INPUT" ||
+        tag === "TEXTAREA" ||
+        tag === "SELECT" ||
+        target?.isContentEditable
+      ) {
+        return;
+      }
+
+      if (readerMode === "passages") {
+        const key = event.key.toLowerCase();
+        if (key === "arrowleft" || key === "p") {
+          event.preventDefault();
+          movePassage(-1, true);
+          return;
+        }
+        if (key === "arrowright" || key === "n") {
+          event.preventDefault();
+          movePassage(1, true);
+          return;
+        }
+        if (key === "r") {
+          event.preventDefault();
+          setPassageRevealed(false);
+          playCurrentPassage();
+          return;
+        }
+        if (key === "t") {
+          event.preventDefault();
+          setPassageRevealed(!passageRevealed);
+          return;
+        }
+      }
+
+      switch (event.key) {
+        case "ArrowLeft":
+          event.preventDefault();
+          handleSkipBack();
+          break;
+        case "ArrowRight":
+          event.preventDefault();
+          handleSkipForward();
+          break;
+        case " ":
+          if (media === "text" && readerMode !== "listen") return;
+          event.preventDefault();
+          handleTogglePlay();
+          break;
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [
+    handleSkipBack,
+    handleSkipForward,
+    handleTogglePlay,
+    media,
+    movePassage,
+    passageRevealed,
+    playCurrentPassage,
+    readerMode,
+    setPassageRevealed,
+    view
+  ]);
+
+  // Wire navigator.mediaSession action handlers
+  useEffect(() => {
+    const ms = "mediaSession" in navigator ? navigator.mediaSession : null;
+    if (!ms) return;
+    const handlers: Partial<Record<MediaSessionAction, MediaSessionActionHandler>> = {
+      play: () => handleTogglePlay(),
+      pause: () => {
+        if (media === "text") pauseTextToSpeech();
+        else audioPause();
+      },
+      stop: () => {
+        if (media === "text") stopTextToSpeech({ preservePosition: true });
+        else audioPause();
+      },
+      seekbackward: () => handleSkipBack(),
+      seekforward: () => handleSkipForward(),
+      seekto: (details) => {
+        if (media === "audio" && typeof details.seekTime === "number" && Number.isFinite(details.seekTime)) {
+          audioSeek(details.seekTime);
+        }
+      }
+    };
+    for (const [action, handler] of Object.entries(handlers)) {
+      try {
+        ms.setActionHandler(action as MediaSessionAction, handler || null);
+      } catch {
+        // Ignore unsupported media session actions
+      }
+    }
+  }, [
+    audioPause,
+    audioSeek,
+    handleSkipBack,
+    handleSkipForward,
+    handleTogglePlay,
+    media,
+    pauseTextToSpeech,
+    stopTextToSpeech
+  ]);
 
   // Play from word index
   const handlePlayFromHere = (wordIndex: number) => {
@@ -540,6 +893,59 @@ export const App: React.FC = () => {
     }
   };
 
+  // Manual file / text import handlers
+  const handleManualAudioFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+    audioPause();
+    flushActiveProgress();
+    stopTextToSpeech({ preservePosition: true });
+    trackLoadIdRef.current += 1;
+    const url = URL.createObjectURL(file);
+    objectUrlRef.current = url;
+    setActiveTrack(null);
+    setCustomTitle(file.name);
+    setMedia("audio");
+    setReaderMode("listen");
+    setSavedTranslationBlocks([]);
+    setWordsState([]);
+    setPassagesState([]);
+    setPassageIndex(-1);
+    updateMediaSession(
+      normalizeTrack({ id: file.name, title: file.name, author: "", cover: "" })
+    );
+    showReader(file.name);
+    setAudioSource(url, 0);
+    setStatusText(`${file.name} loaded.`);
+  };
+
+  const handleManualTranscriptFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const parsed = parseTranscript(text, file.name);
+      setSavedTranslationBlocks([]);
+      setWords(parsed, hasValidTimings(parsed));
+      setStatusText(`${file.name} loaded with ${parsed.length.toLocaleString()} words.`);
+    } catch {
+      setStatusText(`${file.name} could not be read. Check that it is a valid transcript file.`);
+    }
+  };
+
+  const handleUsePastedText = () => {
+    const text = pastedText.trim();
+    if (!text) {
+      setStatusText("Paste Spanish text first.");
+      return;
+    }
+    const parsed = tokenizeUntimed(text);
+    setSavedTranslationBlocks([]);
+    setWords(parsed, false);
+    setStatusText("Pasted text loaded. Highlighting is approximate because no word timings were provided.");
+  };
+
   // Remove personal book
   const handleRemovePersonalBook = async (track: Track) => {
     if (!window.confirm(`Remove “${track.title}” from My books?`)) return;
@@ -551,27 +957,25 @@ export const App: React.FC = () => {
       const nextProgress = { ...progressCache };
       delete nextProgress[track.id];
       setProgressCache(nextProgress);
-      saveActiveProgress({
-        activeTrackId: track.id,
-        media: "audio",
-        progressCache: nextProgress,
-        force: true
-      });
+      saveProgressCache(nextProgress);
       if (activeTrack?.id === track.id) {
+        setActiveTrack(null);
+        clearAudioSource();
         showLibrary();
       }
     } catch {
-      window.alert("The book could not be removed.");
+      window.alert("The book could not be removed. Try again.");
     }
   };
 
   const handleLogWord = (word: WordToken, meaning: string) => {
-    const updated = logStudiedWord(word, meaning, words, activeTrack?.title || "", studyLog);
+    const updated = logStudiedWord(word, meaning, words, activeTrack?.title || customTitle || "", studyLog);
     setStudyLog(updated);
   };
 
   const studyCardCount = Object.keys(studyLog).length;
   const isAudioMedia = media === "audio";
+  const visibleTracks = getVisibleTracks(tracks, catalogSettings);
 
   return (
     <div
@@ -589,19 +993,15 @@ export const App: React.FC = () => {
       {view === "library" && (
         <section className="library-panel screen" aria-labelledby="library-title">
           <TopBar
-            settings={catalogSettings}
-            studyCardCount={studyCardCount}
-            onUpdateSettings={setCatalogSettings}
             onOpenAddBook={() => setAddBookOpen(true)}
-            onOpenAnkiReview={() => setAnkiOpen(true)}
             onOpenOnboarding={() => openOnboarding(1)}
           />
 
           <CatalogControls
             settings={catalogSettings}
             totalCount={tracks.length}
-            filteredCount={tracks.length}
-            onUpdateSettings={setCatalogSettings}
+            filteredCount={visibleTracks.length}
+            onUpdateSettings={handleUpdateCatalogSettings}
           />
 
           <TrackList
@@ -614,7 +1014,7 @@ export const App: React.FC = () => {
             onDeletePersonalBook={handleRemovePersonalBook}
             onOpenAddBook={() => setAddBookOpen(true)}
             onClearFilters={() =>
-              setCatalogSettings({
+              handleUpdateCatalogSettings({
                 search: "",
                 format: "all",
                 sort: "difficulty",
@@ -631,12 +1031,21 @@ export const App: React.FC = () => {
         <section className="reader-view screen" aria-labelledby="app-title">
           <ReaderTopBar
             track={activeTrack}
+            customTitle={customTitle}
             readerMode={readerMode}
-            passagesAvailable={Boolean(activeTrack?.audio && passages.length)}
-            isTextOnly={!activeTrack?.audio}
+            passagesAvailable={Boolean(isAudioMedia && passages.length)}
+            isTextOnly={!isAudioMedia}
+            appearanceSettings={appearanceSettings}
             onBackToLibrary={() => showLibrary(true)}
             onSelectReaderMode={handleSelectReaderMode}
-            onOpenAppearance={() => setAppearanceOpen(true)}
+            onUpdateAppearance={(updater) => {
+              setAppearanceSettings((prev) => {
+                const next = updater(prev);
+                saveAppearanceSettings(next);
+                return next;
+              });
+            }}
+            onOpenOnboarding={() => openOnboarding(1)}
           />
 
           <PlayerBar
@@ -649,26 +1058,51 @@ export const App: React.FC = () => {
             formattedDuration={formattedDuration}
             ttsWordIndex={ttsWordIndex}
             wordCount={words.length}
+            ttsChunkCount={ttsChunks.length}
             ttsVoices={ttsVoices}
             selectedVoiceURI={selectedVoiceURI}
             playbackRate={appearanceSettings.playbackRate}
-            disabled={!words.length}
-            onTogglePlay={() => {
-              if (isAudioMedia) audioTogglePlay();
-              else toggleTextToSpeech();
-            }}
+            studyCardCount={studyCardCount}
+            disabled={isAudioMedia ? !audioDuration : !speechSynthesisSupported || !words.length}
+            onTogglePlay={handleTogglePlay}
             onSeek={(val) => {
-              if (isAudioMedia) audioSeek(val);
-              else seekTextToSpeech(val);
+              if (isAudioMedia) {
+                audioSeek(val);
+                updateCurrentWord(val, true);
+                if (activeTrack && audioDuration > 0) {
+                  saveActiveProgress({
+                    activeTrackId: activeTrack.id,
+                    media: "audio",
+                    audioDuration,
+                    audioCurrentTime: val,
+                    audioEnded: false,
+                    readerMode,
+                    passageIndex,
+                    progressCache,
+                    force: true,
+                    onSaved: setProgressCache
+                  });
+                }
+              } else {
+                seekTextToSpeech(val);
+                if (readerMode === "listen") {
+                  applyWordIndex(val, true);
+                }
+                if (activeTrack && words.length > 0) {
+                  saveActiveProgress({
+                    activeTrackId: activeTrack.id,
+                    media: "text",
+                    wordCount: words.length,
+                    wordIndex: val,
+                    progressCache,
+                    force: true,
+                    onSaved: setProgressCache
+                  });
+                }
+              }
             }}
-            onSkipBack={() => {
-              if (isAudioMedia) audioSkipBy(-10);
-              else moveTtsChunk(-1);
-            }}
-            onSkipForward={() => {
-              if (isAudioMedia) audioSkipBy(10);
-              else moveTtsChunk(1);
-            }}
+            onSkipBack={handleSkipBack}
+            onSkipForward={handleSkipForward}
             onSetPlaybackRate={(r) => {
               setAudioPlaybackRate(r);
               setAppearanceSettings((prev) => {
@@ -688,20 +1122,40 @@ export const App: React.FC = () => {
                 saveAppearanceSettings(next);
                 return next;
               });
+              if (!isAudioMedia) {
+                if (ttsState === "playing") restartTextToSpeech(true);
+                else if (ttsState === "paused") restartTextToSpeech(false);
+              }
             }}
+            onOpenAnkiReview={() => setAnkiOpen(true)}
           />
 
           <section className="workspace">
             <section className="reader-shell" aria-label="Transcript reader">
+              <div id="status" className="status" role="status" aria-live="polite">
+                {statusText}
+              </div>
+
               {/* Reading metadata facts */}
               {activeTrack && (
                 <div id="readingMeta" className="reading-meta">
                   <div className="reading-facts">
                     {activeTrack.difficulty && <span>{activeTrack.difficulty}</span>}
                     {activeTrack.author && <span>{activeTrack.author}</span>}
-                    {(activeTrack as { genre?: string }).genre && <span>{(activeTrack as { genre?: string }).genre}</span>}
+                    {activeTrack.genre && <span>{activeTrack.genre}</span>}
                     {activeTrack.minutes ? <span>{activeTrack.minutes} min</span> : null}
                   </div>
+                  {activeTrack.difficultyNote && <p>{activeTrack.difficultyNote}</p>}
+                  {String(activeTrack.source || "").startsWith("https://") && (
+                    <a
+                      href={activeTrack.source}
+                      target="_blank"
+                      rel="noreferrer"
+                      title={activeTrack.rights || "Source edition"}
+                    >
+                      Source &amp; rights
+                    </a>
+                  )}
                 </div>
               )}
 
@@ -711,10 +1165,18 @@ export const App: React.FC = () => {
                   passageIndex={passageIndex}
                   totalPassages={passages.length}
                   passageRevealed={passageRevealed}
-                  onToggleReveal={() => setPassageRevealed(!passageRevealed)}
-                  onReplay={playCurrentPassage}
-                  onPrevious={() => movePassage(-1)}
-                  onNext={() => movePassage(1)}
+                  passageStatusText={passageStatusText}
+                  onToggleReveal={() => {
+                    const next = !passageRevealed;
+                    setPassageRevealed(next);
+                    if (next) updateCurrentWord(audioCurrentTime, false);
+                  }}
+                  onReplay={() => {
+                    setPassageRevealed(false);
+                    playCurrentPassage();
+                  }}
+                  onPrevious={() => movePassage(-1, true)}
+                  onNext={() => movePassage(1, true)}
                 />
               )}
 
@@ -726,8 +1188,20 @@ export const App: React.FC = () => {
                   studyLog={studyLog}
                   onSaveWord={handleLogWord}
                   onStartReading={() => {
-                    const firstWord = readerRef.current?.querySelector(".word");
-                    firstWord?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    if (media === "text" && speechSynthesisSupported) {
+                      if (readerMode !== "listen") setReaderMode("listen");
+                      toggleTextToSpeech();
+                      return;
+                    }
+                    if (isAudioMedia && audioRef.current?.src) {
+                      if (readerMode !== "listen") setReaderMode("listen");
+                      audioPlay();
+                      return;
+                    }
+                    readerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    (readerRef.current?.querySelector(".word") as HTMLElement | null)?.focus({
+                      preventScroll: true
+                    });
                   }}
                 />
               )}
@@ -747,46 +1221,76 @@ export const App: React.FC = () => {
               />
             </section>
 
-            <aside className="study-panel">
-              <div id="definition" className="definition">
-                <p className="muted">Tap a word for an English meaning.</p>
+            <aside className="side-panel" aria-label="Word meaning and import tools">
+              <div id="definition" className="definition" role="region" aria-live="polite">
+                <p className="muted">
+                  {readerMode === "passages" && !passageRevealed
+                    ? "Reveal the passage, then tap a word for its meaning."
+                    : "Tap a word for an English meaning."}
+                </p>
               </div>
+
+              <details className="manual-tools">
+                <summary>Use your own files</summary>
+                <div className="manual-body">
+                  <label className="file-control">
+                    <span>Audio</span>
+                    <input
+                      id="audioFile"
+                      type="file"
+                      accept="audio/*,.mp3,.m4a,.wav,.ogg"
+                      onChange={handleManualAudioFile}
+                    />
+                  </label>
+                  <label className="file-control">
+                    <span>Transcript</span>
+                    <input
+                      id="transcriptFile"
+                      type="file"
+                      accept=".json,.vtt,.srt,.txt"
+                      onChange={handleManualTranscriptFile}
+                    />
+                  </label>
+                  <label className="paste-control" htmlFor="pasteTranscript">
+                    <span>Or paste Spanish text</span>
+                    <textarea
+                      id="pasteTranscript"
+                      rows={4}
+                      placeholder="Pega aquí el texto si todavía no tienes marcas de tiempo..."
+                      value={pastedText}
+                      onChange={(e) => setPastedText(e.target.value)}
+                    />
+                  </label>
+                  <button
+                    id="usePastedText"
+                    className="secondary-button"
+                    type="button"
+                    onClick={handleUsePastedText}
+                  >
+                    Use pasted text
+                  </button>
+                </div>
+              </details>
             </aside>
           </section>
 
           {/* Word Popover */}
-          {selectedWord && anchorEl && (
-            <WordPopover
-              selectedWord={selectedWord}
-              anchorEl={anchorEl}
-              words={words}
-              media={media}
-              onClose={() => {
-                setSelectedWord(null);
-                setAnchorEl(null);
-              }}
-              onPlayFromHere={handlePlayFromHere}
-              onLogWord={handleLogWord}
-            />
-          )}
+          <WordPopover
+            selectedWord={selectedWord}
+            anchorEl={anchorEl}
+            words={words}
+            media={media}
+            onClose={() => {
+              setSelectedWord(null);
+              setAnchorEl(null);
+            }}
+            onPlayFromHere={handlePlayFromHere}
+            onLogWord={handleLogWord}
+          />
         </section>
       )}
 
       {/* Modals & Dialogs */}
-      <AppearanceModal
-        isOpen={appearanceOpen}
-        settings={appearanceSettings}
-        onClose={() => setAppearanceOpen(false)}
-        onUpdateSettings={(updater) => {
-          setAppearanceSettings((prev) => {
-            const next = updater(prev);
-            saveAppearanceSettings(next);
-            return next;
-          });
-        }}
-        onOpenOnboarding={() => openOnboarding(1)}
-      />
-
       <AnkiReviewModal
         isOpen={ankiOpen}
         studyLog={studyLog}
@@ -801,11 +1305,14 @@ export const App: React.FC = () => {
             return next;
           });
         }}
-        onRemoveEntry={(key) => {
+        onRemoveEntry={(key: string) => {
           setStudyLog((prev) => {
             const next = { ...prev };
             delete next[key];
             saveStudyLog(next);
+            if (Object.keys(next).length === 0) {
+              setAnkiOpen(false);
+            }
             return next;
           });
         }}
@@ -816,10 +1323,10 @@ export const App: React.FC = () => {
         onClose={() => setAddBookOpen(false)}
         onBookAdded={(book) => {
           const normalized = normalizeTrack({ ...book, personal: true, collection: "my-books" });
-          const updated = [normalized, ...personalBooks];
-          setPersonalBooks(updated);
-          refreshTracks(hostedTracks, updated);
-          loadTrack(normalized, true);
+          const nextPersonal = [normalized, ...personalBooks];
+          setPersonalBooks(nextPersonal);
+          refreshTracks(hostedTracks, nextPersonal);
+          handleUpdateCatalogSettings({ ...catalogSettings, collection: "my-books" });
         }}
       />
 
@@ -838,11 +1345,6 @@ export const App: React.FC = () => {
         onFinish={finishOnboarding}
         onUpdateState={setOnboardingState}
       />
-
-      {/* Screen reader status element */}
-      <p id="status" className="visually-hidden" role="status" aria-live="polite">
-        {statusText}
-      </p>
     </div>
   );
 };

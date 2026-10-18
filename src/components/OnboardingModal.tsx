@@ -1,11 +1,5 @@
-import React from "react";
-import {
-  DEMO_EXCERPT_WORDS,
-  DEMO_TOTAL_DURATION,
-  DEMO_ENGLISH_TEXT,
-  type OnboardingState
-} from "../hooks/useOnboardingDemo";
-import { resolveTheme } from "../utils/storage";
+import React, { useEffect, useRef } from "react";
+import type { OnboardingState } from "../hooks/useOnboardingDemo";
 
 export interface OnboardingModalProps {
   isOpen: boolean;
@@ -23,385 +17,516 @@ export interface OnboardingModalProps {
   onUpdateState: (updater: (prev: OnboardingState) => OnboardingState) => void;
 }
 
+const FONT_FAMILIES: Record<OnboardingState["font"], string> = {
+  serif: 'Georgia, "Times New Roman", serif',
+  sans: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  accessible: "Atkinson Hyperlegible, -apple-system, BlinkMacSystemFont, sans-serif"
+};
+
 export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   isOpen,
   state,
-  isPlayingDemo,
-  demoCurrentTime,
-  activeWordIndex,
-  popoverWord,
   onClose,
   onGoToStep,
-  onTogglePlayDemo,
-  onWordClick,
-  onHidePopover,
   onFinish,
   onUpdateState
 }) => {
-  if (!isOpen) return null;
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const controlsPaneRef = useRef<HTMLDivElement>(null);
 
-  const pct = Math.min(100, Math.max(0, (demoCurrentTime / DEMO_TOTAL_DURATION) * 100));
-  const curMins = Math.floor(demoCurrentTime / 60);
-  const curSecs = Math.floor(demoCurrentTime % 60).toString().padStart(2, "0");
-  const totMins = Math.floor(DEMO_TOTAL_DURATION / 60);
-  const totSecs = Math.floor(DEMO_TOTAL_DURATION % 60).toString().padStart(2, "0");
-  const timeText = `${curMins}:${curSecs} / ${totMins}:${totSecs}`;
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (isOpen && !dialog.open) {
+      try {
+        dialog.showModal();
+      } catch {
+        dialog.setAttribute("open", "");
+      }
+    } else if (!isOpen && dialog.open) {
+      try {
+        dialog.close();
+      } catch {
+        dialog.removeAttribute("open");
+      }
+    }
+  }, [isOpen]);
 
-  const resolvedTheme = resolveTheme(state.theme);
-
-  const themeOptions = [
-    { value: "system", label: "System", desc: "Matches device" },
-    { value: "paper", label: "Paper", desc: "Warm & classic" },
-    { value: "mist", label: "Mist", desc: "Cool gray" },
-    { value: "night", label: "Night", desc: "Deep contrast" }
-  ] as const;
-
-  const fontOptions = [
-    { value: "serif", label: "Serif", desc: "Literary classic" },
-    { value: "sans", label: "Sans", desc: "Modern & clean" },
-    { value: "accessible", label: "Accessible", desc: "High legibility" }
-  ] as const;
-
-  const translationOptions = [
-    { value: "english-below", label: "Stacked", desc: "English below Spanish" },
-    { value: "side-by-side", label: "Side-by-side", desc: "Parallel columns" },
-    { value: "off", label: "Spanish only", desc: "Immersion reading" }
-  ] as const;
-
-  const focusOptions = [
-    { value: "dim-upcoming", label: "Narration focus", desc: "Dims upcoming text" },
-    { value: "all", label: "Full brightness", desc: "All text bright" }
-  ] as const;
+  useEffect(() => {
+    if (controlsPaneRef.current) {
+      controlsPaneRef.current.scrollTop = 0;
+    }
+  }, [state.step]);
 
   return (
-    <div className="dialog-overlay" onClick={() => onClose(false)}>
-      <dialog
-        id="onboardingDialog"
-        className="onboarding-dialog is-open"
-        open
-        onClick={(e) => e.stopPropagation()}
-        aria-labelledby="onboardingDialogTitle"
-      >
-        <div className="onboarding-shell">
-          <header className="onboarding-header">
-            <div className="onboarding-title-group">
-              <p className="eyebrow">Make it yours</p>
-              <h2 id="onboardingDialogTitle">Reading preferences</h2>
-            </div>
-            <button
-              id="closeOnboardingBtn"
-              className="utility-button onboarding-close-btn"
-              type="button"
-              aria-label="Close reading preferences"
-              onClick={() => onClose(false)}
-            >
-              ✕
-            </button>
-          </header>
-
-          <div className="onboarding-step-pills">
-            <button
-              type="button"
-              className={`step-pill${state.step === 1 ? " is-active" : state.step > 1 ? " is-completed" : ""}`}
-              onClick={() => onGoToStep(1)}
-            >
-              1. Visuals
-            </button>
-            <button
-              type="button"
-              className={`step-pill${state.step === 2 ? " is-active" : state.step > 2 ? " is-completed" : ""}`}
-              onClick={() => onGoToStep(2)}
-            >
-              2. Reading
-            </button>
-            <button
-              type="button"
-              className={`step-pill${state.step === 3 ? " is-active" : ""}`}
-              onClick={() => onGoToStep(3)}
-            >
-              3. Listening
-            </button>
+    <dialog
+      ref={dialogRef}
+      id="onboardingDialog"
+      className="onboarding-dialog"
+      aria-labelledby="onboardingDialogTitle"
+      onCancel={(e) => {
+        e.preventDefault();
+        onClose(false);
+      }}
+      onClick={(e) => {
+        if (e.target === dialogRef.current) {
+          onClose(false);
+        }
+      }}
+    >
+      <div className="onboarding-shell">
+        <header className="onboarding-header">
+          <div className="onboarding-title-group">
+            <p className="eyebrow">Make it yours</p>
+            <h2 id="onboardingDialogTitle">Reading preferences</h2>
           </div>
+          <button
+            id="closeOnboardingBtn"
+            className="utility-button onboarding-close-btn"
+            type="button"
+            aria-label="Close reading preferences"
+            onClick={() => onClose(false)}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <line x1="6" y1="6" x2="18" y2="18" />
+              <line x1="18" y1="6" x2="6" y2="18" />
+            </svg>
+          </button>
+        </header>
 
-          <div id="onboardingBody" className="onboarding-body">
-            <div className="onboarding-controls-pane">
-              {/* Step 1: Visuals */}
-              <div className={`onboarding-step-section${state.step === 1 ? " is-active" : ""}`}>
-                <h3>Theme & Typography</h3>
-                <p className="section-intro">Choose a visual style comfortable for long reading sessions.</p>
+        <nav className="onboarding-steps-nav" aria-label="Preference sections">
+          <button
+            type="button"
+            className={`step-pill${state.step === 1 ? " is-active" : state.step > 1 ? " is-completed" : ""}`}
+            data-step="1"
+            onClick={() => onGoToStep(1)}
+          >
+            <span className="step-num">1</span>
+            <span className="step-label">Appearance</span>
+          </button>
+          <button
+            type="button"
+            className={`step-pill${state.step === 2 ? " is-active" : state.step > 2 ? " is-completed" : ""}`}
+            data-step="2"
+            onClick={() => onGoToStep(2)}
+          >
+            <span className="step-num">2</span>
+            <span className="step-label">Text</span>
+          </button>
+          <button
+            type="button"
+            className={`step-pill${state.step === 3 ? " is-active" : ""}`}
+            data-step="3"
+            onClick={() => onGoToStep(3)}
+          >
+            <span className="step-num">3</span>
+            <span className="step-label">Playback</span>
+          </button>
+        </nav>
 
-                <div className="onboarding-option-group">
-                  <span className="group-label">Color Theme</span>
-                  <div className="option-card-grid">
-                    {themeOptions.map((opt) => (
+        <div id="onboardingBody" className="onboarding-body">
+          <div ref={controlsPaneRef} className="onboarding-controls-pane">
+            {/* STEP 1: Theme & Ambiance */}
+            <section className={`onboarding-step-section${state.step === 1 ? " is-active" : ""}`} data-step-panel="1">
+              <div className="step-header">
+                <h3>Choose a Theme &amp; Tone</h3>
+                <p className="step-desc">Pick an atmosphere tailored for comfortable day, evening, or night reading sessions.</p>
+              </div>
+
+              <div className="option-grid theme-options" role="radiogroup" aria-label="Color theme">
+                {[
+                  {
+                    value: "paper" as const,
+                    swatchClass: "paper-swatch",
+                    title: "Paper",
+                    desc: "Warm cream editorial tone, dark olive-charcoal ink. Classic book feel."
+                  },
+                  {
+                    value: "mist" as const,
+                    swatchClass: "mist-swatch",
+                    title: "Mist",
+                    desc: "Cool slate & mint tint with serene contrast. Calm on the eyes."
+                  },
+                  {
+                    value: "night" as const,
+                    swatchClass: "night-swatch",
+                    title: "Night",
+                    desc: "Deep obsidian OLED dark mode with crisp, gentle white text."
+                  },
+                  {
+                    value: "system" as const,
+                    swatchClass: "system-swatch",
+                    title: "System",
+                    desc: "Automatically matches your operating system light or dark mode."
+                  }
+                ].map((opt) => {
+                  const selected = state.theme === opt.value;
+                  return (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      className={`option-card${selected ? " is-selected" : ""}`}
+                      data-setting="theme"
+                      data-value={opt.value}
+                      role="radio"
+                      aria-checked={selected}
+                      onClick={() => onUpdateState((prev) => ({ ...prev, theme: opt.value }))}
+                    >
+                      <div className={`theme-swatch ${opt.swatchClass}`}>
+                        {opt.value === "system" ? (
+                          <>
+                            <span className="swatch-split left">A</span>
+                            <span className="swatch-split right">a</span>
+                          </>
+                        ) : (
+                          <span className="swatch-text">Aa</span>
+                        )}
+                      </div>
+                      <div className="option-info">
+                        <strong className="option-title">{opt.title}</strong>
+                        <span className="option-desc">{opt.desc}</span>
+                      </div>
+                      <span className="check-badge" aria-hidden="true">✓</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            {/* STEP 2: Typography */}
+            <section className={`onboarding-step-section${state.step === 2 ? " is-active" : ""}`} data-step-panel="2">
+              <div className="step-header">
+                <h3>Choose your reading text</h3>
+                <p className="step-desc">Each option is shown exactly as it will look while you read.</p>
+              </div>
+
+              <div className="control-group">
+                <label className="group-label">Typeface</label>
+                <div className="option-grid font-options" role="radiogroup" aria-label="Typeface">
+                  {[
+                    { value: "serif" as const, className: "font-serif", title: "Book Serif" },
+                    { value: "sans" as const, className: "font-sans", title: "Clean Sans" },
+                    { value: "accessible" as const, className: "font-accessible", title: "Accessible Sans" }
+                  ].map((opt) => {
+                    const selected = state.font === opt.value;
+                    return (
                       <button
                         key={opt.value}
                         type="button"
-                        className={`option-card${state.theme === opt.value ? " is-selected" : ""}`}
-                        onClick={() => onUpdateState((prev) => ({ ...prev, theme: opt.value }))}
-                      >
-                        <strong>{opt.label}</strong>
-                        <span>{opt.desc}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="onboarding-option-group">
-                  <span className="group-label">Typeface</span>
-                  <div className="option-card-grid">
-                    {fontOptions.map((opt) => (
-                      <button
-                        key={opt.value}
-                        type="button"
-                        className={`option-card${state.font === opt.value ? " is-selected" : ""}`}
+                        className={`option-card type-choice ${opt.className}${selected ? " is-selected" : ""}`}
+                        data-setting="font"
+                        data-value={opt.value}
+                        role="radio"
+                        aria-checked={selected}
                         onClick={() => onUpdateState((prev) => ({ ...prev, font: opt.value }))}
                       >
-                        <strong>{opt.label}</strong>
-                        <span>{opt.desc}</span>
+                        <strong className="option-title">{opt.title}</strong>
+                        <span className="type-sample">Platero es pequeño, peludo, suave.</span>
+                        <span className="choice-indicator" aria-hidden="true">✓</span>
                       </button>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Step 2: Reading */}
-              <div className={`onboarding-step-section${state.step === 2 ? " is-active" : ""}`}>
-                <h3>Translations & Layout</h3>
-                <p className="section-intro">Configure side-by-side or stacked English translation pairs.</p>
-
-                <div className="onboarding-option-group">
-                  <span className="group-label">English Translation</span>
-                  <div className="option-card-grid">
-                    {translationOptions.map((opt) => (
+              <div className="control-group">
+                <label className="group-label">Text size</label>
+                <div className="option-grid text-size-options" role="radiogroup" aria-label="Text size">
+                  {[
+                    { value: 85, label: "Small", sampleClass: "size-sample-small" },
+                    { value: 100, label: "Regular", sampleClass: "size-sample-regular" },
+                    { value: 120, label: "Large", sampleClass: "size-sample-large" },
+                    { value: 135, label: "Extra large", sampleClass: "size-sample-extra" }
+                  ].map((opt) => {
+                    const selected = state.textSize === opt.value;
+                    return (
                       <button
                         key={opt.value}
                         type="button"
-                        className={`option-card${state.translationLayout === opt.value ? " is-selected" : ""}`}
-                        onClick={() =>
-                          onUpdateState((prev) => ({
-                            ...prev,
-                            translationLayout: opt.value as OnboardingState["translationLayout"]
-                          }))
-                        }
+                        className={`option-card size-choice${selected ? " is-selected" : ""}`}
+                        data-setting="textSize"
+                        data-value={opt.value}
+                        role="radio"
+                        aria-checked={selected}
+                        onClick={() => onUpdateState((prev) => ({ ...prev, textSize: opt.value }))}
                       >
-                        <strong>{opt.label}</strong>
-                        <span>{opt.desc}</span>
+                        <span className="size-choice-label">{opt.label}</span>
+                        <span className={`size-sample ${opt.sampleClass}`}>Platero es suave.</span>
+                        <span className="choice-indicator" aria-hidden="true">✓</span>
                       </button>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
+              </div>
+            </section>
 
-                <div className="onboarding-option-group">
-                  <span className="group-label">Text Focus</span>
-                  <div className="option-card-grid">
-                    {focusOptions.map((opt) => (
+            {/* STEP 3: Audio & Reading Tracking */}
+            <section className={`onboarding-step-section${state.step === 3 ? " is-active" : ""}`} data-step-panel="3">
+              <div className="step-header">
+                <h3>Audio Sync &amp; Highlighting</h3>
+                <p className="step-desc">Customize how words illuminate and translations display as you listen.</p>
+              </div>
+
+              <div className="mobile-demo-sample-bar" role="region" aria-label="Highlight style preview">
+                <span className="mobile-sample-tag">Highlight preview</span>
+                <div
+                  id="mobileSampleCard"
+                  className="mobile-sample-card"
+                  style={{
+                    fontFamily: FONT_FAMILIES[state.font] || FONT_FAMILIES.serif,
+                    lineHeight: state.lineHeight,
+                    fontSize: `${(1.05 * state.textSize) / 100}rem`
+                  }}
+                >
+                  <p id="mobileSampleText" className="mobile-sample-text">
+                    Platero es suave; sólo los espejos de <mark id="mobileSampleMark" className="mobile-sample-mark">azabache</mark> de sus ojos son duros.
+                  </p>
+                </div>
+              </div>
+
+              <div className="control-group">
+                <label className="group-label">Word Highlight Style</label>
+                <div className="highlight-pills" role="radiogroup" aria-label="Highlight style">
+                  {[
+                    { value: "sage" as const, dotClass: "dot-sage", label: "Sage wash" },
+                    { value: "sky" as const, dotClass: "dot-sky", label: "Sky wash" },
+                    { value: "rose" as const, dotClass: "dot-rose", label: "Rose wash" },
+                    { value: "underline" as const, dotClass: "dot-underline", label: "Underline" },
+                    { value: "none" as const, dotClass: "dot-none", label: "None" }
+                  ].map((opt) => {
+                    const selected = state.highlight === opt.value;
+                    return (
                       <button
                         key={opt.value}
                         type="button"
-                        className={`option-card${state.textMode === opt.value ? " is-selected" : ""}`}
-                        onClick={() =>
-                          onUpdateState((prev) => ({
-                            ...prev,
-                            textMode: opt.value as OnboardingState["textMode"]
-                          }))
-                        }
+                        className={`highlight-chip${selected ? " is-selected" : ""}`}
+                        data-setting="highlight"
+                        data-value={opt.value}
+                        role="radio"
+                        aria-checked={selected}
+                        onClick={() => onUpdateState((prev) => ({ ...prev, highlight: opt.value }))}
                       >
-                        <strong>{opt.label}</strong>
-                        <span>{opt.desc}</span>
+                        <span className={`chip-dot ${opt.dotClass}`} /> {opt.label}
                       </button>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Step 3: Listening */}
-              <div className={`onboarding-step-section${state.step === 3 ? " is-active" : ""}`}>
-                <h3>Narration & Catalog</h3>
-                <p className="section-intro">Set your preferred initial audio playback rate and story level.</p>
-
-                <div className="onboarding-option-group">
-                  <span className="group-label">Playback Speed</span>
-                  <div className="speed-chip-grid">
-                    {[0.85, 0.95, 1, 1.05, 1.15].map((rate) => (
-                      <button
-                        key={rate}
-                        type="button"
-                        className={`speed-chip${state.playbackRate === rate ? " is-selected" : ""}`}
-                        onClick={() => onUpdateState((prev) => ({ ...prev, playbackRate: rate }))}
-                      >
-                        {rate}×
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="onboarding-option-group">
-                  <span className="group-label">Target Difficulty</span>
-                  <div className="option-card-grid">
-                    {[
-                      { level: "all", label: "All levels", desc: "Show complete library" },
-                      { level: "B1", label: "Intermediate (B1)", desc: "Familiar literary stories" },
-                      { level: "B2", label: "Upper Intermediate (B2)", desc: "Rich literary vocabulary" },
-                      { level: "C1", label: "Advanced (C1)", desc: "Classical literature & philosophy" }
-                    ].map((item) => (
-                      <button
-                        key={item.level}
-                        type="button"
-                        className={`option-card${state.catalogLevel === item.level ? " is-selected" : ""}`}
-                        onClick={() => onUpdateState((prev) => ({ ...prev, catalogLevel: item.level }))}
-                      >
-                        <strong>{item.label}</strong>
-                        <span>{item.desc}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Live Interactive Reader Preview */}
-            <div className="onboarding-preview-pane">
-              <div
-                id="onboardingDemoFrame"
-                className="demo-reader-frame"
-                data-demo-theme={resolvedTheme}
-                data-demo-highlight={state.highlight}
-                data-demo-text-mode={state.textMode}
-                data-demo-font={state.font}
-                data-demo-width={state.readerWidth}
-                data-demo-translation={state.translationLayout}
-              >
-                <div className="demo-player-bar">
+              <div className="control-group">
+                <label className="group-label">Keep your place while listening</label>
+                <div className="option-grid focus-options" role="radiogroup" aria-label="Focus mode">
                   <button
-                    id="demoPlayBtn"
-                    className="demo-play-btn"
                     type="button"
-                    onClick={onTogglePlayDemo}
+                    className={`option-card${state.textMode === "dim-passed" ? " is-selected" : ""}`}
+                    data-setting="textMode"
+                    data-value="dim-passed"
+                    role="radio"
+                    aria-checked={state.textMode === "dim-passed"}
+                    onClick={() => onUpdateState((prev) => ({ ...prev, textMode: "dim-passed" }))}
                   >
-                    <span className="demo-play-icon">
-                      {isPlayingDemo ? (
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                          <rect x="5" y="4" width="4.5" height="16" rx="1" />
-                          <rect x="14.5" y="4" width="4.5" height="16" rx="1" />
-                        </svg>
-                      ) : (
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                          <polygon points="6 3 20 12 6 21 6 3" />
-                        </svg>
-                      )}
-                    </span>
-                    <span className="demo-play-label">
-                      {isPlayingDemo ? "Pause Demo" : "Play Demo"}
-                    </span>
-                  </button>
-
-                  <div className="demo-progress-track">
-                    <div id="demoProgressFill" className="demo-progress-fill" style={{ width: `${pct}%` }} />
-                  </div>
-
-                  <span id="demoTimeDisplay" className="demo-time-display">
-                    {timeText}
-                  </span>
-                  <span id="demoSpeedDisplay" className="demo-speed-display">
-                    {state.playbackRate}×
-                  </span>
-                </div>
-
-                <div className="demo-reader-scroll">
-                  <div id="demoSpanishText" className="demo-spanish-text" lang="es">
-                    {DEMO_EXCERPT_WORDS.map((item, idx) => {
-                      const isCurrent = idx === activeWordIndex;
-                      const isRead = activeWordIndex >= 0 && idx < activeWordIndex;
-                      return (
-                        <React.Fragment key={idx}>
-                          <button
-                            type="button"
-                            className={`demo-word${isCurrent ? " is-current" : ""}${isRead ? " is-read" : ""}`}
-                            data-demo-index={idx}
-                            onClick={() => onWordClick(idx)}
-                          >
-                            {item.word}
-                          </button>
-                          {item.separator && <span>{item.separator}</span>}
-                        </React.Fragment>
-                      );
-                    })}
-                  </div>
-
-                  {state.translationLayout !== "off" && (
-                    <p id="demoEnglishTranslation" className="demo-english-translation" lang="en">
-                      {DEMO_ENGLISH_TEXT}
-                    </p>
-                  )}
-
-                  {popoverWord && (
-                    <div id="demoWordPopover" className="demo-word-popover">
-                      <strong id="demoPopoverWord">{popoverWord.word}</strong>
-                      <p
-                        id="demoPopoverDef"
-                        dangerouslySetInnerHTML={{
-                          __html: `${popoverWord.def}<em>Tap word in reader for instant vocabulary help.</em>`
-                        }}
-                      />
-                      <button
-                        type="button"
-                        className="demo-popover-close"
-                        onClick={onHidePopover}
-                      >
-                        ✕
-                      </button>
+                    <div className="option-info">
+                      <strong className="option-title">Fade words already heard</strong>
+                      <span className="focus-demo-labels" aria-hidden="true">
+                        <span>Heard</span>
+                        <span>Now</span>
+                        <span>Next</span>
+                      </span>
+                      <span className="focus-demo-line" aria-hidden="true">
+                        <span className="demo-dimmed">era</span>
+                        <mark>pequeño</mark>
+                        <span>y suave</span>
+                      </span>
                     </div>
-                  )}
+                    <span className="choice-indicator" aria-hidden="true">✓</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={`option-card${state.textMode === "dim-upcoming" ? " is-selected" : ""}`}
+                    data-setting="textMode"
+                    data-value="dim-upcoming"
+                    role="radio"
+                    aria-checked={state.textMode === "dim-upcoming"}
+                    onClick={() => onUpdateState((prev) => ({ ...prev, textMode: "dim-upcoming" }))}
+                  >
+                    <div className="option-info">
+                      <strong className="option-title">Fade words coming next</strong>
+                      <span className="focus-demo-labels" aria-hidden="true">
+                        <span>Heard</span>
+                        <span>Now</span>
+                        <span>Next</span>
+                      </span>
+                      <span className="focus-demo-line" aria-hidden="true">
+                        <span>era</span>
+                        <mark>pequeño</mark>
+                        <span className="demo-dimmed">y suave</span>
+                      </span>
+                    </div>
+                    <span className="choice-indicator" aria-hidden="true">✓</span>
+                  </button>
                 </div>
               </div>
-            </div>
+
+              <div className="control-group">
+                <label className="group-label">Translation Display</label>
+                <div className="option-grid translation-options" role="radiogroup" aria-label="Translation layout">
+                  {[
+                    {
+                      value: "spanish-only" as const,
+                      title: "Spanish only (Immersion)",
+                      desc: "Pure Spanish text; tap any word for instant English definitions and vocabulary review."
+                    },
+                    {
+                      value: "side-by-side" as const,
+                      title: "Side by side (Parallel)",
+                      desc: "Dual columns with aligned English translations running parallel to the Spanish text."
+                    },
+                    {
+                      value: "english-below" as const,
+                      title: "English underneath",
+                      desc: "Interlinear translation directly beneath each Spanish sentence block."
+                    }
+                  ].map((opt) => {
+                    const selected = state.translationLayout === opt.value;
+                    return (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        className={`option-card${selected ? " is-selected" : ""}`}
+                        data-setting="translationLayout"
+                        data-value={opt.value}
+                        role="radio"
+                        aria-checked={selected}
+                        onClick={() => onUpdateState((prev) => ({ ...prev, translationLayout: opt.value }))}
+                      >
+                        <div className="option-info">
+                          <strong className="option-title">{opt.title}</strong>
+                          <span className="option-desc">{opt.desc}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="control-group">
+                <label className="group-label">Default Playback Speed</label>
+                <div className="speed-chips" role="radiogroup" aria-label="Audio playback speed">
+                  {[
+                    { value: 0.75, label: "0.75×" },
+                    { value: 0.9, label: "0.90×" },
+                    { value: 1, label: "1.0×" },
+                    { value: 1.1, label: "1.10×" },
+                    { value: 1.25, label: "1.25×" },
+                    { value: 1.5, label: "1.50×" }
+                  ].map((opt) => {
+                    const selected = state.playbackRate === opt.value;
+                    return (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        className={`speed-chip${selected ? " is-selected" : ""}`}
+                        data-setting="playbackRate"
+                        data-value={opt.value}
+                        role="radio"
+                        aria-checked={selected}
+                        onClick={() => onUpdateState((prev) => ({ ...prev, playbackRate: opt.value }))}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="control-group">
+                <label className="group-label">Pre-reading Vocabulary Warmup</label>
+                <div className="option-grid vocab-preview-options" role="radiogroup" aria-label="Pre-reading vocabulary warmup">
+                  {[
+                    {
+                      value: "always" as const,
+                      title: "Expanded preview",
+                      desc: "Open the vocabulary list automatically when a reading loads."
+                    },
+                    {
+                      value: "collapsed" as const,
+                      title: "Compact preview (Recommended)",
+                      desc: "See how many useful words were picked, then open the list only when you want it."
+                    },
+                    {
+                      value: "off" as const,
+                      title: "Off",
+                      desc: "Go directly to the text without a vocabulary preview."
+                    }
+                  ].map((opt) => {
+                    const selected = state.vocabWarmup === opt.value;
+                    return (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        className={`option-card${selected ? " is-selected" : ""}`}
+                        data-setting="vocabWarmup"
+                        data-value={opt.value}
+                        role="radio"
+                        aria-checked={selected}
+                        onClick={() => onUpdateState((prev) => ({ ...prev, vocabWarmup: opt.value }))}
+                      >
+                        <div className="option-info">
+                          <strong className="option-title">{opt.title}</strong>
+                          <span className="option-desc">{opt.desc}</span>
+                        </div>
+                        <span className="check-badge" aria-hidden="true">✓</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
           </div>
-
-          <footer className="onboarding-footer">
-            <button
-              id="onboardingSkipBtn"
-              className="secondary-btn"
-              type="button"
-              onClick={() => onClose(false)}
-            >
-              Skip
-            </button>
-
-            <div className="footer-nav-buttons">
-              <button
-                id="onboardingPrevBtn"
-                className="secondary-btn"
-                type="button"
-                disabled={state.step === 1}
-                onClick={() => onGoToStep(state.step - 1)}
-              >
-                Previous
-              </button>
-
-              {state.step < 3 ? (
-                <button
-                  id="onboardingNextBtn"
-                  className="primary-btn"
-                  type="button"
-                  onClick={() => onGoToStep(state.step + 1)}
-                >
-                  Continue
-                </button>
-              ) : (
-                <button
-                  id="onboardingFinishBtn"
-                  className="primary-btn"
-                  type="button"
-                  onClick={onFinish}
-                >
-                  Start Reading
-                </button>
-              )}
-            </div>
-          </footer>
         </div>
-      </dialog>
-    </div>
+
+        {/* Preference navigation footer */}
+        <footer className="onboarding-footer">
+          <button
+            id="onboardingSkipBtn"
+            className="text-button onboarding-skip-btn"
+            type="button"
+            onClick={() => onClose(false)}
+          >
+            Cancel
+          </button>
+
+          <div className="onboarding-nav-actions">
+            <button
+              id="onboardingPrevBtn"
+              className="secondary-button"
+              type="button"
+              disabled={state.step === 1}
+              onClick={() => onGoToStep(state.step - 1)}
+            >
+              Back
+            </button>
+            <button
+              id="onboardingNextBtn"
+              className="primary-button"
+              type="button"
+              hidden={state.step === 3}
+              onClick={() => onGoToStep(state.step + 1)}
+            >
+              Continue
+            </button>
+            <button
+              id="onboardingFinishBtn"
+              className="primary-button finish-btn"
+              type="button"
+              hidden={state.step !== 3}
+              onClick={onFinish}
+            >
+              Save preferences
+            </button>
+          </div>
+        </footer>
+      </div>
+    </dialog>
   );
 };
