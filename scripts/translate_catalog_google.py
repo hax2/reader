@@ -19,7 +19,7 @@ from pathlib import Path
 API_URL = "https://translation.googleapis.com/language/translate/v2"
 DEFAULT_MAX_CHARACTERS = 500_000
 DEFAULT_BATCH_CHARACTERS = 5_000
-SENTENCE_END = re.compile(r'''[.!?…]["')\]]*\s*$''')
+SENTENCE_END = re.compile(r'''[.!?…]["')\]»”]*\s*$''')
 TOKEN_PATTERN = re.compile(r"\w+(?:['’]\w+)?|[^\w]+", re.UNICODE)
 
 
@@ -159,9 +159,10 @@ def reader_blocks(root: Path, track: dict) -> list[str]:
     current = ""
     sentence_count = 0
     for index, word in enumerate(words):
+        prefix = word.get("prefix") or ""
         separator = word.get("separator") or " "
         piece = f'{word["text"]}{separator}'
-        current += piece
+        current += f"{prefix}{piece}"
         if SENTENCE_END.search(piece):
             sentence_count += 1
         if sentence_count >= 4 and index < len(words) - 1:
@@ -185,7 +186,7 @@ def parse_reader_source(text: str, name: str) -> list[dict[str, str]]:
         else:
             source = [word for segment in payload.get("segments", []) for word in segment.get("words", [])]
         return [
-            {"text": str(item.get("word", item.get("text", ""))).strip(), "separator": ""}
+            {"text": str(item.get("word", item.get("text", ""))).strip(), "prefix": "", "separator": ""}
             for item in source
             if str(item.get("word", item.get("text", ""))).strip()
         ]
@@ -194,14 +195,26 @@ def parse_reader_source(text: str, name: str) -> list[dict[str, str]]:
     return tokenize_text(trimmed)
 
 
+OPENING_PUNCT_SPLIT = re.compile(r"^([\s\S]*?\s+)([¿¡«“\"'(\[—–-]+)$", re.UNICODE)
+
+
 def tokenize_text(text: str) -> list[dict[str, str]]:
     words: list[dict[str, str]] = []
+    pending_prefix = ""
     for match in TOKEN_PATTERN.finditer(text):
         token = match.group(0)
         if token[0].isalnum() or token[0] == "_":
-            words.append({"text": token, "separator": ""})
+            words.append({"text": token, "prefix": pending_prefix, "separator": ""})
+            pending_prefix = ""
         elif words:
             words[-1]["separator"] += token
+        else:
+            pending_prefix += token
+    for index, word in enumerate(words):
+        split_match = OPENING_PUNCT_SPLIT.match(word["separator"])
+        if split_match and index + 1 < len(words):
+            word["separator"] = split_match.group(1)
+            words[index + 1]["prefix"] = (words[index + 1].get("prefix") or "") + split_match.group(2)
     return words
 
 

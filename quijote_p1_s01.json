@@ -12,32 +12,22 @@
       "end": 0.77
     },
     {
-      "word": "Quijote,",
+      "word": "Quijote",
       "start": 0.77,
       "end": 1.27
     },
     {
-      "word": "hibre,",
+      "word": "I.01:",
       "start": 1.47,
-      "end": 1.71
-    },
-    {
-      "word": "funtos,",
-      "start": 1.79,
-      "end": 2.27
-    },
-    {
-      "word": "on,",
-      "start": 2.41,
       "end": 2.53
     },
     {
-      "word": "un",
+      "word": "Un",
       "start": 2.71,
       "end": 2.95
     },
     {
-      "word": "Hidalgo",
+      "word": "hidalgo",
       "start": 2.95,
       "end": 3.27
     },
@@ -47,7 +37,7 @@
       "end": 3.39
     },
     {
-      "word": "la",
+      "word": "La",
       "start": 3.39,
       "end": 3.55
     },
@@ -72,13 +62,8 @@
       "end": 5.39
     },
     {
-      "word": "a",
+      "word": "Saavedra.",
       "start": 5.39,
-      "end": 5.53
-    },
-    {
-      "word": "Avedra.",
-      "start": 5.53,
       "end": 6.31
     },
     {

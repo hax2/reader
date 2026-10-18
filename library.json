@@ -931,7 +931,8 @@
     "audio": "quijote_p1_s01.m4a",
     "transcript": "quijote_p1_s01.json",
     "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
-    "mediaVersion": "644487be861a5954"
+    "mediaVersion": "644487be861a5954",
+    "englishTranslation": "translations/quijote-p1-s01.en.json"
   },
   {
     "id": "quijote-p1-s02",
@@ -959,7 +960,8 @@
     "cover": "covers/quijote_p1_s02.webp",
     "text": "texts/quijote_p1_s02.txt",
     "wordCount": 4785,
-    "minutes": 27
+    "minutes": 27,
+    "englishTranslation": "translations/quijote-p1-s02.en.json"
   },
   {
     "id": "quijote-p1-s03",
@@ -987,7 +989,8 @@
     "cover": "covers/quijote_p1_s03.webp",
     "text": "texts/quijote_p1_s03.txt",
     "wordCount": 4143,
-    "minutes": 23
+    "minutes": 23,
+    "englishTranslation": "translations/quijote-p1-s03.en.json"
   },
   {
     "id": "quijote-p1-s04",
@@ -1015,7 +1018,8 @@
     "cover": "covers/quijote_p1_s04.webp",
     "text": "texts/quijote_p1_s04.txt",
     "wordCount": 4874,
-    "minutes": 27
+    "minutes": 27,
+    "englishTranslation": "translations/quijote-p1-s04.en.json"
   },
   {
     "id": "quijote-p1-s05",
@@ -1043,7 +1047,8 @@
     "cover": "covers/quijote_p1_s05.webp",
     "text": "texts/quijote_p1_s05.txt",
     "wordCount": 3908,
-    "minutes": 22
+    "minutes": 22,
+    "englishTranslation": "translations/quijote-p1-s05.en.json"
   },
   {
     "id": "poe-carta-robada",

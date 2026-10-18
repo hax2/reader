@@ -12,12 +12,17 @@
       "end": 1.32
     },
     {
-      "word": "ameneceo",
+      "word": "a",
       "start": 1.32,
+      "end": 1.47
+    },
+    {
+      "word": "Meneceo.",
+      "start": 1.47,
       "end": 2.08
     },
     {
-      "word": "epicuro.",
+      "word": "Epicuro.",
       "start": 2.08,
       "end": 2.72
     },
@@ -27,8 +32,13 @@
       "end": 3.72
     },
     {
-      "word": "ameneceo,",
+      "word": "a",
       "start": 3.72,
+      "end": 3.87
+    },
+    {
+      "word": "Meneceo,",
+      "start": 3.87,
       "end": 4.76
     },
     {
