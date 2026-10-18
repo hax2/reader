@@ -29,7 +29,9 @@ import {
   safeDecodeHash,
   readingMinutes,
   hasValidTimings,
-  formatTime
+  formatTime,
+  normalizeWord,
+  escapeHtml
 } from "./utils/text";
 import {
   parseTranscript,
@@ -46,8 +48,8 @@ import { buildPassages, findPassageAt } from "./utils/passages";
 import { updateMediaSession } from "./utils/mediaSession";
 import { speechSynthesisSupported, difficultyOrder, collectionOptions } from "./utils/constants";
 import { useAudioPlayer } from "./hooks/useAudioPlayer";
-import { useBrowserTts } from "./hooks/useBrowserTts";
-import { useWordSync } from "./hooks/useWordSync";
+import { useBrowserTts, pronounceSpanishWord } from "./hooks/useBrowserTts";
+import { useWordSync, findWordAt, countEndedWords } from "./hooks/useWordSync";
 import { usePassages } from "./hooks/usePassages";
 import { useOnboardingDemo } from "./hooks/useOnboardingDemo";
 import { TopBar } from "./components/TopBar";
@@ -58,7 +60,7 @@ import { ReaderText } from "./components/ReaderText";
 import { PlayerBar } from "./components/PlayerBar";
 import { PassagePractice } from "./components/PassagePractice";
 import { VocabWarmup } from "./components/VocabWarmup";
-import { WordPopover } from "./components/WordPopover";
+import { WordPopover, type SideDefinition } from "./components/WordPopover";
 import { AnkiReviewModal } from "./components/AnkiReviewModal";
 import { AddBookModal } from "./components/AddBookModal";
 import { OnboardingModal } from "./components/OnboardingModal";
@@ -112,6 +114,9 @@ export const App: React.FC = () => {
 
   const [selectedWord, setSelectedWord] = useState<WordToken | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [sideDefinition, setSideDefinition] = useState<SideDefinition | null>(null);
+  const [isLoopingSentence, setIsLoopingSentence] = useState<boolean>(false);
+  const loopRangeRef = useRef<{ start: number; end: number } | null>(null);
 
   const [ankiOpen, setAnkiOpen] = useState(false);
   const [addBookOpen, setAddBookOpen] = useState(false);
@@ -254,6 +259,10 @@ export const App: React.FC = () => {
     const loop = () => {
       const audio = audioRef.current;
       if (audio && !audio.paused) {
+        const loopRange = loopRangeRef.current;
+        if (loopRange && audio.currentTime >= loopRange.end) {
+          audio.currentTime = loopRange.start;
+        }
         if (readerModeRef.current === "passages") {
           handlePassagePlayback(audio.currentTime);
         }
@@ -527,6 +536,9 @@ export const App: React.FC = () => {
       setCustomTitle("");
       setSelectedWord(null);
       setAnchorEl(null);
+      setSideDefinition(null);
+      setIsLoopingSentence(false);
+      loopRangeRef.current = null;
       const isAudio = Boolean(track.audio);
       setMedia(isAudio ? "audio" : "text");
 
@@ -766,6 +778,45 @@ export const App: React.FC = () => {
     audioSkipBy(10);
   }, [audioSkipBy, media, movePassage, moveTtsChunk, readerMode]);
 
+  const handleToggleLoopSentence = useCallback(() => {
+    if (media !== "audio" || !words.length) return;
+    if (isLoopingSentence) {
+      setIsLoopingSentence(false);
+      loopRangeRef.current = null;
+      setStatusText("Stopped repeating current sentence.");
+      return;
+    }
+    const audio = audioRef.current;
+    const currentTime = audio ? audio.currentTime : audioCurrentTime;
+    let activeIdx = findWordAt(words, currentTime);
+    if (activeIdx < 0) {
+      activeIdx = Math.max(0, Math.min(countEndedWords(words, currentTime), words.length - 1));
+    }
+    let startIdx = activeIdx;
+    while (startIdx > 0) {
+      const prev = words[startIdx - 1];
+      if (/[.!?…]["')\]»”]*\s*$/u.test(`${prev.text}${prev.separator || ""}`)) break;
+      startIdx -= 1;
+    }
+    let endIdx = activeIdx;
+    while (endIdx < words.length - 1) {
+      const curr = words[endIdx];
+      if (/[.!?…]["')\]»”]*\s*$/u.test(`${curr.text}${curr.separator || ""}`)) break;
+      endIdx += 1;
+    }
+    const startTime = Number.isFinite(words[startIdx]?.start) ? Math.max(0, words[startIdx].start - 0.08) : currentTime;
+    const endTime = Number.isFinite(words[endIdx]?.end)
+      ? Math.max(startTime + 0.6, words[endIdx].end + 0.12)
+      : startTime + 4;
+    loopRangeRef.current = { start: startTime, end: endTime };
+    setIsLoopingSentence(true);
+    setStatusText("Repeating current sentence (press L to stop).");
+    if (audio && audio.paused) {
+      audio.currentTime = startTime;
+      audioPlay();
+    }
+  }, [audioCurrentTime, audioPlay, audioRef, isLoopingSentence, media, words]);
+
   // Keyboard shortcuts in reader view
   useEffect(() => {
     if (view !== "reader") return;
@@ -807,6 +858,12 @@ export const App: React.FC = () => {
         }
       }
 
+      if (event.key.toLowerCase() === "l" && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        event.preventDefault();
+        handleToggleLoopSentence();
+        return;
+      }
+
       switch (event.key) {
         case "ArrowLeft":
           event.preventDefault();
@@ -828,6 +885,7 @@ export const App: React.FC = () => {
   }, [
     handleSkipBack,
     handleSkipForward,
+    handleToggleLoopSentence,
     handleTogglePlay,
     media,
     movePassage,
@@ -973,9 +1031,33 @@ export const App: React.FC = () => {
     setStudyLog(updated);
   };
 
+  const handleUnlogWord = (word: WordToken) => {
+    const normalizedKey = normalizeWord(word.text);
+    if (!normalizedKey) return;
+    setStudyLog((prev) => {
+      const next = { ...prev };
+      delete next[normalizedKey];
+      saveStudyLog(next);
+      return next;
+    });
+  };
+
   const studyCardCount = Object.keys(studyLog).length;
   const isAudioMedia = media === "audio";
   const visibleTracks = getVisibleTracks(tracks, catalogSettings);
+
+  const progressPercent = isAudioMedia
+    ? audioDuration > 0
+      ? (audioCurrentTime / audioDuration) * 100
+      : 0
+    : words.length > 0
+      ? (ttsWordIndex / Math.max(1, words.length - 1)) * 100
+      : 0;
+
+  const currentStoryTitle = activeTrack?.title || customTitle || "";
+  const storyStudiedWords = Object.entries(studyLog)
+    .filter(([, entry]) => currentStoryTitle && entry.reading === currentStoryTitle)
+    .sort(([, a], [, b]) => Date.parse(b.lastSeenAt || "0") - Date.parse(a.lastSeenAt || "0"));
 
   return (
     <div
@@ -993,6 +1075,8 @@ export const App: React.FC = () => {
       {view === "library" && (
         <section className="library-panel screen" aria-labelledby="library-title">
           <TopBar
+            studyCardCount={studyCardCount}
+            onOpenAnkiReview={() => setAnkiOpen(true)}
             onOpenAddBook={() => setAddBookOpen(true)}
             onOpenOnboarding={() => openOnboarding(1)}
           />
@@ -1036,6 +1120,7 @@ export const App: React.FC = () => {
             passagesAvailable={Boolean(isAudioMedia && passages.length)}
             isTextOnly={!isAudioMedia}
             appearanceSettings={appearanceSettings}
+            progressPercent={progressPercent}
             onBackToLibrary={() => showLibrary(true)}
             onSelectReaderMode={handleSelectReaderMode}
             onUpdateAppearance={(updater) => {
@@ -1064,6 +1149,7 @@ export const App: React.FC = () => {
             playbackRate={appearanceSettings.playbackRate}
             studyCardCount={studyCardCount}
             disabled={isAudioMedia ? !audioDuration : !speechSynthesisSupported || !words.length}
+            isLoopingSentence={isLoopingSentence}
             onTogglePlay={handleTogglePlay}
             onSeek={(val) => {
               if (isAudioMedia) {
@@ -1103,6 +1189,7 @@ export const App: React.FC = () => {
             }}
             onSkipBack={handleSkipBack}
             onSkipForward={handleSkipForward}
+            onToggleLoopSentence={handleToggleLoopSentence}
             onSetPlaybackRate={(r) => {
               setAudioPlaybackRate(r);
               setAppearanceSettings((prev) => {
@@ -1223,12 +1310,78 @@ export const App: React.FC = () => {
 
             <aside className="side-panel" aria-label="Word meaning and import tools">
               <div id="definition" className="definition" role="region" aria-live="polite">
-                <p className="muted">
-                  {readerMode === "passages" && !passageRevealed
-                    ? "Reveal the passage, then tap a word for its meaning."
-                    : "Tap a word for an English meaning."}
-                </p>
+                {sideDefinition ? (
+                  <>
+                    <div className="side-definition-header">
+                      <strong dangerouslySetInnerHTML={{ __html: sideDefinition.wordHtml }} />
+                      {speechSynthesisSupported && (
+                        <button
+                          type="button"
+                          className="side-pronounce-btn"
+                          onClick={() => pronounceSpanishWord(sideDefinition.wordText, selectedVoiceURI)}
+                          aria-label={`Pronounce ${sideDefinition.wordText}`}
+                          title="Listen to Spanish pronunciation"
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                          </svg>
+                          Listen
+                        </button>
+                      )}
+                    </div>
+                    <p dangerouslySetInnerHTML={{ __html: sideDefinition.meaningHtml }} />
+                  </>
+                ) : (
+                  <p className="muted">
+                    {readerMode === "passages" && !passageRevealed
+                      ? "Reveal the passage, then tap a word for its meaning."
+                      : "Tap a word for an English meaning."}
+                  </p>
+                )}
               </div>
+
+              {storyStudiedWords.length > 0 && (
+                <div className="story-vocab-history" aria-label="Words looked up in this reading">
+                  <div className="story-vocab-header">
+                    <span className="story-vocab-title">Saved in this reading ({storyStudiedWords.length})</span>
+                    <button
+                      type="button"
+                      className="text-link-button"
+                      onClick={() => setAnkiOpen(true)}
+                    >
+                      Practice
+                    </button>
+                  </div>
+                  <ul className="story-vocab-list">
+                    {storyStudiedWords.slice(0, 8).map(([key, item]) => (
+                      <li key={key} className="story-vocab-item">
+                        <button
+                          type="button"
+                          className="story-vocab-word-btn"
+                          onClick={() => {
+                            if (speechSynthesisSupported) {
+                              pronounceSpanishWord(item.word, selectedVoiceURI);
+                            }
+                            setSideDefinition({
+                              wordText: item.word,
+                              wordIndex: 0,
+                              wordHtml: escapeHtml(item.word),
+                              meaningHtml: item.context
+                                ? `${escapeHtml(item.meaning)}<br><small class="muted">${escapeHtml(item.context)}</small>`
+                                : escapeHtml(item.meaning)
+                            });
+                          }}
+                          title="Click to pronounce and view context"
+                        >
+                          <span className="story-vocab-es">{item.word}</span>
+                          <span className="story-vocab-en">{item.meaning}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               <details className="manual-tools">
                 <summary>Use your own files</summary>
@@ -1280,12 +1433,16 @@ export const App: React.FC = () => {
             anchorEl={anchorEl}
             words={words}
             media={media}
+            studyLog={studyLog}
+            preferredVoiceURI={selectedVoiceURI}
             onClose={() => {
               setSelectedWord(null);
               setAnchorEl(null);
             }}
             onPlayFromHere={handlePlayFromHere}
             onLogWord={handleLogWord}
+            onUnlogWord={handleUnlogWord}
+            onUpdateSideDefinition={setSideDefinition}
           />
         </section>
       )}
@@ -1294,6 +1451,7 @@ export const App: React.FC = () => {
       <AnkiReviewModal
         isOpen={ankiOpen}
         studyLog={studyLog}
+        preferredVoiceURI={selectedVoiceURI}
         onClose={() => setAnkiOpen(false)}
         onUpdateEntry={(key, field, val) => {
           setStudyLog((prev) => {

@@ -4320,3 +4320,514 @@ textarea {
     transition: none;
   }
 }
+
+/* ==========================================================================
+   STUDY LAUNCH BUTTON (LIBRARY TOPBAR) & TOP READING PROGRESS BAR
+   ========================================================================== */
+
+.study-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 13px;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(16, 24, 20, 0.04);
+  transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+
+.study-launch-btn:hover {
+  background: var(--wash);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.study-launch-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 9999px;
+  background: var(--accent);
+  color: var(--button-ink);
+  font-size: 0.72rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.reader-topbar {
+  position: relative;
+}
+
+.reader-topbar-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: transparent;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.reader-topbar-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 180ms ease-out;
+}
+
+/* ==========================================================================
+   SENTENCE LOOP BUTTON IN PLAYER TRANSPORT
+   ========================================================================== */
+
+.loop-sentence-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid transparent;
+  transition: color 140ms ease, background-color 140ms ease, border-color 140ms ease;
+}
+
+.loop-sentence-button:hover:not(:disabled) {
+  color: var(--ink);
+  background: var(--wash);
+}
+
+.loop-sentence-button.is-active {
+  color: var(--accent);
+  background: var(--wash);
+  border-color: var(--accent);
+}
+
+.loop-badge {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 0.56rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   WORD POPOVER ACTIONS ROW & SIDE PANEL VOCAB HISTORY
+   ========================================================================== */
+
+.popover-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.popover-actions-row .popover-play {
+  margin-top: 0;
+  flex: 1 1 auto;
+}
+
+.popover-icon-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 7px;
+  background: var(--paper);
+  color: var(--soft-ink);
+  border: 1px solid var(--line);
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: all 140ms ease;
+}
+
+.popover-icon-action:hover {
+  color: var(--ink);
+  background: var(--wash);
+  border-color: var(--accent);
+}
+
+.popover-save-btn.is-saved {
+  color: var(--accent);
+  background: var(--wash);
+  border-color: var(--accent);
+}
+
+.side-definition-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.side-pronounce-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 28px;
+  padding: 0 9px;
+  border-radius: 9999px;
+  background: var(--paper);
+  color: var(--soft-ink);
+  border: 1px solid var(--line);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.side-pronounce-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--wash);
+}
+
+.story-vocab-history {
+  margin-top: 14px;
+  padding: 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.story-vocab-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.story-vocab-title {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.text-link-button {
+  min-height: auto;
+  padding: 2px 6px;
+  background: transparent;
+  color: var(--accent);
+  font-size: 0.76rem;
+  font-weight: 750;
+  border-radius: 5px;
+}
+
+.text-link-button:hover {
+  background: var(--wash);
+  color: var(--accent-dark);
+}
+
+.story-vocab-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.story-vocab-word-btn {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 34px;
+  padding: 6px 9px;
+  border-radius: 7px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  text-align: left;
+  transition: border-color 140ms ease, background-color 140ms ease;
+}
+
+.story-vocab-word-btn:hover {
+  background: var(--wash);
+  border-color: var(--accent);
+}
+
+.story-vocab-es {
+  color: var(--ink);
+  font-weight: 750;
+  font-size: 0.86rem;
+}
+
+.story-vocab-en {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   INTERACTIVE FLASHCARD STUDIO IN ANKI MODAL
+   ========================================================================== */
+
+.anki-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.anki-mode-switch {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+}
+
+.anki-mode-btn {
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: all 140ms ease;
+}
+
+.anki-mode-btn:hover {
+  color: var(--ink);
+}
+
+.anki-mode-btn.is-active {
+  background: var(--accent);
+  color: var(--button-ink);
+}
+
+.flashcard-studio {
+  display: grid;
+  gap: 16px;
+  padding: 20px 24px 24px;
+  background: var(--paper);
+}
+
+.flashcard-progress-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.flashcard-progress-track {
+  height: 5px;
+  background: var(--line);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.flashcard-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 9999px;
+  transition: width 220ms ease;
+}
+
+.flashcard-stage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 250px;
+  padding: 22px 24px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(15, 23, 19, 0.06);
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+
+.flashcard-stage:hover {
+  border-color: var(--accent);
+}
+
+.flashcard-stage:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.flashcard-top-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.flashcard-source {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.flashcard-speak-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 9999px;
+  background: var(--paper);
+  color: var(--soft-ink);
+  border: 1px solid var(--line);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.flashcard-speak-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--wash);
+}
+
+.flashcard-front {
+  margin: 18px 0;
+  text-align: center;
+}
+
+.flashcard-word {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-family: var(--reader-font-family);
+  font-size: clamp(1.65rem, 3.2vw, 2.25rem);
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.flashcard-context {
+  margin: 0 auto;
+  max-width: 52ch;
+  color: var(--soft-ink);
+  font-family: var(--reader-font-family);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.flashcard-context-mark {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--highlight-bg);
+  color: var(--highlight-text);
+  font-weight: 750;
+}
+
+.flashcard-reveal-prompt {
+  margin: 10px 0 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.flashcard-back {
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+  text-align: center;
+  animation: onboardingStepFadeIn 150ms ease-out;
+}
+
+.flashcard-meaning {
+  margin: 4px 0 0;
+  color: var(--accent);
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.flashcard-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.flashcard-grade-btn {
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 9px;
+  font-size: 0.88rem;
+  font-weight: 750;
+}
+
+.flashcard-grade-btn.again {
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.flashcard-grade-btn.again:hover {
+  background: var(--wash);
+  border-color: var(--rose);
+  color: var(--rose);
+}
+
+.flashcard-grade-btn.known {
+  background: var(--accent);
+  color: var(--button-ink);
+}
+
+.flashcard-grade-btn.known:hover {
+  background: var(--accent-dark);
+}
+
+.flashcard-complete {
+  padding: 36px 24px;
+  text-align: center;
+  background: var(--paper);
+}
+
+.flashcard-complete-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: var(--wash);
+  color: var(--accent);
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.flashcard-complete h4 {
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+  color: var(--ink);
+}
+
+.flashcard-complete p {
+  margin: 0 0 20px;
+}
+
+.flashcard-complete-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+

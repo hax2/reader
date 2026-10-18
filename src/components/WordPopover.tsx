@@ -11,9 +11,13 @@ import {
   fetchTranslation
 } from "../utils/translations";
 import { contextSentenceForWord, contextualRequestForWord } from "../utils/storage";
-import type { WordToken } from "../types";
+import { speechSynthesisSupported } from "../utils/constants";
+import { pronounceSpanishWord } from "../hooks/useBrowserTts";
+import type { WordToken, StudyLog } from "../types";
 
 export interface SideDefinition {
+  wordText: string;
+  wordIndex: number;
   wordHtml: string;
   meaningHtml: string;
 }
@@ -24,9 +28,12 @@ export interface WordPopoverProps {
   words: WordToken[];
   media: "audio" | "text";
   hasAudioSource?: boolean;
+  preferredVoiceURI?: string;
+  studyLog?: StudyLog;
   onClose: () => void;
   onPlayFromHere: (wordIndex: number) => void;
   onLogWord: (word: WordToken, meaning: string) => void;
+  onUnlogWord?: (word: WordToken) => void;
   onUpdateSideDefinition?: (def: SideDefinition) => void;
 }
 
@@ -36,9 +43,12 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
   words,
   media,
   hasAudioSource = true,
+  preferredVoiceURI,
+  studyLog,
   onClose,
   onPlayFromHere,
   onLogWord,
+  onUnlogWord,
   onUpdateSideDefinition
 }) => {
   const popoverRef = useRef<HTMLDivElement | null>(null);
@@ -86,6 +96,8 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
       setDefinition(instant);
       setAllowHtml(true);
       onUpdateSideDefinition?.({
+        wordText: selectedWord.text,
+        wordIndex: selectedWord.index,
         wordHtml,
         meaningHtml: sanitizeEmphasisHtml(instant)
       });
@@ -96,6 +108,8 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
     setDefinition("Looking up...");
     setAllowHtml(false);
     onUpdateSideDefinition?.({
+      wordText: selectedWord.text,
+      wordIndex: selectedWord.index,
       wordHtml,
       meaningHtml: escapeHtml("Looking up...")
     });
@@ -123,6 +137,8 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
           setDefinition(translated);
           setAllowHtml(true);
           onUpdateSideDefinition?.({
+            wordText: selectedWord.text,
+            wordIndex: selectedWord.index,
             wordHtml,
             meaningHtml: sanitizeEmphasisHtml(translated)
           });
@@ -137,6 +153,8 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
         setDefinition(fallback);
         setAllowHtml("trusted");
         onUpdateSideDefinition?.({
+          wordText: selectedWord.text,
+          wordIndex: selectedWord.index,
           wordHtml,
           meaningHtml: fallback
         });
@@ -145,7 +163,8 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
     return () => {
       isCurrent = false;
     };
-  }, [anchorEl, onLogWord, onUpdateSideDefinition, selectedWord, updatePosition, words]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [anchorEl, selectedWord, updatePosition, words]);
 
   useEffect(() => {
     updatePosition();
@@ -183,6 +202,12 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
   const canPlayFromHere =
     media === "text" || (hasAudioSource && Number.isFinite(selectedWord.start));
 
+  const norm = normalizeWord(selectedWord.text);
+  const isSaved = Boolean(
+    studyLog &&
+      Object.values(studyLog).some((entry) => normalizeWord(entry.word) === norm)
+  );
+
   return (
     <div
       id="wordPopover"
@@ -213,21 +238,76 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
                 : escapeHtml(definition)
         }}
       />
-      {canPlayFromHere && (
-        <button
-          className="play-from-here"
-          type="button"
-          onClick={() => {
-            onPlayFromHere(selectedWord.index);
-            onClose();
-          }}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-            <polygon points="5 3 19 12 5 21 5 3" />
-          </svg>
-          Play from here
-        </button>
-      )}
+      <div className="popover-actions-row">
+        {canPlayFromHere && (
+          <button
+            className="play-from-here"
+            type="button"
+            onClick={() => {
+              onPlayFromHere(selectedWord.index);
+              onClose();
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+            Play from here
+          </button>
+        )}
+
+        {speechSynthesisSupported && (
+          <button
+            className="play-from-here popover-pronounce-btn"
+            type="button"
+            onClick={() => pronounceSpanishWord(selectedWord.text, preferredVoiceURI)}
+            title={`Pronounce “${selectedWord.text}”`}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            </svg>
+            Pronounce
+          </button>
+        )}
+
+        {studyLog && (
+          <button
+            className={`play-from-here popover-save-toggle${isSaved ? " is-saved" : ""}`}
+            type="button"
+            onClick={() => {
+              if (isSaved) {
+                onUnlogWord?.(selectedWord);
+              } else if (definition && definition !== "Looking up...") {
+                onLogWord(selectedWord, htmlToText(definition));
+              }
+            }}
+            title={isSaved ? "Remove from study cards" : "Save to study cards"}
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill={isSaved ? "currentColor" : "none"}
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+            </svg>
+            {isSaved ? "Saved" : "Save"}
+          </button>
+        )}
+      </div>
     </div>
   );
 };

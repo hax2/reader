@@ -98,6 +98,29 @@ export function wordAtTtsCharacter(offsets: TtsOffset[], charIndex: number): num
   return match;
 }
 
+export function pronounceSpanishWord(text: string, preferredVoiceURI?: string): void {
+  if (!speechSynthesisSupported) return;
+  const clean = text.replace(/^[.,;:!?¡¿"'«»()[\]—–-]+|[.,;:!?¡¿"'«»()[\]—–-]+$/gu, "").trim();
+  if (!clean) return;
+  try {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(clean);
+    const available = window.speechSynthesis.getVoices().filter(isUsableSpeechVoice);
+    const spanishVoices = available.filter((v) => /^es(?:-|_|$)/i.test(v.lang));
+    const pool = spanishVoices.length ? spanishVoices : available;
+    const sorted = [...pool].sort((a, b) => scoreSpanishVoice(b) - scoreSpanishVoice(a));
+    const voice =
+      (preferredVoiceURI && sorted.find((v) => v.voiceURI === preferredVoiceURI)) || sorted[0] || null;
+    if (voice) utterance.voice = voice;
+    utterance.lang = voice?.lang ? voice.lang.replace("_", "-") : "es-ES";
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+    window.speechSynthesis.speak(utterance);
+  } catch {
+    // Ignore speech synthesis errors on unsupported browsers
+  }
+}
+
 export function useBrowserTts({
   words,
   appearanceSettings,

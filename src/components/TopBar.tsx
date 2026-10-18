@@ -1,13 +1,17 @@
 import React from "react";
 
 export interface TopBarProps {
+  studyCardCount?: number;
   onOpenAddBook: () => void;
   onOpenOnboarding: () => void;
+  onOpenAnkiReview?: () => void;
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
+  studyCardCount = 0,
   onOpenAddBook,
-  onOpenOnboarding
+  onOpenOnboarding,
+  onOpenAnkiReview
 }) => {
   return (
     <header className="topbar">
@@ -17,6 +21,31 @@ export const TopBar: React.FC<TopBarProps> = ({
         </h1>
       </div>
       <div className="topbar-actions">
+        {studyCardCount > 0 && onOpenAnkiReview && (
+          <button
+            id="openLibraryStudyBtn"
+            className="onboarding-launch-btn study-launch-btn"
+            type="button"
+            onClick={onOpenAnkiReview}
+          >
+            <svg
+              width="17"
+              height="17"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+            </svg>
+            <span>
+              Study cards <span className="study-badge-count">{studyCardCount}</span>
+            </span>
+          </button>
+        )}
         <button
           id="addBookBtn"
           className="add-book-btn"

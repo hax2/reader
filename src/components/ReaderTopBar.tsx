@@ -9,6 +9,7 @@ export interface ReaderTopBarProps {
   passagesAvailable: boolean;
   isTextOnly: boolean;
   appearanceSettings: AppearanceSettings;
+  progressPercent?: number;
   onBackToLibrary: () => void;
   onSelectReaderMode: (mode: ReaderMode) => void;
   onUpdateAppearance: (updater: (prev: AppearanceSettings) => AppearanceSettings) => void;
@@ -24,6 +25,7 @@ export const ReaderTopBar: React.FC<ReaderTopBarProps> = ({
   passagesAvailable,
   isTextOnly,
   appearanceSettings,
+  progressPercent = 0,
   onBackToLibrary,
   onSelectReaderMode,
   onUpdateAppearance,
@@ -44,6 +46,8 @@ export const ReaderTopBar: React.FC<ReaderTopBarProps> = ({
     modeBtnRefs.current[nextIdx]?.focus();
     onSelectReaderMode(MODE_ORDER[nextIdx]);
   };
+
+  const clampedProgress = Math.max(0, Math.min(100, progressPercent));
 
   return (
     <header className="reader-topbar">
@@ -129,6 +133,13 @@ export const ReaderTopBar: React.FC<ReaderTopBarProps> = ({
         onUpdateSettings={onUpdateAppearance}
         onOpenOnboarding={onOpenOnboarding}
       />
+
+      <div className="reader-topbar-progress" aria-hidden="true">
+        <div
+          className="reader-topbar-progress-fill"
+          style={{ width: `${clampedProgress}%` }}
+        />
+      </div>
     </header>
   );
 };
