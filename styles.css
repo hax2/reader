@@ -1276,7 +1276,7 @@ h2 {
   color: inherit;
 }
 
-[data-mode="read"][data-text-mode="dim-upcoming"] .word:not(.current) {
+:root[data-text-mode="dim-upcoming"] [data-mode="read"] .word:not(.current) {
   color: inherit;
 }
 
@@ -1675,11 +1675,11 @@ h2 {
   color: var(--read-word);
 }
 
-:root[data-text-mode="dim-upcoming"] .word:not(.current) {
+:root[data-text-mode="dim-upcoming"] .reader.has-reading-position .word:not(.current):not(.tts-fallback) {
   color: var(--read-word);
 }
 
-:root[data-text-mode="dim-upcoming"] .word.read {
+:root[data-text-mode="dim-upcoming"] .reader.has-reading-position .word.read {
   color: inherit;
 }
 
@@ -1825,7 +1825,8 @@ h2 {
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
 }
 
-.word.tts-fallback {
+.word.tts-fallback,
+:root[data-text-mode="dim-upcoming"] .word.tts-fallback:not(.current) {
   color: var(--ink);
   background: var(--selection-bg);
 }

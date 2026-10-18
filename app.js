@@ -151,7 +151,11 @@ let ttsUtterance = null;
 let ttsState = "idle";
 let ttsSessionId = 0;
 let ttsResumeAfterSeek = false;
+let ttsWordTimer = 0;
+let ttsBoundaryFired = false;
+let ttsVoiceRetryTimer = 0;
 
+document.documentElement.dataset.mode = app.dataset.mode || "listen";
 applyAppearanceSettings();
 drawWaveform(0);
 updateStudyControls();
@@ -1156,7 +1160,7 @@ async function loadTrack(track, updateHistory = true) {
     history.pushState({ trackId: track.id }, "", `#${encodeURIComponent(track.id)}`);
   }
   app.dataset.media = track.audio ? "audio" : "text";
-  setReadMode(!track.audio);
+  setReadMode(!track.audio && !speechSynthesisSupported);
   if (track.audio) {
     setAudioSource(track.audio, `${track.title} loaded.`);
   } else {
@@ -1170,7 +1174,8 @@ async function loadTrack(track, updateHistory = true) {
     setSavedTranslationBlocks([]);
     const parsed = tokenizeUntimed(track.customText);
     setWords(parsed, false);
-    status(`${track.title} · ${parsed.length.toLocaleString()} words · about ${track.minutes || readingMinutes(parsed.length)} min to read.`);
+    const voiceHint = speechSynthesisSupported ? " · browser voice ready" : "";
+    status(`${track.title} · ${parsed.length.toLocaleString()} words · about ${track.minutes || readingMinutes(parsed.length)} min to read${voiceHint}.`);
     return;
   }
 
@@ -1198,7 +1203,8 @@ async function loadTrack(track, updateHistory = true) {
       const resumeMessage = resumeAt > 0 ? ` Resuming at ${formatTime(resumeAt)}.` : "";
       status(`${track.title} loaded with ${parsed.length.toLocaleString()} synced words.${resumeMessage}`);
     } else {
-      status(`${track.title} · ${parsed.length.toLocaleString()} words · about ${track.minutes || readingMinutes(parsed.length)} min to read.`);
+      const voiceHint = speechSynthesisSupported ? " · browser voice ready" : "";
+      status(`${track.title} · ${parsed.length.toLocaleString()} words · about ${track.minutes || readingMinutes(parsed.length)} min to read${voiceHint}.`);
     }
   } catch {
     if (loadId !== trackLoadId || activeTrackId !== track.id) return;
@@ -1228,15 +1234,36 @@ function setSavedTranslationBlocks(blocks) {
     if (!source || !translation) continue;
     savedTranslationLookup.set(normalizedTranslationSource(source), translation);
 
-    const sourceSentences = splitTranslationSentences(source);
-    if (sourceSentences.length < 2) continue;
-    const translatedSentences = fitTranslationSentences(translation, sourceSentences);
-    sourceSentences.forEach((sentence, index) => {
-      if (translatedSentences[index]) {
-        savedTranslationLookup.set(normalizedTranslationSource(sentence), translatedSentences[index]);
-      }
-    });
+    for (const splitter of [splitTranslationSentences, splitTranslationSentencesByWords]) {
+      const sourceSentences = splitter(source);
+      if (sourceSentences.length < 2) continue;
+      const translatedSentences = fitTranslationSentences(translation, sourceSentences);
+      sourceSentences.forEach((sentence, index) => {
+        const key = normalizedTranslationSource(sentence);
+        if (translatedSentences[index] && !savedTranslationLookup.has(key)) {
+          savedTranslationLookup.set(key, translatedSentences[index]);
+        }
+      });
+    }
   }
+}
+
+function lookupSavedTranslation(source) {
+  const norm = normalizedTranslationSource(source);
+  if (!norm) return "";
+  const direct = savedTranslationLookup.get(norm);
+  if (direct) return direct;
+
+  for (const splitter of [splitTranslationSentencesByWords, splitTranslationSentences]) {
+    const parts = splitter(source);
+    if (parts.length > 1) {
+      const translatedParts = parts.map((part) => savedTranslationLookup.get(normalizedTranslationSource(part)));
+      if (translatedParts.every(Boolean)) {
+        return translatedParts.join(" ");
+      }
+    }
+  }
+  return "";
 }
 
 function clearAudioSource() {
@@ -1250,6 +1277,7 @@ function clearAudioSource() {
   if (vocabWarmup) vocabWarmup.hidden = true;
   setSavedTranslationBlocks([]);
   reader.replaceChildren();
+  reader.classList.remove("has-reading-position");
   hideWordPopover();
   definition.innerHTML = `<p class="muted">Tap a word for an English meaning.</p>`;
   updateMediaSession(null);
@@ -1307,12 +1335,14 @@ function setReaderMode(mode) {
   readerMode = mode;
   isReadMode = mode === "read";
   app.dataset.mode = isReadMode ? "read" : "listen";
+  document.documentElement.dataset.mode = app.dataset.mode;
   app.dataset.readerMode = mode;
+  if (isReadMode) reader.classList.remove("has-reading-position");
   syncModeSelector();
   if (mode === "passages") enterPassagesMode();
   else exitPassagesMode();
   if (app.dataset.media === "text" && mode === "listen" && words.length) {
-    updateTtsProgress({ highlight: true, scrollReader: false });
+    updateTtsProgress({ highlight: ttsState !== "idle" || ttsWordIndex > 0, scrollReader: false });
     if (!speechSynthesisSupported) {
       status("Browser text-to-speech is unavailable here. You can still read and use the vocabulary tools.");
     }
@@ -1637,7 +1667,10 @@ function renderTrackList() {
     ? tracks
         .filter((track) => {
           const saved = progressCache[track.id];
-          return track.audio && saved?.time > 0 && saved?.duration > 0 && saved.time / saved.duration < 0.97;
+          if (track.audio) {
+            return saved?.time > 0 && saved?.duration > 0 && saved.time / saved.duration < 0.97;
+          }
+          return saved?.wordIndex > 0 && saved?.wordCount > 0 && saved.wordIndex < saved.wordCount;
         })
         .sort((a, b) => Date.parse(progressCache[b.id].updatedAt || 0) - Date.parse(progressCache[a.id].updatedAt || 0))
         .slice(0, 3)
@@ -1690,7 +1723,13 @@ function createTrackCard(track) {
     button.dataset.trackId = track.id;
     if (track.id === activeTrackId) button.setAttribute("aria-current", "true");
     button.style.setProperty("--progress", `${percent}%`);
-    const formatLabel = track.personal ? "My book" : track.audio ? "Listen & read" : "Read";
+    const formatLabel = track.personal
+      ? "My book"
+      : track.audio
+        ? "Listen & read"
+        : speechSynthesisSupported
+          ? "Browser voice"
+          : "Read";
     const timeLabel = track.minutes ? `${track.minutes} min` : "Short read";
     button.innerHTML = `
       <div class="track-cover-wrapper">
@@ -1889,6 +1928,9 @@ function wordsFromSegment(segment) {
   const span = Math.max(0.05, (end - start) / Math.max(1, tokens.length));
   return tokens.map((token, index) => ({
     word: token.text,
+    text: token.text,
+    prefix: token.prefix || "",
+    separator: token.separator || " ",
     start: start + index * span,
     end: start + (index + 1) * span
   }));
@@ -1928,15 +1970,55 @@ function parseCueTranscript(text) {
 function tokenizeUntimed(text) {
   const matches = text.matchAll(/[\p{L}\p{M}\d]+(?:['’][\p{L}\p{M}\d]+)?|[^\p{L}\p{M}\d]+/gu);
   const parsed = [];
+  let pendingPrefix = "";
   for (const match of matches) {
     const token = match[0];
     if (/^[\p{L}\p{M}\d]/u.test(token)) {
-      parsed.push({ text: token, separator: "" });
+      parsed.push({ text: token, prefix: pendingPrefix, separator: "" });
+      pendingPrefix = "";
     } else if (parsed.length) {
       parsed[parsed.length - 1].separator += token;
+    } else {
+      pendingPrefix += token;
+    }
+  }
+  for (let index = 0; index < parsed.length; index += 1) {
+    const sep = parsed[index].separator;
+    const splitMatch = sep.match(/^([\s\S]*?\s+)([¿¡«“"'(\[—–-]+)$/u);
+    if (splitMatch && index + 1 < parsed.length) {
+      parsed[index].separator = splitMatch[1];
+      parsed[index + 1].prefix = (parsed[index + 1].prefix || "") + splitMatch[2];
     }
   }
   return parsed;
+}
+
+function isUsableSpeechVoice(voice) {
+  if (!voice) return false;
+  const descriptor = `${voice.name || ""} ${voice.voiceURI || ""}`;
+  if (/\bmbrola\b/i.test(descriptor)) return false;
+  return true;
+}
+
+function isNoveltySpeechVoice(voice) {
+  const descriptor = `${voice.name || ""} ${voice.voiceURI || ""}`;
+  return descriptor.includes("+");
+}
+
+function scoreSpanishVoice(voice) {
+  let score = 0;
+  const lang = String(voice.lang || "").toLowerCase();
+  const name = String(voice.name || "").toLowerCase();
+  if (/^es(?:-|$)/i.test(lang)) score += 100;
+  if (lang === "es-es" || lang === "es-mx" || lang === "es-419" || lang === "es-us" || lang === "es") score += 25;
+  if (lang === "es-la") score += 20;
+  if (/natural|neural|google|microsoft|paulina|monica|mónica|jorge|elvira|alvaro|álvaro|dalia|helena|laura|pablo/i.test(name)) {
+    score += 40;
+  }
+  if (!isNoveltySpeechVoice(voice)) score += 30;
+  if (voice.localService) score += 5;
+  if (voice.default) score += 10;
+  return score;
 }
 
 function initializeSpeechVoices() {
@@ -1947,30 +2029,53 @@ function initializeSpeechVoices() {
   }
   refreshSpeechVoices();
   window.speechSynthesis.addEventListener?.("voiceschanged", refreshSpeechVoices);
+  window.clearTimeout(ttsVoiceRetryTimer);
+  if (!ttsVoices.length) {
+    let attempts = 0;
+    const retryVoices = () => {
+      attempts += 1;
+      refreshSpeechVoices();
+      if (!ttsVoices.length && attempts < 6) {
+        ttsVoiceRetryTimer = window.setTimeout(retryVoices, 350 * attempts);
+      }
+    };
+    ttsVoiceRetryTimer = window.setTimeout(retryVoices, 250);
+  }
 }
 
 function refreshSpeechVoices() {
   if (!speechSynthesisSupported) return;
-  const available = window.speechSynthesis.getVoices();
+  const available = window.speechSynthesis.getVoices().filter(isUsableSpeechVoice);
   if (!available.length) {
-    ttsVoiceSelect.replaceChildren(new Option("Loading Spanish voices…", ""));
-    ttsVoiceSelect.disabled = true;
+    ttsVoices = [];
+    ttsVoiceSelect.replaceChildren(new Option("Automatic Spanish voice · es-ES", ""));
+    ttsVoiceSelect.disabled = false;
     return;
   }
-  const spanishVoices = available.filter((voice) => /^es(?:-|$)/i.test(voice.lang));
-  ttsVoices = (spanishVoices.length ? spanishVoices : available).sort((a, b) => {
-    if (a.default !== b.default) return a.default ? -1 : 1;
+  const spanishVoices = available.filter((voice) => /^es(?:-|_|$)/i.test(voice.lang));
+  const cleanSpanishVoices = spanishVoices.filter((voice) => !isNoveltySpeechVoice(voice));
+  const cleanAnyVoices = available.filter((voice) => !isNoveltySpeechVoice(voice));
+  const candidatePool = cleanSpanishVoices.length
+    ? cleanSpanishVoices
+    : spanishVoices.length
+      ? spanishVoices
+      : cleanAnyVoices.length
+        ? cleanAnyVoices
+        : available;
+
+  ttsVoices = [...candidatePool].sort((a, b) => {
+    const scoreDiff = scoreSpanishVoice(b) - scoreSpanishVoice(a);
+    if (scoreDiff !== 0) return scoreDiff;
     return `${a.lang} ${a.name}`.localeCompare(`${b.lang} ${b.name}`);
   });
   const preferred = ttsVoices.find((voice) => voice.voiceURI === appearanceSettings.ttsVoiceURI)
-    || ttsVoices.find((voice) => voice.default)
     || ttsVoices[0];
   ttsVoiceSelect.replaceChildren(...ttsVoices.map((voice) => {
     const option = new Option(`${voice.name} · ${voice.lang}`, voice.voiceURI);
     option.selected = voice.voiceURI === preferred?.voiceURI;
     return option;
   }));
-  ttsVoiceSelect.disabled = !ttsVoices.length;
+  ttsVoiceSelect.disabled = false;
   if (preferred && appearanceSettings.ttsVoiceURI !== preferred.voiceURI) {
     appearanceSettings.ttsVoiceURI = preferred.voiceURI;
     saveAppearanceSettings(appearanceSettings);
@@ -1998,11 +2103,12 @@ function configureTextToSpeech() {
   skipBack.title = "Previous sentence";
   skipForward.setAttribute("aria-label", "Next sentence");
   skipForward.title = "Next sentence";
-  updateTtsProgress({ highlight: false, scrollReader: false });
+  updateTtsProgress({ highlight: ttsWordIndex > 0, scrollReader: false });
   syncModeSelector();
 }
 
 function resetTextToSpeechUi() {
+  clearTtsWordTimer();
   ttsVoiceControl.hidden = true;
   ttsChunks = [];
   ttsWordIndex = 0;
@@ -2021,11 +2127,13 @@ function buildTtsChunks(list) {
   let startWord = 0;
   let characterCount = 0;
   for (let index = 0; index < list.length; index += 1) {
-    const spoken = `${list[index].text}${list[index].separator || " "}`;
+    const word = list[index];
+    const spoken = `${word.prefix || ""}${word.text}${word.separator || " "}`;
     characterCount += spoken.length;
-    const sentenceEnd = /[.!?…]["')\]»”]*\s*$/u.test(spoken);
-    const hardBreak = characterCount >= 650 || index - startWord >= 110;
-    if (!sentenceEnd && !hardBreak && index < list.length - 1) continue;
+    const sentenceEnd = /[.!?…]["')\]»”]*\s*$/u.test(`${word.text}${word.separator || " "}`);
+    const clauseBreak = characterCount >= 140 && /[,;:—–]["')\]»”]*\s*$/u.test(`${word.text}${word.separator || " "}`);
+    const hardBreak = characterCount >= 220 || index - startWord >= 42;
+    if (!sentenceEnd && !clauseBreak && !hardBreak && index < list.length - 1) continue;
     chunks.push(createTtsChunk(list, startWord, index));
     startWord = index + 1;
     characterCount = 0;
@@ -2037,6 +2145,8 @@ function createTtsChunk(list, startWord, endWord) {
   let text = "";
   const offsets = [];
   for (let index = startWord; index <= endWord; index += 1) {
+    const prefix = list[index].prefix || "";
+    text += prefix;
     offsets.push({ charIndex: text.length, wordIndex: index });
     text += `${list[index].text}${list[index].separator || (index < endWord ? " " : "")}`;
   }
@@ -2049,7 +2159,44 @@ function createTtsSegment(chunk, startWord) {
 }
 
 function selectedTtsVoice() {
+  if (!ttsVoices.length) refreshSpeechVoices();
   return ttsVoices.find((voice) => voice.voiceURI === ttsVoiceSelect.value) || ttsVoices[0] || null;
+}
+
+function clearTtsWordTimer() {
+  if (ttsWordTimer) {
+    window.clearTimeout(ttsWordTimer);
+    ttsWordTimer = 0;
+  }
+}
+
+function startTtsWordTimer(segment, rate, sessionId) {
+  clearTtsWordTimer();
+  const safeRate = Math.max(0.5, Number(rate) || 1);
+  let cursor = segment.startWord;
+
+  const scheduleNext = () => {
+    if (sessionId !== ttsSessionId || ttsState !== "playing" || ttsBoundaryFired) return;
+    const currentWord = words[cursor];
+    if (!currentWord || cursor >= segment.endWord) return;
+    const chars = Math.max(2, currentWord.text.length);
+    const punctuationPause = /[.!?…]/u.test(currentWord.separator || "")
+      ? 240
+      : /[,;:—–]/u.test(currentWord.separator || "")
+        ? 120
+        : 0;
+    const delayMs = Math.max(95, Math.round(((chars * 52 + 75 + punctuationPause) / safeRate)));
+    ttsWordTimer = window.setTimeout(() => {
+      if (sessionId !== ttsSessionId || ttsState !== "playing" || ttsBoundaryFired) return;
+      cursor += 1;
+      if (cursor <= segment.endWord) {
+        setTtsWord(cursor, true);
+        scheduleNext();
+      }
+    }, delayMs);
+  };
+
+  scheduleNext();
 }
 
 function toggleTextToSpeech() {
@@ -2065,6 +2212,11 @@ function toggleTextToSpeech() {
   if (ttsState === "paused") {
     window.speechSynthesis.resume();
     ttsState = "playing";
+    const chunk = ttsChunks[ttsChunkIndex];
+    if (chunk && !ttsBoundaryFired) {
+      const segment = createTtsSegment(chunk, Math.max(chunk.startWord, ttsWordIndex));
+      startTtsWordTimer(segment, appearanceSettings.playbackRate, ttsSessionId);
+    }
     updateTtsPlaybackUi();
     return;
   }
@@ -2077,6 +2229,7 @@ function speakTextFromWord(wordIndex) {
   ttsResumeAfterSeek = false;
   const nextWord = Math.max(0, Math.min(Math.floor(wordIndex), words.length - 1));
   const sessionId = ++ttsSessionId;
+  clearTtsWordTimer();
   window.speechSynthesis.cancel();
   window.speechSynthesis.resume();
   clearTtsFallbackHighlight();
@@ -2087,14 +2240,16 @@ function speakTextFromWord(wordIndex) {
   speakTtsChunk(ttsChunkIndex, nextWord, sessionId);
 }
 
-function speakTtsChunk(chunkIndex, startWord, sessionId) {
+function speakTtsChunk(chunkIndex, startWord, sessionId, useDefaultVoice = false) {
   if (sessionId !== ttsSessionId || chunkIndex < 0 || chunkIndex >= ttsChunks.length) return;
+  clearTtsWordTimer();
+  ttsBoundaryFired = false;
   const chunk = ttsChunks[chunkIndex];
   const segment = createTtsSegment(chunk, Math.max(chunk.startWord, startWord));
   const utterance = new SpeechSynthesisUtterance(segment.text);
-  const voice = selectedTtsVoice();
+  const voice = useDefaultVoice ? null : selectedTtsVoice();
   if (voice) utterance.voice = voice;
-  utterance.lang = voice?.lang || "es-ES";
+  utterance.lang = voice?.lang ? voice.lang.replace("_", "-") : "es-ES";
   utterance.rate = appearanceSettings.playbackRate;
   utterance.pitch = 1;
   ttsUtterance = utterance;
@@ -2104,23 +2259,29 @@ function speakTtsChunk(chunkIndex, startWord, sessionId) {
     ttsState = "playing";
     setTtsFallbackHighlight(segment.startWord, segment.endWord);
     setTtsWord(segment.startWord, true);
+    startTtsWordTimer(segment, utterance.rate, sessionId);
     updateTtsPlaybackUi();
   };
 
   utterance.onboundary = (event) => {
     if (sessionId !== ttsSessionId || !Number.isFinite(event.charIndex)) return;
-    if (event.name !== "sentence") clearTtsFallbackHighlight();
+    if (event.name !== "sentence") {
+      ttsBoundaryFired = true;
+      clearTtsWordTimer();
+      clearTtsFallbackHighlight();
+    }
     setTtsWord(wordAtTtsCharacter(segment.offsets, event.charIndex), true);
   };
 
   utterance.onend = () => {
     if (sessionId !== ttsSessionId) return;
+    clearTtsWordTimer();
     clearTtsFallbackHighlight();
     setTtsWord(segment.endWord, false);
     const nextChunk = chunkIndex + 1;
     if (nextChunk < ttsChunks.length) {
       ttsChunkIndex = nextChunk;
-      speakTtsChunk(nextChunk, ttsChunks[nextChunk].startWord, sessionId);
+      speakTtsChunk(nextChunk, ttsChunks[nextChunk].startWord, sessionId, useDefaultVoice);
       return;
     }
     ttsWordIndex = words.length;
@@ -2134,6 +2295,11 @@ function speakTtsChunk(chunkIndex, startWord, sessionId) {
 
   utterance.onerror = (event) => {
     if (sessionId !== ttsSessionId || ["canceled", "interrupted"].includes(event.error)) return;
+    clearTtsWordTimer();
+    if (!useDefaultVoice && voice) {
+      speakTtsChunk(chunkIndex, startWord, sessionId, true);
+      return;
+    }
     clearTtsFallbackHighlight();
     ttsState = "idle";
     ttsUtterance = null;
@@ -2146,6 +2312,7 @@ function speakTtsChunk(chunkIndex, startWord, sessionId) {
 
 function pauseTextToSpeech() {
   if (!speechSynthesisSupported || ttsState !== "playing") return;
+  clearTtsWordTimer();
   window.speechSynthesis.pause();
   ttsState = "paused";
   updateTtsPlaybackUi();
@@ -2155,6 +2322,7 @@ function pauseTextToSpeech() {
 function stopTextToSpeech({ preservePosition = false } = {}) {
   if (!speechSynthesisSupported) return;
   ttsSessionId += 1;
+  clearTtsWordTimer();
   window.speechSynthesis.cancel();
   ttsUtterance = null;
   ttsState = "idle";
@@ -2167,7 +2335,7 @@ function restartTextToSpeech(autoplay) {
   const wordIndex = Math.min(ttsWordIndex, Math.max(0, words.length - 1));
   stopTextToSpeech({ preservePosition: true });
   if (autoplay) speakTextFromWord(wordIndex);
-  else updateTtsProgress({ highlight: readerMode === "listen", scrollReader: false });
+  else updateTtsProgress({ highlight: readerMode === "listen" && ttsWordIndex > 0, scrollReader: false });
 }
 
 function seekTextToSpeech(wordIndex) {
@@ -2288,6 +2456,7 @@ function renderWords(startIndex = 0, endIndex = words.length - 1) {
   translationObserver?.disconnect();
   translationObserver = null;
   reader.replaceChildren();
+  reader.classList.remove("has-reading-position");
   hideWordPopover();
   const fragment = document.createDocumentFragment();
   renderedWordStartIndex = Math.max(0, startIndex);
@@ -2306,6 +2475,10 @@ function renderWords(startIndex = 0, endIndex = words.length - 1) {
 
   for (let index = renderedWordStartIndex; index <= renderedWordEndIndex; index += 1) {
     const word = words[index];
+    const prefix = word.prefix || "";
+    if (prefix) {
+      paragraph.append(document.createTextNode(prefix));
+    }
     const span = document.createElement("button");
     span.type = "button";
     span.className = "word";
@@ -2315,7 +2488,7 @@ function renderWords(startIndex = 0, endIndex = words.length - 1) {
     paragraph.append(span);
     const separator = word.separator || " ";
     paragraph.append(document.createTextNode(separator));
-    paragraphText += `${word.text}${separator}`;
+    paragraphText += `${prefix}${word.text}${separator}`;
 
     if (/[.!?…]["')\]»”]*\s*$/.test(`${word.text}${separator}`)) {
       sentenceCount += 1;
@@ -2337,7 +2510,7 @@ function renderWords(startIndex = 0, endIndex = words.length - 1) {
   reader.classList.toggle("is-side-by-side", appearanceSettings.translationLayout === "side-by-side");
 
   if (bilingual) {
-    translationTargets.forEach((target, index) => {
+    translationTargets.forEach((target) => {
       target.before = translationSources[target.blockIndex - 1] || "";
       target.after = translationSources[target.blockIndex + 1] || "";
     });
@@ -2362,7 +2535,7 @@ function finishReadingPair(pair, sourceText, bilingual, targets, sources, fragme
     const english = document.createElement("p");
     english.className = "english-translation";
     english.lang = "en";
-    const savedTranslation = savedTranslationLookup.get(normalizedTranslationSource(source));
+    const savedTranslation = lookupSavedTranslation(source);
     if (savedTranslation) {
       english.textContent = savedTranslation;
       english.setAttribute("aria-busy", "false");
@@ -2387,6 +2560,23 @@ function splitTranslationSentences(value) {
   return (text.match(/[^.!?…]+(?:[.!?…]+["')\]»”]*|$)/g) || [text])
     .map((sentence) => sentence.trim())
     .filter(Boolean);
+}
+
+function splitTranslationSentencesByWords(value) {
+  const text = normalizedTranslationSource(value);
+  if (!text) return [];
+  const wordsInBlock = text.split(" ").filter(Boolean);
+  const sentences = [];
+  let current = [];
+  for (let index = 0; index < wordsInBlock.length; index += 1) {
+    const word = wordsInBlock[index];
+    current.push(word);
+    if ((/[.!?…]["')\]»”]*$/u.test(word) && index < wordsInBlock.length - 1) || index === wordsInBlock.length - 1) {
+      sentences.push(current.join(" "));
+      current = [];
+    }
+  }
+  return sentences.filter(Boolean);
 }
 
 function fitTranslationSentences(translation, sourceSentences) {
@@ -2524,6 +2714,19 @@ async function loadReadingTranslation(target, renderId) {
 }
 
 async function translateReadingText(source, outerBefore = "", outerAfter = "") {
+  const directCached = getCachedTranslation(source);
+  if (directCached) return directCached;
+  try {
+    const gtxResult = await fetchGoogleGtxTranslation(source);
+    if (gtxResult) {
+      translationCache[source] = gtxResult;
+      saveTranslationCache(translationCache);
+      return gtxResult;
+    }
+  } catch {
+    // Fall back to contextual chunked translation below.
+  }
+
   const chunks = splitTranslationText(source, 300);
   const translated = [];
   for (let index = 0; index < chunks.length; index += 1) {
@@ -2536,7 +2739,12 @@ async function translateReadingText(source, outerBefore = "", outerAfter = "") {
       fallbackText: chunk
     }));
   }
-  return translated.join(" ");
+  const combined = translated.join(" ");
+  if (combined) {
+    translationCache[source] = combined;
+    saveTranslationCache(translationCache);
+  }
+  return combined;
 }
 
 function splitTranslationText(text, maxBytes) {
@@ -2651,6 +2859,7 @@ function updateCurrentWord(time, scrollReader = true) {
 }
 
 function applyCurrentWord(index, endedCount, scrollReader = true) {
+  reader.classList.toggle("has-reading-position", !isReadMode && (index >= 0 || endedCount > renderedWordStartIndex));
   if (index === currentWordIndex && endedCount === readWordCount) return;
   if (currentWordIndex >= 0) reader.querySelector(`[data-index="${currentWordIndex}"]`)?.classList.remove("current");
   const previousEndedCount = readWordCount < renderedWordStartIndex
@@ -2715,8 +2924,10 @@ async function showDefinition(word, anchor) {
   
   const normalized = normalizeWord(word.text);
   const contextHTML = contextSentenceForWord(word.index);
+  const contextPlain = htmlToText(contextHTML);
   const contextualRequest = contextualRequestForWord(word.index, contextHTML);
-  const instant = sharedGlossary[normalized] || getCachedTranslation(contextualRequest);
+  const glossaryEntry = (sharedGlossary[normalized] && sharedGlossary[normalized].trim()) || LITERARY_VOCAB_MAP[normalized] || "";
+  const instant = glossaryEntry || getCachedTranslation(contextualRequest) || getCachedTranslation(contextPlain);
   
   if (instant) {
     renderDefinition(contextHTML, instant, anchor, true);
@@ -2733,10 +2944,25 @@ async function showDefinition(word, anchor) {
   }
 
   try {
-    const translated = await fetchTranslation(contextualRequest, {
-      targetTag: "i",
-      fallbackText: contextHTML
-    });
+    const [wordMeaning, phraseMeaning] = await Promise.all([
+      normalized ? fetchSingleWordMeaning(normalized).catch(() => "") : Promise.resolve(""),
+      fetchGoogleGtxTranslation(contextPlain).catch(() => "")
+    ]);
+    let translated = "";
+    if (wordMeaning && phraseMeaning && normalizeWord(wordMeaning) !== normalizeWord(phraseMeaning)) {
+      translated = `<b>${escapeHtml(wordMeaning)}</b> — ${escapeHtml(phraseMeaning)}`;
+    } else if (phraseMeaning || wordMeaning) {
+      translated = escapeHtml(phraseMeaning || wordMeaning);
+    } else {
+      translated = await fetchTranslation(contextualRequest, {
+        targetTag: "i",
+        fallbackText: contextPlain
+      });
+    }
+    if (translated) {
+      translationCache[contextualRequest] = translated;
+      saveTranslationCache(translationCache);
+    }
     if (requestId === definitionRequestId) {
       renderDefinition(contextHTML, translated, anchor, true);
       logStudiedWord(word, translated);
@@ -2857,8 +3083,9 @@ function contextSentenceForWord(index) {
     .slice(start, end + 1)
     .map((word, offset) => {
       const absoluteIndex = start + offset;
+      const prefix = escapeHtml(word.prefix || "");
       const text = absoluteIndex === index ? `<b>${escapeHtml(word.text)}</b>` : escapeHtml(word.text);
-      return `${text}${escapeHtml(word.separator || " ")}`;
+      return `${prefix}${text}${escapeHtml(word.separator || " ")}`;
     })
     .join("")
     .replace(/\s+/g, " ")
@@ -2885,14 +3112,14 @@ function contextualRequestForWord(index, targetHTML) {
 function plainTextForWords(start, end) {
   return words
     .slice(start, end)
-    .map((word) => `${word.text}${word.separator || " "}`)
+    .map((word) => `${word.prefix || ""}${word.text}${word.separator || " "}`)
     .join("")
     .replace(/\s+/g, " ")
     .trim();
 }
 
 function endsSentence(word) {
-  return /[.,:;!?…]["')\]]*\s*$/.test(`${word.text}${word.separator || ""}`);
+  return /[.,:;!?…]["')\]»”]*\s*$/.test(`${word.text}${word.separator || ""}`);
 }
 
 function updateStudyControls() {
@@ -2990,8 +3217,53 @@ function tsvField(value) {
     .trim();
 }
 
+function isInvalidTranslationResponse(value) {
+  const text = String(value || "").trim();
+  if (!text) return true;
+  return /MYMEMORY WARNING|YOU USED ALL AVAILABLE FREE TRANSLATIONS|QUERY LENGTH LIMIT EXCEEDED|INVALID EMAIL/i.test(text);
+}
+
 function getCachedTranslation(context) {
-  return translationCache[context] || "";
+  const cached = translationCache[context] || "";
+  if (cached && isInvalidTranslationResponse(cached)) {
+    delete translationCache[context];
+    return "";
+  }
+  return cached;
+}
+
+async function fetchGoogleGtxTranslation(text, { dictionary = false } = {}) {
+  const cleanText = htmlToText(text);
+  if (!cleanText) return "";
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), 4500);
+  try {
+    const dtParams = dictionary ? "dt=t&dt=bd" : "dt=t";
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=es&tl=en&${dtParams}&q=${encodeURIComponent(cleanText)}`;
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) throw new Error("GTX lookup failed");
+    const data = await response.json();
+    if (dictionary && Array.isArray(data?.[1]) && data[1].length) {
+      const terms = [];
+      for (const group of data[1]) {
+        if (Array.isArray(group?.[1])) {
+          for (const term of group[1]) {
+            if (term && terms.length < 3 && !terms.includes(term)) terms.push(term);
+          }
+        }
+      }
+      if (terms.length) return terms.join(", ");
+    }
+    const translated = Array.isArray(data?.[0])
+      ? data[0].map((segment) => segment?.[0] || "").join("").trim()
+      : "";
+    if (!translated || isInvalidTranslationResponse(translated)) {
+      throw new Error("Empty GTX translation");
+    }
+    return translated;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
 }
 
 async function fetchTranslation(context, options = {}) {
@@ -3000,29 +3272,50 @@ async function fetchTranslation(context, options = {}) {
   if (translationRequests.has(context)) return translationRequests.get(context);
 
   const request = (async () => {
-    const controller = new AbortController();
-    const timeoutId = window.setTimeout(() => controller.abort(), 4500);
+    const plainFallback = htmlToText(options.fallbackText || context);
     try {
-      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(context)}&langpair=es|en`;
-      const response = await fetch(url, { signal: controller.signal });
-      if (!response.ok) throw new Error("Lookup failed");
-      const data = await response.json();
-      const rawTranslation = data?.responseData?.translatedText;
-      if (!rawTranslation) throw new Error("No translation returned");
-      const decodedTranslation = decodeHtmlEntities(String(rawTranslation));
-      let translated = decodedTranslation;
-      if (options.targetTag) {
-        translated = extractMarkedTranslation(decodedTranslation, options.targetTag);
-        if (!translated && options.fallbackText) {
-          translated = await fetchTranslation(options.fallbackText);
+      if (!options.targetTag || options.fallbackText) {
+        try {
+          const gtx = await fetchGoogleGtxTranslation(plainFallback, {
+            dictionary: !plainFallback.includes(" ")
+          });
+          if (gtx) {
+            translationCache[context] = gtx;
+            saveTranslationCache(translationCache);
+            return gtx;
+          }
+        } catch {
+          // Fall back to MyMemory below.
         }
-        if (!translated) throw new Error("Translation target marker was not returned");
       }
-      translationCache[context] = translated;
-      saveTranslationCache(translationCache);
-      return translated;
+
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), 4500);
+      try {
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(context)}&langpair=es|en`;
+        const response = await fetch(url, { signal: controller.signal });
+        if (!response.ok) throw new Error("Lookup failed");
+        const data = await response.json();
+        const rawTranslation = data?.responseData?.translatedText;
+        if (!rawTranslation || isInvalidTranslationResponse(rawTranslation)) {
+          throw new Error("No valid translation returned");
+        }
+        const decodedTranslation = decodeHtmlEntities(String(rawTranslation));
+        let translated = decodedTranslation;
+        if (options.targetTag) {
+          translated = extractMarkedTranslation(decodedTranslation, options.targetTag);
+          if (!translated && plainFallback) {
+            translated = await fetchGoogleGtxTranslation(plainFallback);
+          }
+          if (!translated) throw new Error("Translation target marker was not returned");
+        }
+        translationCache[context] = translated;
+        saveTranslationCache(translationCache);
+        return translated;
+      } finally {
+        window.clearTimeout(timeoutId);
+      }
     } finally {
-      window.clearTimeout(timeoutId);
       translationRequests.delete(context);
     }
   })();
@@ -3286,7 +3579,15 @@ function setSpeedMenuOpen(isOpen) {
 
 function loadTranslationCache() {
   try {
-    return JSON.parse(localStorage.getItem("spanish-reader-translations") || "{}");
+    const raw = JSON.parse(localStorage.getItem("spanish-reader-translations") || "{}");
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
+    const cleaned = {};
+    for (const [key, value] of Object.entries(raw)) {
+      if (typeof value === "string" && !/MYMEMORY WARNING|YOU USED ALL AVAILABLE FREE TRANSLATIONS|QUERY LENGTH LIMIT EXCEEDED|INVALID EMAIL/i.test(value)) {
+        cleaned[key] = value;
+      }
+    }
+    return cleaned;
   } catch {
     return {};
   }
@@ -3822,6 +4123,15 @@ function finishOnboarding() {
   updateLevelFilters();
   if (formatFilter) formatFilter.value = catalogSettings.format;
   renderTrackList();
+  if (words.length) {
+    renderReaderForCurrentMode();
+    renderVocabWarmup();
+    if (app.dataset.media === "text") {
+      updateTtsProgress({ highlight: readerMode === "listen" && ttsWordIndex > 0, scrollReader: false });
+    } else {
+      updateProgress({ scrollReader: false });
+    }
+  }
 
   pauseDemoSimulation();
   try {
@@ -4084,8 +4394,13 @@ async function fetchSingleWordMeaning(word) {
   if (sharedGlossary[norm] && sharedGlossary[norm].trim()) return sharedGlossary[norm].trim();
 
   try {
-    const raw = await fetchTranslation(norm);
-    if (!raw) return "";
+    let raw = "";
+    try {
+      raw = await fetchGoogleGtxTranslation(norm, { dictionary: true });
+    } catch {
+      raw = await fetchTranslation(norm);
+    }
+    if (!raw || isInvalidTranslationResponse(raw)) return "";
     const clean = String(raw)
       .replace(/<[^>]+>/g, "")
       .replace(/&[a-z]+;/gi, " ")

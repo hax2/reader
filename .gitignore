@@ -7,3 +7,5 @@ __pycache__/
 .tts-bench-venv/
 tts-comparison/
 translations/*.partial.json
+node_modules/
+dist/
