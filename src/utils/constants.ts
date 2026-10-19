@@ -9,7 +9,7 @@ export const collectionOptions = [
 ] as const;
 
 export const themeOptions = ["system", "paper", "mist", "night"] as const;
-export const appearanceSettingsVersion = 4;
+export const appearanceSettingsVersion = 5;
 
 export const difficultyLabels: Record<string, string> = {
   A2: "Early reader",

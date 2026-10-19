@@ -43,6 +43,18 @@ const PAUSE_ICON = (
   </svg>
 );
 
+function formatVoiceOptionLabel(voice: SpeechSynthesisVoice): string {
+  const cleanName = voice.name
+    .replace(/^Microsoft\s+/i, "")
+    .replace(/\s+Online\s*\(Natural\)\s*/i, " ")
+    .replace(/\s*-\s*Spanish\s*\([^)]*\)/i, "")
+    .replace(/\s*\([^)]*\)\s*/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const langTag = (voice.lang || "es").replace("_", "-");
+  return `${cleanName || voice.name} · ${langTag}`;
+}
+
 export const PlayerBar: React.FC<PlayerBarProps> = ({
   media,
   isPlaying,
@@ -86,8 +98,10 @@ export const PlayerBar: React.FC<PlayerBarProps> = ({
       : 0;
 
   useEffect(() => {
-    drawWaveform(canvasRef.current, progressFraction);
-  }, [progressFraction]);
+    if (isAudio) {
+      drawWaveform(canvasRef.current, progressFraction);
+    }
+  }, [isAudio, progressFraction]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -156,54 +170,85 @@ export const PlayerBar: React.FC<PlayerBarProps> = ({
     ? disabled || !duration
     : disabled || !speechSynthesisSupported || ttsChunkCount < 2;
 
+  const progressPercent = Math.round(progressFraction * 100);
+
   return (
-    <section className="listen-panel" aria-labelledby="app-title">
+    <section className={`listen-panel${!isAudio ? " is-tts-player" : ""}`} aria-labelledby="app-title">
       <div className="listen-panel-inner">
-        <div className="timeline-wrap">
-          <div className="waveform-container">
-            <canvas
-              id="waveform"
-              ref={canvasRef}
-              width={900}
-              height={24}
-              aria-hidden="true"
-            />
-            <input
-              id="seek"
-              className="seek"
-              type="range"
-              min={0}
-              max={isAudio ? duration || 0 : Math.max(0, wordCount - 1)}
-              step={isAudio ? 0.01 : 1}
-              value={isAudio ? currentTime : Math.min(position, Math.max(0, wordCount - 1))}
-              onChange={handleSeekChange}
-              disabled={transportDisabled}
-              aria-label="Seek"
-              aria-valuetext={
-                !isAudio
-                  ? wordCount
+        {isAudio ? (
+          <div className="timeline-wrap">
+            <div className="waveform-container">
+              <canvas
+                id="waveform"
+                ref={canvasRef}
+                width={900}
+                height={24}
+                aria-hidden="true"
+              />
+              <input
+                id="seek"
+                className="seek"
+                type="range"
+                min={0}
+                max={duration || 0}
+                step={0.01}
+                value={currentTime}
+                onChange={handleSeekChange}
+                disabled={transportDisabled}
+                aria-label="Seek"
+              />
+            </div>
+            <div className="time-readout" aria-label="Playback position">
+              <span id="currentTime" className="time-readout-inline">
+                {formattedCurrentTime}
+              </span>
+              <span className="time-divider" aria-hidden="true">
+                /
+              </span>
+              <span id="duration" className="time-readout-inline">
+                {formattedDuration}
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="tts-timeline-wrap">
+            <div className="tts-scrubber-container">
+              <div className="tts-scrubber-track" aria-hidden="true">
+                <div
+                  className="tts-scrubber-fill"
+                  style={{ width: `${progressFraction * 100}%` }}
+                />
+              </div>
+              <input
+                id="seek"
+                className="seek tts-seek"
+                type="range"
+                min={0}
+                max={Math.max(0, wordCount - 1)}
+                step={1}
+                value={Math.min(position, Math.max(0, wordCount - 1))}
+                onChange={handleSeekChange}
+                disabled={transportDisabled}
+                aria-label="Reading position"
+                aria-valuetext={
+                  wordCount
                     ? `Word ${Math.min(position + 1, wordCount)} of ${wordCount}`
                     : "No text loaded"
-                  : undefined
-              }
-            />
-          </div>
-          <div className="time-readout" aria-label="Playback position">
-            <span id="currentTime" className="time-readout-inline">
-              {isAudio
-                ? formattedCurrentTime
-                : wordCount
-                  ? `Word ${Math.min(position + 1, wordCount).toLocaleString()}`
+                }
+              />
+            </div>
+            <div className="tts-readout-row" aria-label="Reading position">
+              <span id="currentTime" className="tts-readout-words">
+                {wordCount
+                  ? `Word ${Math.min(position + 1, wordCount).toLocaleString()} of ${wordCount.toLocaleString()}`
                   : "Word 0"}
-            </span>
-            <span className="time-divider" aria-hidden="true">
-              /
-            </span>
-            <span id="duration" className="time-readout-inline">
-              {isAudio ? formattedDuration : wordCount.toLocaleString()}
-            </span>
+              </span>
+              <span id="duration" className="tts-readout-percent">
+                {progressPercent}%
+              </span>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="player-strip">
           <div className="speed-control" ref={speedControlRef}>
@@ -278,42 +323,59 @@ export const PlayerBar: React.FC<PlayerBarProps> = ({
               })}
             </div>
 
-            <label id="ttsVoiceControl" className="tts-voice-control" hidden={isAudio}>
-              <span className="visually-hidden">Browser voice</span>
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                aria-hidden="true"
-              >
-                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" />
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                <line x1="12" y1="19" x2="12" y2="22" />
-              </svg>
-              <select
-                id="ttsVoiceSelect"
-                aria-label="Browser voice"
-                value={selectedVoiceURI}
-                disabled={!speechSynthesisSupported}
-                onChange={(e) => onSelectVoice(e.target.value)}
-              >
-                {!speechSynthesisSupported ? (
-                  <option value="">Browser speech unavailable</option>
-                ) : ttsVoices.length > 0 ? (
-                  ttsVoices.map((voice) => (
-                    <option key={voice.voiceURI} value={voice.voiceURI}>
-                      {voice.name} · {voice.lang}
-                    </option>
-                  ))
-                ) : (
-                  <option value="">Automatic Spanish voice · es-ES</option>
-                )}
-              </select>
-            </label>
+            {!isAudio && (
+              <label id="ttsVoiceControl" className="tts-voice-control">
+                <span className="visually-hidden">Browser voice</span>
+                <svg
+                  className="tts-voice-icon"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                </svg>
+                <select
+                  id="ttsVoiceSelect"
+                  aria-label="Browser voice"
+                  value={selectedVoiceURI}
+                  disabled={!speechSynthesisSupported}
+                  onChange={(e) => onSelectVoice(e.target.value)}
+                >
+                  {!speechSynthesisSupported ? (
+                    <option value="">Voice unavailable</option>
+                  ) : ttsVoices.length > 0 ? (
+                    ttsVoices.map((voice) => (
+                      <option key={voice.voiceURI} value={voice.voiceURI}>
+                        {formatVoiceOptionLabel(voice)}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">Spanish · es-ES</option>
+                  )}
+                </select>
+                <svg
+                  className="tts-voice-chevron"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.25"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </label>
+            )}
           </div>
 
           <div className="player-transport">
@@ -326,21 +388,39 @@ export const PlayerBar: React.FC<PlayerBarProps> = ({
               aria-label={skipBackLabel}
               title={skipBackTitle}
             >
-              <svg
-                viewBox="0 0 32 32"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M10 8H5V3" />
-                <path d="M5.8 8.1a12 12 0 1 1-1 14" />
-              </svg>
-              <span className="skip-value" aria-hidden="true">
-                10
-              </span>
+              {isAudio ? (
+                <>
+                  <svg
+                    viewBox="0 0 32 32"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M10 8H5V3" />
+                    <path d="M5.8 8.1a12 12 0 1 1-1 14" />
+                  </svg>
+                  <span className="skip-value" aria-hidden="true">
+                    10
+                  </span>
+                </>
+              ) : (
+                <svg
+                  className="tts-skip-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <polygon points="19 20 9 12 19 4 19 20" />
+                  <line x1="5" y1="19" x2="5" y2="5" />
+                </svg>
+              )}
             </button>
 
             <button
@@ -364,21 +444,39 @@ export const PlayerBar: React.FC<PlayerBarProps> = ({
               aria-label={skipForwardLabel}
               title={skipForwardTitle}
             >
-              <svg
-                viewBox="0 0 32 32"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M22 8h5V3" />
-                <path d="M26.2 8.1a12 12 0 1 0 1 14" />
-              </svg>
-              <span className="skip-value" aria-hidden="true">
-                10
-              </span>
+              {isAudio ? (
+                <>
+                  <svg
+                    viewBox="0 0 32 32"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M22 8h5V3" />
+                    <path d="M26.2 8.1a12 12 0 1 0 1 14" />
+                  </svg>
+                  <span className="skip-value" aria-hidden="true">
+                    10
+                  </span>
+                </>
+              ) : (
+                <svg
+                  className="tts-skip-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <polygon points="5 4 15 12 5 20 5 4" />
+                  <line x1="19" y1="5" x2="19" y2="19" />
+                </svg>
+              )}
             </button>
 
             {isAudio && onToggleLoopSentence && (

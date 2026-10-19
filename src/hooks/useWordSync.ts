@@ -64,10 +64,28 @@ export function applyCurrentWord({
 }): void {
   if (!reader) return;
   reader.classList.toggle("has-reading-position", !isReadMode && (index >= 0 || endedCount > renderedWordStartIndex));
-  if (index === currentWordIndexRef.current && endedCount === readWordCountRef.current) return;
+
+  const currentDomHasClass =
+    index < 0 || Boolean(reader.querySelector(`[data-index="${index}"]`)?.classList.contains("current"));
+  const readDomHasClass =
+    endedCount <= renderedWordStartIndex ||
+    Boolean(reader.querySelector(`[data-index="${renderedWordStartIndex}"]`)?.classList.contains("read"));
+
+  if (
+    index === currentWordIndexRef.current &&
+    endedCount === readWordCountRef.current &&
+    currentDomHasClass &&
+    readDomHasClass
+  ) {
+    return;
+  }
 
   if (currentWordIndexRef.current >= 0) {
     reader.querySelector(`[data-index="${currentWordIndexRef.current}"]`)?.classList.remove("current");
+  }
+
+  if (!readDomHasClass) {
+    readWordCountRef.current = -1;
   }
 
   const previousEndedCount =

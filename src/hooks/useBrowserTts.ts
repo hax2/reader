@@ -329,7 +329,6 @@ export function useBrowserTts({
         if (sessionId !== ttsSessionIdRef.current) return;
         setTtsState("playing");
         setMediaSessionPlaybackState("playing");
-        setTtsFallbackHighlight(segment.startWord, segment.endWord);
         setTtsWord(segment.startWord, true);
         startTtsWordTimer(segment, utterance.rate, sessionId);
       };
@@ -339,7 +338,6 @@ export function useBrowserTts({
         if (event.name !== "sentence") {
           ttsBoundaryFiredRef.current = true;
           clearTtsWordTimer();
-          clearTtsFallbackHighlight();
         }
         setTtsWord(wordAtTtsCharacter(segment.offsets, event.charIndex), true);
       };
@@ -348,13 +346,13 @@ export function useBrowserTts({
         if (sessionId !== ttsSessionIdRef.current) return;
         clearTtsWordTimer();
         clearTtsFallbackHighlight();
-        setTtsWord(segment.endWord, false);
         const nextChunk = chunkIndex + 1;
         if (nextChunk < chunks.length) {
           chunkIndexRef.current = nextChunk;
           speakTtsChunk(nextChunk, chunks[nextChunk].startWord, sessionId, useDefaultVoice);
           return;
         }
+        setTtsWord(segment.endWord, false);
         setTtsWordIndex(words.length);
         setTtsState("idle");
         setMediaSessionPlaybackState("paused");
@@ -385,7 +383,6 @@ export function useBrowserTts({
       clearTtsWordTimer,
       onStatusChange,
       selectedTtsVoice,
-      setTtsFallbackHighlight,
       setTtsWord,
       startTtsWordTimer,
       words

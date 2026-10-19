@@ -525,6 +525,33 @@ export const App: React.FC = () => {
     [applyWordIndex, resetSyncState, setPassageIndex, setTtsWordIndex]
   );
 
+  // Ensure word read/current classes stay synced when ReaderText re-renders blocks
+  useEffect(() => {
+    if (view !== "reader" || readerMode === "read" || !words.length) return;
+    if (media === "text") {
+      if (ttsWordIndexRef.current > 0 || ttsState !== "idle") {
+        applyWordIndex(ttsWordIndexRef.current, false);
+      }
+    } else {
+      const audio = audioElementRef.current;
+      const time = audio ? audio.currentTime : audioCurrentTime;
+      if (time > 0) {
+        updateCurrentWord(time, false);
+      }
+    }
+  }, [
+    view,
+    readerMode,
+    passageRevealed,
+    appearanceSettings.translationLayout,
+    words,
+    media,
+    ttsState,
+    audioCurrentTime,
+    applyWordIndex,
+    updateCurrentWord
+  ]);
+
   // Load track
   const loadTrack = useCallback(
     async (track: Track, updateHistory = true) => {

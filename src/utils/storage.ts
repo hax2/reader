@@ -370,14 +370,17 @@ export function loadAppearanceSettings(): AppearanceSettings {
   try {
     const saved = JSON.parse(localStorage.getItem("spanish-reader-appearance") || "{}");
     const defaults = defaultAppearanceSettings();
+    const isCurrentVersion = saved.version === appearanceSettingsVersion;
     return {
       theme: (themeOptions as readonly string[]).includes(saved.theme) ? saved.theme : defaults.theme,
-      highlight: ["sage", "sky", "rose", "underline", "none"].includes(saved.highlight)
-        ? saved.highlight
-        : defaults.highlight,
-      textMode: ["dim-passed", "dim-upcoming"].includes(saved.textMode)
-        ? saved.textMode
-        : defaults.textMode,
+      highlight:
+        isCurrentVersion && ["sage", "sky", "rose", "underline", "none"].includes(saved.highlight)
+          ? saved.highlight
+          : defaults.highlight,
+      textMode:
+        isCurrentVersion && ["dim-passed", "dim-upcoming"].includes(saved.textMode)
+          ? saved.textMode
+          : defaults.textMode,
       translationLayout: ["spanish-only", "side-by-side", "english-below"].includes(saved.translationLayout)
         ? saved.translationLayout
         : defaults.translationLayout,
