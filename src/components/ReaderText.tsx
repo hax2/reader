@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useMemo, useState, useCallback } from "react";
 import { lookupSavedTranslation, translateReadingText } from "../utils/translations";
 import { setWordTabStop } from "../hooks/useWordSync";
-import type { WordToken, AppearanceSettings, ReaderMode, Passage } from "../types";
+import { getBeginnerStoryEnhancement, isBeginnerTrack } from "../utils/beginnerStories";
+import type { WordToken, AppearanceSettings, ReaderMode, Passage, Track } from "../types";
 
 export interface ReaderTextProps {
   words: WordToken[];
@@ -10,6 +11,7 @@ export interface ReaderTextProps {
   passage: Passage | null;
   passageRevealed: boolean;
   appearanceSettings: AppearanceSettings;
+  activeTrack?: Track | null;
   onWordClick: (word: WordToken, anchor: HTMLButtonElement) => void;
 }
 
@@ -26,6 +28,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
   passage,
   passageRevealed,
   appearanceSettings,
+  activeTrack,
   onWordClick
 }) => {
   const [translations, setTranslations] = useState<Record<number, string>>({});
@@ -183,6 +186,24 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
   };
 
   const isHidden = readerMode === "passages" && !passageRevealed;
+  const isBeginner = readerMode !== "passages" && isBeginnerTrack(activeTrack);
+  const beginnerEnhancement = useMemo(
+    () => (isBeginner ? getBeginnerStoryEnhancement(activeTrack, pairs.length) : null),
+    [activeTrack, isBeginner, pairs.length]
+  );
+
+  const sceneByPairIndex = useMemo(() => {
+    const map = new Map<number, { icon: string; titleEs: string; titleEn: string }>();
+    if (!beginnerEnhancement || !pairs.length) return map;
+    const multiplier = sentencesPerPair === 1 ? 4 : 1;
+    for (const scene of beginnerEnhancement.scenes) {
+      const targetIdx = Math.min(scene.blockIndex * multiplier, pairs.length - 1);
+      if (!map.has(targetIdx)) {
+        map.set(targetIdx, scene);
+      }
+    }
+    return map;
+  }, [beginnerEnhancement, pairs.length, sentencesPerPair]);
 
   return (
     <article
@@ -190,7 +211,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
       ref={readerRef as React.RefObject<HTMLElement>}
       className={`reader${bilingual ? " has-translation" : ""}${
         appearanceSettings.translationLayout === "side-by-side" ? " is-side-by-side" : ""
-      }`}
+      }${isBeginner ? " is-beginner-story" : ""}`}
       lang="es"
       hidden={isHidden}
       onKeyDown={handleKeyDown}
@@ -199,9 +220,29 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
         const translationText = translations[pair.blockIndex];
         const hasError = Boolean(failedBlocks[pair.blockIndex]);
         const isLoadingTranslation = bilingual && !translationText && !hasError;
+        const scene = sceneByPairIndex.get(idx);
 
         return (
-          <section key={pair.blockIndex} className="translation-pair">
+          <section
+            key={pair.blockIndex}
+            className={`translation-pair${scene ? " has-scene-header" : ""}`}
+          >
+            {scene && (
+              <div className="story-scene-divider" role="heading" aria-level={3}>
+                <span className="story-scene-icon" aria-hidden="true">
+                  {scene.icon}
+                </span>
+                <div className="story-scene-titles">
+                  <span className="story-scene-es" lang="es">
+                    {scene.titleEs}
+                  </span>
+                  <span className="story-scene-en" lang="en">
+                    {scene.titleEn}
+                  </span>
+                </div>
+              </div>
+            )}
+
             <p className="spanish-text" lang="es">
               {pair.words.map((word: WordToken) => (
                 <React.Fragment key={word.index}>

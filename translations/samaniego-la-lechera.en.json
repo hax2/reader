@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "trackId": "samaniego-la-lechera",
+  "sourceHash": "5307e6acce5d47045de1aab5304ece8749e7f2f0f00a6302c0f21051087e7f28",
+  "provider": "curated-bilingual-edition",
+  "sourceLanguage": "es",
+  "targetLanguage": "en",
+  "translatedAt": "2026-10-19T07:48:51.388900+00:00",
+  "characters": 1792,
+  "blocks": [
+    {
+      "source": "Una mañana de primavera, una joven aldeana caminaba alegre y ligera hacia el mercado del pueblo. Llevaba sobre la cabeza un cántaro lleno de leche fresca recién ordeñada en su granja. El camino era largo, pero ella avanzaba con paso vivo mientras hacía grandes planes en su imaginación. «Esta leche es tan rica y limpia que la venderé muy pronto en la plaza», pensaba la muchacha con entusiasmo.",
+      "translation": "One spring morning, a young village girl walked cheerfully and lightly toward the town market. She carried on her head a pitcher full of fresh milk just milked at her farm. The road was long, but she stepped briskly while making grand plans in her imagination. \"This milk is so rich and clean that I will sell it very quickly in the square,\" the girl thought enthusiastically."
+    },
+    {
+      "source": "«Con las monedas de la leche compraré una cesta de cien huevos frescos en el puesto vecino». «De esos huevos nacerán decenas de pollitos que cuidarán mi patio durante todo el verano». «Ningún zorro astuto podrá acercarse a mi corral porque yo vigilaré mis aves día y noche». «Cuando los pollos sean grandes, los venderé en la feria de otoño a muy buen precio».",
+      "translation": "\"With the coins from the milk, I will buy a basket of a hundred fresh eggs at the neighboring stall.\" \"From those eggs dozens of little chicks will hatch and fill my yard all summer long.\" \"No clever fox will be able to get near my coop because I will guard my birds day and night.\" \"When the chickens are grown, I will sell them at the autumn fair for a very good price.\""
+    },
+    {
+      "source": "La joven sonreía sola bajo el sol de la mañana mientras su fortuna imaginaria seguía creciendo. «Con el dinero de los pollos compraré un lechón pequeño y lo alimentaré con bellotas y salvado». «Pronto estará tan grande y hermoso que me dará dinero suficiente para comprar una vaca con su ternero». «¡Qué alegría será ver al pequeño ternero correr y saltar libremente por el prado verde de mi casa!».",
+      "translation": "The young woman smiled to herself under the morning sun while her imaginary fortune kept growing. \"With the money from the chickens I will buy a little piglet and feed it acorns and bran.\" \"Soon it will be so big and handsome that it will give me enough money to buy a cow and her calf.\" \"What a joy it will be to watch the little calf run and leap freely across the green meadow by my house!\""
+    },
+    {
+      "source": "Llena de felicidad por aquel pensamiento, la lechera dio también un salto de alegría en medio del camino. Al saltar, el cántaro perdió el equilibrio, cayó desde su cabeza y se rompió en mil pedazos contra las piedras. La blanca leche corrió por la tierra seca y la pobre muchacha miró con tristeza los restos de su cántaro. —¡Adiós leche, adiós dinero, adiós huevos, pollitos, lechón, vaca y ternero!",
+      "translation": "Filled with happiness at that thought, the milkmaid also gave a leap of joy right in the middle of the road. As she leaped, the pitcher lost its balance, fell from her head, and shattered into a thousand pieces against the stones. The white milk spilled across the dry earth, and the poor girl looked sadly at the shards of her pitcher. \"Goodbye milk, goodbye money, goodbye eggs, chicks, piglet, cow, and calf!\" she exclaimed, sighing on the path."
+    },
+    {
+      "source": "—exclamó suspirando en el sendero.\n\nEn un solo instante desaparecieron todas las riquezas que había construido en el aire. No debemos dejarnos llevar por la fantasía desmedida ni contar con los bienes antes de tenerlos seguros en la mano.",
+      "translation": "In a single instant, all the riches she had built in thin air vanished. We should not let ourselves be carried away by unchecked fantasy or count on our gains before holding them safely in hand."
+    },
+    {
+      "source": "Una mañana de primavera, una joven aldeana caminaba alegre y ligera hacia el mercado del pueblo.",
+      "translation": "One spring morning, a young village girl walked cheerfully and lightly toward the town market."
+    },
+    {
+      "source": "Llevaba sobre la cabeza un cántaro lleno de leche fresca recién ordeñada en su granja.",
+      "translation": "She carried on her head a pitcher full of fresh milk just milked at her farm."
+    },
+    {
+      "source": "El camino era largo, pero ella avanzaba con paso vivo mientras hacía grandes planes en su imaginación.",
+      "translation": "The road was long, but she stepped briskly while making grand plans in her imagination."
+    },
+    {
+      "source": "«Esta leche es tan rica y limpia que la venderé muy pronto en la plaza», pensaba la muchacha con entusiasmo.",
+      "translation": "\"This milk is so rich and clean that I will sell it very quickly in the square,\" the girl thought enthusiastically."
+    },
+    {
+      "source": "«Con las monedas de la leche compraré una cesta de cien huevos frescos en el puesto vecino».",
+      "translation": "\"With the coins from the milk, I will buy a basket of a hundred fresh eggs at the neighboring stall.\""
+    },
+    {
+      "source": "«De esos huevos nacerán decenas de pollitos que cuidarán mi patio durante todo el verano».",
+      "translation": "\"From those eggs dozens of little chicks will hatch and fill my yard all summer long.\""
+    },
+    {
+      "source": "«Ningún zorro astuto podrá acercarse a mi corral porque yo vigilaré mis aves día y noche».",
+      "translation": "\"No clever fox will be able to get near my coop because I will guard my birds day and night.\""
+    },
+    {
+      "source": "«Cuando los pollos sean grandes, los venderé en la feria de otoño a muy buen precio».",
+      "translation": "\"When the chickens are grown, I will sell them at the autumn fair for a very good price.\""
+    },
+    {
+      "source": "La joven sonreía sola bajo el sol de la mañana mientras su fortuna imaginaria seguía creciendo.",
+      "translation": "The young woman smiled to herself under the morning sun while her imaginary fortune kept growing."
+    },
+    {
+      "source": "«Con el dinero de los pollos compraré un lechón pequeño y lo alimentaré con bellotas y salvado».",
+      "translation": "\"With the money from the chickens I will buy a little piglet and feed it acorns and bran.\""
+    },
+    {
+      "source": "«Pronto estará tan grande y hermoso que me dará dinero suficiente para comprar una vaca con su ternero».",
+      "translation": "\"Soon it will be so big and handsome that it will give me enough money to buy a cow and her calf.\""
+    },
+    {
+      "source": "«¡Qué alegría será ver al pequeño ternero correr y saltar libremente por el prado verde de mi casa!».",
+      "translation": "\"What a joy it will be to watch the little calf run and leap freely across the green meadow by my house!\""
+    },
+    {
+      "source": "Llena de felicidad por aquel pensamiento, la lechera dio también un salto de alegría en medio del camino.",
+      "translation": "Filled with happiness at that thought, the milkmaid also gave a leap of joy right in the middle of the road."
+    },
+    {
+      "source": "Al saltar, el cántaro perdió el equilibrio, cayó desde su cabeza y se rompió en mil pedazos contra las piedras.",
+      "translation": "As she leaped, the pitcher lost its balance, fell from her head, and shattered into a thousand pieces against the stones."
+    },
+    {
+      "source": "La blanca leche corrió por la tierra seca y la pobre muchacha miró con tristeza los restos de su cántaro.",
+      "translation": "The white milk spilled across the dry earth, and the poor girl looked sadly at the shards of her pitcher."
+    },
+    {
+      "source": "—¡Adiós leche, adiós dinero, adiós huevos, pollitos, lechón, vaca y ternero!",
+      "translation": "\"Goodbye milk, goodbye money, goodbye eggs, chicks, piglet, cow, and calf!\" she exclaimed, sighing on the path."
+    },
+    {
+      "source": "—exclamó suspirando en el sendero.",
+      "translation": "In a single instant, all the riches she had built in thin air vanished."
+    },
+    {
+      "source": "En un solo instante desaparecieron todas las riquezas que había construido en el aire.",
+      "translation": "We should not let ourselves be carried away by unchecked fantasy or count on our gains before holding them safely in hand."
+    }
+  ]
+}

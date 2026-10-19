@@ -64,6 +64,9 @@ import { WordPopover, type SideDefinition } from "./components/WordPopover";
 import { AnkiReviewModal } from "./components/AnkiReviewModal";
 import { AddBookModal } from "./components/AddBookModal";
 import { OnboardingModal } from "./components/OnboardingModal";
+import { BeginnerStoryHero } from "./components/BeginnerStoryHero";
+import { BeginnerStoryFooter } from "./components/BeginnerStoryFooter";
+import { isBeginnerTrack } from "./utils/beginnerStories";
 
 export function normalizeTrack(track: Partial<Track>): Track {
   const audio = track.audio;
@@ -1251,27 +1254,30 @@ export const App: React.FC = () => {
               </div>
 
               {/* Reading metadata facts */}
-              {activeTrack && (
-                <div id="readingMeta" className="reading-meta">
-                  <div className="reading-facts">
-                    {activeTrack.difficulty && <span>{activeTrack.difficulty}</span>}
-                    {activeTrack.author && <span>{activeTrack.author}</span>}
-                    {activeTrack.genre && <span>{activeTrack.genre}</span>}
-                    {activeTrack.minutes ? <span>{activeTrack.minutes} min</span> : null}
+              {activeTrack &&
+                (isBeginnerTrack(activeTrack) ? (
+                  <BeginnerStoryHero track={activeTrack} wordCount={words.length} />
+                ) : (
+                  <div id="readingMeta" className="reading-meta">
+                    <div className="reading-facts">
+                      {activeTrack.difficulty && <span>{activeTrack.difficulty}</span>}
+                      {activeTrack.author && <span>{activeTrack.author}</span>}
+                      {activeTrack.genre && <span>{activeTrack.genre}</span>}
+                      {activeTrack.minutes ? <span>{activeTrack.minutes} min</span> : null}
+                    </div>
+                    {activeTrack.difficultyNote && <p>{activeTrack.difficultyNote}</p>}
+                    {String(activeTrack.source || "").startsWith("https://") && (
+                      <a
+                        href={activeTrack.source}
+                        target="_blank"
+                        rel="noreferrer"
+                        title={activeTrack.rights || "Source edition"}
+                      >
+                        Source &amp; rights
+                      </a>
+                    )}
                   </div>
-                  {activeTrack.difficultyNote && <p>{activeTrack.difficultyNote}</p>}
-                  {String(activeTrack.source || "").startsWith("https://") && (
-                    <a
-                      href={activeTrack.source}
-                      target="_blank"
-                      rel="noreferrer"
-                      title={activeTrack.rights || "Source edition"}
-                    >
-                      Source &amp; rights
-                    </a>
-                  )}
-                </div>
-              )}
+                ))}
 
               {/* Passages mode practice header */}
               {readerMode === "passages" && (
@@ -1328,11 +1334,23 @@ export const App: React.FC = () => {
                 passage={readerMode === "passages" && passageIndex >= 0 ? passages[passageIndex] : null}
                 passageRevealed={passageRevealed}
                 appearanceSettings={appearanceSettings}
+                activeTrack={activeTrack}
                 onWordClick={(word, btn) => {
                   setSelectedWord(word);
                   setAnchorEl(btn);
                 }}
               />
+
+              {/* Beginner story interactive recap & next story card */}
+              {activeTrack && isBeginnerTrack(activeTrack) && readerMode !== "passages" && (
+                <BeginnerStoryFooter
+                  track={activeTrack}
+                  allTracks={tracks}
+                  onSelectTrack={(nextTrack) => {
+                    loadTrack(nextTrack, true);
+                  }}
+                />
+              )}
             </section>
 
             <aside className="side-panel" aria-label="Word meaning and import tools">

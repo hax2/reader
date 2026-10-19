@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "trackId": "modern-cafe-madrid",
+  "sourceHash": "701052fd4421671b3e491688bbf2defe071ba5dcc728494ca8c2b21d35ed1c4d",
+  "provider": "curated-bilingual-edition",
+  "sourceLanguage": "es",
+  "targetLanguage": "en",
+  "translatedAt": "2026-10-19T07:48:51.385323+00:00",
+  "characters": 2324,
+  "blocks": [
+    {
+      "source": "Son las nueve de la mañana en Madrid y el sol ilumina los balcones rojos de la Plaza Mayor. Clara camina despacio por las piedras antiguas mientras busca una mesa libre en la terraza del Café del Sol. Hoy es un sábado especial porque va a desayunar con su amigo Mateo después de tres años sin verse. El aire huele a café recién hecho, a pan tostado y a churros calientes con azúcar.",
+      "translation": "It is nine in the morning in Madrid, and the sun illuminates the red balconies of the Plaza Mayor. Clara walks slowly across the ancient flagstones while looking for an empty table on the terrace of the Café del Sol. Today is a special Saturday because she is going to have breakfast with her friend Mateo after three years without seeing each other. The air smells of freshly brewed coffee, toasted bread, and hot churros with sugar."
+    },
+    {
+      "source": "Clara se sienta junto a una columna de piedra y deja su bolso sobre la silla de madera. Un camarero amable con delantal blanco se acerca con una sonrisa y una pequeña libreta. —Buenos días, señorita, ¿qué desea tomar hoy? —pregunta el camarero con voz tranquila.",
+      "translation": "Clara sits next to a stone column and sets her bag on the wooden chair. A friendly waiter in a white apron approaches with a smile and a small notepad. \"Good morning, miss, what would you like to have today?\" asks the waiter in a calm voice. \"Good morning, I would like a piping hot café con leche and an order of churros, please,\" Clara replies."
+    },
+    {
+      "source": "—Buenos días, quiero un café con leche bien caliente y una ración de churros, por favor —responde Clara.\n\nMientras espera a Mateo, Clara observa un libro viejo con tapas azules olvidado en el borde de su mesa. Con curiosidad, abre la primera página y descubre una postal antigua escondida entre las hojas amarillas. En la postal hay una fotografía en blanco y negro de la estación de Atocha y un mensaje escrito a mano.",
+      "translation": "While waiting for Mateo, Clara notices an old book with blue covers forgotten on the edge of her table. Curiously, she opens the first page and discovers an old postcard tucked between the yellow pages. On the postcard there is a black-and-white photograph of Atocha station and a handwritten message. The message reads: \"If you find this book, look underneath the plaza clock at nine thirty.\""
+    },
+    {
+      "source": "El mensaje dice: «Si encuentras este libro, mira debajo del reloj de la plaza a las nueve y media».\n\nClara mira su reloj de pulsera con sorpresa y ve que faltan solo cinco minutos para las nueve y media. En ese momento, el camarero regresa con la taza humeante y el plato de churros crujientes. —Disculpe, ¿sabe quién estuvo sentado en esta mesa antes que yo?",
+      "translation": "Clara checks her wristwatch in surprise and sees that it is only five minutes until nine thirty. At that moment, the waiter returns with the steaming cup and the plate of crispy churros. \"Excuse me, do you know who was sitting at this table before me?\" Clara asks, holding up the blue book. \"Yes, it was a tall young man in a gray coat and a green scarf, but he left a few minutes ago,\" says the waiter."
+    },
+    {
+      "source": "—pregunta Clara mostrando el libro azul. —Sí, fue un joven alto con abrigo gris y una bufanda verde, pero salió hace unos minutos —dice el camarero.\n\nClara levanta la vista hacia el gran reloj de la Casa de la Panadería al otro lado de la plaza. Debajo del arco central hay un chico con abrigo gris y bufanda verde mirando hacia las terrazas.",
+      "translation": "Clara looks up toward the great clock of the Casa de la Panadería on the other side of the square. Beneath the central arch stands a young man in a gray coat and a green scarf looking toward the café terraces. When the young man takes off his sunglasses and waves his hand, Clara begins to laugh. It is Mateo, who arrived early from Valencia and set up this little game to surprise her!"
+    },
+    {
+      "source": "Cuando el chico se quita las gafas de sol y saluda con la mano, Clara empieza a reír. ¡Es Mateo, que llegó temprano desde Valencia y preparó este pequeño juego para darle una sorpresa!\n\nMateo cruza la plaza con una gran sonrisa y se sienta frente a su amiga. —Veo que sigues siendo tan curiosa como siempre, Clara —dice Mateo mientras toma un churro caliente.",
+      "translation": "Mateo crosses the square with a big smile and sits down across from his friend. \"I see you are still just as curious as ever, Clara,\" says Mateo as he takes a warm churro. \"And you are still inventing mysteries everywhere,\" she replies, clinking her coffee cup. Beneath the blue sky of Madrid, the two friends talk for hours as if no time had passed at all."
+    },
+    {
+      "source": "—Y tú sigues inventando misterios en todas partes —contesta ella brindando con su taza de café. Bajo el cielo azul de Madrid, los dos amigos hablan durante horas como si el tiempo nunca hubiera pasado.",
+      "translation": ""
+    },
+    {
+      "source": "Son las nueve de la mañana en Madrid y el sol ilumina los balcones rojos de la Plaza Mayor.",
+      "translation": "It is nine in the morning in Madrid, and the sun illuminates the red balconies of the Plaza Mayor."
+    },
+    {
+      "source": "Clara camina despacio por las piedras antiguas mientras busca una mesa libre en la terraza del Café del Sol.",
+      "translation": "Clara walks slowly across the ancient flagstones while looking for an empty table on the terrace of the Café del Sol."
+    },
+    {
+      "source": "Hoy es un sábado especial porque va a desayunar con su amigo Mateo después de tres años sin verse.",
+      "translation": "Today is a special Saturday because she is going to have breakfast with her friend Mateo after three years without seeing each other."
+    },
+    {
+      "source": "El aire huele a café recién hecho, a pan tostado y a churros calientes con azúcar.",
+      "translation": "The air smells of freshly brewed coffee, toasted bread, and hot churros with sugar."
+    },
+    {
+      "source": "Clara se sienta junto a una columna de piedra y deja su bolso sobre la silla de madera.",
+      "translation": "Clara sits next to a stone column and sets her bag on the wooden chair."
+    },
+    {
+      "source": "Un camarero amable con delantal blanco se acerca con una sonrisa y una pequeña libreta.",
+      "translation": "A friendly waiter in a white apron approaches with a smile and a small notepad."
+    },
+    {
+      "source": "—Buenos días, señorita, ¿qué desea tomar hoy?",
+      "translation": "\"Good morning, miss, what would you like to have today?\" asks the waiter in a calm voice."
+    },
+    {
+      "source": "—pregunta el camarero con voz tranquila.",
+      "translation": "\"Good morning, I would like a piping hot café con leche and an order of churros, please,\" Clara replies."
+    },
+    {
+      "source": "—Buenos días, quiero un café con leche bien caliente y una ración de churros, por favor —responde Clara.",
+      "translation": "While waiting for Mateo, Clara notices an old book with blue covers forgotten on the edge of her table."
+    },
+    {
+      "source": "Mientras espera a Mateo, Clara observa un libro viejo con tapas azules olvidado en el borde de su mesa.",
+      "translation": "Curiously, she opens the first page and discovers an old postcard tucked between the yellow pages."
+    },
+    {
+      "source": "Con curiosidad, abre la primera página y descubre una postal antigua escondida entre las hojas amarillas.",
+      "translation": "On the postcard there is a black-and-white photograph of Atocha station and a handwritten message."
+    },
+    {
+      "source": "En la postal hay una fotografía en blanco y negro de la estación de Atocha y un mensaje escrito a mano.",
+      "translation": "The message reads: \"If you find this book, look underneath the plaza clock at nine thirty.\""
+    },
+    {
+      "source": "El mensaje dice: «Si encuentras este libro, mira debajo del reloj de la plaza a las nueve y media».",
+      "translation": "Clara checks her wristwatch in surprise and sees that it is only five minutes until nine thirty."
+    },
+    {
+      "source": "Clara mira su reloj de pulsera con sorpresa y ve que faltan solo cinco minutos para las nueve y media.",
+      "translation": "At that moment, the waiter returns with the steaming cup and the plate of crispy churros."
+    },
+    {
+      "source": "En ese momento, el camarero regresa con la taza humeante y el plato de churros crujientes.",
+      "translation": "\"Excuse me, do you know who was sitting at this table before me?\" Clara asks, holding up the blue book."
+    },
+    {
+      "source": "—Disculpe, ¿sabe quién estuvo sentado en esta mesa antes que yo?",
+      "translation": "\"Yes, it was a tall young man in a gray coat and a green scarf, but he left a few minutes ago,\" says the waiter."
+    },
+    {
+      "source": "—pregunta Clara mostrando el libro azul.",
+      "translation": "Clara looks up toward the great clock of the Casa de la Panadería on the other side of the square."
+    },
+    {
+      "source": "—Sí, fue un joven alto con abrigo gris y una bufanda verde, pero salió hace unos minutos —dice el camarero.",
+      "translation": "Beneath the central arch stands a young man in a gray coat and a green scarf looking toward the café terraces."
+    },
+    {
+      "source": "Clara levanta la vista hacia el gran reloj de la Casa de la Panadería al otro lado de la plaza.",
+      "translation": "When the young man takes off his sunglasses and waves his hand, Clara begins to laugh."
+    },
+    {
+      "source": "Debajo del arco central hay un chico con abrigo gris y bufanda verde mirando hacia las terrazas.",
+      "translation": "It is Mateo, who arrived early from Valencia and set up this little game to surprise her!"
+    },
+    {
+      "source": "Cuando el chico se quita las gafas de sol y saluda con la mano, Clara empieza a reír.",
+      "translation": "Mateo crosses the square with a big smile and sits down across from his friend."
+    },
+    {
+      "source": "¡Es Mateo, que llegó temprano desde Valencia y preparó este pequeño juego para darle una sorpresa!",
+      "translation": "\"I see you are still just as curious as ever, Clara,\" says Mateo as he takes a warm churro."
+    },
+    {
+      "source": "Mateo cruza la plaza con una gran sonrisa y se sienta frente a su amiga.",
+      "translation": "\"And you are still inventing mysteries everywhere,\" she replies, clinking her coffee cup."
+    },
+    {
+      "source": "—Veo que sigues siendo tan curiosa como siempre, Clara —dice Mateo mientras toma un churro caliente.",
+      "translation": "Beneath the blue sky of Madrid, the two friends talk for hours as if no time had passed at all."
+    }
+  ]
+}
