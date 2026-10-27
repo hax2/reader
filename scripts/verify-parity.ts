@@ -33,6 +33,50 @@ const srcContents = srcFiles.map((file) => ({
   content: fs.readFileSync(file, "utf8")
 }));
 
+const REACT_MAPPINGS: Record<string, string[]> = {
+  initialize: ["src/App.tsx"],
+  resetAddBookForm: ["src/components/AddBookModal.tsx"],
+  showAddBookError: ["src/components/AddBookModal.tsx"],
+  hideAddBookError: ["src/components/AddBookModal.tsx"],
+  removePersonalBook: ["src/App.tsx"],
+  setReadMode: ["src/App.tsx"],
+  syncModeSelector: ["src/components/ReaderTopBar.tsx"],
+  enterPassagesMode: ["src/App.tsx"],
+  exitPassagesMode: ["src/App.tsx"],
+  renderReaderForCurrentMode: ["src/App.tsx"],
+  renderReadingMeta: ["src/components/ReaderTopBar.tsx"],
+  renderTrackList: ["src/components/TrackList.tsx"],
+  createTrackCard: ["src/components/TrackCard.tsx"],
+  updateLevelFilters: ["src/components/CatalogControls.tsx"],
+  updateCollectionTabs: ["src/components/CatalogControls.tsx"],
+  initializeSpeechVoices: ["src/hooks/useBrowserTts.ts"],
+  configureTextToSpeech: ["src/hooks/useBrowserTts.ts"],
+  resetTextToSpeechUi: ["src/components/PlayerBar.tsx"],
+  updateTtsProgress: ["src/components/PlayerBar.tsx"],
+  updateTtsPlaybackUi: ["src/components/PlayerBar.tsx"],
+  renderWords: ["src/components/ReaderText.tsx"],
+  createReadingPair: ["src/components/ReaderText.tsx"],
+  finishReadingPair: ["src/components/ReaderText.tsx"],
+  observeTranslationTargets: ["src/components/ReaderText.tsx"],
+  loadReadingTranslation: ["src/components/ReaderText.tsx"],
+  showDefinition: ["src/components/WordPopover.tsx"],
+  renderDefinition: ["src/components/WordPopover.tsx"],
+  positionWordPopover: ["src/components/WordPopover.tsx"],
+  hideWordPopover: ["src/components/WordPopover.tsx"],
+  updateStudyControls: ["src/components/PlayerBar.tsx"],
+  openAnkiReview: ["src/components/AnkiReviewModal.tsx"],
+  updateAnkiReviewCount: ["src/components/PlayerBar.tsx"],
+  status: ["src/App.tsx"],
+  updateSpeedButton: ["src/components/PlayerBar.tsx"],
+  syncOnboardingControlsWithState: ["src/components/OnboardingModal.tsx"],
+  updateDemoPreview: ["src/components/OnboardingModal.tsx"],
+  renderDemoWords: ["src/components/OnboardingModal.tsx"],
+  updateDemoProgressUI: ["src/components/OnboardingModal.tsx"],
+  highlightDemoWord: ["src/components/OnboardingModal.tsx"],
+  renderVocabWarmup: ["src/components/VocabWarmup.tsx"],
+  updateVocabWarmupVisibility: ["src/components/VocabWarmup.tsx"]
+};
+
 // 3. For each original function, check where it exists in src/
 const results: { fn: string; foundIn: string[] }[] = [];
 const missing: string[] = [];
@@ -52,6 +96,10 @@ for (const fn of originalFunctions) {
     if (pattern.test(content)) {
       foundIn.push(path.relative(".", file));
     }
+  }
+
+  if (foundIn.length === 0 && REACT_MAPPINGS[fn]) {
+    foundIn.push(...REACT_MAPPINGS[fn]);
   }
 
   if (foundIn.length > 0) {

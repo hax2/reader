@@ -27,6 +27,42 @@ import type {
   WordToken
 } from "../types";
 
+const PERSONAL_BOOKS_BACKUP_KEY = "spanish-reader-personal-books-backup";
+
+export async function requestStoragePersistence(): Promise<boolean> {
+  if (typeof navigator !== "undefined" && navigator.storage && navigator.storage.persist) {
+    try {
+      const isPersisted = await navigator.storage.persisted();
+      if (!isPersisted) {
+        return await navigator.storage.persist();
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  return false;
+}
+
+function loadBackupPersonalBooks(): PersonalBook[] {
+  try {
+    const raw = localStorage.getItem(PERSONAL_BOOKS_BACKUP_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveBackupPersonalBooks(books: PersonalBook[]): void {
+  try {
+    safeSetLocalStorage(PERSONAL_BOOKS_BACKUP_KEY, books);
+  } catch {
+    // Quota issues or restricted storage
+  }
+}
+
 export function openPersonalBooksDatabase(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     if (typeof window === "undefined" || !window.indexedDB) {
@@ -45,48 +81,109 @@ export function openPersonalBooksDatabase(): Promise<IDBDatabase> {
 }
 
 export async function readPersonalBooks(): Promise<PersonalBook[]> {
-  const database = await openPersonalBooksDatabase();
   try {
-    return await new Promise((resolve, reject) => {
-      const request = database
-        .transaction(personalBooksStore, "readonly")
-        .objectStore(personalBooksStore)
-        .getAll();
-      request.onsuccess = () => resolve((request.result as PersonalBook[]) || []);
-      request.onerror = () => reject(request.error || new Error("Could not read personal library"));
-    });
-  } finally {
-    database.close();
+    const database = await openPersonalBooksDatabase();
+    try {
+      const dbBooks = await new Promise<PersonalBook[]>((resolve, reject) => {
+        const request = database
+          .transaction(personalBooksStore, "readonly")
+          .objectStore(personalBooksStore)
+          .getAll();
+        request.onsuccess = () => resolve((request.result as PersonalBook[]) || []);
+        request.onerror = () => reject(request.error || new Error("Could not read personal library"));
+      });
+
+      const backupBooks = loadBackupPersonalBooks();
+      if (!dbBooks.length && backupBooks.length) {
+        // Restore from backup into IndexedDB
+        for (const b of backupBooks) {
+          try {
+            const tx = database.transaction(personalBooksStore, "readwrite");
+            tx.objectStore(personalBooksStore).put(b);
+          } catch {
+            // Best effort
+          }
+        }
+        return backupBooks;
+      }
+
+      // Merge any backup books not in DB
+      const dbIds = new Set(dbBooks.map((b) => b.id));
+      const merged = [...dbBooks];
+      for (const b of backupBooks) {
+        if (!dbIds.has(b.id)) {
+          merged.push(b);
+          try {
+            const tx = database.transaction(personalBooksStore, "readwrite");
+            tx.objectStore(personalBooksStore).put(b);
+          } catch {
+            // Best effort
+          }
+        }
+      }
+
+      saveBackupPersonalBooks(merged);
+      return merged;
+    } finally {
+      database.close();
+    }
+  } catch {
+    // IndexedDB failed or is disabled - fallback to local storage backup
+    return loadBackupPersonalBooks();
   }
 }
 
 export async function savePersonalBook(book: PersonalBook): Promise<void> {
-  const database = await openPersonalBooksDatabase();
+  // Request persistence to protect user's library from browser eviction
+  void requestStoragePersistence();
+
+  // Always keep backup updated
+  const backup = loadBackupPersonalBooks();
+  const existingIdx = backup.findIndex((b) => b.id === book.id);
+  if (existingIdx >= 0) backup[existingIdx] = book;
+  else backup.unshift(book);
+  saveBackupPersonalBooks(backup);
+
   try {
-    await new Promise<void>((resolve, reject) => {
-      const transaction = database.transaction(personalBooksStore, "readwrite");
-      transaction.objectStore(personalBooksStore).put(book);
-      transaction.oncomplete = () => resolve();
-      transaction.onerror = () => reject(transaction.error || new Error("Could not save personal book"));
-      transaction.onabort = () => reject(transaction.error || new Error("Could not save personal book"));
-    });
-  } finally {
-    database.close();
+    const database = await openPersonalBooksDatabase();
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const transaction = database.transaction(personalBooksStore, "readwrite");
+        transaction.objectStore(personalBooksStore).put(book);
+        transaction.oncomplete = () => resolve();
+        transaction.onerror = () => reject(transaction.error || new Error("Could not save personal book"));
+        transaction.onabort = () => reject(transaction.error || new Error("Could not save personal book"));
+      });
+    } finally {
+      database.close();
+    }
+  } catch (err) {
+    // If backup succeeded, treat as saved
+    if (!backup.some((b) => b.id === book.id)) {
+      throw err;
+    }
   }
 }
 
 export async function deletePersonalBook(id: string): Promise<void> {
-  const database = await openPersonalBooksDatabase();
+  const backup = loadBackupPersonalBooks().filter((b) => b.id !== id);
+  saveBackupPersonalBooks(backup);
+
   try {
-    await new Promise<void>((resolve, reject) => {
-      const transaction = database.transaction(personalBooksStore, "readwrite");
-      transaction.objectStore(personalBooksStore).delete(id);
-      transaction.oncomplete = () => resolve();
-      transaction.onerror = () => reject(transaction.error || new Error("Could not remove personal book"));
-      transaction.onabort = () => reject(transaction.error || new Error("Could not remove personal book"));
-    });
-  } finally {
-    database.close();
+    const database = await openPersonalBooksDatabase();
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const transaction = database.transaction(personalBooksStore, "readwrite");
+        transaction.objectStore(personalBooksStore).delete(id);
+        transaction.oncomplete = () => resolve();
+        transaction.onerror = () => reject(transaction.error || new Error("Could not remove personal book"));
+        transaction.onabort = () => reject(transaction.error || new Error("Could not remove personal book"));
+      });
+    } finally {
+      database.close();
+    }
+  } catch {
+    // Backup was updated above
   }
 }
 

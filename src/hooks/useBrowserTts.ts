@@ -145,9 +145,31 @@ export function useBrowserTts({
   const ttsBoundaryFiredRef = useRef<boolean>(false);
   const ttsWordIndexRef = useRef<number>(0);
   const ttsStateRef = useRef<"idle" | "playing" | "paused">("idle");
+  const activeUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const chunksRef = useRef<TtsChunk[]>(chunks);
+  chunksRef.current = chunks;
+  const wordsRef = useRef<WordToken[]>(words);
+  wordsRef.current = words;
+  const appearanceSettingsRef = useRef<AppearanceSettings>(appearanceSettings);
+  appearanceSettingsRef.current = appearanceSettings;
+  const speakTtsChunkRef = useRef<
+    (chunkIndex: number, startWord: number, sessionId: number, useDefaultVoice?: boolean) => void
+  >(() => {});
 
   ttsWordIndexRef.current = ttsWordIndex;
   ttsStateRef.current = ttsState;
+
+  // Keep-alive timer to prevent Chrome from auto-pausing long TTS utterances (~15s bug)
+  useEffect(() => {
+    if (ttsState !== "playing") return;
+    const interval = window.setInterval(() => {
+      if (typeof window !== "undefined" && window.speechSynthesis?.speaking && !window.speechSynthesis?.paused) {
+        window.speechSynthesis.pause();
+        window.speechSynthesis.resume();
+      }
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [ttsState]);
 
   const clearTtsFallbackHighlight = useCallback(() => {
     if (!readerRef.current) return;
@@ -298,7 +320,13 @@ export function useBrowserTts({
       ttsSessionIdRef.current += 1;
       clearTtsWordTimer();
       clearTtsFallbackHighlight();
-      window.speechSynthesis.cancel();
+      activeUtteranceRef.current = null;
+      (window as unknown as { __currentSpeechUtterance?: SpeechSynthesisUtterance | null }).__currentSpeechUtterance = null;
+      try {
+        window.speechSynthesis.cancel();
+      } catch {
+        // Ignore
+      }
       setTtsState("idle");
       setMediaSessionPlaybackState("paused");
       if (!preservePosition) {
@@ -311,18 +339,25 @@ export function useBrowserTts({
 
   const speakTtsChunk = useCallback(
     (chunkIndex: number, startWord: number, sessionId: number, useDefaultVoice = false) => {
-      if (sessionId !== ttsSessionIdRef.current || chunkIndex < 0 || chunkIndex >= chunks.length) {
+      if (sessionId !== ttsSessionIdRef.current || chunkIndex < 0 || chunkIndex >= chunksRef.current.length) {
         return;
       }
       clearTtsWordTimer();
       ttsBoundaryFiredRef.current = false;
-      const chunk = chunks[chunkIndex];
-      const segment = createTtsSegment(chunk, Math.max(chunk.startWord, startWord), words);
+      const currentChunks = chunksRef.current;
+      const currentWords = wordsRef.current;
+      const chunk = currentChunks[chunkIndex];
+      const segment = createTtsSegment(chunk, Math.max(chunk.startWord, startWord), currentWords);
       const utterance = new SpeechSynthesisUtterance(segment.text);
+
+      // Prevent garbage collection by keeping references in ref and window
+      activeUtteranceRef.current = utterance;
+      (window as unknown as { __currentSpeechUtterance?: SpeechSynthesisUtterance | null }).__currentSpeechUtterance = utterance;
+
       const voice = useDefaultVoice ? null : selectedTtsVoice();
       if (voice) utterance.voice = voice;
       utterance.lang = voice?.lang ? voice.lang.replace("_", "-") : "es-ES";
-      utterance.rate = appearanceSettings.playbackRate;
+      utterance.rate = appearanceSettingsRef.current.playbackRate;
       utterance.pitch = 1;
 
       utterance.onstart = () => {
@@ -344,16 +379,22 @@ export function useBrowserTts({
 
       utterance.onend = () => {
         if (sessionId !== ttsSessionIdRef.current) return;
+        activeUtteranceRef.current = null;
+        (window as unknown as { __currentSpeechUtterance?: SpeechSynthesisUtterance | null }).__currentSpeechUtterance = null;
         clearTtsWordTimer();
         clearTtsFallbackHighlight();
         const nextChunk = chunkIndex + 1;
-        if (nextChunk < chunks.length) {
+        if (nextChunk < chunksRef.current.length) {
           chunkIndexRef.current = nextChunk;
-          speakTtsChunk(nextChunk, chunks[nextChunk].startWord, sessionId, useDefaultVoice);
+          // Asynchronously trigger next sentence so browser audio engine cleans up properly
+          window.setTimeout(() => {
+            if (sessionId !== ttsSessionIdRef.current) return;
+            speakTtsChunkRef.current(nextChunk, chunksRef.current[nextChunk].startWord, sessionId, useDefaultVoice);
+          }, 35);
           return;
         }
         setTtsWord(segment.endWord, false);
-        setTtsWordIndex(words.length);
+        setTtsWordIndex(wordsRef.current.length);
         setTtsState("idle");
         setMediaSessionPlaybackState("paused");
         onStatusChange?.("Finished reading.");
@@ -363,9 +404,14 @@ export function useBrowserTts({
         if (sessionId !== ttsSessionIdRef.current || ["canceled", "interrupted"].includes(event.error)) {
           return;
         }
+        activeUtteranceRef.current = null;
+        (window as unknown as { __currentSpeechUtterance?: SpeechSynthesisUtterance | null }).__currentSpeechUtterance = null;
         clearTtsWordTimer();
         if (!useDefaultVoice && voice) {
-          speakTtsChunk(chunkIndex, startWord, sessionId, true);
+          window.setTimeout(() => {
+            if (sessionId !== ttsSessionIdRef.current) return;
+            speakTtsChunkRef.current(chunkIndex, startWord, sessionId, true);
+          }, 35);
           return;
         }
         clearTtsFallbackHighlight();
@@ -377,46 +423,59 @@ export function useBrowserTts({
       window.speechSynthesis.speak(utterance);
     },
     [
-      appearanceSettings.playbackRate,
-      chunks,
       clearTtsFallbackHighlight,
       clearTtsWordTimer,
       onStatusChange,
       selectedTtsVoice,
       setTtsWord,
-      startTtsWordTimer,
-      words
+      startTtsWordTimer
     ]
   );
 
+  speakTtsChunkRef.current = speakTtsChunk;
+
   const speakTextFromWord = useCallback(
     (wordIndex: number) => {
-      if (!speechSynthesisSupported || !chunks.length) return;
-      const nextWord = Math.max(0, Math.min(Math.floor(wordIndex), words.length - 1));
+      if (!speechSynthesisSupported || !chunksRef.current.length) return;
+      const currentWords = wordsRef.current;
+      const nextWord = Math.max(0, Math.min(Math.floor(wordIndex), currentWords.length - 1));
       const sessionId = ++ttsSessionIdRef.current;
       clearTtsWordTimer();
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.resume();
+      try {
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.resume();
+      } catch {
+        // Ignore
+      }
       clearTtsFallbackHighlight();
       setTtsState("playing");
       setTtsWord(nextWord, true);
-      const cIndex = findTtsChunkAtWord(chunks, nextWord);
+      const cIndex = findTtsChunkAtWord(chunksRef.current, nextWord);
       chunkIndexRef.current = cIndex;
       speakTtsChunk(cIndex, nextWord, sessionId);
     },
-    [chunks, clearTtsFallbackHighlight, clearTtsWordTimer, setTtsWord, speakTtsChunk, words.length]
+    [clearTtsFallbackHighlight, clearTtsWordTimer, setTtsWord, speakTtsChunk]
   );
 
+  // Pausing on mobile (Android Chrome / iOS Safari) requires cancel() because pause() is unsupported or ignored.
   const pauseTextToSpeech = useCallback(() => {
-    if (!speechSynthesisSupported || ttsState !== "playing") return;
+    if (!speechSynthesisSupported || ttsStateRef.current !== "playing") return;
+    ttsSessionIdRef.current += 1;
     clearTtsWordTimer();
-    window.speechSynthesis.pause();
+    clearTtsFallbackHighlight();
+    activeUtteranceRef.current = null;
+    (window as unknown as { __currentSpeechUtterance?: SpeechSynthesisUtterance | null }).__currentSpeechUtterance = null;
+    try {
+      window.speechSynthesis.cancel();
+    } catch {
+      // Ignore
+    }
     setTtsState("paused");
     setMediaSessionPlaybackState("paused");
-  }, [clearTtsWordTimer, ttsState]);
+  }, [clearTtsFallbackHighlight, clearTtsWordTimer]);
 
   const toggleTextToSpeech = useCallback(() => {
-    if (!speechSynthesisSupported || !words.length) {
+    if (!speechSynthesisSupported || !wordsRef.current.length) {
       onStatusChange?.("Browser text-to-speech is unavailable here.");
       return;
     }
@@ -425,28 +484,18 @@ export function useBrowserTts({
       return;
     }
     if (ttsState === "paused") {
-      window.speechSynthesis.resume();
-      setTtsState("playing");
-      setMediaSessionPlaybackState("playing");
-      const chunk = chunks[chunkIndexRef.current];
-      if (chunk && !ttsBoundaryFiredRef.current) {
-        const segment = createTtsSegment(chunk, Math.max(chunk.startWord, ttsWordIndex), words);
-        startTtsWordTimer(segment, appearanceSettings.playbackRate, ttsSessionIdRef.current);
-      }
+      const resumeIndex = ttsWordIndexRef.current >= wordsRef.current.length ? 0 : ttsWordIndexRef.current;
+      speakTextFromWord(resumeIndex);
       return;
     }
-    const idx = ttsWordIndex >= words.length ? 0 : ttsWordIndex;
+    const idx = ttsWordIndex >= wordsRef.current.length ? 0 : ttsWordIndex;
     speakTextFromWord(idx);
   }, [
-    appearanceSettings.playbackRate,
-    chunks,
     onStatusChange,
     pauseTextToSpeech,
     speakTextFromWord,
-    startTtsWordTimer,
     ttsState,
-    ttsWordIndex,
-    words
+    ttsWordIndex
   ]);
 
   const restartTextToSpeech = useCallback(

@@ -12,6 +12,7 @@ export interface ReaderTextProps {
   passageRevealed: boolean;
   appearanceSettings: AppearanceSettings;
   activeTrack?: Track | null;
+  activeWordIndex?: number;
   onWordClick: (word: WordToken, anchor: HTMLButtonElement) => void;
 }
 
@@ -29,6 +30,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
   passageRevealed,
   appearanceSettings,
   activeTrack,
+  activeWordIndex,
   onWordClick
 }) => {
   const [translations, setTranslations] = useState<Record<number, string>>({});
@@ -85,6 +87,45 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
     return result;
   }, [endIndex, sentencesPerPair, startIndex, words]);
 
+  const PAIRS_PER_PAGE = 35;
+  const isPaginated = readerMode !== "passages" && pairs.length > 40;
+  const totalPages = isPaginated ? Math.ceil(pairs.length / PAIRS_PER_PAGE) : 1;
+  const [pageIndex, setPageIndex] = useState<number>(0);
+
+  // Reset page when activeTrack changes
+  const activeTrackId = activeTrack?.id;
+  useEffect(() => {
+    setPageIndex(0);
+  }, [activeTrackId]);
+
+  // Sync page with active word (TTS or audio playing / scrubber seeking)
+  useEffect(() => {
+    if (!isPaginated || typeof activeWordIndex !== "number" || activeWordIndex < 0) return;
+    const pairIdx = pairs.findIndex((p) =>
+      p.words.some((w) => w.index === activeWordIndex)
+    );
+    if (pairIdx >= 0) {
+      const targetPage = Math.floor(pairIdx / PAIRS_PER_PAGE);
+      if (targetPage !== pageIndex) {
+        setPageIndex(targetPage);
+      }
+    }
+  }, [activeWordIndex, isPaginated, pageIndex, pairs]);
+
+  const visiblePairs = useMemo(() => {
+    if (!isPaginated) return pairs;
+    const start = pageIndex * PAIRS_PER_PAGE;
+    return pairs.slice(start, start + PAIRS_PER_PAGE);
+  }, [isPaginated, pageIndex, pairs]);
+
+  const handlePageChange = (newPage: number) => {
+    const clamped = Math.max(0, Math.min(newPage, totalPages - 1));
+    setPageIndex(clamped);
+    if (readerRef.current) {
+      readerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   const fetchBlockTranslation = useCallback(
     (blockIndex: number, source: string, before: string, after: string, currentRenderId: number) => {
       setFailedBlocks((prev) => {
@@ -113,7 +154,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
   // Load saved translations or observe for async translation
   useEffect(() => {
     const currentRenderId = ++renderIdRef.current;
-    if (!bilingual || !pairs.length) {
+    if (!bilingual || !visiblePairs.length) {
       setTranslations({});
       setFailedBlocks({});
       return;
@@ -122,13 +163,13 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
     const initial: Record<number, string> = {};
     const uncomputed: { blockIndex: number; source: string; before: string; after: string }[] = [];
 
-    pairs.forEach((pair, idx) => {
+    visiblePairs.forEach((pair, idx) => {
       const saved = lookupSavedTranslation(pair.sourceText);
       if (saved) {
         initial[pair.blockIndex] = saved;
       } else {
-        const before = pairs[idx - 1]?.sourceText || "";
-        const after = pairs[idx + 1]?.sourceText || "";
+        const before = visiblePairs[idx - 1]?.sourceText || "";
+        const after = visiblePairs[idx + 1]?.sourceText || "";
         uncomputed.push({ blockIndex: pair.blockIndex, source: pair.sourceText, before, after });
       }
     });
@@ -169,7 +210,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
     return () => {
       observer.disconnect();
     };
-  }, [bilingual, fetchBlockTranslation, pairs, readerRef]);
+  }, [bilingual, fetchBlockTranslation, visiblePairs, readerRef]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     const target = (e.target as HTMLElement).closest(".word") as HTMLButtonElement | null;
@@ -216,7 +257,30 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
       hidden={isHidden}
       onKeyDown={handleKeyDown}
     >
-      {pairs.map((pair, idx) => {
+      {isPaginated && pageIndex > 0 && (
+        <nav className="reader-pagination is-top" aria-label="Book pages top">
+          <button
+            type="button"
+            className="page-nav-button"
+            onClick={() => handlePageChange(pageIndex - 1)}
+          >
+            ← Página anterior
+          </button>
+          <span className="page-indicator">
+            Página {pageIndex + 1} de {totalPages}
+          </span>
+          <button
+            type="button"
+            className="page-nav-button"
+            disabled={pageIndex >= totalPages - 1}
+            onClick={() => handlePageChange(pageIndex + 1)}
+          >
+            Página siguiente →
+          </button>
+        </nav>
+      )}
+
+      {visiblePairs.map((pair, idx) => {
         const translationText = translations[pair.blockIndex];
         const hasError = Boolean(failedBlocks[pair.blockIndex]);
         const isLoadingTranslation = bilingual && !translationText && !hasError;
@@ -286,8 +350,8 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
                         fetchBlockTranslation(
                           pair.blockIndex,
                           pair.sourceText,
-                          pairs[idx - 1]?.sourceText || "",
-                          pairs[idx + 1]?.sourceText || "",
+                          visiblePairs[idx - 1]?.sourceText || "",
+                          visiblePairs[idx + 1]?.sourceText || "",
                           renderIdRef.current
                         )
                       }
@@ -303,6 +367,30 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
           </section>
         );
       })}
+
+      {isPaginated && (
+        <nav className="reader-pagination" aria-label="Book pages bottom">
+          <button
+            type="button"
+            className="page-nav-button"
+            disabled={pageIndex === 0}
+            onClick={() => handlePageChange(pageIndex - 1)}
+          >
+            ← Página anterior
+          </button>
+          <span className="page-indicator">
+            Página {pageIndex + 1} de {totalPages}
+          </span>
+          <button
+            type="button"
+            className="page-nav-button"
+            disabled={pageIndex >= totalPages - 1}
+            onClick={() => handlePageChange(pageIndex + 1)}
+          >
+            Página siguiente →
+          </button>
+        </nav>
+      )}
     </article>
   );
 };

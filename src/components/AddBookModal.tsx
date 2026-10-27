@@ -3,6 +3,7 @@ import { createPersonalBookId, savePersonalBook } from "../utils/storage";
 import { difficultyOrder, maxPersonalBookBytes } from "../utils/constants";
 import { readingMinutes } from "../utils/text";
 import { tokenizeUntimed } from "../utils/tokenization";
+import { parseUploadedFile } from "../utils/fileParsers";
 import type { PersonalBook } from "../types";
 
 export interface AddBookModalProps {
@@ -22,6 +23,8 @@ export const AddBookModal: React.FC<AddBookModalProps> = ({
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isParsing, setIsParsing] = useState(false);
+  const [fileFormat, setFileFormat] = useState("");
   const titleInputRef = useRef<HTMLInputElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
@@ -50,6 +53,8 @@ export const AddBookModal: React.FC<AddBookModalProps> = ({
     setDifficulty("B2");
     setText("");
     setError("");
+    setIsParsing(false);
+    setFileFormat("");
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -58,23 +63,35 @@ export const AddBookModal: React.FC<AddBookModalProps> = ({
     if (!file) return;
     setError("");
     if (file.size > maxPersonalBookBytes) {
-      setError("That file is larger than 2 MB. Choose a smaller plain-text file.");
+      setError("That file is larger than 50 MB. Choose a smaller file.");
       e.target.value = "";
       return;
     }
+    setIsParsing(true);
     try {
-      const fileText = await file.text();
-      setText(fileText);
-      if (!title.trim()) {
-        setTitle(file.name.replace(/\.(?:txt|md)$/i, "").replace(/[_-]+/g, " ").trim());
+      const parsed = await parseUploadedFile(file);
+      if (!parsed.text || !parsed.text.trim()) {
+        setError("Could not find readable text in that file.");
+        return;
+      }
+      setText(parsed.text);
+      setFileFormat(parsed.format);
+      if (!title.trim() && parsed.title) {
+        setTitle(parsed.title);
+      }
+      if (!author.trim() && parsed.author) {
+        setAuthor(parsed.author);
       }
     } catch {
-      setError("That file could not be read as plain text.");
+      setError("That file could not be read. Check that it is a supported book file format (EPUB, PDF, TXT, MD, HTML, FB2, RTF).");
+    } finally {
+      setIsParsing(false);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isParsing) return;
     setError("");
     const trimmedText = text.trim();
     const trimmedTitle = title.trim();
@@ -83,7 +100,7 @@ export const AddBookModal: React.FC<AddBookModalProps> = ({
       return;
     }
     if (new Blob([trimmedText]).size > maxPersonalBookBytes) {
-      setError("This text is larger than 2 MB. Split it into smaller books before importing.");
+      setError("This text is larger than 50 MB. Split it into smaller books before importing.");
       return;
     }
 
@@ -213,13 +230,20 @@ export const AddBookModal: React.FC<AddBookModalProps> = ({
           </div>
 
           <label className="book-file-pick">
-            <span>Choose a text file</span>
-            <small>UTF-8 .txt or .md, up to 2 MB</small>
+            <span>Choose a book or document</span>
+            <small>
+              {isParsing
+                ? "Reading and parsing book file…"
+                : fileFormat
+                  ? `Loaded ${fileFormat} (${text.length.toLocaleString()} characters)`
+                  : "EPUB, PDF, TXT, Markdown, HTML, FB2, RTF, up to 50 MB"}
+            </small>
             <input
               id="bookFile"
               ref={fileInputRef}
               type="file"
-              accept=".txt,.md,text/plain,text/markdown"
+              accept=".txt,.text,.md,.markdown,.epub,.pdf,.html,.htm,.xhtml,.fb2,.rtf,.json,.vtt,.srt,application/epub+zip,application/pdf,text/plain,text/markdown,text/html,application/rtf,text/rtf"
+              disabled={isParsing || isSubmitting}
               onChange={handleTextFileChange}
             />
           </label>
@@ -237,6 +261,7 @@ export const AddBookModal: React.FC<AddBookModalProps> = ({
               required
               placeholder="Paste the book or reading here…"
               value={text}
+              disabled={isParsing || isSubmitting}
               onChange={(e) => setText(e.target.value)}
             />
           </label>
@@ -259,8 +284,8 @@ export const AddBookModal: React.FC<AddBookModalProps> = ({
             >
               Cancel
             </button>
-            <button className="primary-action" type="submit" disabled={isSubmitting}>
-              Save to My books
+            <button className="primary-action" type="submit" disabled={isSubmitting || isParsing}>
+              {isParsing ? "Reading file…" : isSubmitting ? "Saving…" : "Save to My books"}
             </button>
           </div>
         </footer>

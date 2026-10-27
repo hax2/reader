@@ -63,50 +63,65 @@ export function applyCurrentWord({
   scrollReader?: boolean;
 }): void {
   if (!reader) return;
-  reader.classList.toggle("has-reading-position", !isReadMode && (index >= 0 || endedCount > renderedWordStartIndex));
 
-  const currentDomHasClass =
-    index < 0 || Boolean(reader.querySelector(`[data-index="${index}"]`)?.classList.contains("current"));
-  const readDomHasClass =
-    endedCount <= renderedWordStartIndex ||
-    Boolean(reader.querySelector(`[data-index="${renderedWordStartIndex}"]`)?.classList.contains("read"));
+  const hasPosition = !isReadMode && (index >= 0 || endedCount > renderedWordStartIndex);
+  reader.classList.toggle("has-reading-position", hasPosition);
 
+  // Fast exit if position and read count have not changed
   if (
     index === currentWordIndexRef.current &&
-    endedCount === readWordCountRef.current &&
-    currentDomHasClass &&
-    readDomHasClass
+    endedCount === readWordCountRef.current
   ) {
     return;
   }
 
-  if (currentWordIndexRef.current >= 0) {
+  // 1. Update current word highlight
+  if (currentWordIndexRef.current >= 0 && currentWordIndexRef.current !== index) {
     reader.querySelector(`[data-index="${currentWordIndexRef.current}"]`)?.classList.remove("current");
   }
 
-  if (!readDomHasClass) {
-    readWordCountRef.current = -1;
+  if (index >= 0) {
+    const nextCurrent = reader.querySelector(`[data-index="${index}"]`);
+    if (nextCurrent) {
+      nextCurrent.classList.add("current");
+      if (scrollReader) {
+        scrollCurrentWordIntoView(reader, index);
+      }
+    }
   }
 
-  const previousEndedCount =
-    readWordCountRef.current < renderedWordStartIndex
-      ? renderedWordStartIndex
-      : Math.min(readWordCountRef.current, renderedWordEndIndex + 1);
-  const firstChanged = Math.min(previousEndedCount, endedCount);
-  const lastChanged = Math.max(previousEndedCount, endedCount);
-
-  for (let wordIndex = firstChanged; wordIndex < lastChanged; wordIndex += 1) {
-    reader.querySelector(`[data-index="${wordIndex}"]`)?.classList.toggle("read", wordIndex < endedCount);
+  // 2. Efficiently update .read classes without DOM traversals in loops
+  if (readWordCountRef.current < 0) {
+    // Initial sync or reset: single querySelectorAll pass
+    const allWords = reader.querySelectorAll<HTMLButtonElement>(".word");
+    for (let i = 0; i < allWords.length; i += 1) {
+      const el = allWords[i];
+      const wIdx = Number(el.dataset.index);
+      el.classList.toggle("read", wIdx < endedCount);
+    }
+  } else {
+    const prevEnded = readWordCountRef.current;
+    const diff = Math.abs(endedCount - prevEnded);
+    if (diff > 0 && diff < 8) {
+      // Small sequential advance (normal audio / TTS reading)
+      const start = Math.min(prevEnded, endedCount);
+      const end = Math.max(prevEnded, endedCount);
+      for (let w = start; w < end; w += 1) {
+        reader.querySelector(`[data-index="${w}"]`)?.classList.toggle("read", w < endedCount);
+      }
+    } else if (diff >= 8) {
+      // Seek / jump: batch update via single querySelectorAll
+      const allWords = reader.querySelectorAll<HTMLButtonElement>(".word");
+      for (let i = 0; i < allWords.length; i += 1) {
+        const el = allWords[i];
+        const wIdx = Number(el.dataset.index);
+        el.classList.toggle("read", wIdx < endedCount);
+      }
+    }
   }
 
   currentWordIndexRef.current = index;
   readWordCountRef.current = endedCount;
-
-  if (index < 0) return;
-  reader.querySelector(`[data-index="${index}"]`)?.classList.add("current");
-  if (scrollReader) {
-    scrollCurrentWordIntoView(reader, index);
-  }
 }
 
 export function useWordSync({

@@ -20,7 +20,7 @@ export const difficultyLabels: Record<string, string> = {
 
 export const personalBooksDatabase = "spanish-reader-personal-library";
 export const personalBooksStore = "books";
-export const maxPersonalBookBytes = 2 * 1024 * 1024;
+export const maxPersonalBookBytes = 50 * 1024 * 1024;
 
 export const speechSynthesisSupported =
   typeof window !== "undefined" &&

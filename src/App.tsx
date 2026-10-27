@@ -23,8 +23,11 @@ import {
   saveStudyLog,
   logStudiedWord,
   readPersonalBooks,
-  deletePersonalBook
+  deletePersonalBook,
+  savePersonalBook,
+  createPersonalBookId
 } from "./utils/storage";
+import { parseUploadedFile, titleFromFilename } from "./utils/fileParsers";
 import {
   safeDecodeHash,
   readingMinutes,
@@ -1012,26 +1015,88 @@ export const App: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     try {
-      const text = await file.text();
-      const parsed = parseTranscript(text, file.name);
+      setStatusText(`Reading ${file.name}…`);
+      const parsedFile = await parseUploadedFile(file);
+      if (!parsedFile.text || !parsedFile.text.trim()) {
+        setStatusText(`Could not extract readable text from ${file.name}.`);
+        return;
+      }
+      const rawText = parsedFile.text.trim();
+      const parsedWords = parseTranscript(rawText, file.name);
+      const isPrecise = hasValidTimings(parsedWords);
       setSavedTranslationBlocks([]);
-      setWords(parsed, hasValidTimings(parsed));
-      setStatusText(`${file.name} loaded with ${parsed.length.toLocaleString()} words.`);
+      setWords(parsedWords, isPrecise);
+
+      // Persistently save the uploaded book so user never loses it
+      const bookTitle = parsedFile.title || titleFromFilename(file.name);
+      const newBook = {
+        id: createPersonalBookId(),
+        title: bookTitle,
+        author: parsedFile.author || "",
+        difficulty: "B2",
+        collection: "my-books",
+        description: `Imported ${parsedFile.format || "file"}`,
+        customText: rawText,
+        wordCount: parsedWords.length,
+        minutes: readingMinutes(parsedWords.length),
+        personal: true,
+        addedAt: new Date().toISOString()
+      };
+      await savePersonalBook(newBook);
+      const normalized = normalizeTrack({ ...newBook, personal: true, collection: "my-books" });
+      setPersonalBooks((prev) => {
+        const next = [normalized, ...prev.filter((b) => b.id !== normalized.id)];
+        refreshTracks(hostedTracks, next);
+        return next;
+      });
+      setActiveTrack(normalized);
+      setCustomTitle(normalized.title);
+      showReader(normalized.title);
+      setStatusText(`${newBook.title} saved to My books (${parsedWords.length.toLocaleString()} words).`);
     } catch {
-      setStatusText(`${file.name} could not be read. Check that it is a valid transcript file.`);
+      setStatusText(`${file.name} could not be read. Check that it is a valid book or transcript file.`);
     }
   };
 
-  const handleUsePastedText = () => {
+  const handleUsePastedText = async () => {
     const text = pastedText.trim();
     if (!text) {
       setStatusText("Paste Spanish text first.");
       return;
     }
     const parsed = tokenizeUntimed(text);
+    if (!parsed.length) {
+      setStatusText("The text needs at least one readable word.");
+      return;
+    }
     setSavedTranslationBlocks([]);
     setWords(parsed, false);
-    setStatusText("Pasted text loaded. Highlighting is approximate because no word timings were provided.");
+
+    const firstLine = text.split("\n")[0].slice(0, 48).trim();
+    const newBook = {
+      id: createPersonalBookId(),
+      title: firstLine || "Pasted reading",
+      author: "",
+      difficulty: "B2",
+      collection: "my-books",
+      description: "Pasted text saved to My books",
+      customText: text,
+      wordCount: parsed.length,
+      minutes: readingMinutes(parsed.length),
+      personal: true,
+      addedAt: new Date().toISOString()
+    };
+    await savePersonalBook(newBook);
+    const normalized = normalizeTrack({ ...newBook, personal: true, collection: "my-books" });
+    setPersonalBooks((prev) => {
+      const next = [normalized, ...prev.filter((b) => b.id !== normalized.id)];
+      refreshTracks(hostedTracks, next);
+      return next;
+    });
+    setActiveTrack(normalized);
+    setCustomTitle(normalized.title);
+    showReader(normalized.title);
+    setStatusText(`${newBook.title} saved to My books with ${parsed.length.toLocaleString()} words.`);
   };
 
   // Remove personal book
@@ -1335,6 +1400,7 @@ export const App: React.FC = () => {
                 passageRevealed={passageRevealed}
                 appearanceSettings={appearanceSettings}
                 activeTrack={activeTrack}
+                activeWordIndex={isAudioMedia ? findWordAt(words, audioCurrentTime) : ttsWordIndex}
                 onWordClick={(word, btn) => {
                   setSelectedWord(word);
                   setAnchorEl(btn);
@@ -1441,11 +1507,11 @@ export const App: React.FC = () => {
                     />
                   </label>
                   <label className="file-control">
-                    <span>Transcript</span>
+                    <span>Book or transcript</span>
                     <input
                       id="transcriptFile"
                       type="file"
-                      accept=".json,.vtt,.srt,.txt"
+                      accept=".txt,.text,.md,.markdown,.epub,.pdf,.html,.htm,.xhtml,.fb2,.rtf,.json,.vtt,.srt,application/epub+zip,application/pdf,text/plain,text/markdown,text/html,application/rtf,text/rtf"
                       onChange={handleManualTranscriptFile}
                     />
                   </label>
