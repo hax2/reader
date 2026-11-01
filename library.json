@@ -1610,16 +1610,20 @@
       "Virgilio"
     ],
     "source": "https://www.gutenberg.org/ebooks/1009",
-    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.",
+    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.; project-produced local narration",
     "id": "dante-inferno-c07",
     "title": "Inferno 07: Canto VII",
     "collection": "dante-inferno",
     "canto": 7,
     "description": "Canto VII of Dante’s Inferno in the original Italian (section 7 of 34).",
-    "text": "texts/dante_inferno_c07.txt",
     "wordCount": 919,
     "minutes": 5,
-    "cover": "covers/dante_inferno_c07.webp"
+    "cover": "covers/dante_inferno_c07.webp",
+    "sourceText": "texts/dante_inferno_c07.txt",
+    "audio": "dante_inferno_c07.m4a",
+    "transcript": "dante_inferno_c07.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "fdbb8d57d330534a"
   },
   {
     "author": "Dante Alighieri",

@@ -1,0 +1,4455 @@
+{
+  "source": "dante_inferno_c07.m4a",
+  "title": "",
+  "language": "it",
+  "language_probability": 1.0,
+  "model": "medium",
+  "timingMethod": "faster-whisper-word-timestamps",
+  "words": [
+    {
+      "word": "Inferno",
+      "start": 0.02,
+      "end": 0.96
+    },
+    {
+      "word": "07",
+      "start": 0.96,
+      "end": 1.66
+    },
+    {
+      "word": "Canto",
+      "start": 1.66,
+      "end": 2.16
+    },
+    {
+      "word": "7.",
+      "start": 2.16,
+      "end": 2.5
+    },
+    {
+      "word": "Dante",
+      "start": 3.1,
+      "end": 3.46
+    },
+    {
+      "word": "Alighieri",
+      "start": 3.46,
+      "end": 4.04
+    },
+    {
+      "word": "Canto",
+      "start": 4.04,
+      "end": 4.58
+    },
+    {
+      "word": "7.",
+      "start": 4.58,
+      "end": 5.18
+    },
+    {
+      "word": "Pape",
+      "start": 5.8,
+      "end": 6.04
+    },
+    {
+      "word": "Satan,",
+      "start": 6.04,
+      "end": 6.56
+    },
+    {
+      "word": "Aleppe,",
+      "start": 6.64,
+      "end": 7.18
+    },
+    {
+      "word": "cominciò",
+      "start": 7.56,
+      "end": 7.84
+    },
+    {
+      "word": "Pluto",
+      "start": 7.84,
+      "end": 8.08
+    },
+    {
+      "word": "con",
+      "start": 8.08,
+      "end": 8.32
+    },
+    {
+      "word": "la",
+      "start": 8.32,
+      "end": 8.48
+    },
+    {
+      "word": "voce",
+      "start": 8.48,
+      "end": 8.72
+    },
+    {
+      "word": "chioccia,",
+      "start": 8.72,
+      "end": 9.2
+    },
+    {
+      "word": "e",
+      "start": 9.48,
+      "end": 9.58
+    },
+    {
+      "word": "quel",
+      "start": 9.58,
+      "end": 9.82
+    },
+    {
+      "word": "savio",
+      "start": 9.82,
+      "end": 10.1
+    },
+    {
+      "word": "gentil",
+      "start": 10.1,
+      "end": 10.54
+    },
+    {
+      "word": "che",
+      "start": 10.54,
+      "end": 10.72
+    },
+    {
+      "word": "tutto",
+      "start": 10.72,
+      "end": 11.08
+    },
+    {
+      "word": "seppe,",
+      "start": 11.08,
+      "end": 11.48
+    },
+    {
+      "word": "disse",
+      "start": 11.78,
+      "end": 11.88
+    },
+    {
+      "word": "per",
+      "start": 11.88,
+      "end": 12.18
+    },
+    {
+      "word": "confortarmi,",
+      "start": 12.18,
+      "end": 12.94
+    },
+    {
+      "word": "non",
+      "start": 13.32,
+      "end": 13.5
+    },
+    {
+      "word": "ti",
+      "start": 13.5,
+      "end": 13.66
+    },
+    {
+      "word": "noccia",
+      "start": 13.66,
+      "end": 13.94
+    },
+    {
+      "word": "la",
+      "start": 13.94,
+      "end": 14.08
+    },
+    {
+      "word": "tua",
+      "start": 14.08,
+      "end": 14.2
+    },
+    {
+      "word": "paura,",
+      "start": 14.2,
+      "end": 14.78
+    },
+    {
+      "word": "che,",
+      "start": 15.02,
+      "end": 15.2
+    },
+    {
+      "word": "poter",
+      "start": 15.26,
+      "end": 15.6
+    },
+    {
+      "word": "che",
+      "start": 15.6,
+      "end": 15.72
+    },
+    {
+      "word": "li",
+      "start": 15.72,
+      "end": 16.0
+    },
+    {
+      "word": "abbia,",
+      "start": 16.0,
+      "end": 16.28
+    },
+    {
+      "word": "non",
+      "start": 16.5,
+      "end": 16.7
+    },
+    {
+      "word": "ci",
+      "start": 16.7,
+      "end": 16.82
+    },
+    {
+      "word": "torralo",
+      "start": 16.82,
+      "end": 17.24
+    },
+    {
+      "word": "scender",
+      "start": 17.24,
+      "end": 17.54
+    },
+    {
+      "word": "questa",
+      "start": 17.54,
+      "end": 17.84
+    },
+    {
+      "word": "roccia.",
+      "start": 17.84,
+      "end": 18.12
+    },
+    {
+      "word": "Poi",
+      "start": 18.74,
+      "end": 18.96
+    },
+    {
+      "word": "si",
+      "start": 18.96,
+      "end": 19.18
+    },
+    {
+      "word": "rivolse",
+      "start": 19.18,
+      "end": 19.54
+    },
+    {
+      "word": "a",
+      "start": 19.54,
+      "end": 19.72
+    },
+    {
+      "word": "quell",
+      "start": 19.72,
+      "end": 19.9
+    },
+    {
+      "word": "'anfiata",
+      "start": 19.9,
+      "end": 20.4
+    },
+    {
+      "word": "labbia,",
+      "start": 20.4,
+      "end": 20.8
+    },
+    {
+      "word": "e",
+      "start": 20.94,
+      "end": 21.1
+    },
+    {
+      "word": "disse,",
+      "start": 21.1,
+      "end": 21.34
+    },
+    {
+      "word": "Taci,",
+      "start": 21.76,
+      "end": 22.16
+    },
+    {
+      "word": "maladetto",
+      "start": 22.38,
+      "end": 22.76
+    },
+    {
+      "word": "lupo,",
+      "start": 22.76,
+      "end": 23.32
+    },
+    {
+      "word": "consuma",
+      "start": 23.56,
+      "end": 23.92
+    },
+    {
+      "word": "dentro",
+      "start": 23.92,
+      "end": 24.16
+    },
+    {
+      "word": "te",
+      "start": 24.16,
+      "end": 24.38
+    },
+    {
+      "word": "con",
+      "start": 24.38,
+      "end": 24.62
+    },
+    {
+      "word": "la",
+      "start": 24.62,
+      "end": 24.72
+    },
+    {
+      "word": "tua",
+      "start": 24.72,
+      "end": 24.84
+    },
+    {
+      "word": "rabbia.",
+      "start": 24.84,
+      "end": 25.28
+    },
+    {
+      "word": "Non",
+      "start": 25.86,
+      "end": 26.06
+    },
+    {
+      "word": "è",
+      "start": 26.06,
+      "end": 26.18
+    },
+    {
+      "word": "sansa",
+      "start": 26.18,
+      "end": 26.56
+    },
+    {
+      "word": "cagion",
+      "start": 26.56,
+      "end": 26.8
+    },
+    {
+      "word": "landare",
+      "start": 26.8,
+      "end": 27.16
+    },
+    {
+      "word": "al",
+      "start": 27.16,
+      "end": 27.34
+    },
+    {
+      "word": "cupo,",
+      "start": 27.34,
+      "end": 27.84
+    },
+    {
+      "word": "vuolsi",
+      "start": 27.84,
+      "end": 28.4
+    },
+    {
+      "word": "nell",
+      "start": 28.4,
+      "end": 28.58
+    },
+    {
+      "word": "'alto,",
+      "start": 28.58,
+      "end": 29.0
+    },
+    {
+      "word": "là",
+      "start": 29.2,
+      "end": 29.22
+    },
+    {
+      "word": "dove",
+      "start": 29.22,
+      "end": 29.36
+    },
+    {
+      "word": "Michele",
+      "start": 29.36,
+      "end": 30.02
+    },
+    {
+      "word": "fe",
+      "start": 30.02,
+      "end": 30.24
+    },
+    {
+      "word": "la",
+      "start": 30.24,
+      "end": 30.4
+    },
+    {
+      "word": "vendetta",
+      "start": 30.4,
+      "end": 30.8
+    },
+    {
+      "word": "del",
+      "start": 30.8,
+      "end": 31.02
+    },
+    {
+      "word": "superbo",
+      "start": 31.02,
+      "end": 31.44
+    },
+    {
+      "word": "strupo.",
+      "start": 31.44,
+      "end": 32.24
+    },
+    {
+      "word": "Quali",
+      "start": 32.68,
+      "end": 32.9
+    },
+    {
+      "word": "dal",
+      "start": 32.9,
+      "end": 33.06
+    },
+    {
+      "word": "vento",
+      "start": 33.06,
+      "end": 33.46
+    },
+    {
+      "word": "le",
+      "start": 33.46,
+      "end": 33.58
+    },
+    {
+      "word": "gonfiate",
+      "start": 33.58,
+      "end": 34.14
+    },
+    {
+      "word": "vele",
+      "start": 34.14,
+      "end": 34.48
+    },
+    {
+      "word": "cagiono",
+      "start": 34.48,
+      "end": 34.96
+    },
+    {
+      "word": "a",
+      "start": 34.96,
+      "end": 35.22
+    },
+    {
+      "word": "volte,",
+      "start": 35.22,
+      "end": 35.54
+    },
+    {
+      "word": "poi",
+      "start": 36.0,
+      "end": 36.14
+    },
+    {
+      "word": "che",
+      "start": 36.14,
+      "end": 36.34
+    },
+    {
+      "word": "l",
+      "start": 36.34,
+      "end": 36.5
+    },
+    {
+      "word": "'alber",
+      "start": 36.5,
+      "end": 36.8
+    },
+    {
+      "word": "fiacca,",
+      "start": 36.8,
+      "end": 37.4
+    },
+    {
+      "word": "tal",
+      "start": 37.6,
+      "end": 37.82
+    },
+    {
+      "word": "cadde",
+      "start": 37.82,
+      "end": 38.12
+    },
+    {
+      "word": "a",
+      "start": 38.12,
+      "end": 38.34
+    },
+    {
+      "word": "terra",
+      "start": 38.34,
+      "end": 38.58
+    },
+    {
+      "word": "la",
+      "start": 38.58,
+      "end": 38.82
+    },
+    {
+      "word": "fiera",
+      "start": 38.82,
+      "end": 39.06
+    },
+    {
+      "word": "crudele,",
+      "start": 39.06,
+      "end": 39.64
+    },
+    {
+      "word": "così",
+      "start": 40.0,
+      "end": 40.14
+    },
+    {
+      "word": "scendemo",
+      "start": 40.14,
+      "end": 40.68
+    },
+    {
+      "word": "nella",
+      "start": 40.68,
+      "end": 40.88
+    },
+    {
+      "word": "quarta",
+      "start": 40.88,
+      "end": 41.2
+    },
+    {
+      "word": "lacca,",
+      "start": 41.2,
+      "end": 41.76
+    },
+    {
+      "word": "pigliando",
+      "start": 41.9,
+      "end": 42.32
+    },
+    {
+      "word": "più",
+      "start": 42.32,
+      "end": 42.54
+    },
+    {
+      "word": "della",
+      "start": 42.54,
+      "end": 42.74
+    },
+    {
+      "word": "dolente",
+      "start": 42.74,
+      "end": 43.12
+    },
+    {
+      "word": "ripa",
+      "start": 43.12,
+      "end": 43.48
+    },
+    {
+      "word": "che",
+      "start": 43.48,
+      "end": 43.6
+    },
+    {
+      "word": "il",
+      "start": 43.6,
+      "end": 43.88
+    },
+    {
+      "word": "mal",
+      "start": 43.88,
+      "end": 44.06
+    },
+    {
+      "word": "dell",
+      "start": 44.06,
+      "end": 44.22
+    },
+    {
+      "word": "'universo",
+      "start": 44.22,
+      "end": 44.7
+    },
+    {
+      "word": "tutto",
+      "start": 44.7,
+      "end": 45.02
+    },
+    {
+      "word": "in",
+      "start": 45.02,
+      "end": 45.3
+    },
+    {
+      "word": "sacca.",
+      "start": 45.3,
+      "end": 45.7
+    },
+    {
+      "word": "Hai",
+      "start": 46.18,
+      "end": 46.34
+    },
+    {
+      "word": "giustizia",
+      "start": 46.34,
+      "end": 46.78
+    },
+    {
+      "word": "di",
+      "start": 46.78,
+      "end": 46.98
+    },
+    {
+      "word": "Dio,",
+      "start": 46.98,
+      "end": 47.54
+    },
+    {
+      "word": "tante",
+      "start": 47.7,
+      "end": 47.98
+    },
+    {
+      "word": "chi",
+      "start": 47.98,
+      "end": 48.18
+    },
+    {
+      "word": "stipa",
+      "start": 48.18,
+      "end": 48.48
+    },
+    {
+      "word": "nove",
+      "start": 48.48,
+      "end": 48.7
+    },
+    {
+      "word": "travaglie",
+      "start": 48.7,
+      "end": 49.18
+    },
+    {
+      "word": "e",
+      "start": 49.18,
+      "end": 49.4
+    },
+    {
+      "word": "pene",
+      "start": 49.4,
+      "end": 49.58
+    },
+    {
+      "word": "quanti",
+      "start": 49.58,
+      "end": 49.96
+    },
+    {
+      "word": "ovidi,",
+      "start": 49.96,
+      "end": 50.66
+    },
+    {
+      "word": "e",
+      "start": 50.78,
+      "end": 50.98
+    },
+    {
+      "word": "perché",
+      "start": 50.98,
+      "end": 51.16
+    },
+    {
+      "word": "nostra",
+      "start": 51.16,
+      "end": 51.5
+    },
+    {
+      "word": "colpa",
+      "start": 51.5,
+      "end": 51.9
+    },
+    {
+      "word": "si",
+      "start": 51.9,
+      "end": 52.04
+    },
+    {
+      "word": "ne",
+      "start": 52.04,
+      "end": 52.18
+    },
+    {
+      "word": "scipa.",
+      "start": 52.18,
+      "end": 52.62
+    },
+    {
+      "word": "Come",
+      "start": 53.24,
+      "end": 53.44
+    },
+    {
+      "word": "falonda",
+      "start": 53.44,
+      "end": 53.88
+    },
+    {
+      "word": "la",
+      "start": 53.88,
+      "end": 54.12
+    },
+    {
+      "word": "sovracaridi,",
+      "start": 54.12,
+      "end": 54.84
+    },
+    {
+      "word": "che",
+      "start": 55.18,
+      "end": 55.28
+    },
+    {
+      "word": "si",
+      "start": 55.28,
+      "end": 55.5
+    },
+    {
+      "word": "frange",
+      "start": 55.5,
+      "end": 55.7
+    },
+    {
+      "word": "con",
+      "start": 55.7,
+      "end": 55.96
+    },
+    {
+      "word": "quella",
+      "start": 55.96,
+      "end": 56.16
+    },
+    {
+      "word": "in",
+      "start": 56.16,
+      "end": 56.38
+    },
+    {
+      "word": "cui",
+      "start": 56.38,
+      "end": 56.46
+    },
+    {
+      "word": "si",
+      "start": 56.46,
+      "end": 56.68
+    },
+    {
+      "word": "intoppa,",
+      "start": 56.68,
+      "end": 57.04
+    },
+    {
+      "word": "così",
+      "start": 57.04,
+      "end": 57.26
+    },
+    {
+      "word": "conviene",
+      "start": 57.26,
+      "end": 57.7
+    },
+    {
+      "word": "che",
+      "start": 57.7,
+      "end": 57.84
+    },
+    {
+      "word": "qui",
+      "start": 57.84,
+      "end": 58.02
+    },
+    {
+      "word": "la",
+      "start": 58.02,
+      "end": 58.2
+    },
+    {
+      "word": "gente",
+      "start": 58.2,
+      "end": 58.42
+    },
+    {
+      "word": "ridi.",
+      "start": 58.42,
+      "end": 59.04
+    },
+    {
+      "word": "Qui",
+      "start": 59.76,
+      "end": 59.98
+    },
+    {
+      "word": "vidi",
+      "start": 59.98,
+      "end": 60.28
+    },
+    {
+      "word": "gente",
+      "start": 60.28,
+      "end": 60.72
+    },
+    {
+      "word": "più",
+      "start": 60.72,
+      "end": 61.02
+    },
+    {
+      "word": "cal",
+      "start": 61.02,
+      "end": 61.26
+    },
+    {
+      "word": "trove",
+      "start": 61.26,
+      "end": 61.64
+    },
+    {
+      "word": "troppa,",
+      "start": 61.64,
+      "end": 62.24
+    },
+    {
+      "word": "ed",
+      "start": 62.6,
+      "end": 62.72
+    },
+    {
+      "word": "una",
+      "start": 62.72,
+      "end": 62.98
+    },
+    {
+      "word": "parte",
+      "start": 62.98,
+      "end": 63.28
+    },
+    {
+      "word": "ed",
+      "start": 63.28,
+      "end": 63.5
+    },
+    {
+      "word": "altra,",
+      "start": 63.5,
+      "end": 64.12
+    },
+    {
+      "word": "con",
+      "start": 64.34,
+      "end": 64.54
+    },
+    {
+      "word": "grand",
+      "start": 64.54,
+      "end": 64.72
+    },
+    {
+      "word": "'urli,",
+      "start": 64.72,
+      "end": 65.36
+    },
+    {
+      "word": "voltando",
+      "start": 65.54,
+      "end": 66.02
+    },
+    {
+      "word": "pesi",
+      "start": 66.02,
+      "end": 66.34
+    },
+    {
+      "word": "per",
+      "start": 66.34,
+      "end": 66.52
+    },
+    {
+      "word": "forza",
+      "start": 66.52,
+      "end": 66.84
+    },
+    {
+      "word": "di",
+      "start": 66.84,
+      "end": 67.02
+    },
+    {
+      "word": "poppa.",
+      "start": 67.02,
+      "end": 67.28
+    },
+    {
+      "word": "Per",
+      "start": 68.06,
+      "end": 68.2
+    },
+    {
+      "word": "cotean",
+      "start": 68.2,
+      "end": 68.58
+    },
+    {
+      "word": "si",
+      "start": 68.58,
+      "end": 68.78
+    },
+    {
+      "word": "incontro,",
+      "start": 68.78,
+      "end": 69.4
+    },
+    {
+      "word": "e",
+      "start": 69.6,
+      "end": 69.72
+    },
+    {
+      "word": "poscia",
+      "start": 69.72,
+      "end": 70.04
+    },
+    {
+      "word": "pur",
+      "start": 70.04,
+      "end": 70.3
+    },
+    {
+      "word": "lì",
+      "start": 70.3,
+      "end": 70.58
+    },
+    {
+      "word": "si",
+      "start": 70.58,
+      "end": 70.78
+    },
+    {
+      "word": "rivolge",
+      "start": 70.78,
+      "end": 71.14
+    },
+    {
+      "word": "a",
+      "start": 71.14,
+      "end": 71.32
+    },
+    {
+      "word": "ciascun,",
+      "start": 71.32,
+      "end": 71.94
+    },
+    {
+      "word": "voltando",
+      "start": 72.1,
+      "end": 72.54
+    },
+    {
+      "word": "a",
+      "start": 72.54,
+      "end": 72.66
+    },
+    {
+      "word": "retro,",
+      "start": 72.66,
+      "end": 73.12
+    },
+    {
+      "word": "gridando,",
+      "start": 73.26,
+      "end": 73.88
+    },
+    {
+      "word": "perché",
+      "start": 74.3,
+      "end": 74.64
+    },
+    {
+      "word": "tieni,",
+      "start": 74.64,
+      "end": 75.42
+    },
+    {
+      "word": "e",
+      "start": 75.68,
+      "end": 75.92
+    },
+    {
+      "word": "perché",
+      "start": 75.92,
+      "end": 76.2
+    },
+    {
+      "word": "burli.",
+      "start": 76.2,
+      "end": 76.76
+    },
+    {
+      "word": "Così",
+      "start": 77.36,
+      "end": 77.62
+    },
+    {
+      "word": "tornavano",
+      "start": 77.62,
+      "end": 78.06
+    },
+    {
+      "word": "per",
+      "start": 78.06,
+      "end": 78.24
+    },
+    {
+      "word": "lo",
+      "start": 78.24,
+      "end": 78.42
+    },
+    {
+      "word": "cerchio",
+      "start": 78.42,
+      "end": 78.72
+    },
+    {
+      "word": "tetro,",
+      "start": 78.72,
+      "end": 79.24
+    },
+    {
+      "word": "da",
+      "start": 79.46,
+      "end": 79.6
+    },
+    {
+      "word": "ogni",
+      "start": 79.6,
+      "end": 79.84
+    },
+    {
+      "word": "mano",
+      "start": 79.84,
+      "end": 80.08
+    },
+    {
+      "word": "all",
+      "start": 80.08,
+      "end": 80.22
+    },
+    {
+      "word": "'opposito",
+      "start": 80.22,
+      "end": 80.7
+    },
+    {
+      "word": "punto,",
+      "start": 80.7,
+      "end": 81.08
+    },
+    {
+      "word": "gridandosi",
+      "start": 81.54,
+      "end": 82.06
+    },
+    {
+      "word": "anche",
+      "start": 82.06,
+      "end": 82.3
+    },
+    {
+      "word": "loro",
+      "start": 82.3,
+      "end": 82.48
+    },
+    {
+      "word": "a",
+      "start": 82.48,
+      "end": 82.62
+    },
+    {
+      "word": "un",
+      "start": 82.62,
+      "end": 82.7
+    },
+    {
+      "word": "toso",
+      "start": 82.7,
+      "end": 82.92
+    },
+    {
+      "word": "metro.",
+      "start": 82.92,
+      "end": 83.24
+    },
+    {
+      "word": "Poi",
+      "start": 83.24,
+      "end": 84.18
+    },
+    {
+      "word": "si",
+      "start": 84.18,
+      "end": 84.38
+    },
+    {
+      "word": "rivolge",
+      "start": 84.38,
+      "end": 84.6
+    },
+    {
+      "word": "a",
+      "start": 84.6,
+      "end": 84.74
+    },
+    {
+      "word": "ciascun,",
+      "start": 84.74,
+      "end": 85.36
+    },
+    {
+      "word": "quant",
+      "start": 85.54,
+      "end": 85.68
+    },
+    {
+      "word": "'era",
+      "start": 85.68,
+      "end": 85.82
+    },
+    {
+      "word": "giunto,",
+      "start": 85.82,
+      "end": 86.3
+    },
+    {
+      "word": "per",
+      "start": 86.62,
+      "end": 86.72
+    },
+    {
+      "word": "lo",
+      "start": 86.72,
+      "end": 86.86
+    },
+    {
+      "word": "suo",
+      "start": 86.86,
+      "end": 86.96
+    },
+    {
+      "word": "mezzo",
+      "start": 86.96,
+      "end": 87.38
+    },
+    {
+      "word": "cerchio",
+      "start": 87.38,
+      "end": 87.68
+    },
+    {
+      "word": "all",
+      "start": 87.68,
+      "end": 87.88
+    },
+    {
+      "word": "'altra",
+      "start": 87.88,
+      "end": 88.12
+    },
+    {
+      "word": "giostra.",
+      "start": 88.12,
+      "end": 88.42
+    },
+    {
+      "word": "E",
+      "start": 89.3,
+      "end": 89.46
+    },
+    {
+      "word": "io,",
+      "start": 89.46,
+      "end": 89.76
+    },
+    {
+      "word": "che",
+      "start": 89.86,
+      "end": 89.98
+    },
+    {
+      "word": "aveva",
+      "start": 89.98,
+      "end": 90.18
+    },
+    {
+      "word": "lo",
+      "start": 90.18,
+      "end": 90.34
+    },
+    {
+      "word": "cor",
+      "start": 90.34,
+      "end": 90.48
+    },
+    {
+      "word": "quasi",
+      "start": 90.48,
+      "end": 90.82
+    },
+    {
+      "word": "con",
+      "start": 90.82,
+      "end": 91.02
+    },
+    {
+      "word": "punto,",
+      "start": 91.02,
+      "end": 91.34
+    },
+    {
+      "word": "dissi,",
+      "start": 92.78,
+      "end": 93.38
+    },
+    {
+      "word": "maestro",
+      "start": 93.86,
+      "end": 94.4
+    },
+    {
+      "word": "mio,",
+      "start": 94.4,
+      "end": 94.74
+    },
+    {
+      "word": "or",
+      "start": 95.08,
+      "end": 95.22
+    },
+    {
+      "word": "mi",
+      "start": 95.22,
+      "end": 95.4
+    },
+    {
+      "word": "dimostra",
+      "start": 95.4,
+      "end": 95.86
+    },
+    {
+      "word": "che",
+      "start": 95.86,
+      "end": 96.06
+    },
+    {
+      "word": "gente",
+      "start": 96.06,
+      "end": 96.4
+    },
+    {
+      "word": "è",
+      "start": 96.4,
+      "end": 96.58
+    },
+    {
+      "word": "questa,",
+      "start": 96.58,
+      "end": 96.96
+    },
+    {
+      "word": "e",
+      "start": 97.44,
+      "end": 97.56
+    },
+    {
+      "word": "se",
+      "start": 97.56,
+      "end": 97.7
+    },
+    {
+      "word": "tutti",
+      "start": 97.7,
+      "end": 97.9
+    },
+    {
+      "word": "fuor",
+      "start": 97.9,
+      "end": 98.24
+    },
+    {
+      "word": "kerci,",
+      "start": 98.24,
+      "end": 98.62
+    },
+    {
+      "word": "questi",
+      "start": 99.0,
+      "end": 99.24
+    },
+    {
+      "word": "kercuti",
+      "start": 99.24,
+      "end": 99.78
+    },
+    {
+      "word": "alla",
+      "start": 99.78,
+      "end": 99.98
+    },
+    {
+      "word": "sinistra",
+      "start": 99.98,
+      "end": 100.5
+    },
+    {
+      "word": "nostra.",
+      "start": 100.5,
+      "end": 100.82
+    },
+    {
+      "word": "Ed",
+      "start": 101.62,
+      "end": 101.86
+    },
+    {
+      "word": "elli",
+      "start": 101.86,
+      "end": 102.04
+    },
+    {
+      "word": "a",
+      "start": 102.04,
+      "end": 102.22
+    },
+    {
+      "word": "me,",
+      "start": 102.22,
+      "end": 102.5
+    },
+    {
+      "word": "tutti",
+      "start": 103.08,
+      "end": 103.38
+    },
+    {
+      "word": "quanti",
+      "start": 103.38,
+      "end": 103.74
+    },
+    {
+      "word": "fuor",
+      "start": 103.74,
+      "end": 104.04
+    },
+    {
+      "word": "guercisi",
+      "start": 104.04,
+      "end": 104.54
+    },
+    {
+      "word": "della",
+      "start": 104.54,
+      "end": 104.8
+    },
+    {
+      "word": "mente",
+      "start": 104.8,
+      "end": 105.08
+    },
+    {
+      "word": "in",
+      "start": 105.08,
+      "end": 105.26
+    },
+    {
+      "word": "la",
+      "start": 105.26,
+      "end": 105.4
+    },
+    {
+      "word": "vita",
+      "start": 105.4,
+      "end": 105.58
+    },
+    {
+      "word": "primaia,",
+      "start": 105.58,
+      "end": 106.14
+    },
+    {
+      "word": "che",
+      "start": 106.48,
+      "end": 106.58
+    },
+    {
+      "word": "con",
+      "start": 106.58,
+      "end": 106.76
+    },
+    {
+      "word": "misura",
+      "start": 106.76,
+      "end": 107.16
+    },
+    {
+      "word": "nullo",
+      "start": 107.16,
+      "end": 107.56
+    },
+    {
+      "word": "spendi",
+      "start": 107.56,
+      "end": 107.88
+    },
+    {
+      "word": "o",
+      "start": 107.88,
+      "end": 108.02
+    },
+    {
+      "word": "ferci.",
+      "start": 108.02,
+      "end": 108.48
+    },
+    {
+      "word": "Assai",
+      "start": 109.02,
+      "end": 109.54
+    },
+    {
+      "word": "la",
+      "start": 109.54,
+      "end": 109.66
+    },
+    {
+      "word": "voce",
+      "start": 109.66,
+      "end": 109.92
+    },
+    {
+      "word": "loro",
+      "start": 109.92,
+      "end": 110.12
+    },
+    {
+      "word": "chiaro",
+      "start": 110.12,
+      "end": 110.48
+    },
+    {
+      "word": "la",
+      "start": 110.48,
+      "end": 110.66
+    },
+    {
+      "word": "baia,",
+      "start": 110.66,
+      "end": 111.14
+    },
+    {
+      "word": "quando",
+      "start": 111.44,
+      "end": 111.64
+    },
+    {
+      "word": "vengono",
+      "start": 111.64,
+      "end": 112.04
+    },
+    {
+      "word": "a",
+      "start": 112.04,
+      "end": 112.3
+    },
+    {
+      "word": "due",
+      "start": 112.3,
+      "end": 112.46
+    },
+    {
+      "word": "punti",
+      "start": 112.46,
+      "end": 112.76
+    },
+    {
+      "word": "del",
+      "start": 112.76,
+      "end": 112.96
+    },
+    {
+      "word": "cerchio,",
+      "start": 112.96,
+      "end": 113.48
+    },
+    {
+      "word": "dove",
+      "start": 113.8,
+      "end": 113.98
+    },
+    {
+      "word": "colpa",
+      "start": 113.98,
+      "end": 114.34
+    },
+    {
+      "word": "contraria",
+      "start": 114.34,
+      "end": 114.86
+    },
+    {
+      "word": "li",
+      "start": 114.86,
+      "end": 115.0
+    },
+    {
+      "word": "dispaia.",
+      "start": 115.0,
+      "end": 115.78
+    },
+    {
+      "word": "Questi",
+      "start": 116.32,
+      "end": 116.68
+    },
+    {
+      "word": "fuor",
+      "start": 116.68,
+      "end": 116.94
+    },
+    {
+      "word": "kerci,",
+      "start": 116.94,
+      "end": 117.44
+    },
+    {
+      "word": "che",
+      "start": 117.7,
+      "end": 117.9
+    },
+    {
+      "word": "non",
+      "start": 117.9,
+      "end": 118.08
+    },
+    {
+      "word": "han",
+      "start": 118.08,
+      "end": 118.26
+    },
+    {
+      "word": "coperchio",
+      "start": 118.26,
+      "end": 118.66
+    },
+    {
+      "word": "piloso",
+      "start": 118.66,
+      "end": 119.04
+    },
+    {
+      "word": "al",
+      "start": 119.04,
+      "end": 119.26
+    },
+    {
+      "word": "capo,",
+      "start": 119.26,
+      "end": 119.76
+    },
+    {
+      "word": "e",
+      "start": 119.88,
+      "end": 120.06
+    },
+    {
+      "word": "papi",
+      "start": 120.06,
+      "end": 120.5
+    },
+    {
+      "word": "e",
+      "start": 120.5,
+      "end": 120.62
+    },
+    {
+      "word": "cardinali,",
+      "start": 120.62,
+      "end": 121.44
+    },
+    {
+      "word": "in",
+      "start": 121.5,
+      "end": 121.74
+    },
+    {
+      "word": "cui",
+      "start": 121.74,
+      "end": 121.9
+    },
+    {
+      "word": "usa",
+      "start": 121.9,
+      "end": 122.16
+    },
+    {
+      "word": "avarizia",
+      "start": 122.16,
+      "end": 122.7
+    },
+    {
+      "word": "il",
+      "start": 122.7,
+      "end": 122.88
+    },
+    {
+      "word": "suo",
+      "start": 122.88,
+      "end": 123.0
+    },
+    {
+      "word": "soperchio.",
+      "start": 123.0,
+      "end": 123.58
+    },
+    {
+      "word": "E",
+      "start": 124.14,
+      "end": 124.44
+    },
+    {
+      "word": "io,",
+      "start": 124.44,
+      "end": 124.84
+    },
+    {
+      "word": "maestro,",
+      "start": 125.5,
+      "end": 126.04
+    },
+    {
+      "word": "tra",
+      "start": 126.34,
+      "end": 126.52
+    },
+    {
+      "word": "questi",
+      "start": 126.52,
+      "end": 126.86
+    },
+    {
+      "word": "cotali",
+      "start": 126.86,
+      "end": 127.32
+    },
+    {
+      "word": "dovrei",
+      "start": 127.32,
+      "end": 127.78
+    },
+    {
+      "word": "io",
+      "start": 127.78,
+      "end": 128.06
+    },
+    {
+      "word": "ben",
+      "start": 128.06,
+      "end": 128.28
+    },
+    {
+      "word": "riconoscere",
+      "start": 128.28,
+      "end": 128.88
+    },
+    {
+      "word": "alcuni",
+      "start": 128.88,
+      "end": 129.26
+    },
+    {
+      "word": "che",
+      "start": 129.26,
+      "end": 129.44
+    },
+    {
+      "word": "furo",
+      "start": 129.44,
+      "end": 129.78
+    },
+    {
+      "word": "in",
+      "start": 129.78,
+      "end": 129.94
+    },
+    {
+      "word": "mondi",
+      "start": 129.94,
+      "end": 130.24
+    },
+    {
+      "word": "di",
+      "start": 130.24,
+      "end": 130.34
+    },
+    {
+      "word": "cotesti",
+      "start": 130.34,
+      "end": 130.74
+    },
+    {
+      "word": "mali.",
+      "start": 130.74,
+      "end": 131.54
+    },
+    {
+      "word": "Ed",
+      "start": 131.64,
+      "end": 131.88
+    },
+    {
+      "word": "elli",
+      "start": 131.88,
+      "end": 132.04
+    },
+    {
+      "word": "a",
+      "start": 132.04,
+      "end": 132.16
+    },
+    {
+      "word": "me,",
+      "start": 132.16,
+      "end": 132.62
+    },
+    {
+      "word": "vanno",
+      "start": 132.86,
+      "end": 133.12
+    },
+    {
+      "word": "pensiero",
+      "start": 133.12,
+      "end": 133.6
+    },
+    {
+      "word": "ad",
+      "start": 133.6,
+      "end": 133.82
+    },
+    {
+      "word": "uni,",
+      "start": 133.82,
+      "end": 134.0
+    },
+    {
+      "word": "la",
+      "start": 134.52,
+      "end": 134.74
+    },
+    {
+      "word": "sconosciente",
+      "start": 134.74,
+      "end": 135.36
+    },
+    {
+      "word": "vita",
+      "start": 135.36,
+      "end": 135.6
+    },
+    {
+      "word": "che",
+      "start": 135.6,
+      "end": 135.74
+    },
+    {
+      "word": "i",
+      "start": 135.74,
+      "end": 135.92
+    },
+    {
+      "word": "fe",
+      "start": 135.92,
+      "end": 136.06
+    },
+    {
+      "word": "sozzi,",
+      "start": 136.06,
+      "end": 136.68
+    },
+    {
+      "word": "ad",
+      "start": 136.68,
+      "end": 137.02
+    },
+    {
+      "word": "ogni",
+      "start": 137.02,
+      "end": 137.24
+    },
+    {
+      "word": "conoscenza",
+      "start": 137.24,
+      "end": 137.9
+    },
+    {
+      "word": "or",
+      "start": 137.9,
+      "end": 138.14
+    },
+    {
+      "word": "li",
+      "start": 138.14,
+      "end": 138.24
+    },
+    {
+      "word": "fa",
+      "start": 138.24,
+      "end": 138.44
+    },
+    {
+      "word": "bruni.",
+      "start": 138.44,
+      "end": 139.18
+    },
+    {
+      "word": "In",
+      "start": 139.36,
+      "end": 139.56
+    },
+    {
+      "word": "eterno",
+      "start": 139.56,
+      "end": 140.26
+    },
+    {
+      "word": "verranno",
+      "start": 140.26,
+      "end": 140.72
+    },
+    {
+      "word": "ali",
+      "start": 140.72,
+      "end": 140.92
+    },
+    {
+      "word": "due",
+      "start": 140.92,
+      "end": 141.2
+    },
+    {
+      "word": "cozzi,",
+      "start": 141.2,
+      "end": 142.0
+    },
+    {
+      "word": "questi",
+      "start": 142.24,
+      "end": 142.44
+    },
+    {
+      "word": "resurgiranno",
+      "start": 142.44,
+      "end": 143.12
+    },
+    {
+      "word": "del",
+      "start": 143.12,
+      "end": 143.34
+    },
+    {
+      "word": "sepulcro",
+      "start": 143.34,
+      "end": 143.84
+    },
+    {
+      "word": "col",
+      "start": 143.84,
+      "end": 144.1
+    },
+    {
+      "word": "pugno",
+      "start": 144.1,
+      "end": 144.48
+    },
+    {
+      "word": "chiuso,",
+      "start": 144.48,
+      "end": 145.02
+    },
+    {
+      "word": "e",
+      "start": 145.18,
+      "end": 145.36
+    },
+    {
+      "word": "questi",
+      "start": 145.36,
+      "end": 145.6
+    },
+    {
+      "word": "coi",
+      "start": 145.6,
+      "end": 145.94
+    },
+    {
+      "word": "crinmozzi.",
+      "start": 145.94,
+      "end": 146.7
+    },
+    {
+      "word": "Maldare",
+      "start": 147.44,
+      "end": 147.98
+    },
+    {
+      "word": "e",
+      "start": 147.98,
+      "end": 148.12
+    },
+    {
+      "word": "maltenerlo",
+      "start": 148.12,
+      "end": 148.76
+    },
+    {
+      "word": "mondo",
+      "start": 148.76,
+      "end": 149.02
+    },
+    {
+      "word": "pulcro",
+      "start": 149.02,
+      "end": 149.54
+    },
+    {
+      "word": "ha",
+      "start": 149.54,
+      "end": 149.9
+    },
+    {
+      "word": "tolto",
+      "start": 149.9,
+      "end": 150.24
+    },
+    {
+      "word": "loro",
+      "start": 150.24,
+      "end": 150.56
+    },
+    {
+      "word": "e",
+      "start": 150.56,
+      "end": 151.16
+    },
+    {
+      "word": "posti",
+      "start": 151.16,
+      "end": 151.44
+    },
+    {
+      "word": "a",
+      "start": 151.44,
+      "end": 151.6
+    },
+    {
+      "word": "questa",
+      "start": 151.6,
+      "end": 151.8
+    },
+    {
+      "word": "zuffa.",
+      "start": 151.8,
+      "end": 152.64
+    },
+    {
+      "word": "Qualella",
+      "start": 152.94,
+      "end": 153.34
+    },
+    {
+      "word": "sia,",
+      "start": 153.34,
+      "end": 153.7
+    },
+    {
+      "word": "parole",
+      "start": 154.14,
+      "end": 154.34
+    },
+    {
+      "word": "non",
+      "start": 154.34,
+      "end": 154.74
+    },
+    {
+      "word": "ci",
+      "start": 154.74,
+      "end": 154.88
+    },
+    {
+      "word": "ha",
+      "start": 154.88,
+      "end": 155.04
+    },
+    {
+      "word": "pulcro.",
+      "start": 155.04,
+      "end": 155.44
+    },
+    {
+      "word": "Or",
+      "start": 156.38,
+      "end": 156.6
+    },
+    {
+      "word": "puoi,",
+      "start": 156.6,
+      "end": 156.88
+    },
+    {
+      "word": "figliuol,",
+      "start": 157.02,
+      "end": 157.54
+    },
+    {
+      "word": "vederla",
+      "start": 157.76,
+      "end": 158.18
+    },
+    {
+      "word": "corta",
+      "start": 158.18,
+      "end": 158.5
+    },
+    {
+      "word": "buffa",
+      "start": 158.5,
+      "end": 158.84
+    },
+    {
+      "word": "di,",
+      "start": 158.84,
+      "end": 158.98
+    },
+    {
+      "word": "ben",
+      "start": 159.46,
+      "end": 159.6
+    },
+    {
+      "word": "che",
+      "start": 159.6,
+      "end": 159.74
+    },
+    {
+      "word": "son",
+      "start": 159.74,
+      "end": 159.94
+    },
+    {
+      "word": "commessi",
+      "start": 159.94,
+      "end": 160.44
+    },
+    {
+      "word": "alla",
+      "start": 160.44,
+      "end": 160.58
+    },
+    {
+      "word": "fortuna,",
+      "start": 160.58,
+      "end": 160.86
+    },
+    {
+      "word": "perché",
+      "start": 161.68,
+      "end": 161.9
+    },
+    {
+      "word": "l",
+      "start": 161.9,
+      "end": 162.06
+    },
+    {
+      "word": "'umana",
+      "start": 162.06,
+      "end": 162.32
+    },
+    {
+      "word": "gente",
+      "start": 162.32,
+      "end": 162.58
+    },
+    {
+      "word": "si",
+      "start": 162.58,
+      "end": 162.78
+    },
+    {
+      "word": "rabbuffa.",
+      "start": 162.78,
+      "end": 163.56
+    },
+    {
+      "word": "Che",
+      "start": 163.56,
+      "end": 164.02
+    },
+    {
+      "word": "tutto",
+      "start": 164.02,
+      "end": 164.32
+    },
+    {
+      "word": "loro",
+      "start": 164.32,
+      "end": 164.52
+    },
+    {
+      "word": "che",
+      "start": 164.52,
+      "end": 164.72
+    },
+    {
+      "word": "è",
+      "start": 164.72,
+      "end": 164.82
+    },
+    {
+      "word": "sotto",
+      "start": 164.82,
+      "end": 164.98
+    },
+    {
+      "word": "la",
+      "start": 164.98,
+      "end": 165.16
+    },
+    {
+      "word": "luna",
+      "start": 165.16,
+      "end": 165.4
+    },
+    {
+      "word": "e",
+      "start": 165.4,
+      "end": 165.6
+    },
+    {
+      "word": "che",
+      "start": 165.6,
+      "end": 165.72
+    },
+    {
+      "word": "già",
+      "start": 165.72,
+      "end": 165.94
+    },
+    {
+      "word": "fu",
+      "start": 165.94,
+      "end": 166.1
+    },
+    {
+      "word": "di",
+      "start": 166.1,
+      "end": 166.32
+    },
+    {
+      "word": "quest",
+      "start": 166.32,
+      "end": 166.5
+    },
+    {
+      "word": "'anime",
+      "start": 166.5,
+      "end": 166.82
+    },
+    {
+      "word": "stanche,",
+      "start": 166.82,
+      "end": 167.54
+    },
+    {
+      "word": "non",
+      "start": 167.8,
+      "end": 167.9
+    },
+    {
+      "word": "potrebbe",
+      "start": 167.9,
+      "end": 168.3
+    },
+    {
+      "word": "farne",
+      "start": 168.3,
+      "end": 168.64
+    },
+    {
+      "word": "posare",
+      "start": 168.64,
+      "end": 169.02
+    },
+    {
+      "word": "una.",
+      "start": 169.02,
+      "end": 169.42
+    },
+    {
+      "word": "Maestro",
+      "start": 170.14,
+      "end": 170.56
+    },
+    {
+      "word": "mio,",
+      "start": 170.56,
+      "end": 170.84
+    },
+    {
+      "word": "disse",
+      "start": 171.04,
+      "end": 171.22
+    },
+    {
+      "word": "io,",
+      "start": 171.22,
+      "end": 171.62
+    },
+    {
+      "word": "or",
+      "start": 171.88,
+      "end": 171.98
+    },
+    {
+      "word": "mi",
+      "start": 171.98,
+      "end": 172.08
+    },
+    {
+      "word": "di",
+      "start": 172.08,
+      "end": 172.2
+    },
+    {
+      "word": "anche.",
+      "start": 172.2,
+      "end": 172.64
+    },
+    {
+      "word": "Questa",
+      "start": 173.42,
+      "end": 173.66
+    },
+    {
+      "word": "fortuna",
+      "start": 173.66,
+      "end": 174.1
+    },
+    {
+      "word": "di",
+      "start": 174.1,
+      "end": 174.24
+    },
+    {
+      "word": "che",
+      "start": 174.24,
+      "end": 174.32
+    },
+    {
+      "word": "tu",
+      "start": 174.32,
+      "end": 174.46
+    },
+    {
+      "word": "mi",
+      "start": 174.46,
+      "end": 174.64
+    },
+    {
+      "word": "tocche,",
+      "start": 174.64,
+      "end": 175.02
+    },
+    {
+      "word": "che",
+      "start": 175.46,
+      "end": 175.64
+    },
+    {
+      "word": "è,",
+      "start": 175.64,
+      "end": 176.0
+    },
+    {
+      "word": "che",
+      "start": 176.12,
+      "end": 176.18
+    },
+    {
+      "word": "i",
+      "start": 176.18,
+      "end": 176.34
+    },
+    {
+      "word": "ben",
+      "start": 176.34,
+      "end": 176.44
+    },
+    {
+      "word": "del",
+      "start": 176.44,
+      "end": 176.64
+    },
+    {
+      "word": "mondo",
+      "start": 176.64,
+      "end": 176.9
+    },
+    {
+      "word": "assi",
+      "start": 176.9,
+      "end": 177.26
+    },
+    {
+      "word": "trabranche?",
+      "start": 177.26,
+      "end": 177.8
+    },
+    {
+      "word": "E",
+      "start": 178.5,
+      "end": 178.64
+    },
+    {
+      "word": "quelli",
+      "start": 178.64,
+      "end": 178.9
+    },
+    {
+      "word": "a",
+      "start": 178.9,
+      "end": 179.04
+    },
+    {
+      "word": "me,",
+      "start": 179.04,
+      "end": 179.3
+    },
+    {
+      "word": "o",
+      "start": 179.64,
+      "end": 179.76
+    },
+    {
+      "word": "creature",
+      "start": 179.76,
+      "end": 180.14
+    },
+    {
+      "word": "sciocche,",
+      "start": 180.14,
+      "end": 180.6
+    },
+    {
+      "word": "quanta",
+      "start": 181.06,
+      "end": 181.36
+    },
+    {
+      "word": "ignoranza",
+      "start": 181.36,
+      "end": 181.84
+    },
+    {
+      "word": "è",
+      "start": 181.84,
+      "end": 181.98
+    },
+    {
+      "word": "quella",
+      "start": 181.98,
+      "end": 182.2
+    },
+    {
+      "word": "che",
+      "start": 182.2,
+      "end": 182.3
+    },
+    {
+      "word": "v",
+      "start": 182.3,
+      "end": 182.44
+    },
+    {
+      "word": "'offende?",
+      "start": 182.44,
+      "end": 182.88
+    },
+    {
+      "word": "Or",
+      "start": 183.88,
+      "end": 184.08
+    },
+    {
+      "word": "vuo",
+      "start": 184.08,
+      "end": 184.22
+    },
+    {
+      "word": "che",
+      "start": 184.22,
+      "end": 184.32
+    },
+    {
+      "word": "tu",
+      "start": 184.32,
+      "end": 184.5
+    },
+    {
+      "word": "mia",
+      "start": 184.5,
+      "end": 184.62
+    },
+    {
+      "word": "sentenza",
+      "start": 184.62,
+      "end": 185.14
+    },
+    {
+      "word": "nembocche.",
+      "start": 185.14,
+      "end": 185.8
+    },
+    {
+      "word": "Colui",
+      "start": 186.64,
+      "end": 186.94
+    },
+    {
+      "word": "lo",
+      "start": 186.94,
+      "end": 187.12
+    },
+    {
+      "word": "cui",
+      "start": 187.12,
+      "end": 187.26
+    },
+    {
+      "word": "saper",
+      "start": 187.26,
+      "end": 187.58
+    },
+    {
+      "word": "tutto",
+      "start": 187.58,
+      "end": 187.94
+    },
+    {
+      "word": "trascende,",
+      "start": 187.94,
+      "end": 188.64
+    },
+    {
+      "word": "fece",
+      "start": 188.92,
+      "end": 189.06
+    },
+    {
+      "word": "li",
+      "start": 189.06,
+      "end": 189.32
+    },
+    {
+      "word": "cieli,",
+      "start": 189.32,
+      "end": 189.6
+    },
+    {
+      "word": "e",
+      "start": 189.84,
+      "end": 189.94
+    },
+    {
+      "word": "di",
+      "start": 189.94,
+      "end": 190.04
+    },
+    {
+      "word": "è",
+      "start": 190.04,
+      "end": 190.18
+    },
+    {
+      "word": "lor",
+      "start": 190.18,
+      "end": 190.36
+    },
+    {
+      "word": "chi",
+      "start": 190.36,
+      "end": 190.56
+    },
+    {
+      "word": "conduce.",
+      "start": 190.56,
+      "end": 191.04
+    },
+    {
+      "word": "Sì,",
+      "start": 191.66,
+      "end": 192.18
+    },
+    {
+      "word": "che",
+      "start": 192.32,
+      "end": 192.44
+    },
+    {
+      "word": "ogni",
+      "start": 192.44,
+      "end": 192.6
+    },
+    {
+      "word": "parte",
+      "start": 192.6,
+      "end": 192.94
+    },
+    {
+      "word": "ad",
+      "start": 192.94,
+      "end": 193.1
+    },
+    {
+      "word": "ogni",
+      "start": 193.1,
+      "end": 193.3
+    },
+    {
+      "word": "parte",
+      "start": 193.3,
+      "end": 193.62
+    },
+    {
+      "word": "splende,",
+      "start": 193.62,
+      "end": 194.1
+    },
+    {
+      "word": "distribuendo",
+      "start": 194.5,
+      "end": 195.0
+    },
+    {
+      "word": "igualmente",
+      "start": 195.0,
+      "end": 195.5
+    },
+    {
+      "word": "la",
+      "start": 195.5,
+      "end": 195.7
+    },
+    {
+      "word": "luce.",
+      "start": 195.7,
+      "end": 196.04
+    },
+    {
+      "word": "Similemente",
+      "start": 196.64,
+      "end": 197.16
+    },
+    {
+      "word": "agli",
+      "start": 197.16,
+      "end": 197.42
+    },
+    {
+      "word": "splendor",
+      "start": 197.42,
+      "end": 197.8
+    },
+    {
+      "word": "mondani,",
+      "start": 197.8,
+      "end": 198.38
+    },
+    {
+      "word": "ordinò",
+      "start": 198.74,
+      "end": 198.92
+    },
+    {
+      "word": "general",
+      "start": 198.92,
+      "end": 199.36
+    },
+    {
+      "word": "ministra",
+      "start": 199.36,
+      "end": 199.76
+    },
+    {
+      "word": "e",
+      "start": 199.76,
+      "end": 199.9
+    },
+    {
+      "word": "duce,",
+      "start": 199.9,
+      "end": 200.22
+    },
+    {
+      "word": "che",
+      "start": 200.58,
+      "end": 200.72
+    },
+    {
+      "word": "permutasse",
+      "start": 200.72,
+      "end": 201.24
+    },
+    {
+      "word": "a",
+      "start": 201.24,
+      "end": 201.44
+    },
+    {
+      "word": "tempo",
+      "start": 201.44,
+      "end": 201.66
+    },
+    {
+      "word": "li",
+      "start": 201.66,
+      "end": 201.86
+    },
+    {
+      "word": "ben",
+      "start": 201.86,
+      "end": 202.08
+    },
+    {
+      "word": "bani,",
+      "start": 202.08,
+      "end": 202.54
+    },
+    {
+      "word": "di",
+      "start": 202.76,
+      "end": 202.94
+    },
+    {
+      "word": "gente",
+      "start": 202.94,
+      "end": 203.2
+    },
+    {
+      "word": "in",
+      "start": 203.2,
+      "end": 203.38
+    },
+    {
+      "word": "gente,",
+      "start": 203.38,
+      "end": 203.72
+    },
+    {
+      "word": "ed",
+      "start": 203.96,
+      "end": 204.08
+    },
+    {
+      "word": "uno",
+      "start": 204.08,
+      "end": 204.28
+    },
+    {
+      "word": "in",
+      "start": 204.28,
+      "end": 204.48
+    },
+    {
+      "word": "altro",
+      "start": 204.48,
+      "end": 204.68
+    },
+    {
+      "word": "sangue.",
+      "start": 204.68,
+      "end": 205.36
+    },
+    {
+      "word": "Oltre",
+      "start": 205.62,
+      "end": 205.94
+    },
+    {
+      "word": "la",
+      "start": 205.94,
+      "end": 206.1
+    },
+    {
+      "word": "difensión",
+      "start": 206.1,
+      "end": 206.56
+    },
+    {
+      "word": "di",
+      "start": 206.56,
+      "end": 206.78
+    },
+    {
+      "word": "senni",
+      "start": 206.78,
+      "end": 207.04
+    },
+    {
+      "word": "umani,",
+      "start": 207.04,
+      "end": 207.64
+    },
+    {
+      "word": "per",
+      "start": 208.02,
+      "end": 208.1
+    },
+    {
+      "word": "cuna",
+      "start": 208.1,
+      "end": 208.3
+    },
+    {
+      "word": "gente",
+      "start": 208.3,
+      "end": 208.64
+    },
+    {
+      "word": "impera",
+      "start": 208.64,
+      "end": 209.1
+    },
+    {
+      "word": "è",
+      "start": 209.1,
+      "end": 209.22
+    },
+    {
+      "word": "l",
+      "start": 209.22,
+      "end": 209.34
+    },
+    {
+      "word": "'altra",
+      "start": 209.34,
+      "end": 209.52
+    },
+    {
+      "word": "lange,",
+      "start": 209.52,
+      "end": 209.82
+    },
+    {
+      "word": "seguendo",
+      "start": 210.24,
+      "end": 210.54
+    },
+    {
+      "word": "lo",
+      "start": 210.54,
+      "end": 210.68
+    },
+    {
+      "word": "giudicio",
+      "start": 210.68,
+      "end": 211.02
+    },
+    {
+      "word": "di",
+      "start": 211.02,
+      "end": 211.22
+    },
+    {
+      "word": "Costei,",
+      "start": 211.22,
+      "end": 211.64
+    },
+    {
+      "word": "che",
+      "start": 211.98,
+      "end": 212.06
+    },
+    {
+      "word": "è",
+      "start": 212.06,
+      "end": 212.28
+    },
+    {
+      "word": "occulto",
+      "start": 212.28,
+      "end": 212.74
+    },
+    {
+      "word": "come",
+      "start": 212.74,
+      "end": 212.9
+    },
+    {
+      "word": "inerbalangue.",
+      "start": 212.9,
+      "end": 213.78
+    },
+    {
+      "word": "Vostro",
+      "start": 214.6,
+      "end": 215.04
+    },
+    {
+      "word": "saver",
+      "start": 215.04,
+      "end": 215.38
+    },
+    {
+      "word": "non",
+      "start": 215.38,
+      "end": 215.56
+    },
+    {
+      "word": "ha",
+      "start": 215.56,
+      "end": 215.78
+    },
+    {
+      "word": "contesto",
+      "start": 215.78,
+      "end": 216.24
+    },
+    {
+      "word": "a",
+      "start": 216.24,
+      "end": 216.38
+    },
+    {
+      "word": "lei.",
+      "start": 216.38,
+      "end": 216.54
+    },
+    {
+      "word": "Questa",
+      "start": 216.54,
+      "end": 217.42
+    },
+    {
+      "word": "provvede,",
+      "start": 217.42,
+      "end": 218.06
+    },
+    {
+      "word": "giudica,",
+      "start": 218.2,
+      "end": 218.66
+    },
+    {
+      "word": "e",
+      "start": 218.96,
+      "end": 219.14
+    },
+    {
+      "word": "persegue",
+      "start": 219.14,
+      "end": 219.54
+    },
+    {
+      "word": "suo",
+      "start": 219.54,
+      "end": 219.8
+    },
+    {
+      "word": "regno",
+      "start": 219.8,
+      "end": 220.2
+    },
+    {
+      "word": "come",
+      "start": 220.2,
+      "end": 220.46
+    },
+    {
+      "word": "il",
+      "start": 220.46,
+      "end": 220.66
+    },
+    {
+      "word": "loro",
+      "start": 220.66,
+      "end": 220.82
+    },
+    {
+      "word": "li",
+      "start": 220.82,
+      "end": 221.08
+    },
+    {
+      "word": "altri",
+      "start": 221.08,
+      "end": 221.36
+    },
+    {
+      "word": "dei.",
+      "start": 221.36,
+      "end": 221.58
+    },
+    {
+      "word": "Le",
+      "start": 222.28,
+      "end": 222.46
+    },
+    {
+      "word": "sue",
+      "start": 222.46,
+      "end": 222.58
+    },
+    {
+      "word": "permutazioni",
+      "start": 222.58,
+      "end": 223.24
+    },
+    {
+      "word": "non",
+      "start": 223.24,
+      "end": 223.48
+    },
+    {
+      "word": "hanno",
+      "start": 223.48,
+      "end": 223.7
+    },
+    {
+      "word": "triegue,",
+      "start": 223.7,
+      "end": 224.14
+    },
+    {
+      "word": "necessità",
+      "start": 224.5,
+      "end": 224.92
+    },
+    {
+      "word": "la",
+      "start": 224.92,
+      "end": 225.04
+    },
+    {
+      "word": "fa",
+      "start": 225.04,
+      "end": 225.2
+    },
+    {
+      "word": "essere",
+      "start": 225.2,
+      "end": 225.54
+    },
+    {
+      "word": "veloce,",
+      "start": 225.54,
+      "end": 226.28
+    },
+    {
+      "word": "sì",
+      "start": 226.52,
+      "end": 226.66
+    },
+    {
+      "word": "spesso",
+      "start": 226.66,
+      "end": 227.02
+    },
+    {
+      "word": "vien",
+      "start": 227.02,
+      "end": 227.28
+    },
+    {
+      "word": "chi",
+      "start": 227.28,
+      "end": 227.44
+    },
+    {
+      "word": "vicenda",
+      "start": 227.44,
+      "end": 227.8
+    },
+    {
+      "word": "con",
+      "start": 227.8,
+      "end": 228.06
+    },
+    {
+      "word": "segue.",
+      "start": 228.06,
+      "end": 228.28
+    },
+    {
+      "word": "Quest",
+      "start": 228.9,
+      "end": 229.16
+    },
+    {
+      "word": "è",
+      "start": 229.16,
+      "end": 229.38
+    },
+    {
+      "word": "colei",
+      "start": 229.38,
+      "end": 229.64
+    },
+    {
+      "word": "che",
+      "start": 229.64,
+      "end": 229.8
+    },
+    {
+      "word": "tanto",
+      "start": 229.8,
+      "end": 230.18
+    },
+    {
+      "word": "posta",
+      "start": 230.18,
+      "end": 230.52
+    },
+    {
+      "word": "in",
+      "start": 230.52,
+      "end": 230.74
+    },
+    {
+      "word": "croce,",
+      "start": 230.74,
+      "end": 231.16
+    },
+    {
+      "word": "pur",
+      "start": 231.36,
+      "end": 231.48
+    },
+    {
+      "word": "da",
+      "start": 231.48,
+      "end": 231.66
+    },
+    {
+      "word": "color",
+      "start": 231.66,
+      "end": 231.84
+    },
+    {
+      "word": "che",
+      "start": 231.84,
+      "end": 232.0
+    },
+    {
+      "word": "le",
+      "start": 232.0,
+      "end": 232.14
+    },
+    {
+      "word": "dovrien",
+      "start": 232.14,
+      "end": 232.42
+    },
+    {
+      "word": "dar",
+      "start": 232.42,
+      "end": 232.68
+    },
+    {
+      "word": "l",
+      "start": 232.68,
+      "end": 232.82
+    },
+    {
+      "word": "'ode,",
+      "start": 232.82,
+      "end": 232.96
+    },
+    {
+      "word": "dando",
+      "start": 233.32,
+      "end": 233.48
+    },
+    {
+      "word": "le",
+      "start": 233.48,
+      "end": 233.62
+    },
+    {
+      "word": "biasmo",
+      "start": 233.62,
+      "end": 234.0
+    },
+    {
+      "word": "a",
+      "start": 234.0,
+      "end": 234.16
+    },
+    {
+      "word": "torto",
+      "start": 234.16,
+      "end": 234.36
+    },
+    {
+      "word": "e",
+      "start": 234.36,
+      "end": 234.56
+    },
+    {
+      "word": "mala",
+      "start": 234.56,
+      "end": 234.74
+    },
+    {
+      "word": "voce.",
+      "start": 234.74,
+      "end": 235.16
+    },
+    {
+      "word": "Ma",
+      "start": 235.48,
+      "end": 235.66
+    },
+    {
+      "word": "ella",
+      "start": 235.66,
+      "end": 235.84
+    },
+    {
+      "word": "se",
+      "start": 235.84,
+      "end": 236.02
+    },
+    {
+      "word": "beata,",
+      "start": 236.02,
+      "end": 236.44
+    },
+    {
+      "word": "e",
+      "start": 236.64,
+      "end": 236.78
+    },
+    {
+      "word": "ciò",
+      "start": 236.78,
+      "end": 236.94
+    },
+    {
+      "word": "non",
+      "start": 236.94,
+      "end": 237.08
+    },
+    {
+      "word": "ode.",
+      "start": 237.08,
+      "end": 237.26
+    },
+    {
+      "word": "Con",
+      "start": 237.78,
+      "end": 238.0
+    },
+    {
+      "word": "l",
+      "start": 238.0,
+      "end": 238.22
+    },
+    {
+      "word": "'altre",
+      "start": 238.22,
+      "end": 238.48
+    },
+    {
+      "word": "prime",
+      "start": 238.48,
+      "end": 238.68
+    },
+    {
+      "word": "creature",
+      "start": 238.68,
+      "end": 239.18
+    },
+    {
+      "word": "li",
+      "start": 239.18,
+      "end": 239.42
+    },
+    {
+      "word": "etàvolve",
+      "start": 239.42,
+      "end": 239.9
+    },
+    {
+      "word": "sua",
+      "start": 239.9,
+      "end": 240.1
+    },
+    {
+      "word": "spera,",
+      "start": 240.1,
+      "end": 240.66
+    },
+    {
+      "word": "e",
+      "start": 240.76,
+      "end": 240.92
+    },
+    {
+      "word": "beata",
+      "start": 240.92,
+      "end": 241.16
+    },
+    {
+      "word": "si",
+      "start": 241.16,
+      "end": 241.38
+    },
+    {
+      "word": "gode.",
+      "start": 241.38,
+      "end": 241.66
+    },
+    {
+      "word": "Or",
+      "start": 242.56,
+      "end": 243.04
+    },
+    {
+      "word": "discendiamo",
+      "start": 243.04,
+      "end": 243.52
+    },
+    {
+      "word": "o",
+      "start": 243.52,
+      "end": 243.76
+    },
+    {
+      "word": "mai",
+      "start": 243.76,
+      "end": 243.9
+    },
+    {
+      "word": "a",
+      "start": 243.9,
+      "end": 244.12
+    },
+    {
+      "word": "maggior",
+      "start": 244.12,
+      "end": 244.4
+    },
+    {
+      "word": "pieta.",
+      "start": 244.4,
+      "end": 245.1
+    },
+    {
+      "word": "Già",
+      "start": 245.28,
+      "end": 245.56
+    },
+    {
+      "word": "ogni",
+      "start": 245.56,
+      "end": 245.7
+    },
+    {
+      "word": "stella",
+      "start": 245.7,
+      "end": 246.16
+    },
+    {
+      "word": "cade",
+      "start": 246.16,
+      "end": 246.36
+    },
+    {
+      "word": "che",
+      "start": 246.36,
+      "end": 246.58
+    },
+    {
+      "word": "saliva,",
+      "start": 246.58,
+      "end": 247.1
+    },
+    {
+      "word": "quando",
+      "start": 247.38,
+      "end": 247.52
+    },
+    {
+      "word": "io",
+      "start": 247.52,
+      "end": 247.7
+    },
+    {
+      "word": "mi",
+      "start": 247.7,
+      "end": 247.9
+    },
+    {
+      "word": "mossi,",
+      "start": 247.9,
+      "end": 248.46
+    },
+    {
+      "word": "e",
+      "start": 248.58,
+      "end": 248.7
+    },
+    {
+      "word": "il",
+      "start": 248.7,
+      "end": 248.92
+    },
+    {
+      "word": "troppo",
+      "start": 248.92,
+      "end": 249.32
+    },
+    {
+      "word": "star",
+      "start": 249.32,
+      "end": 249.52
+    },
+    {
+      "word": "si",
+      "start": 249.52,
+      "end": 249.68
+    },
+    {
+      "word": "vieta.",
+      "start": 249.68,
+      "end": 250.16
+    },
+    {
+      "word": "Noi",
+      "start": 250.86,
+      "end": 251.2
+    },
+    {
+      "word": "ricidemmo",
+      "start": 251.2,
+      "end": 251.66
+    },
+    {
+      "word": "il",
+      "start": 251.66,
+      "end": 251.88
+    },
+    {
+      "word": "cerchio",
+      "start": 251.88,
+      "end": 252.16
+    },
+    {
+      "word": "all",
+      "start": 252.16,
+      "end": 252.38
+    },
+    {
+      "word": "'altra",
+      "start": 252.38,
+      "end": 252.6
+    },
+    {
+      "word": "riva,",
+      "start": 252.6,
+      "end": 253.04
+    },
+    {
+      "word": "sover",
+      "start": 253.28,
+      "end": 253.44
+    },
+    {
+      "word": "una",
+      "start": 253.44,
+      "end": 253.66
+    },
+    {
+      "word": "fonte",
+      "start": 253.66,
+      "end": 254.02
+    },
+    {
+      "word": "che",
+      "start": 254.02,
+      "end": 254.26
+    },
+    {
+      "word": "bolle",
+      "start": 254.26,
+      "end": 254.6
+    },
+    {
+      "word": "e",
+      "start": 254.6,
+      "end": 254.76
+    },
+    {
+      "word": "riversa,",
+      "start": 254.76,
+      "end": 255.4
+    },
+    {
+      "word": "per",
+      "start": 255.54,
+      "end": 255.68
+    },
+    {
+      "word": "un",
+      "start": 255.68,
+      "end": 255.82
+    },
+    {
+      "word": "fossato",
+      "start": 255.82,
+      "end": 256.28
+    },
+    {
+      "word": "che",
+      "start": 256.28,
+      "end": 256.42
+    },
+    {
+      "word": "da",
+      "start": 256.42,
+      "end": 256.58
+    },
+    {
+      "word": "lei",
+      "start": 256.58,
+      "end": 256.68
+    },
+    {
+      "word": "deriva.",
+      "start": 256.68,
+      "end": 257.16
+    },
+    {
+      "word": "L",
+      "start": 257.6,
+      "end": 257.8
+    },
+    {
+      "word": "'acqua",
+      "start": 257.8,
+      "end": 258.02
+    },
+    {
+      "word": "era",
+      "start": 258.02,
+      "end": 258.22
+    },
+    {
+      "word": "buia",
+      "start": 258.22,
+      "end": 258.62
+    },
+    {
+      "word": "assai",
+      "start": 258.62,
+      "end": 258.94
+    },
+    {
+      "word": "più",
+      "start": 258.94,
+      "end": 259.06
+    },
+    {
+      "word": "che",
+      "start": 259.06,
+      "end": 259.24
+    },
+    {
+      "word": "persa,",
+      "start": 259.24,
+      "end": 259.76
+    },
+    {
+      "word": "e",
+      "start": 259.92,
+      "end": 260.08
+    },
+    {
+      "word": "noi,",
+      "start": 260.08,
+      "end": 260.38
+    },
+    {
+      "word": "in",
+      "start": 260.6,
+      "end": 260.76
+    },
+    {
+      "word": "compagnia",
+      "start": 260.76,
+      "end": 261.16
+    },
+    {
+      "word": "dell",
+      "start": 261.16,
+      "end": 261.3
+    },
+    {
+      "word": "'onde",
+      "start": 261.3,
+      "end": 261.46
+    },
+    {
+      "word": "bige,",
+      "start": 261.46,
+      "end": 261.84
+    },
+    {
+      "word": "entrammo",
+      "start": 262.28,
+      "end": 262.54
+    },
+    {
+      "word": "giù",
+      "start": 262.54,
+      "end": 262.78
+    },
+    {
+      "word": "per",
+      "start": 262.78,
+      "end": 262.96
+    },
+    {
+      "word": "una",
+      "start": 262.96,
+      "end": 263.1
+    },
+    {
+      "word": "via",
+      "start": 263.1,
+      "end": 263.28
+    },
+    {
+      "word": "diversa.",
+      "start": 263.28,
+      "end": 263.9
+    },
+    {
+      "word": "In",
+      "start": 264.32,
+      "end": 264.5
+    },
+    {
+      "word": "la",
+      "start": 264.5,
+      "end": 264.64
+    },
+    {
+      "word": "palude,",
+      "start": 264.64,
+      "end": 265.1
+    },
+    {
+      "word": "vacciano",
+      "start": 265.34,
+      "end": 265.66
+    },
+    {
+      "word": "mestige,",
+      "start": 265.66,
+      "end": 266.24
+    },
+    {
+      "word": "questo",
+      "start": 266.62,
+      "end": 266.86
+    },
+    {
+      "word": "tristo",
+      "start": 266.86,
+      "end": 267.22
+    },
+    {
+      "word": "ruscel,",
+      "start": 267.22,
+      "end": 267.68
+    },
+    {
+      "word": "quando",
+      "start": 267.88,
+      "end": 268.16
+    },
+    {
+      "word": "è",
+      "start": 268.16,
+      "end": 268.3
+    },
+    {
+      "word": "disceso",
+      "start": 268.3,
+      "end": 268.98
+    },
+    {
+      "word": "al",
+      "start": 268.98,
+      "end": 269.26
+    },
+    {
+      "word": "pie",
+      "start": 269.26,
+      "end": 269.42
+    },
+    {
+      "word": "delle",
+      "start": 269.42,
+      "end": 269.64
+    },
+    {
+      "word": "maligne",
+      "start": 269.64,
+      "end": 270.08
+    },
+    {
+      "word": "piagge",
+      "start": 270.08,
+      "end": 270.52
+    },
+    {
+      "word": "grige.",
+      "start": 270.52,
+      "end": 270.8
+    },
+    {
+      "word": "E",
+      "start": 271.38,
+      "end": 271.86
+    },
+    {
+      "word": "io",
+      "start": 271.86,
+      "end": 272.1
+    },
+    {
+      "word": "che",
+      "start": 272.1,
+      "end": 272.24
+    },
+    {
+      "word": "di",
+      "start": 272.24,
+      "end": 272.42
+    },
+    {
+      "word": "mirare",
+      "start": 272.42,
+      "end": 272.74
+    },
+    {
+      "word": "stava",
+      "start": 272.74,
+      "end": 272.98
+    },
+    {
+      "word": "inteso,",
+      "start": 272.98,
+      "end": 273.7
+    },
+    {
+      "word": "vidi",
+      "start": 273.98,
+      "end": 274.14
+    },
+    {
+      "word": "genti",
+      "start": 274.14,
+      "end": 274.58
+    },
+    {
+      "word": "fangosi",
+      "start": 274.58,
+      "end": 275.0
+    },
+    {
+      "word": "in",
+      "start": 275.0,
+      "end": 275.2
+    },
+    {
+      "word": "quel",
+      "start": 275.2,
+      "end": 275.36
+    },
+    {
+      "word": "pantano,",
+      "start": 275.36,
+      "end": 276.1
+    },
+    {
+      "word": "ignude",
+      "start": 276.42,
+      "end": 276.72
+    },
+    {
+      "word": "tutte",
+      "start": 276.72,
+      "end": 277.08
+    },
+    {
+      "word": "con",
+      "start": 277.08,
+      "end": 277.48
+    },
+    {
+      "word": "sembiante",
+      "start": 277.48,
+      "end": 278.0
+    },
+    {
+      "word": "offeso.",
+      "start": 278.0,
+      "end": 278.78
+    },
+    {
+      "word": "Queste",
+      "start": 279.22,
+      "end": 279.42
+    },
+    {
+      "word": "si",
+      "start": 279.42,
+      "end": 279.64
+    },
+    {
+      "word": "percotean",
+      "start": 279.64,
+      "end": 280.24
+    },
+    {
+      "word": "non",
+      "start": 280.24,
+      "end": 280.46
+    },
+    {
+      "word": "pur",
+      "start": 280.46,
+      "end": 280.62
+    },
+    {
+      "word": "con",
+      "start": 280.62,
+      "end": 280.88
+    },
+    {
+      "word": "mano,",
+      "start": 280.88,
+      "end": 281.14
+    },
+    {
+      "word": "ma",
+      "start": 281.52,
+      "end": 281.6
+    },
+    {
+      "word": "con",
+      "start": 281.6,
+      "end": 281.8
+    },
+    {
+      "word": "la",
+      "start": 281.8,
+      "end": 281.98
+    },
+    {
+      "word": "testa",
+      "start": 281.98,
+      "end": 282.28
+    },
+    {
+      "word": "e",
+      "start": 282.28,
+      "end": 282.38
+    },
+    {
+      "word": "col",
+      "start": 282.38,
+      "end": 282.58
+    },
+    {
+      "word": "petto",
+      "start": 282.58,
+      "end": 282.92
+    },
+    {
+      "word": "e",
+      "start": 282.92,
+      "end": 283.06
+    },
+    {
+      "word": "coi",
+      "start": 283.06,
+      "end": 283.3
+    },
+    {
+      "word": "piedi,",
+      "start": 283.3,
+      "end": 283.8
+    },
+    {
+      "word": "troncandosi",
+      "start": 283.94,
+      "end": 284.52
+    },
+    {
+      "word": "codenti",
+      "start": 284.52,
+      "end": 285.04
+    },
+    {
+      "word": "a",
+      "start": 285.04,
+      "end": 285.28
+    },
+    {
+      "word": "brano",
+      "start": 285.28,
+      "end": 285.44
+    },
+    {
+      "word": "a",
+      "start": 285.44,
+      "end": 285.64
+    },
+    {
+      "word": "brano.",
+      "start": 285.64,
+      "end": 285.94
+    },
+    {
+      "word": "Lo",
+      "start": 286.42,
+      "end": 286.62
+    },
+    {
+      "word": "buon",
+      "start": 286.62,
+      "end": 286.86
+    },
+    {
+      "word": "maestro",
+      "start": 286.86,
+      "end": 287.18
+    },
+    {
+      "word": "disse,",
+      "start": 287.18,
+      "end": 287.52
+    },
+    {
+      "word": "figlio,",
+      "start": 288.08,
+      "end": 288.7
+    },
+    {
+      "word": "or",
+      "start": 288.86,
+      "end": 289.06
+    },
+    {
+      "word": "vedi,",
+      "start": 289.06,
+      "end": 289.34
+    },
+    {
+      "word": "l",
+      "start": 289.74,
+      "end": 289.86
+    },
+    {
+      "word": "'anime",
+      "start": 289.86,
+      "end": 290.04
+    },
+    {
+      "word": "di",
+      "start": 290.04,
+      "end": 290.24
+    },
+    {
+      "word": "color",
+      "start": 290.24,
+      "end": 290.44
+    },
+    {
+      "word": "cui",
+      "start": 290.44,
+      "end": 290.66
+    },
+    {
+      "word": "vinse",
+      "start": 290.66,
+      "end": 290.96
+    },
+    {
+      "word": "l",
+      "start": 290.96,
+      "end": 291.16
+    },
+    {
+      "word": "'ira,",
+      "start": 291.16,
+      "end": 291.36
+    },
+    {
+      "word": "e",
+      "start": 291.76,
+      "end": 291.96
+    },
+    {
+      "word": "anche",
+      "start": 291.96,
+      "end": 292.18
+    },
+    {
+      "word": "voi",
+      "start": 292.18,
+      "end": 292.32
+    },
+    {
+      "word": "che",
+      "start": 292.32,
+      "end": 292.42
+    },
+    {
+      "word": "tu",
+      "start": 292.42,
+      "end": 292.58
+    },
+    {
+      "word": "per",
+      "start": 292.58,
+      "end": 292.84
+    },
+    {
+      "word": "certo",
+      "start": 292.84,
+      "end": 293.08
+    },
+    {
+      "word": "credi,",
+      "start": 293.08,
+      "end": 293.72
+    },
+    {
+      "word": "che",
+      "start": 293.88,
+      "end": 294.04
+    },
+    {
+      "word": "sotto",
+      "start": 294.04,
+      "end": 294.32
+    },
+    {
+      "word": "l",
+      "start": 294.32,
+      "end": 294.5
+    },
+    {
+      "word": "'acqua",
+      "start": 294.5,
+      "end": 294.64
+    },
+    {
+      "word": "è",
+      "start": 294.64,
+      "end": 294.84
+    },
+    {
+      "word": "gente",
+      "start": 294.84,
+      "end": 295.06
+    },
+    {
+      "word": "che",
+      "start": 295.06,
+      "end": 295.26
+    },
+    {
+      "word": "sospira,",
+      "start": 295.26,
+      "end": 295.78
+    },
+    {
+      "word": "e",
+      "start": 296.1,
+      "end": 296.26
+    },
+    {
+      "word": "fanno",
+      "start": 296.26,
+      "end": 296.54
+    },
+    {
+      "word": "pullular",
+      "start": 296.54,
+      "end": 296.98
+    },
+    {
+      "word": "quest",
+      "start": 296.98,
+      "end": 297.28
+    },
+    {
+      "word": "'acqua",
+      "start": 297.28,
+      "end": 297.6
+    },
+    {
+      "word": "al",
+      "start": 297.6,
+      "end": 297.82
+    },
+    {
+      "word": "summo,",
+      "start": 297.82,
+      "end": 298.34
+    },
+    {
+      "word": "come",
+      "start": 298.54,
+      "end": 298.66
+    },
+    {
+      "word": "l",
+      "start": 298.66,
+      "end": 298.8
+    },
+    {
+      "word": "'occhio",
+      "start": 298.8,
+      "end": 298.96
+    },
+    {
+      "word": "ti",
+      "start": 298.96,
+      "end": 299.2
+    },
+    {
+      "word": "dice,",
+      "start": 299.2,
+      "end": 299.52
+    },
+    {
+      "word": "un",
+      "start": 299.82,
+      "end": 299.94
+    },
+    {
+      "word": "che",
+      "start": 299.94,
+      "end": 300.1
+    },
+    {
+      "word": "s",
+      "start": 300.1,
+      "end": 300.24
+    },
+    {
+      "word": "'aggira.",
+      "start": 300.24,
+      "end": 300.7
+    },
+    {
+      "word": "Fitti",
+      "start": 301.42,
+      "end": 301.94
+    },
+    {
+      "word": "nel",
+      "start": 301.94,
+      "end": 302.14
+    },
+    {
+      "word": "limo",
+      "start": 302.14,
+      "end": 302.5
+    },
+    {
+      "word": "di",
+      "start": 302.5,
+      "end": 302.64
+    },
+    {
+      "word": "con,",
+      "start": 302.64,
+      "end": 302.9
+    },
+    {
+      "word": "tristi",
+      "start": 303.46,
+      "end": 303.78
+    },
+    {
+      "word": "fummo,",
+      "start": 303.78,
+      "end": 304.46
+    },
+    {
+      "word": "nell",
+      "start": 304.74,
+      "end": 304.84
+    },
+    {
+      "word": "'aere",
+      "start": 304.84,
+      "end": 305.14
+    },
+    {
+      "word": "dolce",
+      "start": 305.14,
+      "end": 305.54
+    },
+    {
+      "word": "che",
+      "start": 305.54,
+      "end": 305.66
+    },
+    {
+      "word": "dal",
+      "start": 305.66,
+      "end": 305.86
+    },
+    {
+      "word": "sol",
+      "start": 305.86,
+      "end": 306.08
+    },
+    {
+      "word": "s",
+      "start": 306.08,
+      "end": 306.28
+    },
+    {
+      "word": "'allegra,",
+      "start": 306.28,
+      "end": 306.84
+    },
+    {
+      "word": "portando",
+      "start": 307.06,
+      "end": 307.46
+    },
+    {
+      "word": "dentro",
+      "start": 307.46,
+      "end": 307.78
+    },
+    {
+      "word": "acidioso",
+      "start": 307.78,
+      "end": 308.38
+    },
+    {
+      "word": "fummo,",
+      "start": 308.38,
+      "end": 309.14
+    },
+    {
+      "word": "or",
+      "start": 309.38,
+      "end": 309.48
+    },
+    {
+      "word": "ci",
+      "start": 309.48,
+      "end": 309.62
+    },
+    {
+      "word": "attristiam",
+      "start": 309.62,
+      "end": 310.16
+    },
+    {
+      "word": "nella",
+      "start": 310.16,
+      "end": 310.42
+    },
+    {
+      "word": "belletta",
+      "start": 310.42,
+      "end": 310.84
+    },
+    {
+      "word": "negra.",
+      "start": 310.84,
+      "end": 311.44
+    },
+    {
+      "word": "Quest",
+      "start": 311.84,
+      "end": 312.04
+    },
+    {
+      "word": "'inno",
+      "start": 312.04,
+      "end": 312.42
+    },
+    {
+      "word": "si",
+      "start": 312.42,
+      "end": 312.58
+    },
+    {
+      "word": "gorgoglian",
+      "start": 312.58,
+      "end": 313.12
+    },
+    {
+      "word": "nella",
+      "start": 313.12,
+      "end": 313.34
+    },
+    {
+      "word": "strozza,",
+      "start": 313.34,
+      "end": 313.98
+    },
+    {
+      "word": "che",
+      "start": 314.28,
+      "end": 314.36
+    },
+    {
+      "word": "dir",
+      "start": 314.36,
+      "end": 314.6
+    },
+    {
+      "word": "non",
+      "start": 314.6,
+      "end": 314.9
+    },
+    {
+      "word": "possono",
+      "start": 314.9,
+      "end": 315.34
+    },
+    {
+      "word": "con",
+      "start": 315.34,
+      "end": 315.68
+    },
+    {
+      "word": "parola",
+      "start": 315.68,
+      "end": 315.94
+    },
+    {
+      "word": "integra.",
+      "start": 315.94,
+      "end": 316.5
+    },
+    {
+      "word": "Così",
+      "start": 317.14,
+      "end": 317.38
+    },
+    {
+      "word": "girammo",
+      "start": 317.38,
+      "end": 317.82
+    },
+    {
+      "word": "della",
+      "start": 317.82,
+      "end": 318.0
+    },
+    {
+      "word": "lorda",
+      "start": 318.0,
+      "end": 318.4
+    },
+    {
+      "word": "pozza",
+      "start": 318.4,
+      "end": 318.64
+    },
+    {
+      "word": "grande",
+      "start": 318.64,
+      "end": 318.92
+    },
+    {
+      "word": "arco",
+      "start": 318.92,
+      "end": 319.26
+    },
+    {
+      "word": "tra",
+      "start": 319.26,
+      "end": 319.4
+    },
+    {
+      "word": "la",
+      "start": 319.4,
+      "end": 319.54
+    },
+    {
+      "word": "ripa",
+      "start": 319.54,
+      "end": 319.88
+    },
+    {
+      "word": "secca",
+      "start": 319.88,
+      "end": 320.34
+    },
+    {
+      "word": "e",
+      "start": 320.34,
+      "end": 320.54
+    },
+    {
+      "word": "il",
+      "start": 320.54,
+      "end": 320.7
+    },
+    {
+      "word": "mezzo,",
+      "start": 320.7,
+      "end": 321.14
+    },
+    {
+      "word": "con",
+      "start": 321.5,
+      "end": 321.62
+    },
+    {
+      "word": "gli",
+      "start": 321.62,
+      "end": 321.76
+    },
+    {
+      "word": "occhi",
+      "start": 321.76,
+      "end": 322.02
+    },
+    {
+      "word": "volti",
+      "start": 322.02,
+      "end": 322.44
+    },
+    {
+      "word": "a",
+      "start": 322.44,
+      "end": 322.6
+    },
+    {
+      "word": "chi",
+      "start": 322.6,
+      "end": 322.68
+    },
+    {
+      "word": "del",
+      "start": 322.68,
+      "end": 322.92
+    },
+    {
+      "word": "fango",
+      "start": 322.92,
+      "end": 323.14
+    },
+    {
+      "word": "ingozza.",
+      "start": 323.14,
+      "end": 323.96
+    },
+    {
+      "word": "Venimmo",
+      "start": 324.22,
+      "end": 324.56
+    },
+    {
+      "word": "al",
+      "start": 324.56,
+      "end": 324.74
+    },
+    {
+      "word": "pie",
+      "start": 324.74,
+      "end": 324.88
+    },
+    {
+      "word": "d",
+      "start": 324.88,
+      "end": 325.02
+    },
+    {
+      "word": "'una",
+      "start": 325.02,
+      "end": 325.16
+    },
+    {
+      "word": "torre",
+      "start": 325.16,
+      "end": 325.5
+    },
+    {
+      "word": "alda",
+      "start": 325.5,
+      "end": 325.9
+    },
+    {
+      "word": "sezzo.",
+      "start": 325.9,
+      "end": 326.12
+    }
+  ]
+}
