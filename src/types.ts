@@ -6,6 +6,8 @@ export interface Track {
   translator?: string;
   editionYear?: number;
   originalLanguage?: string;
+  language?: "es" | "it";
+  canto?: number;
   difficulty: string;
   difficultyNote?: string;
   genre?: string;

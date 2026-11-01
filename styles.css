@@ -5582,3 +5582,12 @@ textarea {
 }
 
 
+
+/* Preserve Dante’s verse and label the source language in bilingual view. */
+.reader[lang="it"] .spanish-text {
+  white-space: pre-line;
+}
+
+.reader[lang="it"].has-translation .translation-pair:first-child .spanish-text::before {
+  content: "Italiano";
+}

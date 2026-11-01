@@ -23,6 +23,7 @@ MODEL_IDS = {
     "1.7B": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
     "0.6B": "Qwen/Qwen3-TTS-12Hz-0.6B-Base",
 }
+LANGUAGES = {"es": "Spanish", "it": "Italian"}
 REFERENCE_AUDIO = "el_monte_de_las_animas.m4a"
 REFERENCE_START = 7.06
 REFERENCE_DURATION = 4.54
@@ -98,11 +99,15 @@ def build_jobs(root: Path, cache_root: Path, args: argparse.Namespace) -> list[d
         text_path = root / entry["text"]
         text = normalize_text(text_path.read_text(encoding="utf-8"))
         chunks = split_text(text, args.max_chars)
-        signature = content_signature(text, root, args)
+        language = entry.get("language", "es")
+        if language not in LANGUAGES:
+            raise ValueError(f"Unsupported narration language: {language}")
+        signature = content_signature(text, root, args, language)
         cache_dir = cache_root / entry["id"] / signature
         jobs.append(
             {
                 "entry": entry,
+                "language": language,
                 "text": text,
                 "text_path": text_path,
                 "chunks": chunks,
@@ -255,7 +260,7 @@ def generate_batch(model, clone_prompt, job: dict, indexes: list[int], args: arg
             torch.cuda.manual_seed_all(seed)
             wavs, sample_rate = model.generate_voice_clone(
                 text=texts,
-                language="Spanish",
+                language=LANGUAGES[job["language"]],
                 voice_clone_prompt=clone_prompt,
                 max_new_tokens=2048,
             )
@@ -346,11 +351,14 @@ def align_jobs(root: Path, jobs: list[dict], args: argparse.Namespace) -> None:
             "Run ./scripts/setup_transcriber.sh, then resume this command."
         )
     print(f"Aligning {len(jobs)} narration(s) with faster-whisper {args.alignment_model}…", flush=True)
-    subprocess.run(
-        [str(wrapper), *(str(job["audio_path"]) for job in jobs), "--model", args.alignment_model],
-        cwd=root,
-        check=True,
-    )
+    for language in dict.fromkeys(job["language"] for job in jobs):
+        language_jobs = [job for job in jobs if job["language"] == language]
+        subprocess.run(
+            [str(wrapper), *(str(job["audio_path"]) for job in language_jobs),
+             "--model", args.alignment_model, "--language", language],
+            cwd=root,
+            check=True,
+        )
     for job in jobs:
         validate_aligned_transcript(job, args.alignment_model)
 
@@ -368,6 +376,7 @@ def validate_aligned_transcript(job: dict, model: str) -> None:
         or payload.get("timingMethod") != "faster-whisper-word-timestamps"
         or payload.get("model") != model
         or payload.get("source") != job["audio_path"].name
+        or payload.get("language") != job["language"]
     ):
         raise RuntimeError(f"Refusing to publish unaligned transcript: {path.name}")
 
@@ -398,6 +407,7 @@ def write_job_manifest(job: dict, args: argparse.Namespace) -> None:
         "id": job["entry"]["id"],
         "title": job["entry"]["title"],
         "model": MODEL_IDS[args.model_size],
+        "language": job["language"],
         "signature": job["signature"],
         "chunks": job["chunks"],
     }
@@ -481,11 +491,12 @@ def normalize_text(text: str) -> str:
     return re.sub(r"\n{3,}", "\n\n", text.replace("\r\n", "\n")).strip()
 
 
-def content_signature(text: str, root: Path, args: argparse.Namespace) -> str:
+def content_signature(text: str, root: Path, args: argparse.Namespace, language: str = "es") -> str:
     reference_source = root / REFERENCE_AUDIO
     reference_hash = hashlib.sha256(reference_source.read_bytes()).hexdigest()
     payload = json.dumps(
         {
+            **({"language": language} if language != "es" else {}),
             "pipeline": PIPELINE_VERSION,
             "text": text,
             "model": MODEL_IDS[args.model_size],

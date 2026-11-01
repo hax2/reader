@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Transcribe Spanish audio to word-timed JSON for the static reader."""
+"""Transcribe audio to word-timed JSON for the static reader."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from pathlib import Path
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Create word-level Spanish transcript JSON using faster-whisper."
+        description="Create word-level transcript JSON using faster-whisper."
     )
     parser.add_argument("audio", type=Path, nargs="+", help="Audio file(s) to transcribe")
     parser.add_argument("-o", "--output", type=Path, help="Output JSON path")
@@ -23,6 +23,7 @@ def parse_args() -> argparse.Namespace:
         default="float16",
         help="Use float16 on NVIDIA GPUs; use int8_float16 or int8 if VRAM is tight.",
     )
+    parser.add_argument("--language", default="es", help="Source language code (default: es)")
     parser.add_argument("--beam-size", type=int, default=5)
     parser.add_argument("--no-vad", action="store_true", help="Disable voice activity filtering")
     parser.add_argument("--vtt", action="store_true", help="Also write a WebVTT file")
@@ -53,7 +54,7 @@ def transcribe_audio(model, audio: Path, args: argparse.Namespace) -> None:
     output = args.output or audio.with_suffix(".json")
     segments, info = model.transcribe(
         str(audio),
-        language="es",
+        language=args.language,
         beam_size=args.beam_size,
         vad_filter=not args.no_vad,
         word_timestamps=True,

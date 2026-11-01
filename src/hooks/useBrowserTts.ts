@@ -98,7 +98,7 @@ export function wordAtTtsCharacter(offsets: TtsOffset[], charIndex: number): num
   return match;
 }
 
-export function pronounceSpanishWord(text: string, preferredVoiceURI?: string): void {
+export function pronounceSpanishWord(text: string, preferredVoiceURI?: string, sourceLanguage = "es"): void {
   if (!speechSynthesisSupported) return;
   const clean = text.replace(/^[.,;:!?¡¿"'«»()[\]—–-]+|[.,;:!?¡¿"'«»()[\]—–-]+$/gu, "").trim();
   if (!clean) return;
@@ -106,13 +106,13 @@ export function pronounceSpanishWord(text: string, preferredVoiceURI?: string): 
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(clean);
     const available = window.speechSynthesis.getVoices().filter(isUsableSpeechVoice);
-    const spanishVoices = available.filter((v) => /^es(?:-|_|$)/i.test(v.lang));
-    const pool = spanishVoices.length ? spanishVoices : available;
+    const languageVoices = available.filter((v) => v.lang.replace("_", "-").split("-")[0].toLowerCase() === sourceLanguage);
+    const pool = languageVoices;
     const sorted = [...pool].sort((a, b) => scoreSpanishVoice(b) - scoreSpanishVoice(a));
     const voice =
       (preferredVoiceURI && sorted.find((v) => v.voiceURI === preferredVoiceURI)) || sorted[0] || null;
     if (voice) utterance.voice = voice;
-    utterance.lang = voice?.lang ? voice.lang.replace("_", "-") : "es-ES";
+    utterance.lang = voice?.lang ? voice.lang.replace("_", "-") : sourceLanguage === "it" ? "it-IT" : "es-ES";
     utterance.rate = 0.9;
     utterance.pitch = 1;
     window.speechSynthesis.speak(utterance);
@@ -126,9 +126,11 @@ export function useBrowserTts({
   appearanceSettings,
   onWordChange,
   onStatusChange,
-  readerRef
+  readerRef,
+  sourceLanguage = "es"
 }: {
   words: WordToken[];
+  sourceLanguage?: string;
   appearanceSettings: AppearanceSettings;
   onWordChange?: (wordIndex: number, scrollReader: boolean) => void;
   onStatusChange?: (msg: string) => void;
@@ -201,16 +203,13 @@ export function useBrowserTts({
       setVoices([]);
       return [];
     }
-    const spanishVoices = available.filter((voice) => /^es(?:-|_|$)/i.test(voice.lang));
-    const cleanSpanishVoices = spanishVoices.filter((voice) => !isNoveltySpeechVoice(voice));
-    const cleanAnyVoices = available.filter((voice) => !isNoveltySpeechVoice(voice));
-    const candidatePool = cleanSpanishVoices.length
-      ? cleanSpanishVoices
-      : spanishVoices.length
-        ? spanishVoices
-        : cleanAnyVoices.length
-          ? cleanAnyVoices
-          : available;
+    const languageVoices = available.filter((voice) => voice.lang.replace("_", "-").split("-")[0].toLowerCase() === sourceLanguage);
+    const cleanLanguageVoices = languageVoices.filter((voice) => !isNoveltySpeechVoice(voice));
+    const candidatePool = cleanLanguageVoices.length
+      ? cleanLanguageVoices
+      : languageVoices.length
+        ? languageVoices
+        : [];
 
     const sorted = [...candidatePool].sort((a, b) => {
       const scoreDiff = scoreSpanishVoice(b) - scoreSpanishVoice(a);
@@ -218,11 +217,11 @@ export function useBrowserTts({
       return `${a.lang} ${a.name}`.localeCompare(`${b.lang} ${b.name}`);
     });
     setVoices(sorted);
-    if (!selectedVoiceURI && sorted[0]?.voiceURI) {
+    if (!sorted.some((voice) => voice.voiceURI === selectedVoiceURI) && sorted[0]?.voiceURI) {
       setSelectedVoiceURI(sorted[0].voiceURI);
     }
     return sorted;
-  }, [selectedVoiceURI]);
+  }, [selectedVoiceURI, sourceLanguage]);
 
   useEffect(() => {
     if (!speechSynthesisSupported) return;
@@ -256,9 +255,9 @@ export function useBrowserTts({
   }, [words]);
 
   const selectedTtsVoice = useCallback(() => {
-    const list = voices.length ? voices : refreshSpeechVoices();
+    const list = (voices.length ? voices : refreshSpeechVoices()).filter((voice) => voice.lang.replace("_", "-").split("-")[0].toLowerCase() === sourceLanguage);
     return list.find((v) => v.voiceURI === selectedVoiceURI) || list[0] || null;
-  }, [refreshSpeechVoices, selectedVoiceURI, voices]);
+  }, [refreshSpeechVoices, selectedVoiceURI, voices, sourceLanguage]);
 
   const setTtsWord = useCallback(
     (index: number, scrollReader: boolean = true) => {
@@ -356,7 +355,7 @@ export function useBrowserTts({
 
       const voice = useDefaultVoice ? null : selectedTtsVoice();
       if (voice) utterance.voice = voice;
-      utterance.lang = voice?.lang ? voice.lang.replace("_", "-") : "es-ES";
+      utterance.lang = voice?.lang ? voice.lang.replace("_", "-") : sourceLanguage === "it" ? "it-IT" : "es-ES";
       utterance.rate = appearanceSettingsRef.current.playbackRate;
       utterance.pitch = 1;
 
@@ -428,7 +427,8 @@ export function useBrowserTts({
       onStatusChange,
       selectedTtsVoice,
       setTtsWord,
-      startTtsWordTimer
+      startTtsWordTimer,
+      sourceLanguage
     ]
   );
 

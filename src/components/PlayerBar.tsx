@@ -4,6 +4,7 @@ import { formatPlaybackRate } from "../utils/text";
 import { SPEED_RATES, speechSynthesisSupported } from "../utils/constants";
 
 export interface PlayerBarProps {
+  sourceLanguage?: string;
   media: "audio" | "text";
   isPlaying: boolean;
   isPaused: boolean;
@@ -57,6 +58,7 @@ function formatVoiceOptionLabel(voice: SpeechSynthesisVoice): string {
 
 export const PlayerBar: React.FC<PlayerBarProps> = ({
   media,
+  sourceLanguage = "es",
   isPlaying,
   isPaused,
   currentTime,
@@ -357,7 +359,7 @@ export const PlayerBar: React.FC<PlayerBarProps> = ({
                       </option>
                     ))
                   ) : (
-                    <option value="">Spanish · es-ES</option>
+                    <option value="">{sourceLanguage === "it" ? "Italian · it-IT" : "Spanish · es-ES"}</option>
                   )}
                 </select>
                 <svg

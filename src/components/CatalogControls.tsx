@@ -16,6 +16,7 @@ const collectionTitles: Record<string, string> = {
   bible: "Bible",
   "greek-classics": "Greek classics",
   "don-quijote": "Don Quijote",
+  "dante-inferno": "Dante · Inferno",
   "my-books": "My books"
 };
 

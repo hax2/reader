@@ -37,6 +37,8 @@ export function getVisibleTracks(tracks: Track[], catalogSettings: CatalogSettin
               ? "clasicos clásicos griegos grecia greek classics philosophy filosofía mythology mitologia mitología"
               : track.collection === "don-quijote"
                 ? "quijote quixote cervantes mancha sancho panza novela novel"
+                : track.collection === "dante-inferno"
+                  ? "dante inferno italian italiano divina commedia canto poetry"
                 : track.collection === "my-books"
                   ? "mis libros my books personal private"
                   : "cuentos stories relatos",

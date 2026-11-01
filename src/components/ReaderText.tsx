@@ -134,7 +134,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
         delete next[blockIndex];
         return next;
       });
-      translateReadingText(source, before, after)
+      translateReadingText(source, before, after, activeTrack?.language)
         .then((trans) => {
           if (currentRenderId !== renderIdRef.current) return;
           if (trans) {
@@ -148,7 +148,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
           setFailedBlocks((prev) => ({ ...prev, [blockIndex]: true }));
         });
     },
-    []
+    [activeTrack?.language]
   );
 
   // Load saved translations or observe for async translation
@@ -253,7 +253,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
       className={`reader${bilingual ? " has-translation" : ""}${
         appearanceSettings.translationLayout === "side-by-side" ? " is-side-by-side" : ""
       }${isBeginner ? " is-beginner-story" : ""}`}
-      lang="es"
+      lang={activeTrack?.language || "es"}
       hidden={isHidden}
       onKeyDown={handleKeyDown}
     >
@@ -297,7 +297,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
                   {scene.icon}
                 </span>
                 <div className="story-scene-titles">
-                  <span className="story-scene-es" lang="es">
+                  <span className="story-scene-es" lang={activeTrack?.language || "es"}>
                     {scene.titleEs}
                   </span>
                   <span className="story-scene-en" lang="en">
@@ -307,7 +307,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
               </div>
             )}
 
-            <p className="spanish-text" lang="es">
+            <p className="spanish-text" lang={activeTrack?.language || "es"}>
               {pair.words.map((word: WordToken) => (
                 <React.Fragment key={word.index}>
                   {word.prefix || ""}

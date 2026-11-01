@@ -5,6 +5,7 @@ export const collectionOptions = [
   "bible",
   "greek-classics",
   "don-quijote",
+  "dante-inferno",
   "my-books"
 ] as const;
 

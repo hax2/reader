@@ -307,6 +307,7 @@ export const App: React.FC = () => {
     seekTextToSpeech,
     moveTtsChunk
   } = useBrowserTts({
+    sourceLanguage: activeTrack?.language,
     words,
     appearanceSettings,
     onWordChange: (idx, scrollReader) => {
@@ -1229,6 +1230,7 @@ export const App: React.FC = () => {
           />
 
           <PlayerBar
+            sourceLanguage={activeTrack?.language}
             media={media}
             isPlaying={isAudioMedia ? isAudioPlaying : ttsState === "playing"}
             isPaused={isAudioMedia ? isAudioPaused : ttsState === "paused"}
@@ -1366,7 +1368,7 @@ export const App: React.FC = () => {
               )}
 
               {/* Vocabulary warmup */}
-              {readerMode !== "passages" && (
+              {readerMode !== "passages" && (!activeTrack?.language || activeTrack.language === "es") && (
                 <VocabWarmup
                   words={words}
                   appearanceSettings={appearanceSettings}
@@ -1429,7 +1431,7 @@ export const App: React.FC = () => {
                         <button
                           type="button"
                           className="side-pronounce-btn"
-                          onClick={() => pronounceSpanishWord(sideDefinition.wordText, selectedVoiceURI)}
+                          onClick={() => pronounceSpanishWord(sideDefinition.wordText, selectedVoiceURI, activeTrack?.language)}
                           aria-label={`Pronounce ${sideDefinition.wordText}`}
                           title="Listen to Spanish pronunciation"
                         >
@@ -1472,7 +1474,7 @@ export const App: React.FC = () => {
                           className="story-vocab-word-btn"
                           onClick={() => {
                             if (speechSynthesisSupported) {
-                              pronounceSpanishWord(item.word, selectedVoiceURI);
+                              pronounceSpanishWord(item.word, selectedVoiceURI, activeTrack?.language);
                             }
                             setSideDefinition({
                               wordText: item.word,
@@ -1540,6 +1542,7 @@ export const App: React.FC = () => {
 
           {/* Word Popover */}
           <WordPopover
+            sourceLanguage={activeTrack?.language}
             selectedWord={selectedWord}
             anchorEl={anchorEl}
             words={words}

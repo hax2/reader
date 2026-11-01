@@ -185,17 +185,17 @@ export function extractShortContext(wordsList: WordToken[], wordIndex: number, t
     .join(" ");
 }
 
-export async function fetchSingleWordMeaning(word: string): Promise<string> {
+export async function fetchSingleWordMeaning(word: string, sourceLanguage = "es"): Promise<string> {
   const norm = normalizeWord(word);
-  if (LITERARY_VOCAB_MAP[norm]) return LITERARY_VOCAB_MAP[norm];
-  if (sharedGlossary[norm] && sharedGlossary[norm].trim()) return sharedGlossary[norm].trim();
+  if (sourceLanguage === "es" && LITERARY_VOCAB_MAP[norm]) return LITERARY_VOCAB_MAP[norm];
+  if (sourceLanguage === "es" && sharedGlossary[norm] && sharedGlossary[norm].trim()) return sharedGlossary[norm].trim();
 
   try {
     let raw = "";
     try {
-      raw = await fetchGoogleGtxTranslation(norm, { dictionary: true });
+      raw = await fetchGoogleGtxTranslation(norm, { dictionary: true, sourceLanguage });
     } catch {
-      raw = await fetchTranslation(norm);
+      raw = await fetchTranslation(norm, { sourceLanguage });
     }
     if (!raw || isInvalidTranslationResponse(raw)) return "";
     const clean = String(raw)

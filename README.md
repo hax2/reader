@@ -53,6 +53,10 @@ For a narrated reading, include both fields:
 
 Text-only entries use `"text": "texts/my-story.txt"`.
 
+Entries default to Spanish. Dante’s complete *Inferno* is available in its
+original Italian (`"language": "it"`), split into 34 cantos on its own shelf, with Italian-to-English lookup and
+translation and Italian browser narration when an Italian voice is available.
+
 The catalog uses local cover artwork in `covers/`. Keep images at a 2:3 aspect
 ratio; WebP is preferred for new artwork. If a cover is missing, the reader
 shows a simple text fallback rather than a broken image.
@@ -189,6 +193,22 @@ HF_HOME=.tts-cache/huggingface .tts-venv/bin/python scripts/local_tts.py run \
 ```
 
 If the 1.7B model does not fit a smaller GPU, add `--model-size 0.6B`.
+
+The pipeline uses each entry’s `language` for both Qwen synthesis and Whisper
+word alignment, defaulting to Spanish (`es`). To narrate the original Italian
+*Inferno*, use `--only dante-inferno-c01` (through `c34`); its `it` setting selects Italian.
+
+To narrate and publish one canto at a time, run:
+
+```sh
+HF_HOME=.tts-cache/huggingface .tts-venv/bin/python scripts/narrate_sections.py --push
+```
+
+Each canto is synthesized, aligned, added to `library.json`, committed with its
+audio and transcript, and pushed to `origin/main` before the next canto starts.
+A push triggers the GitHub Pages deployment. Cached synthesis resumes after an
+interruption. Without `--push`, the same queue updates only the local catalog.
+
 
 The included public-domain Bécquer, Samaniego, and Martí texts can be downloaded from Wikisource with:
 

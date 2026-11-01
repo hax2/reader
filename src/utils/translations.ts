@@ -23,7 +23,12 @@ export function isInvalidTranslationResponse(value: unknown): boolean {
   return /MYMEMORY WARNING|YOU USED ALL AVAILABLE FREE TRANSLATIONS|QUERY LENGTH LIMIT EXCEEDED|INVALID EMAIL/i.test(text);
 }
 
-export function getCachedTranslation(context: string): string {
+function translationKey(text: string, sourceLanguage: string): string {
+  return sourceLanguage === "es" ? text : `${sourceLanguage}::${text}`;
+}
+
+export function getCachedTranslation(context: string, sourceLanguage = "es"): string {
+  context = translationKey(context, sourceLanguage);
   const cached = inMemoryTranslationCache[context] || "";
   if (cached && isInvalidTranslationResponse(cached)) {
     delete inMemoryTranslationCache[context];
@@ -34,7 +39,7 @@ export function getCachedTranslation(context: string): string {
 
 export async function fetchGoogleGtxTranslation(
   text: string,
-  { dictionary = false }: { dictionary?: boolean } = {}
+  { dictionary = false, sourceLanguage = "es" }: { dictionary?: boolean; sourceLanguage?: string } = {}
 ): Promise<string> {
   const cleanText = htmlToText(text);
   if (!cleanText) return "";
@@ -42,7 +47,7 @@ export async function fetchGoogleGtxTranslation(
   const timeoutId = window.setTimeout(() => controller.abort(), 4500);
   try {
     const dtParams = dictionary ? "dt=t&dt=bd" : "dt=t";
-    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=es&tl=en&${dtParams}&q=${encodeURIComponent(cleanText)}`;
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${encodeURIComponent(sourceLanguage)}&tl=en&${dtParams}&q=${encodeURIComponent(cleanText)}`;
     const response = await fetch(url, { signal: controller.signal });
     if (!response.ok) throw new Error("GTX lookup failed");
     const data = await response.json();
@@ -71,11 +76,13 @@ export async function fetchGoogleGtxTranslation(
 
 export async function fetchTranslation(
   context: string,
-  options: { targetTag?: string; fallbackText?: string } = {}
+  options: { targetTag?: string; fallbackText?: string; sourceLanguage?: string } = {}
 ): Promise<string> {
-  const cached = getCachedTranslation(context);
+  const sourceLanguage = options.sourceLanguage || "es";
+  const cacheKey = translationKey(context, sourceLanguage);
+  const cached = getCachedTranslation(context, sourceLanguage);
   if (cached) return cached;
-  if (translationRequests.has(context)) return translationRequests.get(context)!;
+  if (translationRequests.has(cacheKey)) return translationRequests.get(cacheKey)!;
 
   const request = (async () => {
     const plainFallback = htmlToText(options.fallbackText || context);
@@ -83,10 +90,11 @@ export async function fetchTranslation(
       if (!options.targetTag || options.fallbackText) {
         try {
           const gtx = await fetchGoogleGtxTranslation(plainFallback, {
+            sourceLanguage,
             dictionary: !plainFallback.includes(" ")
           });
           if (gtx) {
-            inMemoryTranslationCache[context] = gtx;
+            inMemoryTranslationCache[cacheKey] = gtx;
             saveTranslationCache(inMemoryTranslationCache);
             return gtx;
           }
@@ -98,7 +106,7 @@ export async function fetchTranslation(
       const controller = new AbortController();
       const timeoutId = window.setTimeout(() => controller.abort(), 4500);
       try {
-        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(context)}&langpair=es|en`;
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(context)}&langpair=${encodeURIComponent(sourceLanguage)}|en`;
         const response = await fetch(url, { signal: controller.signal });
         if (!response.ok) throw new Error("Lookup failed");
         const data = await response.json();
@@ -111,22 +119,22 @@ export async function fetchTranslation(
         if (options.targetTag) {
           translated = extractMarkedTranslation(decodedTranslation, options.targetTag);
           if (!translated && plainFallback) {
-            translated = await fetchGoogleGtxTranslation(plainFallback);
+            translated = await fetchGoogleGtxTranslation(plainFallback, { sourceLanguage });
           }
           if (!translated) throw new Error("Translation target marker was not returned");
         }
-        inMemoryTranslationCache[context] = translated;
+        inMemoryTranslationCache[cacheKey] = translated;
         saveTranslationCache(inMemoryTranslationCache);
         return translated;
       } finally {
         window.clearTimeout(timeoutId);
       }
     } finally {
-      translationRequests.delete(context);
+      translationRequests.delete(cacheKey);
     }
   })();
 
-  translationRequests.set(context, request);
+  translationRequests.set(cacheKey, request);
   return request;
 }
 
@@ -391,14 +399,16 @@ export function splitTranslationText(text: string, maxBytes: number): string[] {
 export async function translateReadingText(
   source: string,
   outerBefore = "",
-  outerAfter = ""
+  outerAfter = "",
+  sourceLanguage = "es"
 ): Promise<string> {
-  const directCached = getCachedTranslation(source);
+  const cacheKey = translationKey(source, sourceLanguage);
+  const directCached = getCachedTranslation(source, sourceLanguage);
   if (directCached) return directCached;
   try {
-    const gtxResult = await fetchGoogleGtxTranslation(source);
+    const gtxResult = await fetchGoogleGtxTranslation(source, { sourceLanguage });
     if (gtxResult) {
-      inMemoryTranslationCache[source] = gtxResult;
+      inMemoryTranslationCache[cacheKey] = gtxResult;
       saveTranslationCache(inMemoryTranslationCache);
       return gtxResult;
     }
@@ -415,6 +425,7 @@ export async function translateReadingText(
     const contextualRequest = buildContextualTranslationRequest(escapeHtml(chunk), before, after, "b");
     translated.push(
       await fetchTranslation(contextualRequest, {
+        sourceLanguage,
         targetTag: "b",
         fallbackText: chunk
       })
@@ -422,7 +433,7 @@ export async function translateReadingText(
   }
   const combined = translated.join(" ");
   if (combined) {
-    inMemoryTranslationCache[source] = combined;
+    inMemoryTranslationCache[cacheKey] = combined;
     saveTranslationCache(inMemoryTranslationCache);
   }
   return combined;

@@ -29,6 +29,7 @@ export interface WordPopoverProps {
   media: "audio" | "text";
   hasAudioSource?: boolean;
   preferredVoiceURI?: string;
+  sourceLanguage?: string;
   studyLog?: StudyLog;
   onClose: () => void;
   onPlayFromHere: (wordIndex: number) => void;
@@ -44,6 +45,7 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
   media,
   hasAudioSource = true,
   preferredVoiceURI,
+  sourceLanguage = "es",
   studyLog,
   onClose,
   onPlayFromHere,
@@ -89,8 +91,8 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
     const contextualRequest = contextualRequestForWord(selectedWord.index, context, words);
     const normalized = normalizeWord(selectedWord.text);
     const shared = getSharedGlossary();
-    const glossaryEntry = (shared[normalized] && shared[normalized].trim()) || LITERARY_VOCAB_MAP[normalized] || "";
-    const instant = glossaryEntry || getCachedTranslation(contextualRequest) || getCachedTranslation(contextPlain);
+    const glossaryEntry = sourceLanguage !== "es" ? "" : (shared[normalized] && shared[normalized].trim()) || LITERARY_VOCAB_MAP[normalized] || "";
+    const instant = glossaryEntry || getCachedTranslation(contextualRequest, sourceLanguage) || getCachedTranslation(contextPlain, sourceLanguage);
 
     if (instant) {
       setDefinition(instant);
@@ -117,8 +119,8 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
     let isCurrent = true;
 
     Promise.all([
-      normalized ? fetchSingleWordMeaning(normalized).catch(() => "") : Promise.resolve(""),
-      fetchGoogleGtxTranslation(contextPlain).catch(() => "")
+      normalized ? fetchSingleWordMeaning(normalized, sourceLanguage).catch(() => "") : Promise.resolve(""),
+      fetchGoogleGtxTranslation(contextPlain, { sourceLanguage }).catch(() => "")
     ])
       .then(async ([wordMeaning, phraseMeaning]) => {
         if (!isCurrent) return;
@@ -129,6 +131,7 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
           translated = escapeHtml(phraseMeaning || wordMeaning);
         } else {
           translated = await fetchTranslation(contextualRequest, {
+            sourceLanguage,
             targetTag: "i",
             fallbackText: contextPlain
           });
@@ -149,7 +152,7 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
         if (!isCurrent) return;
         const spanishDict = `https://www.spanishdict.com/translate/${encodeURIComponent(normalized)}`;
         const wordReference = `https://www.wordreference.com/es/en/translation.asp?spen=${encodeURIComponent(normalized)}`;
-        const fallback = `No automatic result. <a href="${spanishDict}" target="_blank" rel="noreferrer">SpanishDict</a> or <a href="${wordReference}" target="_blank" rel="noreferrer">WordReference</a>.`;
+        const fallback = sourceLanguage === "it" ? `No automatic result. <a href="https://www.wordreference.com/iten/${encodeURIComponent(normalized)}" target="_blank" rel="noreferrer">WordReference</a>.` : `No automatic result. <a href="${spanishDict}" target="_blank" rel="noreferrer">SpanishDict</a> or <a href="${wordReference}" target="_blank" rel="noreferrer">WordReference</a>.`;
         setDefinition(fallback);
         setAllowHtml("trusted");
         onUpdateSideDefinition?.({
@@ -164,7 +167,7 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
       isCurrent = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [anchorEl, selectedWord, updatePosition, words]);
+  }, [anchorEl, selectedWord, updatePosition, words, sourceLanguage]);
 
   useEffect(() => {
     updatePosition();
@@ -259,7 +262,7 @@ export const WordPopover: React.FC<WordPopoverProps> = ({
           <button
             className="play-from-here popover-pronounce-btn"
             type="button"
-            onClick={() => pronounceSpanishWord(selectedWord.text, preferredVoiceURI)}
+            onClick={() => pronounceSpanishWord(selectedWord.text, preferredVoiceURI, sourceLanguage)}
             title={`Pronounce “${selectedWord.text}”`}
           >
             <svg

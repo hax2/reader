@@ -70,3 +70,10 @@ does not rewrite the passage text.
 The ancient originals and named historical translations are public-domain works.
 Wikisource transcriptions are available under CC BY-SA 4.0; Project Gutenberg's
 distribution terms accompany its source edition.
+
+## Dante in the original Italian
+
+- [Inferno](https://www.gutenberg.org/ebooks/1009), Dante Alighieri.
+  Complete original Italian text, cantos I–XXXIV, from Project Gutenberg ebook
+  #1009. Public domain. Verse line breaks and tercet spacing are preserved;
+  ebook boilerplate is omitted from the reader text.
