@@ -1,0 +1,772 @@
+{
+  "trackId": "dante-inferno-c04",
+  "sourceLanguage": "it",
+  "targetLanguage": "en",
+  "translator": "Henry Wadsworth Longfellow",
+  "translationYear": 1867,
+  "source": "https://www.gutenberg.org/ebooks/1001",
+  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "alignment": "verse-line",
+  "sourceHash": "8470638f97b353cd1dda8affcafefe96ac0b9cea89f6b6efb5c09d2b6306e680",
+  "blocks": [
+    {
+      "source": "Canto IV",
+      "translation": "Canto IV"
+    },
+    {
+      "source": "Ruppemi l’alto sonno ne la testa",
+      "translation": "Broke the deep lethargy within my head",
+      "line": 1
+    },
+    {
+      "source": "un greve truono, sì ch’io mi riscossi",
+      "translation": "A heavy thunder, so that I upstarted,",
+      "line": 2
+    },
+    {
+      "source": "come persona ch’è per forza desta;",
+      "translation": "Like to a person who by force is wakened;",
+      "line": 3
+    },
+    {
+      "source": "e l’occhio riposato intorno mossi,",
+      "translation": "And round about I moved my rested eyes,",
+      "line": 4
+    },
+    {
+      "source": "dritto levato, e fiso riguardai",
+      "translation": "Uprisen erect, and steadfastly I gazed,",
+      "line": 5
+    },
+    {
+      "source": "per conoscer lo loco dov’ io fossi.",
+      "translation": "To recognise the place wherein I was.",
+      "line": 6
+    },
+    {
+      "source": "Vero è che ’n su la proda mi trovai",
+      "translation": "True is it, that upon the verge I found me",
+      "line": 7
+    },
+    {
+      "source": "de la valle d’abisso dolorosa",
+      "translation": "Of the abysmal valley dolorous,",
+      "line": 8
+    },
+    {
+      "source": "che ’ntrono accoglie d’infiniti guai.",
+      "translation": "That gathers thunder of infinite ululations.",
+      "line": 9
+    },
+    {
+      "source": "Oscura e profonda era e nebulosa",
+      "translation": "Obscure, profound it was, and nebulous,",
+      "line": 10
+    },
+    {
+      "source": "tanto che, per ficcar lo viso a fondo,",
+      "translation": "So that by fixing on its depths my sight",
+      "line": 11
+    },
+    {
+      "source": "io non vi discernea alcuna cosa.",
+      "translation": "Nothing whatever I discerned therein.",
+      "line": 12
+    },
+    {
+      "source": "«Or discendiam qua giù nel cieco mondo»,",
+      "translation": "“Let us descend now into the blind world,”",
+      "line": 13
+    },
+    {
+      "source": "cominciò il poeta tutto smorto.",
+      "translation": "Began the Poet, pallid utterly;",
+      "line": 14
+    },
+    {
+      "source": "«Io sarò primo, e tu sarai secondo».",
+      "translation": "“I will be first, and thou shalt second be.”",
+      "line": 15
+    },
+    {
+      "source": "E io, che del color mi fui accorto,",
+      "translation": "And I, who of his colour was aware,",
+      "line": 16
+    },
+    {
+      "source": "dissi: «Come verrò, se tu paventi",
+      "translation": "Said: “How shall I come, if thou art afraid,",
+      "line": 17
+    },
+    {
+      "source": "che suoli al mio dubbiare esser conforto?».",
+      "translation": "Who’rt wont to be a comfort to my fears?”",
+      "line": 18
+    },
+    {
+      "source": "Ed elli a me: «L’angoscia de le genti",
+      "translation": "And he to me: “The anguish of the people",
+      "line": 19
+    },
+    {
+      "source": "che son qua giù, nel viso mi dipigne",
+      "translation": "Who are below here in my face depicts",
+      "line": 20
+    },
+    {
+      "source": "quella pietà che tu per tema senti.",
+      "translation": "That pity which for terror thou hast taken.",
+      "line": 21
+    },
+    {
+      "source": "Andiam, ché la via lunga ne sospigne».",
+      "translation": "Let us go on, for the long way impels us.”",
+      "line": 22
+    },
+    {
+      "source": "Così si mise e così mi fé intrare",
+      "translation": "Thus he went in, and thus he made me enter",
+      "line": 23
+    },
+    {
+      "source": "nel primo cerchio che l’abisso cigne.",
+      "translation": "The foremost circle that surrounds the abyss.",
+      "line": 24
+    },
+    {
+      "source": "Quivi, secondo che per ascoltare,",
+      "translation": "There, as it seemed to me from listening,",
+      "line": 25
+    },
+    {
+      "source": "non avea pianto mai che di sospiri",
+      "translation": "Were lamentations none, but only sighs,",
+      "line": 26
+    },
+    {
+      "source": "che l’aura etterna facevan tremare;",
+      "translation": "That tremble made the everlasting air.",
+      "line": 27
+    },
+    {
+      "source": "ciò avvenia di duol sanza martìri,",
+      "translation": "And this arose from sorrow without torment,",
+      "line": 28
+    },
+    {
+      "source": "ch’avean le turbe, ch’eran molte e grandi,",
+      "translation": "Which the crowds had, that many were and great,",
+      "line": 29
+    },
+    {
+      "source": "d’infanti e di femmine e di viri.",
+      "translation": "Of infants and of women and of men.",
+      "line": 30
+    },
+    {
+      "source": "Lo buon maestro a me: «Tu non dimandi",
+      "translation": "To me the Master good: “Thou dost not ask",
+      "line": 31
+    },
+    {
+      "source": "che spiriti son questi che tu vedi?",
+      "translation": "What spirits these, which thou beholdest, are?",
+      "line": 32
+    },
+    {
+      "source": "Or vo’ che sappi, innanzi che più andi,",
+      "translation": "Now will I have thee know, ere thou go farther,",
+      "line": 33
+    },
+    {
+      "source": "ch’ei non peccaro; e s’elli hanno mercedi,",
+      "translation": "That they sinned not; and if they merit had,",
+      "line": 34
+    },
+    {
+      "source": "non basta, perché non ebber battesmo,",
+      "translation": "’Tis not enough, because they had not baptism",
+      "line": 35
+    },
+    {
+      "source": "ch’è porta de la fede che tu credi;",
+      "translation": "Which is the portal of the Faith thou holdest;",
+      "line": 36
+    },
+    {
+      "source": "e s’e’ furon dinanzi al cristianesmo,",
+      "translation": "And if they were before Christianity,",
+      "line": 37
+    },
+    {
+      "source": "non adorar debitamente a Dio:",
+      "translation": "In the right manner they adored not God;",
+      "line": 38
+    },
+    {
+      "source": "e di questi cotai son io medesmo.",
+      "translation": "And among such as these am I myself.",
+      "line": 39
+    },
+    {
+      "source": "Per tai difetti, non per altro rio,",
+      "translation": "For such defects, and not for other guilt,",
+      "line": 40
+    },
+    {
+      "source": "semo perduti, e sol di tanto offesi",
+      "translation": "Lost are we and are only so far punished,",
+      "line": 41
+    },
+    {
+      "source": "che sanza speme vivemo in disio».",
+      "translation": "That without hope we live on in desire.”",
+      "line": 42
+    },
+    {
+      "source": "Gran duol mi prese al cor quando lo ’ntesi,",
+      "translation": "Great grief seized on my heart when this I heard,",
+      "line": 43
+    },
+    {
+      "source": "però che gente di molto valore",
+      "translation": "Because some people of much worthiness",
+      "line": 44
+    },
+    {
+      "source": "conobbi che ’n quel limbo eran sospesi.",
+      "translation": "I knew, who in that Limbo were suspended.",
+      "line": 45
+    },
+    {
+      "source": "«Dimmi, maestro mio, dimmi, segnore»,",
+      "translation": "“Tell me, my Master, tell me, thou my Lord,”",
+      "line": 46
+    },
+    {
+      "source": "comincia’ io per voler esser certo",
+      "translation": "Began I, with desire of being certain",
+      "line": 47
+    },
+    {
+      "source": "di quella fede che vince ogne errore:",
+      "translation": "Of that Faith which o’ercometh every error,",
+      "line": 48
+    },
+    {
+      "source": "«uscicci mai alcuno, o per suo merto",
+      "translation": "“Came any one by his own merit hence,",
+      "line": 49
+    },
+    {
+      "source": "o per altrui, che poi fosse beato?».",
+      "translation": "Or by another’s, who was blessed thereafter?”",
+      "line": 50
+    },
+    {
+      "source": "E quei che ’ntese il mio parlar coverto,",
+      "translation": "And he, who understood my covert speech,",
+      "line": 51
+    },
+    {
+      "source": "rispuose: «Io era nuovo in questo stato,",
+      "translation": "Replied: “I was a novice in this state,",
+      "line": 52
+    },
+    {
+      "source": "quando ci vidi venire un possente,",
+      "translation": "When I saw hither come a Mighty One,",
+      "line": 53
+    },
+    {
+      "source": "con segno di vittoria coronato.",
+      "translation": "With sign of victory incoronate.",
+      "line": 54
+    },
+    {
+      "source": "Trasseci l’ombra del primo parente,",
+      "translation": "Hence he drew forth the shade of the First Parent,",
+      "line": 55
+    },
+    {
+      "source": "d’Abèl suo figlio e quella di Noè,",
+      "translation": "And that of his son Abel, and of Noah,",
+      "line": 56
+    },
+    {
+      "source": "di Moïsè legista e ubidente;",
+      "translation": "Of Moses the lawgiver, and the obedient",
+      "line": 57
+    },
+    {
+      "source": "Abraàm patrïarca e Davìd re,",
+      "translation": "Abraham, patriarch, and David, king,",
+      "line": 58
+    },
+    {
+      "source": "Israèl con lo padre e co’ suoi nati",
+      "translation": "Israel with his father and his children,",
+      "line": 59
+    },
+    {
+      "source": "e con Rachele, per cui tanto fé,",
+      "translation": "And Rachel, for whose sake he did so much,",
+      "line": 60
+    },
+    {
+      "source": "e altri molti, e feceli beati.",
+      "translation": "And others many, and he made them blessed;",
+      "line": 61
+    },
+    {
+      "source": "E vo’ che sappi che, dinanzi ad essi,",
+      "translation": "And thou must know, that earlier than these",
+      "line": 62
+    },
+    {
+      "source": "spiriti umani non eran salvati».",
+      "translation": "Never were any human spirits saved.”",
+      "line": 63
+    },
+    {
+      "source": "Non lasciavam l’andar perch’ ei dicessi,",
+      "translation": "We ceased not to advance because he spake,",
+      "line": 64
+    },
+    {
+      "source": "ma passavam la selva tuttavia,",
+      "translation": "But still were passing onward through the forest,",
+      "line": 65
+    },
+    {
+      "source": "la selva, dico, di spiriti spessi.",
+      "translation": "The forest, say I, of thick-crowded ghosts.",
+      "line": 66
+    },
+    {
+      "source": "Non era lunga ancor la nostra via",
+      "translation": "Not very far as yet our way had gone",
+      "line": 67
+    },
+    {
+      "source": "di qua dal sonno, quand’ io vidi un foco",
+      "translation": "This side the summit, when I saw a fire",
+      "line": 68
+    },
+    {
+      "source": "ch’emisperio di tenebre vincia.",
+      "translation": "That overcame a hemisphere of darkness.",
+      "line": 69
+    },
+    {
+      "source": "Di lungi n’eravamo ancora un poco,",
+      "translation": "We were a little distant from it still,",
+      "line": 70
+    },
+    {
+      "source": "ma non sì ch’io non discernessi in parte",
+      "translation": "But not so far that I in part discerned not",
+      "line": 71
+    },
+    {
+      "source": "ch’orrevol gente possedea quel loco.",
+      "translation": "That honourable people held that place.",
+      "line": 72
+    },
+    {
+      "source": "«O tu ch’onori scïenzïa e arte,",
+      "translation": "“O thou who honourest every art and science,",
+      "line": 73
+    },
+    {
+      "source": "questi chi son c’hanno cotanta onranza,",
+      "translation": "Who may these be, which such great honour have,",
+      "line": 74
+    },
+    {
+      "source": "che dal modo de li altri li diparte?».",
+      "translation": "That from the fashion of the rest it parts them?”",
+      "line": 75
+    },
+    {
+      "source": "E quelli a me: «L’onrata nominanza",
+      "translation": "And he to me: “The honourable name,",
+      "line": 76
+    },
+    {
+      "source": "che di lor suona sù ne la tua vita,",
+      "translation": "That sounds of them above there in thy life,",
+      "line": 77
+    },
+    {
+      "source": "grazïa acquista in ciel che sì li avanza».",
+      "translation": "Wins grace in Heaven, that so advances them.”",
+      "line": 78
+    },
+    {
+      "source": "Intanto voce fu per me udita:",
+      "translation": "In the mean time a voice was heard by me:",
+      "line": 79
+    },
+    {
+      "source": "«Onorate l’altissimo poeta;",
+      "translation": "“All honour be to the pre-eminent Poet;",
+      "line": 80
+    },
+    {
+      "source": "l’ombra sua torna, ch’era dipartita».",
+      "translation": "His shade returns again, that was departed.”",
+      "line": 81
+    },
+    {
+      "source": "Poi che la voce fu restata e queta,",
+      "translation": "After the voice had ceased and quiet was,",
+      "line": 82
+    },
+    {
+      "source": "vidi quattro grand’ ombre a noi venire:",
+      "translation": "Four mighty shades I saw approaching us;",
+      "line": 83
+    },
+    {
+      "source": "sembianz’ avevan né trista né lieta.",
+      "translation": "Semblance had they nor sorrowful nor glad.",
+      "line": 84
+    },
+    {
+      "source": "Lo buon maestro cominciò a dire:",
+      "translation": "To say to me began my gracious Master:",
+      "line": 85
+    },
+    {
+      "source": "«Mira colui con quella spada in mano,",
+      "translation": "“Him with that falchion in his hand behold,",
+      "line": 86
+    },
+    {
+      "source": "che vien dinanzi ai tre sì come sire:",
+      "translation": "Who comes before the three, even as their lord.",
+      "line": 87
+    },
+    {
+      "source": "quelli è Omero poeta sovrano;",
+      "translation": "That one is Homer, Poet sovereign;",
+      "line": 88
+    },
+    {
+      "source": "l’altro è Orazio satiro che vene;",
+      "translation": "He who comes next is Horace, the satirist;",
+      "line": 89
+    },
+    {
+      "source": "Ovidio è ’l terzo, e l’ultimo Lucano.",
+      "translation": "The third is Ovid, and the last is Lucan.",
+      "line": 90
+    },
+    {
+      "source": "Però che ciascun meco si convene",
+      "translation": "Because to each of these with me applies",
+      "line": 91
+    },
+    {
+      "source": "nel nome che sonò la voce sola,",
+      "translation": "The name that solitary voice proclaimed,",
+      "line": 92
+    },
+    {
+      "source": "fannomi onore, e di ciò fanno bene».",
+      "translation": "They do me honour, and in that do well.”",
+      "line": 93
+    },
+    {
+      "source": "Così vid’ i’ adunar la bella scola",
+      "translation": "Thus I beheld assemble the fair school",
+      "line": 94
+    },
+    {
+      "source": "di quel segnor de l’altissimo canto",
+      "translation": "Of that lord of the song pre-eminent,",
+      "line": 95
+    },
+    {
+      "source": "che sovra li altri com’ aquila vola.",
+      "translation": "Who o’er the others like an eagle soars.",
+      "line": 96
+    },
+    {
+      "source": "Da ch’ebber ragionato insieme alquanto,",
+      "translation": "When they together had discoursed somewhat,",
+      "line": 97
+    },
+    {
+      "source": "volsersi a me con salutevol cenno,",
+      "translation": "They turned to me with signs of salutation,",
+      "line": 98
+    },
+    {
+      "source": "e ’l mio maestro sorrise di tanto;",
+      "translation": "And on beholding this, my Master smiled;",
+      "line": 99
+    },
+    {
+      "source": "e più d’onore ancora assai mi fenno,",
+      "translation": "And more of honour still, much more, they did me,",
+      "line": 100
+    },
+    {
+      "source": "ch’e’ sì mi fecer de la loro schiera,",
+      "translation": "In that they made me one of their own band;",
+      "line": 101
+    },
+    {
+      "source": "sì ch’io fui sesto tra cotanto senno.",
+      "translation": "So that the sixth was I, ’mid so much wit.",
+      "line": 102
+    },
+    {
+      "source": "Così andammo infino a la lumera,",
+      "translation": "Thus we went on as far as to the light,",
+      "line": 103
+    },
+    {
+      "source": "parlando cose che ’l tacere è bello,",
+      "translation": "Things saying ’tis becoming to keep silent,",
+      "line": 104
+    },
+    {
+      "source": "sì com’ era ’l parlar colà dov’ era.",
+      "translation": "As was the saying of them where I was.",
+      "line": 105
+    },
+    {
+      "source": "Venimmo al piè d’un nobile castello,",
+      "translation": "We came unto a noble castle’s foot,",
+      "line": 106
+    },
+    {
+      "source": "sette volte cerchiato d’alte mura,",
+      "translation": "Seven times encompassed with lofty walls,",
+      "line": 107
+    },
+    {
+      "source": "difeso intorno d’un bel fiumicello.",
+      "translation": "Defended round by a fair rivulet;",
+      "line": 108
+    },
+    {
+      "source": "Questo passammo come terra dura;",
+      "translation": "This we passed over even as firm ground;",
+      "line": 109
+    },
+    {
+      "source": "per sette porte intrai con questi savi:",
+      "translation": "Through portals seven I entered with these Sages;",
+      "line": 110
+    },
+    {
+      "source": "giugnemmo in prato di fresca verdura.",
+      "translation": "We came into a meadow of fresh verdure.",
+      "line": 111
+    },
+    {
+      "source": "Genti v’eran con occhi tardi e gravi,",
+      "translation": "People were there with solemn eyes and slow,",
+      "line": 112
+    },
+    {
+      "source": "di grande autorità ne’ lor sembianti:",
+      "translation": "Of great authority in their countenance;",
+      "line": 113
+    },
+    {
+      "source": "parlavan rado, con voci soavi.",
+      "translation": "They spake but seldom, and with gentle voices.",
+      "line": 114
+    },
+    {
+      "source": "Traemmoci così da l’un de’ canti,",
+      "translation": "Thus we withdrew ourselves upon one side",
+      "line": 115
+    },
+    {
+      "source": "in loco aperto, luminoso e alto,",
+      "translation": "Into an opening luminous and lofty,",
+      "line": 116
+    },
+    {
+      "source": "sì che veder si potien tutti quanti.",
+      "translation": "So that they all of them were visible.",
+      "line": 117
+    },
+    {
+      "source": "Colà diritto, sovra ’l verde smalto,",
+      "translation": "There opposite, upon the green enamel,",
+      "line": 118
+    },
+    {
+      "source": "mi fuor mostrati li spiriti magni,",
+      "translation": "Were pointed out to me the mighty spirits,",
+      "line": 119
+    },
+    {
+      "source": "che del vedere in me stesso m’essalto.",
+      "translation": "Whom to have seen I feel myself exalted.",
+      "line": 120
+    },
+    {
+      "source": "I’ vidi Eletra con molti compagni,",
+      "translation": "I saw Electra with companions many,",
+      "line": 121
+    },
+    {
+      "source": "tra ’ quai conobbi Ettòr ed Enea,",
+      "translation": "’Mongst whom I knew both Hector and Aeneas,",
+      "line": 122
+    },
+    {
+      "source": "Cesare armato con li occhi grifagni.",
+      "translation": "Caesar in armour with gerfalcon eyes;",
+      "line": 123
+    },
+    {
+      "source": "Vidi Cammilla e la Pantasilea;",
+      "translation": "I saw Camilla and Penthesilea",
+      "line": 124
+    },
+    {
+      "source": "da l’altra parte vidi ’l re Latino",
+      "translation": "On the other side, and saw the King Latinus,",
+      "line": 125
+    },
+    {
+      "source": "che con Lavina sua figlia sedea.",
+      "translation": "Who with Lavinia his daughter sat;",
+      "line": 126
+    },
+    {
+      "source": "Vidi quel Bruto che cacciò Tarquino,",
+      "translation": "I saw that Brutus who drove Tarquin forth,",
+      "line": 127
+    },
+    {
+      "source": "Lucrezia, Iulia, Marzïa e Corniglia;",
+      "translation": "Lucretia, Julia, Marcia, and Cornelia,",
+      "line": 128
+    },
+    {
+      "source": "e solo, in parte, vidi ’l Saladino.",
+      "translation": "And saw alone, apart, the Saladin.",
+      "line": 129
+    },
+    {
+      "source": "Poi ch’innalzai un poco più le ciglia,",
+      "translation": "When I had lifted up my brows a little,",
+      "line": 130
+    },
+    {
+      "source": "vidi ’l maestro di color che sanno",
+      "translation": "The Master I beheld of those who know,",
+      "line": 131
+    },
+    {
+      "source": "seder tra filosofica famiglia.",
+      "translation": "Sit with his philosophic family.",
+      "line": 132
+    },
+    {
+      "source": "Tutti lo miran, tutti onor li fanno:",
+      "translation": "All gaze upon him, and all do him honour.",
+      "line": 133
+    },
+    {
+      "source": "quivi vid’ ïo Socrate e Platone,",
+      "translation": "There I beheld both Socrates and Plato,",
+      "line": 134
+    },
+    {
+      "source": "che ’nnanzi a li altri più presso li stanno;",
+      "translation": "Who nearer him before the others stand;",
+      "line": 135
+    },
+    {
+      "source": "Democrito che ’l mondo a caso pone,",
+      "translation": "Democritus, who puts the world on chance,",
+      "line": 136
+    },
+    {
+      "source": "Dïogenès, Anassagora e Tale,",
+      "translation": "Diogenes, Anaxagoras, and Thales,",
+      "line": 137
+    },
+    {
+      "source": "Empedoclès, Eraclito e Zenone;",
+      "translation": "Zeno, Empedocles, and Heraclitus;",
+      "line": 138
+    },
+    {
+      "source": "e vidi il buono accoglitor del quale,",
+      "translation": "Of qualities I saw the good collector,",
+      "line": 139
+    },
+    {
+      "source": "Dïascoride dico; e vidi Orfeo,",
+      "translation": "Hight Dioscorides; and Orpheus saw I,",
+      "line": 140
+    },
+    {
+      "source": "Tulïo e Lino e Seneca morale;",
+      "translation": "Tully and Livy, and moral Seneca,",
+      "line": 141
+    },
+    {
+      "source": "Euclide geomètra e Tolomeo,",
+      "translation": "Euclid, geometrician, and Ptolemy,",
+      "line": 142
+    },
+    {
+      "source": "Ipocràte, Avicenna e Galïeno,",
+      "translation": "Galen, Hippocrates, and Avicenna,",
+      "line": 143
+    },
+    {
+      "source": "Averoìs, che ’l gran comento feo.",
+      "translation": "Averroes, who the great Comment made.",
+      "line": 144
+    },
+    {
+      "source": "Io non posso ritrar di tutti a pieno,",
+      "translation": "I cannot all of them pourtray in full,",
+      "line": 145
+    },
+    {
+      "source": "però che sì mi caccia il lungo tema,",
+      "translation": "Because so drives me onward the long theme,",
+      "line": 146
+    },
+    {
+      "source": "che molte volte al fatto il dir vien meno.",
+      "translation": "That many times the word comes short of fact.",
+      "line": 147
+    },
+    {
+      "source": "La sesta compagnia in due si scema:",
+      "translation": "The sixfold company in two divides;",
+      "line": 148
+    },
+    {
+      "source": "per altra via mi mena il savio duca,",
+      "translation": "Another way my sapient Guide conducts me",
+      "line": 149
+    },
+    {
+      "source": "fuor de la queta, ne l’aura che trema.",
+      "translation": "Forth from the quiet to the air that trembles;",
+      "line": 150
+    },
+    {
+      "source": "E vegno in parte ove non è che luca.",
+      "translation": "And to a place I come where nothing shines.",
+      "line": 151
+    }
+  ]
+}

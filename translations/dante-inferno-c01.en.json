@@ -1,0 +1,697 @@
+{
+  "trackId": "dante-inferno-c01",
+  "sourceLanguage": "it",
+  "targetLanguage": "en",
+  "translator": "Henry Wadsworth Longfellow",
+  "translationYear": 1867,
+  "source": "https://www.gutenberg.org/ebooks/1001",
+  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "alignment": "verse-line",
+  "sourceHash": "010cb1d94be496f6f14c7459e4daa4e120215b1e19cb93cd614a3013f5324399",
+  "blocks": [
+    {
+      "source": "Canto I",
+      "translation": "Canto I"
+    },
+    {
+      "source": "Nel mezzo del cammin di nostra vita",
+      "translation": "Midway upon the journey of our life",
+      "line": 1
+    },
+    {
+      "source": "mi ritrovai per una selva oscura,",
+      "translation": "I found myself within a forest dark,",
+      "line": 2
+    },
+    {
+      "source": "ché la diritta via era smarrita.",
+      "translation": "For the straightforward pathway had been lost.",
+      "line": 3
+    },
+    {
+      "source": "Ahi quanto a dir qual era è cosa dura",
+      "translation": "Ah me! how hard a thing it is to say",
+      "line": 4
+    },
+    {
+      "source": "esta selva selvaggia e aspra e forte",
+      "translation": "What was this forest savage, rough, and stern,",
+      "line": 5
+    },
+    {
+      "source": "che nel pensier rinova la paura!",
+      "translation": "Which in the very thought renews the fear.",
+      "line": 6
+    },
+    {
+      "source": "Tant’ è amara che poco è più morte;",
+      "translation": "So bitter is it, death is little more;",
+      "line": 7
+    },
+    {
+      "source": "ma per trattar del ben ch’i’ vi trovai,",
+      "translation": "But of the good to treat, which there I found,",
+      "line": 8
+    },
+    {
+      "source": "dirò de l’altre cose ch’i’ v’ho scorte.",
+      "translation": "Speak will I of the other things I saw there.",
+      "line": 9
+    },
+    {
+      "source": "Io non so ben ridir com’ i’ v’intrai,",
+      "translation": "I cannot well repeat how there I entered,",
+      "line": 10
+    },
+    {
+      "source": "tant’ era pien di sonno a quel punto",
+      "translation": "So full was I of slumber at the moment",
+      "line": 11
+    },
+    {
+      "source": "che la verace via abbandonai.",
+      "translation": "In which I had abandoned the true way.",
+      "line": 12
+    },
+    {
+      "source": "Ma poi ch’i’ fui al piè d’un colle giunto,",
+      "translation": "But after I had reached a mountain’s foot,",
+      "line": 13
+    },
+    {
+      "source": "là dove terminava quella valle",
+      "translation": "At that point where the valley terminated,",
+      "line": 14
+    },
+    {
+      "source": "che m’avea di paura il cor compunto,",
+      "translation": "Which had with consternation pierced my heart,",
+      "line": 15
+    },
+    {
+      "source": "guardai in alto e vidi le sue spalle",
+      "translation": "Upward I looked, and I beheld its shoulders,",
+      "line": 16
+    },
+    {
+      "source": "vestite già de’ raggi del pianeta",
+      "translation": "Vested already with that planet’s rays",
+      "line": 17
+    },
+    {
+      "source": "che mena dritto altrui per ogne calle.",
+      "translation": "Which leadeth others right by every road.",
+      "line": 18
+    },
+    {
+      "source": "Allor fu la paura un poco queta,",
+      "translation": "Then was the fear a little quieted",
+      "line": 19
+    },
+    {
+      "source": "che nel lago del cor m’era durata",
+      "translation": "That in my heart’s lake had endured throughout",
+      "line": 20
+    },
+    {
+      "source": "la notte ch’i’ passai con tanta pieta.",
+      "translation": "The night, which I had passed so piteously.",
+      "line": 21
+    },
+    {
+      "source": "E come quei che con lena affannata,",
+      "translation": "And even as he, who, with distressful breath,",
+      "line": 22
+    },
+    {
+      "source": "uscito fuor del pelago a la riva,",
+      "translation": "Forth issued from the sea upon the shore,",
+      "line": 23
+    },
+    {
+      "source": "si volge a l’acqua perigliosa e guata,",
+      "translation": "Turns to the water perilous and gazes;",
+      "line": 24
+    },
+    {
+      "source": "così l’animo mio, ch’ancor fuggiva,",
+      "translation": "So did my soul, that still was fleeing onward,",
+      "line": 25
+    },
+    {
+      "source": "si volse a retro a rimirar lo passo",
+      "translation": "Turn itself back to re-behold the pass",
+      "line": 26
+    },
+    {
+      "source": "che non lasciò già mai persona viva.",
+      "translation": "Which never yet a living person left.",
+      "line": 27
+    },
+    {
+      "source": "Poi ch’èi posato un poco il corpo lasso,",
+      "translation": "After my weary body I had rested,",
+      "line": 28
+    },
+    {
+      "source": "ripresi via per la piaggia diserta,",
+      "translation": "The way resumed I on the desert slope,",
+      "line": 29
+    },
+    {
+      "source": "sì che ’l piè fermo sempre era ’l più basso.",
+      "translation": "So that the firm foot ever was the lower.",
+      "line": 30
+    },
+    {
+      "source": "Ed ecco, quasi al cominciar de l’erta,",
+      "translation": "And lo! almost where the ascent began,",
+      "line": 31
+    },
+    {
+      "source": "una lonza leggera e presta molto,",
+      "translation": "A panther light and swift exceedingly,",
+      "line": 32
+    },
+    {
+      "source": "che di pel macolato era coverta;",
+      "translation": "Which with a spotted skin was covered o’er!",
+      "line": 33
+    },
+    {
+      "source": "e non mi si partia dinanzi al volto,",
+      "translation": "And never moved she from before my face,",
+      "line": 34
+    },
+    {
+      "source": "anzi ’mpediva tanto il mio cammino,",
+      "translation": "Nay, rather did impede so much my way,",
+      "line": 35
+    },
+    {
+      "source": "ch’i’ fui per ritornar più volte vòlto.",
+      "translation": "That many times I to return had turned.",
+      "line": 36
+    },
+    {
+      "source": "Temp’ era dal principio del mattino,",
+      "translation": "The time was the beginning of the morning,",
+      "line": 37
+    },
+    {
+      "source": "e ’l sol montava ’n sù con quelle stelle",
+      "translation": "And up the sun was mounting with those stars",
+      "line": 38
+    },
+    {
+      "source": "ch’eran con lui quando l’amor divino",
+      "translation": "That with him were, what time the Love Divine",
+      "line": 39
+    },
+    {
+      "source": "mosse di prima quelle cose belle;",
+      "translation": "At first in motion set those beauteous things;",
+      "line": 40
+    },
+    {
+      "source": "sì ch’a bene sperar m’era cagione",
+      "translation": "So were to me occasion of good hope,",
+      "line": 41
+    },
+    {
+      "source": "di quella fiera a la gaetta pelle",
+      "translation": "The variegated skin of that wild beast,",
+      "line": 42
+    },
+    {
+      "source": "l’ora del tempo e la dolce stagione;",
+      "translation": "The hour of time, and the delicious season;",
+      "line": 43
+    },
+    {
+      "source": "ma non sì che paura non mi desse",
+      "translation": "But not so much, that did not give me fear",
+      "line": 44
+    },
+    {
+      "source": "la vista che m’apparve d’un leone.",
+      "translation": "A lion’s aspect which appeared to me.",
+      "line": 45
+    },
+    {
+      "source": "Questi parea che contra me venisse",
+      "translation": "He seemed as if against me he were coming",
+      "line": 46
+    },
+    {
+      "source": "con la test’ alta e con rabbiosa fame,",
+      "translation": "With head uplifted, and with ravenous hunger,",
+      "line": 47
+    },
+    {
+      "source": "sì che parea che l’aere ne tremesse.",
+      "translation": "So that it seemed the air was afraid of him;",
+      "line": 48
+    },
+    {
+      "source": "Ed una lupa, che di tutte brame",
+      "translation": "And a she-wolf, that with all hungerings",
+      "line": 49
+    },
+    {
+      "source": "sembiava carca ne la sua magrezza,",
+      "translation": "Seemed to be laden in her meagreness,",
+      "line": 50
+    },
+    {
+      "source": "e molte genti fé già viver grame,",
+      "translation": "And many folk has caused to live forlorn!",
+      "line": 51
+    },
+    {
+      "source": "questa mi porse tanto di gravezza",
+      "translation": "She brought upon me so much heaviness,",
+      "line": 52
+    },
+    {
+      "source": "con la paura ch’uscia di sua vista,",
+      "translation": "With the affright that from her aspect came,",
+      "line": 53
+    },
+    {
+      "source": "ch’io perdei la speranza de l’altezza.",
+      "translation": "That I the hope relinquished of the height.",
+      "line": 54
+    },
+    {
+      "source": "E qual è quei che volontieri acquista,",
+      "translation": "And as he is who willingly acquires,",
+      "line": 55
+    },
+    {
+      "source": "e giugne ’l tempo che perder lo face,",
+      "translation": "And the time comes that causes him to lose,",
+      "line": 56
+    },
+    {
+      "source": "che ’n tutti suoi pensier piange e s’attrista;",
+      "translation": "Who weeps in all his thoughts and is despondent,",
+      "line": 57
+    },
+    {
+      "source": "tal mi fece la bestia sanza pace,",
+      "translation": "E’en such made me that beast withouten peace,",
+      "line": 58
+    },
+    {
+      "source": "che, venendomi ’ncontro, a poco a poco",
+      "translation": "Which, coming on against me by degrees",
+      "line": 59
+    },
+    {
+      "source": "mi ripigneva là dove ’l sol tace.",
+      "translation": "Thrust me back thither where the sun is silent.",
+      "line": 60
+    },
+    {
+      "source": "Mentre ch’i’ rovinava in basso loco,",
+      "translation": "While I was rushing downward to the lowland,",
+      "line": 61
+    },
+    {
+      "source": "dinanzi a li occhi mi si fu offerto",
+      "translation": "Before mine eyes did one present himself,",
+      "line": 62
+    },
+    {
+      "source": "chi per lungo silenzio parea fioco.",
+      "translation": "Who seemed from long-continued silence hoarse.",
+      "line": 63
+    },
+    {
+      "source": "Quando vidi costui nel gran diserto,",
+      "translation": "When I beheld him in the desert vast,",
+      "line": 64
+    },
+    {
+      "source": "«Miserere di me», gridai a lui,",
+      "translation": "“Have pity on me,” unto him I cried,",
+      "line": 65
+    },
+    {
+      "source": "«qual che tu sii, od ombra od omo certo!».",
+      "translation": "“Whiche’er thou art, or shade or real man!”",
+      "line": 66
+    },
+    {
+      "source": "Rispuosemi: «Non omo, omo già fui,",
+      "translation": "He answered me: “Not man; man once I was,",
+      "line": 67
+    },
+    {
+      "source": "e li parenti miei furon lombardi,",
+      "translation": "And both my parents were of Lombardy,",
+      "line": 68
+    },
+    {
+      "source": "mantoani per patrïa ambedui.",
+      "translation": "And Mantuans by country both of them.",
+      "line": 69
+    },
+    {
+      "source": "Nacqui sub Iulio, ancor che fosse tardi,",
+      "translation": "‘Sub Julio’ was I born, though it was late,",
+      "line": 70
+    },
+    {
+      "source": "e vissi a Roma sotto ’l buono Augusto",
+      "translation": "And lived at Rome under the good Augustus,",
+      "line": 71
+    },
+    {
+      "source": "nel tempo de li dèi falsi e bugiardi.",
+      "translation": "During the time of false and lying gods.",
+      "line": 72
+    },
+    {
+      "source": "Poeta fui, e cantai di quel giusto",
+      "translation": "A poet was I, and I sang that just",
+      "line": 73
+    },
+    {
+      "source": "figliuol d’Anchise che venne di Troia,",
+      "translation": "Son of Anchises, who came forth from Troy,",
+      "line": 74
+    },
+    {
+      "source": "poi che ’l superbo Ilïón fu combusto.",
+      "translation": "After that Ilion the superb was burned.",
+      "line": 75
+    },
+    {
+      "source": "Ma tu perché ritorni a tanta noia?",
+      "translation": "But thou, why goest thou back to such annoyance?",
+      "line": 76
+    },
+    {
+      "source": "perché non sali il dilettoso monte",
+      "translation": "Why climb’st thou not the Mount Delectable,",
+      "line": 77
+    },
+    {
+      "source": "ch’è principio e cagion di tutta gioia?».",
+      "translation": "Which is the source and cause of every joy?”",
+      "line": 78
+    },
+    {
+      "source": "«Or se’ tu quel Virgilio e quella fonte",
+      "translation": "“Now, art thou that Virgilius and that fountain",
+      "line": 79
+    },
+    {
+      "source": "che spandi di parlar sì largo fiume?»,",
+      "translation": "Which spreads abroad so wide a river of speech?”",
+      "line": 80
+    },
+    {
+      "source": "rispuos’ io lui con vergognosa fronte.",
+      "translation": "I made response to him with bashful forehead.",
+      "line": 81
+    },
+    {
+      "source": "«O de li altri poeti onore e lume,",
+      "translation": "“O, of the other poets honour and light,",
+      "line": 82
+    },
+    {
+      "source": "vagliami ’l lungo studio e ’l grande amore",
+      "translation": "Avail me the long study and great love",
+      "line": 83
+    },
+    {
+      "source": "che m’ha fatto cercar lo tuo volume.",
+      "translation": "That have impelled me to explore thy volume!",
+      "line": 84
+    },
+    {
+      "source": "Tu se’ lo mio maestro e ’l mio autore,",
+      "translation": "Thou art my master, and my author thou,",
+      "line": 85
+    },
+    {
+      "source": "tu se’ solo colui da cu’ io tolsi",
+      "translation": "Thou art alone the one from whom I took",
+      "line": 86
+    },
+    {
+      "source": "lo bello stilo che m’ha fatto onore.",
+      "translation": "The beautiful style that has done honour to me.",
+      "line": 87
+    },
+    {
+      "source": "Vedi la bestia per cu’ io mi volsi;",
+      "translation": "Behold the beast, for which I have turned back;",
+      "line": 88
+    },
+    {
+      "source": "aiutami da lei, famoso saggio,",
+      "translation": "Do thou protect me from her, famous Sage,",
+      "line": 89
+    },
+    {
+      "source": "ch’ella mi fa tremar le vene e i polsi».",
+      "translation": "For she doth make my veins and pulses tremble.”",
+      "line": 90
+    },
+    {
+      "source": "«A te convien tenere altro vïaggio»,",
+      "translation": "“Thee it behoves to take another road,”",
+      "line": 91
+    },
+    {
+      "source": "rispuose, poi che lagrimar mi vide,",
+      "translation": "Responded he, when he beheld me weeping,",
+      "line": 92
+    },
+    {
+      "source": "«se vuo’ campar d’esto loco selvaggio;",
+      "translation": "“If from this savage place thou wouldst escape;",
+      "line": 93
+    },
+    {
+      "source": "ché questa bestia, per la qual tu gride,",
+      "translation": "Because this beast, at which thou criest out,",
+      "line": 94
+    },
+    {
+      "source": "non lascia altrui passar per la sua via,",
+      "translation": "Suffers not any one to pass her way,",
+      "line": 95
+    },
+    {
+      "source": "ma tanto lo ’mpedisce che l’uccide;",
+      "translation": "But so doth harass him, that she destroys him;",
+      "line": 96
+    },
+    {
+      "source": "e ha natura sì malvagia e ria,",
+      "translation": "And has a nature so malign and ruthless,",
+      "line": 97
+    },
+    {
+      "source": "che mai non empie la bramosa voglia,",
+      "translation": "That never doth she glut her greedy will,",
+      "line": 98
+    },
+    {
+      "source": "e dopo ’l pasto ha più fame che pria.",
+      "translation": "And after food is hungrier than before.",
+      "line": 99
+    },
+    {
+      "source": "Molti son li animali a cui s’ammoglia,",
+      "translation": "Many the animals with whom she weds,",
+      "line": 100
+    },
+    {
+      "source": "e più saranno ancora, infin che ’l veltro",
+      "translation": "And more they shall be still, until the Greyhound",
+      "line": 101
+    },
+    {
+      "source": "verrà, che la farà morir con doglia.",
+      "translation": "Comes, who shall make her perish in her pain.",
+      "line": 102
+    },
+    {
+      "source": "Questi non ciberà terra né peltro,",
+      "translation": "He shall not feed on either earth or pelf,",
+      "line": 103
+    },
+    {
+      "source": "ma sapïenza, amore e virtute,",
+      "translation": "But upon wisdom, and on love and virtue;",
+      "line": 104
+    },
+    {
+      "source": "e sua nazion sarà tra feltro e feltro.",
+      "translation": "’Twixt Feltro and Feltro shall his nation be;",
+      "line": 105
+    },
+    {
+      "source": "Di quella umile Italia fia salute",
+      "translation": "Of that low Italy shall he be the saviour,",
+      "line": 106
+    },
+    {
+      "source": "per cui morì la vergine Cammilla,",
+      "translation": "On whose account the maid Camilla died,",
+      "line": 107
+    },
+    {
+      "source": "Eurialo e Turno e Niso di ferute.",
+      "translation": "Euryalus, Turnus, Nisus, of their wounds;",
+      "line": 108
+    },
+    {
+      "source": "Questi la caccerà per ogne villa,",
+      "translation": "Through every city shall he hunt her down,",
+      "line": 109
+    },
+    {
+      "source": "fin che l’avrà rimessa ne lo ’nferno,",
+      "translation": "Until he shall have driven her back to Hell,",
+      "line": 110
+    },
+    {
+      "source": "là onde ’nvidia prima dipartilla.",
+      "translation": "There from whence envy first did let her loose.",
+      "line": 111
+    },
+    {
+      "source": "Ond’ io per lo tuo me’ penso e discerno",
+      "translation": "Therefore I think and judge it for thy best",
+      "line": 112
+    },
+    {
+      "source": "che tu mi segui, e io sarò tua guida,",
+      "translation": "Thou follow me, and I will be thy guide,",
+      "line": 113
+    },
+    {
+      "source": "e trarrotti di qui per loco etterno;",
+      "translation": "And lead thee hence through the eternal place,",
+      "line": 114
+    },
+    {
+      "source": "ove udirai le disperate strida,",
+      "translation": "Where thou shalt hear the desperate lamentations,",
+      "line": 115
+    },
+    {
+      "source": "vedrai li antichi spiriti dolenti,",
+      "translation": "Shalt see the ancient spirits disconsolate,",
+      "line": 116
+    },
+    {
+      "source": "ch’a la seconda morte ciascun grida;",
+      "translation": "Who cry out each one for the second death;",
+      "line": 117
+    },
+    {
+      "source": "e vederai color che son contenti",
+      "translation": "And thou shalt see those who contented are",
+      "line": 118
+    },
+    {
+      "source": "nel foco, perché speran di venire",
+      "translation": "Within the fire, because they hope to come,",
+      "line": 119
+    },
+    {
+      "source": "quando che sia a le beate genti.",
+      "translation": "Whene’er it may be, to the blessed people;",
+      "line": 120
+    },
+    {
+      "source": "A le quai poi se tu vorrai salire,",
+      "translation": "To whom, then, if thou wishest to ascend,",
+      "line": 121
+    },
+    {
+      "source": "anima fia a ciò più di me degna:",
+      "translation": "A soul shall be for that than I more worthy;",
+      "line": 122
+    },
+    {
+      "source": "con lei ti lascerò nel mio partire;",
+      "translation": "With her at my departure I will leave thee;",
+      "line": 123
+    },
+    {
+      "source": "ché quello imperador che là sù regna,",
+      "translation": "Because that Emperor, who reigns above,",
+      "line": 124
+    },
+    {
+      "source": "perch’ i’ fu’ ribellante a la sua legge,",
+      "translation": "In that I was rebellious to his law,",
+      "line": 125
+    },
+    {
+      "source": "non vuol che ’n sua città per me si vegna.",
+      "translation": "Wills that through me none come into his city.",
+      "line": 126
+    },
+    {
+      "source": "In tutte parti impera e quivi regge;",
+      "translation": "He governs everywhere, and there he reigns;",
+      "line": 127
+    },
+    {
+      "source": "quivi è la sua città e l’alto seggio:",
+      "translation": "There is his city and his lofty throne;",
+      "line": 128
+    },
+    {
+      "source": "oh felice colui cu’ ivi elegge!».",
+      "translation": "O happy he whom thereto he elects!”",
+      "line": 129
+    },
+    {
+      "source": "E io a lui: «Poeta, io ti richeggio",
+      "translation": "And I to him: “Poet, I thee entreat,",
+      "line": 130
+    },
+    {
+      "source": "per quello Dio che tu non conoscesti,",
+      "translation": "By that same God whom thou didst never know,",
+      "line": 131
+    },
+    {
+      "source": "acciò ch’io fugga questo male e peggio,",
+      "translation": "So that I may escape this woe and worse,",
+      "line": 132
+    },
+    {
+      "source": "che tu mi meni là dov’ or dicesti,",
+      "translation": "Thou wouldst conduct me there where thou hast said,",
+      "line": 133
+    },
+    {
+      "source": "sì ch’io veggia la porta di san Pietro",
+      "translation": "That I may see the portal of Saint Peter,",
+      "line": 134
+    },
+    {
+      "source": "e color cui tu fai cotanto mesti».",
+      "translation": "And those thou makest so disconsolate.”",
+      "line": 135
+    },
+    {
+      "source": "Allor si mosse, e io li tenni dietro.",
+      "translation": "Then he moved on, and I behind him followed.",
+      "line": 136
+    }
+  ]
+}

@@ -1,0 +1,712 @@
+{
+  "trackId": "dante-inferno-c32",
+  "sourceLanguage": "it",
+  "targetLanguage": "en",
+  "translator": "Henry Wadsworth Longfellow",
+  "translationYear": 1867,
+  "source": "https://www.gutenberg.org/ebooks/1001",
+  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "alignment": "verse-line",
+  "sourceHash": "aff4d3629eeab9bfc036c20711f57f8ace598c08a3602c74863cb268244e41cb",
+  "blocks": [
+    {
+      "source": "Canto XXXII",
+      "translation": "Canto XXXII"
+    },
+    {
+      "source": "S’ïo avessi le rime aspre e chiocce,",
+      "translation": "If I had rhymes both rough and stridulous,",
+      "line": 1
+    },
+    {
+      "source": "come si converrebbe al tristo buco",
+      "translation": "As were appropriate to the dismal hole",
+      "line": 2
+    },
+    {
+      "source": "sovra ’l qual pontan tutte l’altre rocce,",
+      "translation": "Down upon which thrust all the other rocks,",
+      "line": 3
+    },
+    {
+      "source": "io premerei di mio concetto il suco",
+      "translation": "I would press out the juice of my conception",
+      "line": 4
+    },
+    {
+      "source": "più pienamente; ma perch’ io non l’abbo,",
+      "translation": "More fully; but because I have them not,",
+      "line": 5
+    },
+    {
+      "source": "non sanza tema a dicer mi conduco;",
+      "translation": "Not without fear I bring myself to speak;",
+      "line": 6
+    },
+    {
+      "source": "ché non è impresa da pigliare a gabbo",
+      "translation": "For ’tis no enterprise to take in jest,",
+      "line": 7
+    },
+    {
+      "source": "discriver fondo a tutto l’universo,",
+      "translation": "To sketch the bottom of all the universe,",
+      "line": 8
+    },
+    {
+      "source": "né da lingua che chiami mamma o babbo.",
+      "translation": "Nor for a tongue that cries Mamma and Babbo.",
+      "line": 9
+    },
+    {
+      "source": "Ma quelle donne aiutino il mio verso",
+      "translation": "But may those Ladies help this verse of mine,",
+      "line": 10
+    },
+    {
+      "source": "ch’aiutaro Anfïone a chiuder Tebe,",
+      "translation": "Who helped Amphion in enclosing Thebes,",
+      "line": 11
+    },
+    {
+      "source": "sì che dal fatto il dir non sia diverso.",
+      "translation": "That from the fact the word be not diverse.",
+      "line": 12
+    },
+    {
+      "source": "Oh sovra tutte mal creata plebe",
+      "translation": "O rabble ill-begotten above all,",
+      "line": 13
+    },
+    {
+      "source": "che stai nel loco onde parlare è duro,",
+      "translation": "Who’re in the place to speak of which is hard,",
+      "line": 14
+    },
+    {
+      "source": "mei foste state qui pecore o zebe!",
+      "translation": "’Twere better ye had here been sheep or goats!",
+      "line": 15
+    },
+    {
+      "source": "Come noi fummo giù nel pozzo scuro",
+      "translation": "When we were down within the darksome well,",
+      "line": 16
+    },
+    {
+      "source": "sotto i piè del gigante assai più bassi,",
+      "translation": "Beneath the giant’s feet, but lower far,",
+      "line": 17
+    },
+    {
+      "source": "e io mirava ancora a l’alto muro,",
+      "translation": "And I was scanning still the lofty wall,",
+      "line": 18
+    },
+    {
+      "source": "dicere udi’mi: «Guarda come passi:",
+      "translation": "I heard it said to me: “Look how thou steppest!",
+      "line": 19
+    },
+    {
+      "source": "va sì, che tu non calchi con le piante",
+      "translation": "Take heed thou do not trample with thy feet",
+      "line": 20
+    },
+    {
+      "source": "le teste de’ fratei miseri lassi».",
+      "translation": "The heads of the tired, miserable brothers!”",
+      "line": 21
+    },
+    {
+      "source": "Per ch’io mi volsi, e vidimi davante",
+      "translation": "Whereat I turned me round, and saw before me",
+      "line": 22
+    },
+    {
+      "source": "e sotto i piedi un lago che per gelo",
+      "translation": "And underfoot a lake, that from the frost",
+      "line": 23
+    },
+    {
+      "source": "avea di vetro e non d’acqua sembiante.",
+      "translation": "The semblance had of glass, and not of water.",
+      "line": 24
+    },
+    {
+      "source": "Non fece al corso suo sì grosso velo",
+      "translation": "So thick a veil ne’er made upon its current",
+      "line": 25
+    },
+    {
+      "source": "di verno la Danoia in Osterlicchi,",
+      "translation": "In winter-time Danube in Austria,",
+      "line": 26
+    },
+    {
+      "source": "né Tanaï là sotto ’l freddo cielo,",
+      "translation": "Nor there beneath the frigid sky the Don,",
+      "line": 27
+    },
+    {
+      "source": "com’ era quivi; che se Tambernicchi",
+      "translation": "As there was here; so that if Tambernich",
+      "line": 28
+    },
+    {
+      "source": "vi fosse sù caduto, o Pietrapana,",
+      "translation": "Had fallen upon it, or Pietrapana,",
+      "line": 29
+    },
+    {
+      "source": "non avria pur da l’orlo fatto cricchi.",
+      "translation": "E’en at the edge ’twould not have given a creak.",
+      "line": 30
+    },
+    {
+      "source": "E come a gracidar si sta la rana",
+      "translation": "And as to croak the frog doth place himself",
+      "line": 31
+    },
+    {
+      "source": "col muso fuor de l’acqua, quando sogna",
+      "translation": "With muzzle out of water,—when is dreaming",
+      "line": 32
+    },
+    {
+      "source": "di spigolar sovente la villana,",
+      "translation": "Of gleaning oftentimes the peasant-girl,—",
+      "line": 33
+    },
+    {
+      "source": "livide, insin là dove appar vergogna",
+      "translation": "Livid, as far down as where shame appears,",
+      "line": 34
+    },
+    {
+      "source": "eran l’ombre dolenti ne la ghiaccia,",
+      "translation": "Were the disconsolate shades within the ice,",
+      "line": 35
+    },
+    {
+      "source": "mettendo i denti in nota di cicogna.",
+      "translation": "Setting their teeth unto the note of storks.",
+      "line": 36
+    },
+    {
+      "source": "Ognuna in giù tenea volta la faccia;",
+      "translation": "Each one his countenance held downward bent;",
+      "line": 37
+    },
+    {
+      "source": "da bocca il freddo, e da li occhi il cor tristo",
+      "translation": "From mouth the cold, from eyes the doleful heart",
+      "line": 38
+    },
+    {
+      "source": "tra lor testimonianza si procaccia.",
+      "translation": "Among them witness of itself procures.",
+      "line": 39
+    },
+    {
+      "source": "Quand’ io m’ebbi dintorno alquanto visto,",
+      "translation": "When round about me somewhat I had looked,",
+      "line": 40
+    },
+    {
+      "source": "volsimi a’ piedi, e vidi due sì stretti,",
+      "translation": "I downward turned me, and saw two so close,",
+      "line": 41
+    },
+    {
+      "source": "che ’l pel del capo avieno insieme misto.",
+      "translation": "The hair upon their heads together mingled.",
+      "line": 42
+    },
+    {
+      "source": "«Ditemi, voi che sì strignete i petti»,",
+      "translation": "“Ye who so strain your breasts together, tell me,”",
+      "line": 43
+    },
+    {
+      "source": "diss’ io, «chi siete?». E quei piegaro i colli;",
+      "translation": "I said, “who are you;” and they bent their necks,",
+      "line": 44
+    },
+    {
+      "source": "e poi ch’ebber li visi a me eretti,",
+      "translation": "And when to me their faces they had lifted,",
+      "line": 45
+    },
+    {
+      "source": "li occhi lor, ch’eran pria pur dentro molli,",
+      "translation": "Their eyes, which first were only moist within,",
+      "line": 46
+    },
+    {
+      "source": "gocciar su per le labbra, e ’l gelo strinse",
+      "translation": "Gushed o’er the eyelids, and the frost congealed",
+      "line": 47
+    },
+    {
+      "source": "le lagrime tra essi e riserrolli.",
+      "translation": "The tears between, and locked them up again.",
+      "line": 48
+    },
+    {
+      "source": "Con legno legno spranga mai non cinse",
+      "translation": "Clamp never bound together wood with wood",
+      "line": 49
+    },
+    {
+      "source": "forte così; ond’ ei come due becchi",
+      "translation": "So strongly; whereat they, like two he-goats,",
+      "line": 50
+    },
+    {
+      "source": "cozzaro insieme, tanta ira li vinse.",
+      "translation": "Butted together, so much wrath o’ercame them.",
+      "line": 51
+    },
+    {
+      "source": "E un ch’avea perduti ambo li orecchi",
+      "translation": "And one, who had by reason of the cold",
+      "line": 52
+    },
+    {
+      "source": "per la freddura, pur col viso in giùe,",
+      "translation": "Lost both his ears, still with his visage downward,",
+      "line": 53
+    },
+    {
+      "source": "disse: «Perché cotanto in noi ti specchi?",
+      "translation": "Said: “Why dost thou so mirror thyself in us?",
+      "line": 54
+    },
+    {
+      "source": "Se vuoi saper chi son cotesti due,",
+      "translation": "If thou desire to know who these two are,",
+      "line": 55
+    },
+    {
+      "source": "la valle onde Bisenzo si dichina",
+      "translation": "The valley whence Bisenzio descends",
+      "line": 56
+    },
+    {
+      "source": "del padre loro Alberto e di lor fue.",
+      "translation": "Belonged to them and to their father Albert.",
+      "line": 57
+    },
+    {
+      "source": "D’un corpo usciro; e tutta la Caina",
+      "translation": "They from one body came, and all Caina",
+      "line": 58
+    },
+    {
+      "source": "potrai cercare, e non troverai ombra",
+      "translation": "Thou shalt search through, and shalt not find a shade",
+      "line": 59
+    },
+    {
+      "source": "degna più d’esser fitta in gelatina:",
+      "translation": "More worthy to be fixed in gelatine;",
+      "line": 60
+    },
+    {
+      "source": "non quelli a cui fu rotto il petto e l’ombra",
+      "translation": "Not he in whom were broken breast and shadow",
+      "line": 61
+    },
+    {
+      "source": "con esso un colpo per la man d’Artù;",
+      "translation": "At one and the same blow by Arthur’s hand;",
+      "line": 62
+    },
+    {
+      "source": "non Focaccia; non questi che m’ingombra",
+      "translation": "Focaccia not; not he who me encumbers",
+      "line": 63
+    },
+    {
+      "source": "col capo sì, ch’i’ non veggio oltre più,",
+      "translation": "So with his head I see no farther forward,",
+      "line": 64
+    },
+    {
+      "source": "e fu nomato Sassol Mascheroni;",
+      "translation": "And bore the name of Sassol Mascheroni;",
+      "line": 65
+    },
+    {
+      "source": "se tosco se’, ben sai omai chi fu.",
+      "translation": "Well knowest thou who he was, if thou art Tuscan.",
+      "line": 66
+    },
+    {
+      "source": "E perché non mi metti in più sermoni,",
+      "translation": "And that thou put me not to further speech,",
+      "line": 67
+    },
+    {
+      "source": "sappi ch’i’ fu’ il Camiscion de’ Pazzi;",
+      "translation": "Know that I Camicion de’ Pazzi was,",
+      "line": 68
+    },
+    {
+      "source": "e aspetto Carlin che mi scagioni».",
+      "translation": "And wait Carlino to exonerate me.”",
+      "line": 69
+    },
+    {
+      "source": "Poscia vid’ io mille visi cagnazzi",
+      "translation": "Then I beheld a thousand faces, made",
+      "line": 70
+    },
+    {
+      "source": "fatti per freddo; onde mi vien riprezzo,",
+      "translation": "Purple with cold; whence o’er me comes a shudder,",
+      "line": 71
+    },
+    {
+      "source": "e verrà sempre, de’ gelati guazzi.",
+      "translation": "And evermore will come, at frozen ponds.",
+      "line": 72
+    },
+    {
+      "source": "E mentre ch’andavamo inver’ lo mezzo",
+      "translation": "And while we were advancing tow’rds the middle,",
+      "line": 73
+    },
+    {
+      "source": "al quale ogne gravezza si rauna,",
+      "translation": "Where everything of weight unites together,",
+      "line": 74
+    },
+    {
+      "source": "e io tremava ne l’etterno rezzo;",
+      "translation": "And I was shivering in the eternal shade,",
+      "line": 75
+    },
+    {
+      "source": "se voler fu o destino o fortuna,",
+      "translation": "Whether ’twere will, or destiny, or chance,",
+      "line": 76
+    },
+    {
+      "source": "non so; ma, passeggiando tra le teste,",
+      "translation": "I know not; but in walking ’mong the heads",
+      "line": 77
+    },
+    {
+      "source": "forte percossi ’l piè nel viso ad una.",
+      "translation": "I struck my foot hard in the face of one.",
+      "line": 78
+    },
+    {
+      "source": "Piangendo mi sgridò: «Perché mi peste?",
+      "translation": "Weeping he growled: “Why dost thou trample me?",
+      "line": 79
+    },
+    {
+      "source": "se tu non vieni a crescer la vendetta",
+      "translation": "Unless thou comest to increase the vengeance",
+      "line": 80
+    },
+    {
+      "source": "di Montaperti, perché mi moleste?».",
+      "translation": "of Montaperti, why dost thou molest me?”",
+      "line": 81
+    },
+    {
+      "source": "E io: «Maestro mio, or qui m’aspetta,",
+      "translation": "And I: “My Master, now wait here for me,",
+      "line": 82
+    },
+    {
+      "source": "sì ch’io esca d’un dubbio per costui;",
+      "translation": "That I through him may issue from a doubt;",
+      "line": 83
+    },
+    {
+      "source": "poi mi farai, quantunque vorrai, fretta».",
+      "translation": "Then thou mayst hurry me, as thou shalt wish.”",
+      "line": 84
+    },
+    {
+      "source": "Lo duca stette, e io dissi a colui",
+      "translation": "The Leader stopped; and to that one I said",
+      "line": 85
+    },
+    {
+      "source": "che bestemmiava duramente ancora:",
+      "translation": "Who was blaspheming vehemently still:",
+      "line": 86
+    },
+    {
+      "source": "«Qual se’ tu che così rampogni altrui?».",
+      "translation": "“Who art thou, that thus reprehendest others?”",
+      "line": 87
+    },
+    {
+      "source": "«Or tu chi se’ che vai per l’Antenora,",
+      "translation": "“Now who art thou, that goest through Antenora",
+      "line": 88
+    },
+    {
+      "source": "percotendo», rispuose, «altrui le gote,",
+      "translation": "Smiting,” replied he, “other people’s cheeks,",
+      "line": 89
+    },
+    {
+      "source": "sì che, se fossi vivo, troppo fora?».",
+      "translation": "So that, if thou wert living, ’twere too much?”",
+      "line": 90
+    },
+    {
+      "source": "«Vivo son io, e caro esser ti puote»,",
+      "translation": "“Living I am, and dear to thee it may be,”",
+      "line": 91
+    },
+    {
+      "source": "fu mia risposta, «se dimandi fama,",
+      "translation": "Was my response, “if thou demandest fame,",
+      "line": 92
+    },
+    {
+      "source": "ch’io metta il nome tuo tra l’altre note».",
+      "translation": "That ’mid the other notes thy name I place.”",
+      "line": 93
+    },
+    {
+      "source": "Ed elli a me: «Del contrario ho io brama.",
+      "translation": "And he to me: “For the reverse I long;",
+      "line": 94
+    },
+    {
+      "source": "Lèvati quinci e non mi dar più lagna,",
+      "translation": "Take thyself hence, and give me no more trouble;",
+      "line": 95
+    },
+    {
+      "source": "ché mal sai lusingar per questa lama!».",
+      "translation": "For ill thou knowest to flatter in this hollow.”",
+      "line": 96
+    },
+    {
+      "source": "Allor lo presi per la cuticagna",
+      "translation": "Then by the scalp behind I seized upon him,",
+      "line": 97
+    },
+    {
+      "source": "e dissi: «El converrà che tu ti nomi,",
+      "translation": "And said: “It must needs be thou name thyself,",
+      "line": 98
+    },
+    {
+      "source": "o che capel qui sù non ti rimagna».",
+      "translation": "Or not a hair remain upon thee here.”",
+      "line": 99
+    },
+    {
+      "source": "Ond’ elli a me: «Perché tu mi dischiomi,",
+      "translation": "Whence he to me: “Though thou strip off my hair,",
+      "line": 100
+    },
+    {
+      "source": "né ti dirò ch’io sia, né mosterrolti,",
+      "translation": "I will not tell thee who I am, nor show thee,",
+      "line": 101
+    },
+    {
+      "source": "se mille fiate in sul capo mi tomi».",
+      "translation": "If on my head a thousand times thou fall.”",
+      "line": 102
+    },
+    {
+      "source": "Io avea già i capelli in mano avvolti,",
+      "translation": "I had his hair in hand already twisted,",
+      "line": 103
+    },
+    {
+      "source": "e tratti glien’ avea più d’una ciocca,",
+      "translation": "And more than one shock of it had pulled out,",
+      "line": 104
+    },
+    {
+      "source": "latrando lui con li occhi in giù raccolti,",
+      "translation": "He barking, with his eyes held firmly down,",
+      "line": 105
+    },
+    {
+      "source": "quando un altro gridò: «Che hai tu, Bocca?",
+      "translation": "When cried another: “What doth ail thee, Bocca?",
+      "line": 106
+    },
+    {
+      "source": "non ti basta sonar con le mascelle,",
+      "translation": "Is’t not enough to clatter with thy jaws,",
+      "line": 107
+    },
+    {
+      "source": "se tu non latri? qual diavol ti tocca?».",
+      "translation": "But thou must bark? what devil touches thee?”",
+      "line": 108
+    },
+    {
+      "source": "«Omai», diss’ io, «non vo’ che più favelle,",
+      "translation": "“Now,” said I, “I care not to have thee speak,",
+      "line": 109
+    },
+    {
+      "source": "malvagio traditor; ch’a la tua onta",
+      "translation": "Accursed traitor; for unto thy shame",
+      "line": 110
+    },
+    {
+      "source": "io porterò di te vere novelle».",
+      "translation": "I will report of thee veracious news.”",
+      "line": 111
+    },
+    {
+      "source": "«Va via», rispuose, «e ciò che tu vuoi conta;",
+      "translation": "“Begone,” replied he, “and tell what thou wilt,",
+      "line": 112
+    },
+    {
+      "source": "ma non tacer, se tu di qua entro eschi,",
+      "translation": "But be not silent, if thou issue hence,",
+      "line": 113
+    },
+    {
+      "source": "di quel ch’ebbe or così la lingua pronta.",
+      "translation": "Of him who had just now his tongue so prompt;",
+      "line": 114
+    },
+    {
+      "source": "El piange qui l’argento de’ Franceschi:",
+      "translation": "He weepeth here the silver of the French;",
+      "line": 115
+    },
+    {
+      "source": "“Io vidi”, potrai dir, “quel da Duera",
+      "translation": "‘I saw,’ thus canst thou phrase it, ‘him of Duera",
+      "line": 116
+    },
+    {
+      "source": "là dove i peccatori stanno freschi”.",
+      "translation": "There where the sinners stand out in the cold.’",
+      "line": 117
+    },
+    {
+      "source": "Se fossi domandato “Altri chi v’era?”,",
+      "translation": "If thou shouldst questioned be who else was there,",
+      "line": 118
+    },
+    {
+      "source": "tu hai dallato quel di Beccheria",
+      "translation": "Thou hast beside thee him of Beccaria,",
+      "line": 119
+    },
+    {
+      "source": "di cui segò Fiorenza la gorgiera.",
+      "translation": "Of whom the gorget Florence slit asunder;",
+      "line": 120
+    },
+    {
+      "source": "Gianni de’ Soldanier credo che sia",
+      "translation": "Gianni del Soldanier, I think, may be",
+      "line": 121
+    },
+    {
+      "source": "più là con Ganellone e Tebaldello,",
+      "translation": "Yonder with Ganellon, and Tebaldello",
+      "line": 122
+    },
+    {
+      "source": "ch’aprì Faenza quando si dormia».",
+      "translation": "Who oped Faenza when the people slep.”",
+      "line": 123
+    },
+    {
+      "source": "Noi eravam partiti già da ello,",
+      "translation": "Already we had gone away from him,",
+      "line": 124
+    },
+    {
+      "source": "ch’io vidi due ghiacciati in una buca,",
+      "translation": "When I beheld two frozen in one hole,",
+      "line": 125
+    },
+    {
+      "source": "sì che l’un capo a l’altro era cappello;",
+      "translation": "So that one head a hood was to the other;",
+      "line": 126
+    },
+    {
+      "source": "e come ’l pan per fame si manduca,",
+      "translation": "And even as bread through hunger is devoured,",
+      "line": 127
+    },
+    {
+      "source": "così ’l sovran li denti a l’altro pose",
+      "translation": "The uppermost on the other set his teeth,",
+      "line": 128
+    },
+    {
+      "source": "là ’ve ’l cervel s’aggiugne con la nuca:",
+      "translation": "There where the brain is to the nape united.",
+      "line": 129
+    },
+    {
+      "source": "non altrimenti Tidëo si rose",
+      "translation": "Not in another fashion Tydeus gnawed",
+      "line": 130
+    },
+    {
+      "source": "le tempie a Menalippo per disdegno,",
+      "translation": "The temples of Menalippus in disdain,",
+      "line": 131
+    },
+    {
+      "source": "che quei faceva il teschio e l’altre cose.",
+      "translation": "Than that one did the skull and the other things.",
+      "line": 132
+    },
+    {
+      "source": "«O tu che mostri per sì bestial segno",
+      "translation": "“O thou, who showest by such bestial sign",
+      "line": 133
+    },
+    {
+      "source": "odio sovra colui che tu ti mangi,",
+      "translation": "Thy hatred against him whom thou art eating,",
+      "line": 134
+    },
+    {
+      "source": "dimmi ’l perché», diss’ io, «per tal convegno,",
+      "translation": "Tell me the wherefore,” said I, “with this compact,",
+      "line": 135
+    },
+    {
+      "source": "che se tu a ragion di lui ti piangi,",
+      "translation": "That if thou rightfully of him complain,",
+      "line": 136
+    },
+    {
+      "source": "sappiendo chi voi siete e la sua pecca,",
+      "translation": "In knowing who ye are, and his transgression,",
+      "line": 137
+    },
+    {
+      "source": "nel mondo suso ancora io te ne cangi,",
+      "translation": "I in the world above repay thee for it,",
+      "line": 138
+    },
+    {
+      "source": "se quella con ch’io parlo non si secca».",
+      "translation": "If that wherewith I speak be not dried up.”",
+      "line": 139
+    }
+  ]
+}

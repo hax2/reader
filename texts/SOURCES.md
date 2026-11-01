@@ -77,3 +77,11 @@ distribution terms accompany its source edition.
   Complete original Italian text, cantos I–XXXIV, from Project Gutenberg ebook
   #1009. Public domain. Verse line breaks and tercet spacing are preserved;
   ebook boilerplate is omitted from the reader text.
+
+### Inferno English verse translations
+
+The saved line-by-line English translations use Henry Wadsworth Longfellow’s
+public-domain 1867 translation, from [Project Gutenberg ebook #1001](https://www.gutenberg.org/ebooks/1001).
+All 4,720 verse lines are paired by canto and line number with the original
+Italian; the English translation retains its historical diction. Regenerate
+with `python3 scripts/pretranslate_inferno.py`.

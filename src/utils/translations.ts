@@ -312,9 +312,11 @@ let savedTranslationBlocks: SavedTranslationBlock[] = [];
 let savedTranslationLookup = new Map<string, string>();
 
 export async function loadSavedTrackTranslation(track: Track): Promise<SavedTranslationBlock[]> {
-  if (!track.englishTranslation) return [];
+  const path = track.englishTranslation || (track.collection === "dante-inferno"
+    ? `translations/${track.id}.en.json` : "");
+  if (!path) return [];
   try {
-    const response = await fetch(track.englishTranslation);
+    const response = await fetch(path);
     if (!response.ok) return [];
     const payload = await response.json();
     if (payload?.trackId !== track.id || !Array.isArray(payload.blocks)) return [];
@@ -345,6 +347,12 @@ export function setSavedTranslationBlocks(blocks: SavedTranslationBlock[]): void
       });
     }
   }
+}
+
+export function lookupSavedVerseTranslation(lineIndex: number, source: string): string {
+  const block = savedTranslationBlocks[lineIndex];
+  return block && normalizedTranslationSource(block.source) === normalizedTranslationSource(source)
+    ? block.translation : "";
 }
 
 export function lookupSavedTranslation(source: string): string {

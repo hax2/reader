@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo, useState, useCallback } from "react";
-import { lookupSavedTranslation, translateReadingText } from "../utils/translations";
+import { lookupSavedTranslation, lookupSavedVerseTranslation, translateReadingText } from "../utils/translations";
 import { setWordTabStop } from "../hooks/useWordSync";
 import { getBeginnerStoryEnhancement, isBeginnerTrack } from "../utils/beginnerStories";
 import type { WordToken, AppearanceSettings, ReaderMode, Passage, Track } from "../types";
@@ -43,6 +43,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
 
   const bilingual =
     readerMode !== "passages" && appearanceSettings.translationLayout !== "spanish-only";
+  const verseLines = activeTrack?.collection === "dante-inferno";
   const sentencesPerPair =
     appearanceSettings.translationLayout === "english-below" ? 1 : 4;
 
@@ -63,7 +64,8 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
         sentenceCount += 1;
       }
 
-      if (sentenceCount >= sentencesPerPair && index < endIndex) {
+      const endsPair = verseLines ? /\n/.test(word.separator || "") : sentenceCount >= sentencesPerPair;
+      if (endsPair && index < endIndex) {
         result.push({
           words: currentWords,
           sourceText: currentText.trim(),
@@ -85,7 +87,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
     }
 
     return result;
-  }, [endIndex, sentencesPerPair, startIndex, words]);
+  }, [endIndex, sentencesPerPair, startIndex, words, verseLines]);
 
   const PAIRS_PER_PAGE = 35;
   const isPaginated = readerMode !== "passages" && pairs.length > 40;
@@ -164,7 +166,9 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
     const uncomputed: { blockIndex: number; source: string; before: string; after: string }[] = [];
 
     visiblePairs.forEach((pair, idx) => {
-      const saved = lookupSavedTranslation(pair.sourceText);
+      const saved = verseLines
+        ? lookupSavedVerseTranslation(pair.blockIndex, pair.sourceText)
+        : lookupSavedTranslation(pair.sourceText);
       if (saved) {
         initial[pair.blockIndex] = saved;
       } else {
@@ -210,7 +214,7 @@ export const ReaderText: React.FC<ReaderTextProps> = ({
     return () => {
       observer.disconnect();
     };
-  }, [bilingual, fetchBlockTranslation, visiblePairs, readerRef]);
+  }, [bilingual, fetchBlockTranslation, visiblePairs, readerRef, verseLines]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     const target = (e.target as HTMLElement).closest(".word") as HTMLButtonElement | null;

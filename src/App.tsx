@@ -46,6 +46,7 @@ import {
   loadSavedTrackTranslation,
   setSavedTranslationBlocks
 } from "./utils/translations";
+import { alignVerseWords } from "./utils/verseAlignment";
 import { loadSharedGlossary } from "./utils/vocab";
 import { buildPassages, findPassageAt } from "./utils/passages";
 import { updateMediaSession } from "./utils/mediaSession";
@@ -626,18 +627,25 @@ export const App: React.FC = () => {
       }
 
       try {
-        const [response, savedBlocks] = await Promise.all([
+        const [response, savedBlocks, verseResponse] = await Promise.all([
           fetch(transcriptPath),
-          loadSavedTrackTranslation(track)
+          loadSavedTrackTranslation(track),
+          track.audio && track.collection === "dante-inferno" && track.sourceText
+            ? fetch(track.sourceText) : Promise.resolve(null)
         ]);
         if (!response.ok) throw new Error("Transcript not found");
         const text = await response.text();
         if (loadId !== trackLoadIdRef.current) return;
         setSavedTranslationBlocks(savedBlocks);
-        const parsed = parseTranscript(
+        let parsed = parseTranscript(
           track.text ? stripCatalogTextHeader(text, track) : text,
           transcriptPath
         );
+        if (verseResponse?.ok) {
+          const original = stripCatalogTextHeader(await verseResponse.text(), track);
+          if (loadId !== trackLoadIdRef.current) return;
+          parsed = alignVerseWords(tokenizeUntimed(original), parsed);
+        }
         const precise = Boolean(track.audio) && hasValidTimings(parsed);
         const savedWordIdx =
           !track.audio &&

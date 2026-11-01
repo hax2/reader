@@ -1,0 +1,772 @@
+{
+  "trackId": "dante-inferno-c25",
+  "sourceLanguage": "it",
+  "targetLanguage": "en",
+  "translator": "Henry Wadsworth Longfellow",
+  "translationYear": 1867,
+  "source": "https://www.gutenberg.org/ebooks/1001",
+  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "alignment": "verse-line",
+  "sourceHash": "4e9fefff8f1e08c7da987157585217b1d58ed9fe01e666e6f2ed3e7843e00a08",
+  "blocks": [
+    {
+      "source": "Canto XXV",
+      "translation": "Canto XXV"
+    },
+    {
+      "source": "Al fine de le sue parole il ladro",
+      "translation": "At the conclusion of his words, the thief",
+      "line": 1
+    },
+    {
+      "source": "le mani alzò con amendue le fiche,",
+      "translation": "Lifted his hands aloft with both the figs,",
+      "line": 2
+    },
+    {
+      "source": "gridando: «Togli, Dio, ch’a te le squadro!».",
+      "translation": "Crying: “Take that, God, for at thee I aim them.”",
+      "line": 3
+    },
+    {
+      "source": "Da indi in qua mi fuor le serpi amiche,",
+      "translation": "From that time forth the serpents were my friends;",
+      "line": 4
+    },
+    {
+      "source": "perch’ una li s’avvolse allora al collo,",
+      "translation": "For one entwined itself about his neck",
+      "line": 5
+    },
+    {
+      "source": "come dicesse ‘Non vo’ che più diche’;",
+      "translation": "As if it said: “I will not thou speak more;”",
+      "line": 6
+    },
+    {
+      "source": "e un’altra a le braccia, e rilegollo,",
+      "translation": "And round his arms another, and rebound him,",
+      "line": 7
+    },
+    {
+      "source": "ribadendo sé stessa sì dinanzi,",
+      "translation": "Clinching itself together so in front,",
+      "line": 8
+    },
+    {
+      "source": "che non potea con esse dare un crollo.",
+      "translation": "That with them he could not a motion make.",
+      "line": 9
+    },
+    {
+      "source": "Ahi Pistoia, Pistoia, ché non stanzi",
+      "translation": "Pistoia, ah, Pistoia! why resolve not",
+      "line": 10
+    },
+    {
+      "source": "d’incenerarti sì che più non duri,",
+      "translation": "To burn thyself to ashes and so perish,",
+      "line": 11
+    },
+    {
+      "source": "poi che ’n mal fare il seme tuo avanzi?",
+      "translation": "Since in ill-doing thou thy seed excellest?",
+      "line": 12
+    },
+    {
+      "source": "Per tutt’ i cerchi de lo ’nferno scuri",
+      "translation": "Through all the sombre circles of this Hell,",
+      "line": 13
+    },
+    {
+      "source": "non vidi spirto in Dio tanto superbo,",
+      "translation": "Spirit I saw not against God so proud,",
+      "line": 14
+    },
+    {
+      "source": "non quel che cadde a Tebe giù da’ muri.",
+      "translation": "Not he who fell at Thebes down from the walls!",
+      "line": 15
+    },
+    {
+      "source": "El si fuggì che non parlò più verbo;",
+      "translation": "He fled away, and spake no further word;",
+      "line": 16
+    },
+    {
+      "source": "e io vidi un centauro pien di rabbia",
+      "translation": "And I beheld a Centaur full of rage",
+      "line": 17
+    },
+    {
+      "source": "venir chiamando: «Ov’ è, ov’ è l’acerbo?».",
+      "translation": "Come crying out: “Where is, where is the scoffer?”",
+      "line": 18
+    },
+    {
+      "source": "Maremma non cred’ io che tante n’abbia,",
+      "translation": "I do not think Maremma has so many",
+      "line": 19
+    },
+    {
+      "source": "quante bisce elli avea su per la groppa",
+      "translation": "Serpents as he had all along his back,",
+      "line": 20
+    },
+    {
+      "source": "infin ove comincia nostra labbia.",
+      "translation": "As far as where our countenance begins.",
+      "line": 21
+    },
+    {
+      "source": "Sovra le spalle, dietro da la coppa,",
+      "translation": "Upon the shoulders, just behind the nape,",
+      "line": 22
+    },
+    {
+      "source": "con l’ali aperte li giacea un draco;",
+      "translation": "With wings wide open was a dragon lying,",
+      "line": 23
+    },
+    {
+      "source": "e quello affuoca qualunque s’intoppa.",
+      "translation": "And he sets fire to all that he encounters.",
+      "line": 24
+    },
+    {
+      "source": "Lo mio maestro disse: «Questi è Caco,",
+      "translation": "My Master said: “That one is Cacus, who",
+      "line": 25
+    },
+    {
+      "source": "che, sotto ’l sasso di monte Aventino,",
+      "translation": "Beneath the rock upon Mount Aventine",
+      "line": 26
+    },
+    {
+      "source": "di sangue fece spesse volte laco.",
+      "translation": "Created oftentimes a lake of blood.",
+      "line": 27
+    },
+    {
+      "source": "Non va co’ suoi fratei per un cammino,",
+      "translation": "He goes not on the same road with his brothers,",
+      "line": 28
+    },
+    {
+      "source": "per lo furto che frodolente fece",
+      "translation": "By reason of the fraudulent theft he made",
+      "line": 29
+    },
+    {
+      "source": "del grande armento ch’elli ebbe a vicino;",
+      "translation": "Of the great herd, which he had near to him;",
+      "line": 30
+    },
+    {
+      "source": "onde cessar le sue opere biece",
+      "translation": "Whereat his tortuous actions ceased beneath",
+      "line": 31
+    },
+    {
+      "source": "sotto la mazza d’Ercule, che forse",
+      "translation": "The mace of Hercules, who peradventure",
+      "line": 32
+    },
+    {
+      "source": "gliene diè cento, e non sentì le diece».",
+      "translation": "Gave him a hundred, and he felt not ten.”",
+      "line": 33
+    },
+    {
+      "source": "Mentre che sì parlava, ed el trascorse,",
+      "translation": "While he was speaking thus, he had passed by,",
+      "line": 34
+    },
+    {
+      "source": "e tre spiriti venner sotto noi,",
+      "translation": "And spirits three had underneath us come,",
+      "line": 35
+    },
+    {
+      "source": "de’ quai né io né ’l duca mio s’accorse,",
+      "translation": "Of which nor I aware was, nor my Leader,",
+      "line": 36
+    },
+    {
+      "source": "se non quando gridar: «Chi siete voi?»;",
+      "translation": "Until what time they shouted: “Who are you?”",
+      "line": 37
+    },
+    {
+      "source": "per che nostra novella si ristette,",
+      "translation": "On which account our story made a halt,",
+      "line": 38
+    },
+    {
+      "source": "e intendemmo pur ad essi poi.",
+      "translation": "And then we were intent on them alone.",
+      "line": 39
+    },
+    {
+      "source": "Io non li conoscea; ma ei seguette,",
+      "translation": "I did not know them; but it came to pass,",
+      "line": 40
+    },
+    {
+      "source": "come suol seguitar per alcun caso,",
+      "translation": "As it is wont to happen by some chance,",
+      "line": 41
+    },
+    {
+      "source": "che l’un nomar un altro convenette,",
+      "translation": "That one to name the other was compelled,",
+      "line": 42
+    },
+    {
+      "source": "dicendo: «Cianfa dove fia rimaso?»;",
+      "translation": "Exclaiming: “Where can Cianfa have remained?”",
+      "line": 43
+    },
+    {
+      "source": "per ch’io, acciò che ’l duca stesse attento,",
+      "translation": "Whence I, so that the Leader might attend,",
+      "line": 44
+    },
+    {
+      "source": "mi puosi ’l dito su dal mento al naso.",
+      "translation": "Upward from chin to nose my finger laid.",
+      "line": 45
+    },
+    {
+      "source": "Se tu se’ or, lettore, a creder lento",
+      "translation": "If thou art, Reader, slow now to believe",
+      "line": 46
+    },
+    {
+      "source": "ciò ch’io dirò, non sarà maraviglia,",
+      "translation": "What I shall say, it will no marvel be,",
+      "line": 47
+    },
+    {
+      "source": "ché io che ’l vidi, a pena il mi consento.",
+      "translation": "For I who saw it hardly can admit it.",
+      "line": 48
+    },
+    {
+      "source": "Com’ io tenea levate in lor le ciglia,",
+      "translation": "As I was holding raised on them my brows,",
+      "line": 49
+    },
+    {
+      "source": "e un serpente con sei piè si lancia",
+      "translation": "Behold! a serpent with six feet darts forth",
+      "line": 50
+    },
+    {
+      "source": "dinanzi a l’uno, e tutto a lui s’appiglia.",
+      "translation": "In front of one, and fastens wholly on him.",
+      "line": 51
+    },
+    {
+      "source": "Co’ piè di mezzo li avvinse la pancia",
+      "translation": "With middle feet it bound him round the paunch,",
+      "line": 52
+    },
+    {
+      "source": "e con li anterïor le braccia prese;",
+      "translation": "And with the forward ones his arms it seized;",
+      "line": 53
+    },
+    {
+      "source": "poi li addentò e l’una e l’altra guancia;",
+      "translation": "Then thrust its teeth through one cheek and the other;",
+      "line": 54
+    },
+    {
+      "source": "li diretani a le cosce distese,",
+      "translation": "The hindermost it stretched upon his thighs,",
+      "line": 55
+    },
+    {
+      "source": "e miseli la coda tra ’mbedue",
+      "translation": "And put its tail through in between the two,",
+      "line": 56
+    },
+    {
+      "source": "e dietro per le ren sù la ritese.",
+      "translation": "And up behind along the reins outspread it.",
+      "line": 57
+    },
+    {
+      "source": "Ellera abbarbicata mai non fue",
+      "translation": "Ivy was never fastened by its barbs",
+      "line": 58
+    },
+    {
+      "source": "ad alber sì, come l’orribil fiera",
+      "translation": "Unto a tree so, as this horrible reptile",
+      "line": 59
+    },
+    {
+      "source": "per l’altrui membra avviticchiò le sue.",
+      "translation": "Upon the other’s limbs entwined its own.",
+      "line": 60
+    },
+    {
+      "source": "Poi s’appiccar, come di calda cera",
+      "translation": "Then they stuck close, as if of heated wax",
+      "line": 61
+    },
+    {
+      "source": "fossero stati, e mischiar lor colore,",
+      "translation": "They had been made, and intermixed their colour;",
+      "line": 62
+    },
+    {
+      "source": "né l’un né l’altro già parea quel ch’era:",
+      "translation": "Nor one nor other seemed now what he was;",
+      "line": 63
+    },
+    {
+      "source": "come procede innanzi da l’ardore,",
+      "translation": "E’en as proceedeth on before the flame",
+      "line": 64
+    },
+    {
+      "source": "per lo papiro suso, un color bruno",
+      "translation": "Upward along the paper a brown colour,",
+      "line": 65
+    },
+    {
+      "source": "che non è nero ancora e ’l bianco more.",
+      "translation": "Which is not black as yet, and the white dies.",
+      "line": 66
+    },
+    {
+      "source": "Li altri due ’l riguardavano, e ciascuno",
+      "translation": "The other two looked on, and each of them",
+      "line": 67
+    },
+    {
+      "source": "gridava: «Omè, Agnel, come ti muti!",
+      "translation": "Cried out: “O me, Agnello, how thou changest!",
+      "line": 68
+    },
+    {
+      "source": "Vedi che già non se’ né due né uno».",
+      "translation": "Behold, thou now art neither two nor one.”",
+      "line": 69
+    },
+    {
+      "source": "Già eran li due capi un divenuti,",
+      "translation": "Already the two heads had one become,",
+      "line": 70
+    },
+    {
+      "source": "quando n’apparver due figure miste",
+      "translation": "When there appeared to us two figures mingled",
+      "line": 71
+    },
+    {
+      "source": "in una faccia, ov’ eran due perduti.",
+      "translation": "Into one face, wherein the two were lost.",
+      "line": 72
+    },
+    {
+      "source": "Fersi le braccia due di quattro liste;",
+      "translation": "Of the four lists were fashioned the two arms,",
+      "line": 73
+    },
+    {
+      "source": "le cosce con le gambe e ’l ventre e ’l casso",
+      "translation": "The thighs and legs, the belly and the chest",
+      "line": 74
+    },
+    {
+      "source": "divenner membra che non fuor mai viste.",
+      "translation": "Members became that never yet were seen.",
+      "line": 75
+    },
+    {
+      "source": "Ogne primaio aspetto ivi era casso:",
+      "translation": "Every original aspect there was cancelled;",
+      "line": 76
+    },
+    {
+      "source": "due e nessun l’imagine perversa",
+      "translation": "Two and yet none did the perverted image",
+      "line": 77
+    },
+    {
+      "source": "parea; e tal sen gio con lento passo.",
+      "translation": "Appear, and such departed with slow pace.",
+      "line": 78
+    },
+    {
+      "source": "Come ’l ramarro sotto la gran fersa",
+      "translation": "Even as a lizard, under the great scourge",
+      "line": 79
+    },
+    {
+      "source": "dei dì canicular, cangiando sepe,",
+      "translation": "Of days canicular, exchanging hedge,",
+      "line": 80
+    },
+    {
+      "source": "folgore par se la via attraversa,",
+      "translation": "Lightning appeareth if the road it cross;",
+      "line": 81
+    },
+    {
+      "source": "sì pareva, venendo verso l’epe",
+      "translation": "Thus did appear, coming towards the bellies",
+      "line": 82
+    },
+    {
+      "source": "de li altri due, un serpentello acceso,",
+      "translation": "Of the two others, a small fiery serpent,",
+      "line": 83
+    },
+    {
+      "source": "livido e nero come gran di pepe;",
+      "translation": "Livid and black as is a peppercorn.",
+      "line": 84
+    },
+    {
+      "source": "e quella parte onde prima è preso",
+      "translation": "And in that part whereat is first received",
+      "line": 85
+    },
+    {
+      "source": "nostro alimento, a l’un di lor trafisse;",
+      "translation": "Our aliment, it one of them transfixed;",
+      "line": 86
+    },
+    {
+      "source": "poi cadde giuso innanzi lui disteso.",
+      "translation": "Then downward fell in front of him extended.",
+      "line": 87
+    },
+    {
+      "source": "Lo trafitto ’l mirò, ma nulla disse;",
+      "translation": "The one transfixed looked at it, but said naught;",
+      "line": 88
+    },
+    {
+      "source": "anzi, co’ piè fermati, sbadigliava",
+      "translation": "Nay, rather with feet motionless he yawned,",
+      "line": 89
+    },
+    {
+      "source": "pur come sonno o febbre l’assalisse.",
+      "translation": "Just as if sleep or fever had assailed him.",
+      "line": 90
+    },
+    {
+      "source": "Elli ’l serpente e quei lui riguardava;",
+      "translation": "He at the serpent gazed, and it at him;",
+      "line": 91
+    },
+    {
+      "source": "l’un per la piaga e l’altro per la bocca",
+      "translation": "One through the wound, the other through the mouth",
+      "line": 92
+    },
+    {
+      "source": "fummavan forte, e ’l fummo si scontrava.",
+      "translation": "Smoked violently, and the smoke commingled.",
+      "line": 93
+    },
+    {
+      "source": "Taccia Lucano ormai là dov’ e’ tocca",
+      "translation": "Henceforth be silent Lucan, where he mentions",
+      "line": 94
+    },
+    {
+      "source": "del misero Sabello e di Nasidio,",
+      "translation": "Wretched Sabellus and Nassidius,",
+      "line": 95
+    },
+    {
+      "source": "e attenda a udir quel ch’or si scocca.",
+      "translation": "And wait to hear what now shall be shot forth.",
+      "line": 96
+    },
+    {
+      "source": "Taccia di Cadmo e d’Aretusa Ovidio,",
+      "translation": "Be silent Ovid, of Cadmus and Arethusa;",
+      "line": 97
+    },
+    {
+      "source": "ché se quello in serpente e quella in fonte",
+      "translation": "For if him to a snake, her to fountain,",
+      "line": 98
+    },
+    {
+      "source": "converte poetando, io non lo ’nvidio;",
+      "translation": "Converts he fabling, that I grudge him not;",
+      "line": 99
+    },
+    {
+      "source": "ché due nature mai a fronte a fronte",
+      "translation": "Because two natures never front to front",
+      "line": 100
+    },
+    {
+      "source": "non trasmutò sì ch’amendue le forme",
+      "translation": "Has he transmuted, so that both the forms",
+      "line": 101
+    },
+    {
+      "source": "a cambiar lor matera fosser pronte.",
+      "translation": "To interchange their matter ready were.",
+      "line": 102
+    },
+    {
+      "source": "Insieme si rispuosero a tai norme,",
+      "translation": "Together they responded in such wise,",
+      "line": 103
+    },
+    {
+      "source": "che ’l serpente la coda in forca fesse,",
+      "translation": "That to a fork the serpent cleft his tail,",
+      "line": 104
+    },
+    {
+      "source": "e ’l feruto ristrinse insieme l’orme.",
+      "translation": "And eke the wounded drew his feet together.",
+      "line": 105
+    },
+    {
+      "source": "Le gambe con le cosce seco stesse",
+      "translation": "The legs together with the thighs themselves",
+      "line": 106
+    },
+    {
+      "source": "s’appiccar sì, che ’n poco la giuntura",
+      "translation": "Adhered so, that in little time the juncture",
+      "line": 107
+    },
+    {
+      "source": "non facea segno alcun che si paresse.",
+      "translation": "No sign whatever made that was apparent.",
+      "line": 108
+    },
+    {
+      "source": "Togliea la coda fessa la figura",
+      "translation": "He with the cloven tail assumed the figure",
+      "line": 109
+    },
+    {
+      "source": "che si perdeva là, e la sua pelle",
+      "translation": "The other one was losing, and his skin",
+      "line": 110
+    },
+    {
+      "source": "si facea molle, e quella di là dura.",
+      "translation": "Became elastic, and the other’s hard.",
+      "line": 111
+    },
+    {
+      "source": "Io vidi intrar le braccia per l’ascelle,",
+      "translation": "I saw the arms draw inward at the armpits,",
+      "line": 112
+    },
+    {
+      "source": "e i due piè de la fiera, ch’eran corti,",
+      "translation": "And both feet of the reptile, that were short,",
+      "line": 113
+    },
+    {
+      "source": "tanto allungar quanto accorciavan quelle.",
+      "translation": "Lengthen as much as those contracted were.",
+      "line": 114
+    },
+    {
+      "source": "Poscia li piè di rietro, insieme attorti,",
+      "translation": "Thereafter the hind feet, together twisted,",
+      "line": 115
+    },
+    {
+      "source": "diventaron lo membro che l’uom cela,",
+      "translation": "Became the member that a man conceals,",
+      "line": 116
+    },
+    {
+      "source": "e ’l misero del suo n’avea due porti.",
+      "translation": "And of his own the wretch had two created.",
+      "line": 117
+    },
+    {
+      "source": "Mentre che ’l fummo l’uno e l’altro vela",
+      "translation": "While both of them the exhalation veils",
+      "line": 118
+    },
+    {
+      "source": "di color novo, e genera ’l pel suso",
+      "translation": "With a new colour, and engenders hair",
+      "line": 119
+    },
+    {
+      "source": "per l’una parte e da l’altra il dipela,",
+      "translation": "On one of them and depilates the other,",
+      "line": 120
+    },
+    {
+      "source": "l’un si levò e l’altro cadde giuso,",
+      "translation": "The one uprose and down the other fell,",
+      "line": 121
+    },
+    {
+      "source": "non torcendo però le lucerne empie,",
+      "translation": "Though turning not away their impious lamps,",
+      "line": 122
+    },
+    {
+      "source": "sotto le quai ciascun cambiava muso.",
+      "translation": "Underneath which each one his muzzle changed.",
+      "line": 123
+    },
+    {
+      "source": "Quel ch’era dritto, il trasse ver’ le tempie,",
+      "translation": "He who was standing drew it tow’rds the temples,",
+      "line": 124
+    },
+    {
+      "source": "e di troppa matera ch’in là venne",
+      "translation": "And from excess of matter, which came thither,",
+      "line": 125
+    },
+    {
+      "source": "uscir li orecchi de le gote scempie;",
+      "translation": "Issued the ears from out the hollow cheeks;",
+      "line": 126
+    },
+    {
+      "source": "ciò che non corse in dietro e si ritenne",
+      "translation": "What did not backward run and was retained",
+      "line": 127
+    },
+    {
+      "source": "di quel soverchio, fé naso a la faccia",
+      "translation": "Of that excess made to the face a nose,",
+      "line": 128
+    },
+    {
+      "source": "e le labbra ingrossò quanto convenne.",
+      "translation": "And the lips thickened far as was befitting.",
+      "line": 129
+    },
+    {
+      "source": "Quel che giacëa, il muso innanzi caccia,",
+      "translation": "He who lay prostrate thrusts his muzzle forward,",
+      "line": 130
+    },
+    {
+      "source": "e li orecchi ritira per la testa",
+      "translation": "And backward draws the ears into his head,",
+      "line": 131
+    },
+    {
+      "source": "come face le corna la lumaccia;",
+      "translation": "In the same manner as the snail its horns;",
+      "line": 132
+    },
+    {
+      "source": "e la lingua, ch’avëa unita e presta",
+      "translation": "And so the tongue, which was entire and apt",
+      "line": 133
+    },
+    {
+      "source": "prima a parlar, si fende, e la forcuta",
+      "translation": "For speech before, is cleft, and the bi-forked",
+      "line": 134
+    },
+    {
+      "source": "ne l’altro si richiude; e ’l fummo resta.",
+      "translation": "In the other closes up, and the smoke ceases.",
+      "line": 135
+    },
+    {
+      "source": "L’anima ch’era fiera divenuta,",
+      "translation": "The soul, which to a reptile had been changed,",
+      "line": 136
+    },
+    {
+      "source": "suffolando si fugge per la valle,",
+      "translation": "Along the valley hissing takes to flight,",
+      "line": 137
+    },
+    {
+      "source": "e l’altro dietro a lui parlando sputa.",
+      "translation": "And after him the other speaking sputters.",
+      "line": 138
+    },
+    {
+      "source": "Poscia li volse le novelle spalle,",
+      "translation": "Then did he turn upon him his new shoulders,",
+      "line": 139
+    },
+    {
+      "source": "e disse a l’altro: «I’ vo’ che Buoso corra,",
+      "translation": "And said to the other: “I’ll have Buoso run,",
+      "line": 140
+    },
+    {
+      "source": "com’ ho fatt’ io, carpon per questo calle».",
+      "translation": "Crawling as I have done, along this road.”",
+      "line": 141
+    },
+    {
+      "source": "Così vid’ io la settima zavorra",
+      "translation": "In this way I beheld the seventh ballast",
+      "line": 142
+    },
+    {
+      "source": "mutare e trasmutare; e qui mi scusi",
+      "translation": "Shift and reshift, and here be my excuse",
+      "line": 143
+    },
+    {
+      "source": "la novità se fior la penna abborra.",
+      "translation": "The novelty, if aught my pen transgress.",
+      "line": 144
+    },
+    {
+      "source": "E avvegna che li occhi miei confusi",
+      "translation": "And notwithstanding that mine eyes might be",
+      "line": 145
+    },
+    {
+      "source": "fossero alquanto e l’animo smagato,",
+      "translation": "Somewhat bewildered, and my mind dismayed,",
+      "line": 146
+    },
+    {
+      "source": "non poter quei fuggirsi tanto chiusi,",
+      "translation": "They could not flee away so secretly",
+      "line": 147
+    },
+    {
+      "source": "ch’i’ non scorgessi ben Puccio Sciancato;",
+      "translation": "But that I plainly saw Puccio Sciancato;",
+      "line": 148
+    },
+    {
+      "source": "ed era quel che sol, di tre compagni",
+      "translation": "And he it was who sole of three companions,",
+      "line": 149
+    },
+    {
+      "source": "che venner prima, non era mutato;",
+      "translation": "Which came in the beginning, was not changed;",
+      "line": 150
+    },
+    {
+      "source": "l’altr’ era quel che tu, Gaville, piagni.",
+      "translation": "The other was he whom thou, Gaville, weepest.",
+      "line": 151
+    }
+  ]
+}

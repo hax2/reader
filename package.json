@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "verify:parity": "node scripts/verify-parity.ts",
     "test:fixes": "npx tsx scripts/test-fixes.ts",
-    "test": "npm run verify:parity && npm run test:fixes && npx tsx scripts/test-languages.ts"
+    "test": "npm run verify:parity && npm run test:fixes && npx tsx scripts/test-languages.ts && npx tsx scripts/test-inferno-translations.ts"
   },
   "bugs": {
     "url": "https://github.com/hax2/reader/issues"
