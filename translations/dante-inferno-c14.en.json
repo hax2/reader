@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "a48defbcb43651a16470f165192870a9e4e9e7c886a93df6d1aa1c24abdb5667",
   "blocks": [
@@ -250,7 +250,7 @@
     },
     {
       "source": "sì che la pioggia non par che ’l marturi?».",
-      "translation": "So that the rain seems not to ripen him?”",
+      "translation": "So that the rain seems not to torture him?”",
       "line": 48
     },
     {
