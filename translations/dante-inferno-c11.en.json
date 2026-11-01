@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "5280241e4d47b1fd715c6d84bf0ee45a5b04a92946923749fc1fec2da28391de",
   "blocks": [
@@ -190,7 +190,7 @@
     },
     {
       "source": "ruine, incendi e tollette dannose;",
-      "translation": "Ruin, and arson, and injurious levies;",
+      "translation": "Ruin, and arson, and injurious thefts;",
       "line": 36
     },
     {
@@ -230,7 +230,7 @@
     },
     {
       "source": "biscazza e fonde la sua facultade,",
-      "translation": "Who games, and dissipates his property,",
+      "translation": "Or games, and dissipates his property,",
       "line": 44
     },
     {
@@ -355,7 +355,7 @@
     },
     {
       "source": "questo baràtro e ’l popol ch’e’ possiede.",
-      "translation": "This cavern and the people who possess it.",
+      "translation": "This cavern and the people it contains.",
       "line": 69
     },
     {
