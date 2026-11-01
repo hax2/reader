@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "b7f49a0d01d9292a6a438d0c3ed3a1ddd44d684bb46f5feea4c5a1eb71a07e38",
   "blocks": [
@@ -40,7 +40,7 @@
     },
     {
       "source": "non pomi v’eran, ma stecchi con tòsco.",
-      "translation": "Not apple-trees were there, but thorns with poison.",
+      "translation": "No fruits were there, but thorns with poison.",
       "line": 6
     },
     {
@@ -115,7 +115,7 @@
     },
     {
       "source": "cose che torrien fede al mio sermone».",
-      "translation": "Things that will credence give unto my speech.”",
+      "translation": "Things that would rob my words of all belief.”",
       "line": 21
     },
     {
@@ -250,7 +250,7 @@
     },
     {
       "source": "ciò c’ha veduto pur con la mia rima,",
-      "translation": "What only in my verses he has seen,",
+      "translation": "What he had seen but in my verses,",
       "line": 48
     },
     {
@@ -360,7 +360,7 @@
     },
     {
       "source": "L’animo mio, per disdegnoso gusto,",
-      "translation": "My spirit, in disdainful exultation,",
+      "translation": "My spirit, moved by bitterness of scorn,",
       "line": 70
     },
     {
@@ -595,7 +595,7 @@
     },
     {
       "source": "che de la selva rompieno ogne rosta.",
-      "translation": "That of the forest, every fan they broke.",
+      "translation": "That every branch that barred their way they broke.",
       "line": 117
     },
     {
