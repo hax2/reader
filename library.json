@@ -1577,16 +1577,20 @@
       "Virgilio"
     ],
     "source": "https://www.gutenberg.org/ebooks/1009",
-    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.",
+    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.; project-produced local narration",
     "id": "dante-inferno-c06",
     "title": "Inferno 06: Canto VI",
     "collection": "dante-inferno",
     "canto": 6,
     "description": "Canto VI of Dante’s Inferno in the original Italian (section 6 of 34).",
-    "text": "texts/dante_inferno_c06.txt",
     "wordCount": 837,
     "minutes": 5,
-    "cover": "covers/dante_inferno_c06.webp"
+    "cover": "covers/dante_inferno_c06.webp",
+    "sourceText": "texts/dante_inferno_c06.txt",
+    "audio": "dante_inferno_c06.m4a",
+    "transcript": "dante_inferno_c06.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "28b14bccee4b1c24"
   },
   {
     "author": "Dante Alighieri",
