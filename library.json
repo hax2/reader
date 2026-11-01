@@ -1540,15 +1540,19 @@
       "Virgilio"
     ],
     "source": "https://www.gutenberg.org/ebooks/1009",
-    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.",
+    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.; project-produced local narration",
     "id": "dante-inferno-c05",
     "title": "Inferno 05: Canto V",
     "collection": "dante-inferno",
     "canto": 5,
     "description": "Canto V of Dante’s Inferno in the original Italian (section 5 of 34).",
-    "text": "texts/dante_inferno_c05.txt",
     "wordCount": 969,
-    "minutes": 5
+    "minutes": 6,
+    "sourceText": "texts/dante_inferno_c05.txt",
+    "audio": "dante_inferno_c05.m4a",
+    "transcript": "dante_inferno_c05.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "f9c43da598d7d6a3"
   },
   {
     "author": "Dante Alighieri",
