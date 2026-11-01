@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "1861864ad63b81e4c72e7ec47b2dca544b12bc5b81fe6b5cc96dfa40b7da418e",
   "blocks": [
@@ -280,7 +280,7 @@
     },
     {
       "source": "sovresso noi; ma non lì era sospetto:",
-      "translation": "Right over us; but he was not afraid;",
+      "translation": "Right over us; but there was naught to fear;",
       "line": 54
     },
     {
@@ -325,7 +325,7 @@
     },
     {
       "source": "che in Clugnì per li monaci fassi.",
-      "translation": "That in Cologne they for the monks are made.",
+      "translation": "That at Cluny is fashioned for the monks.",
       "line": 63
     },
     {
@@ -340,7 +340,7 @@
     },
     {
       "source": "che Federigo le mettea di paglia.",
-      "translation": "That Frederick used to put them on of straw.",
+      "translation": "That Frederick’s were but straw compared with these.",
       "line": 66
     },
     {
