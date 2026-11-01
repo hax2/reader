@@ -158,6 +158,7 @@ export function useBrowserTts({
     (chunkIndex: number, startWord: number, sessionId: number, useDefaultVoice?: boolean) => void
   >(() => {});
 
+  // Speech callbacks can fire before React commits a playback state update.
   ttsWordIndexRef.current = ttsWordIndex;
   ttsStateRef.current = ttsState;
 
@@ -263,6 +264,7 @@ export function useBrowserTts({
     (index: number, scrollReader: boolean = true) => {
       if (!words.length) return;
       const clamped = Math.max(0, Math.min(index, words.length - 1));
+      ttsWordIndexRef.current = clamped;
       setTtsWordIndex(clamped);
       onWordChange?.(clamped, scrollReader);
     },
@@ -326,6 +328,7 @@ export function useBrowserTts({
       } catch {
         // Ignore
       }
+      ttsStateRef.current = "idle";
       setTtsState("idle");
       setMediaSessionPlaybackState("paused");
       if (!preservePosition) {
@@ -361,6 +364,7 @@ export function useBrowserTts({
 
       utterance.onstart = () => {
         if (sessionId !== ttsSessionIdRef.current) return;
+        ttsStateRef.current = "playing";
         setTtsState("playing");
         setMediaSessionPlaybackState("playing");
         setTtsWord(segment.startWord, true);
@@ -394,6 +398,7 @@ export function useBrowserTts({
         }
         setTtsWord(segment.endWord, false);
         setTtsWordIndex(wordsRef.current.length);
+        ttsStateRef.current = "idle";
         setTtsState("idle");
         setMediaSessionPlaybackState("paused");
         onStatusChange?.("Finished reading.");
@@ -414,6 +419,7 @@ export function useBrowserTts({
           return;
         }
         clearTtsFallbackHighlight();
+        ttsStateRef.current = "idle";
         setTtsState("idle");
         setMediaSessionPlaybackState("paused");
         onStatusChange?.("This browser voice stopped unexpectedly. Try another voice or a slower speed.");
@@ -448,6 +454,7 @@ export function useBrowserTts({
         // Ignore
       }
       clearTtsFallbackHighlight();
+      ttsStateRef.current = "playing";
       setTtsState("playing");
       setTtsWord(nextWord, true);
       const cIndex = findTtsChunkAtWord(chunksRef.current, nextWord);
@@ -470,6 +477,7 @@ export function useBrowserTts({
     } catch {
       // Ignore
     }
+    ttsStateRef.current = "paused";
     setTtsState("paused");
     setMediaSessionPlaybackState("paused");
   }, [clearTtsFallbackHighlight, clearTtsWordTimer]);
