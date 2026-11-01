@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "9336729d5e41cc801190fc194a6c67513001aee6ed0899742815f03408ef1768",
   "blocks": [
@@ -50,7 +50,7 @@
     },
     {
       "source": "cominciò el, «se non . . . Tal ne s’offerse.",
-      "translation": "Began he; “Else. . .Such offered us herself. . .",
+      "translation": "Began he; “Else... Such a one offered us help...",
       "line": 8
     },
     {
@@ -400,7 +400,7 @@
     },
     {
       "source": "fin ch’a la terra ciascuna s’abbica,",
-      "translation": "Until each one is huddled in the earth.",
+      "translation": "Until each one is huddled on the bank.",
       "line": 78
     },
     {
