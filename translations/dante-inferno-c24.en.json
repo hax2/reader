@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "86a9cca307a08f769e637eebc22d4408ab23a5418109cd12d15786203a949bab",
   "blocks": [
@@ -485,12 +485,12 @@
     },
     {
       "source": "quelle ficcavan per le ren la coda",
-      "translation": "These riveted upon their reins the tail",
+      "translation": "These thrust their tails and heads through the loins,",
       "line": 95
     },
     {
       "source": "e ’l capo, ed eran dinanzi aggroppate.",
-      "translation": "And head, and were in front of them entwined.",
+      "translation": "And were in front of them entwined.",
       "line": 96
     },
     {
@@ -605,7 +605,7 @@
     },
     {
       "source": "Oh potenza di Dio, quant’ è severa,",
-      "translation": "Justice of God! O how severe it is,",
+      "translation": "O power of God, how very severe it is,",
       "line": 119
     },
     {
