@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "bb2cf78d007ca99fac291af0137b2a10cca03bf3e5560e9e8e08e8d8add75392",
   "blocks": [
@@ -330,17 +330,17 @@
     },
     {
       "source": "Per mille fonti, credo, e più si bagna",
-      "translation": "By a thousand springs, I think, and more, is bathed,",
+      "translation": "By a thousand springs, I think, and more, is watered",
       "line": 64
     },
     {
       "source": "tra Garda e Val Camonica e Pennino",
-      "translation": "’Twixt Garda and Val Camonica, Pennino,",
+      "translation": "The land between Garda, Val Camonica, and Pennino,",
       "line": 65
     },
     {
       "source": "de l’acqua che nel detto laco stagna.",
-      "translation": "With water that grows stagnant in that lake.",
+      "translation": "With waters gathered in the aforesaid lake.",
       "line": 66
     },
     {
@@ -570,7 +570,7 @@
     },
     {
       "source": "Euripilo ebbe nome, e così ’l canta",
-      "translation": "Eryphylus his name was, and so sings",
+      "translation": "Eurypylus his name was, and so sings",
       "line": 112
     },
     {
@@ -620,7 +620,7 @@
     },
     {
       "source": "la spuola e ’l fuso, e fecersi ’ndivine;",
-      "translation": "The spool and rock, and made them fortune-tellers;",
+      "translation": "The shuttle and spindle, and made them fortune-tellers;",
       "line": 122
     },
     {
