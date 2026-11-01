@@ -1476,15 +1476,19 @@
       "Virgilio"
     ],
     "source": "https://www.gutenberg.org/ebooks/1009",
-    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.",
+    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.; project-produced local narration",
     "id": "dante-inferno-c03",
     "title": "Inferno 03: Canto III",
     "collection": "dante-inferno",
     "canto": 3,
     "description": "Canto III of Dante’s Inferno in the original Italian (section 3 of 34).",
-    "text": "texts/dante_inferno_c03.txt",
     "wordCount": 958,
-    "minutes": 5
+    "minutes": 6,
+    "sourceText": "texts/dante_inferno_c03.txt",
+    "audio": "dante_inferno_c03.m4a",
+    "transcript": "dante_inferno_c03.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "5cf67a5bf4888b7c"
   },
   {
     "author": "Dante Alighieri",
