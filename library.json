@@ -1508,15 +1508,19 @@
       "Virgilio"
     ],
     "source": "https://www.gutenberg.org/ebooks/1009",
-    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.",
+    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.; project-produced local narration",
     "id": "dante-inferno-c04",
     "title": "Inferno 04: Canto IV",
     "collection": "dante-inferno",
     "canto": 4,
     "description": "Canto IV of Dante’s Inferno in the original Italian (section 4 of 34).",
-    "text": "texts/dante_inferno_c04.txt",
     "wordCount": 1023,
-    "minutes": 6
+    "minutes": 6,
+    "sourceText": "texts/dante_inferno_c04.txt",
+    "audio": "dante_inferno_c04.m4a",
+    "transcript": "dante_inferno_c04.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "1d9bc14920ee1c65"
   },
   {
     "author": "Dante Alighieri",
