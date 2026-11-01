@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Import Longfellow's public-domain English Inferno, aligned to Italian verse lines."""
+"""Import Longfellow's public-domain English Inferno, aligned to Italian verse lines.
+
+Existing translations may include manual corrections; replacing them requires --force.
+"""
 import argparse
 import hashlib
 import json
@@ -17,8 +20,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, default=ROOT)
     parser.add_argument('--source', type=Path)
+    parser.add_argument('--force', action='store_true', help='replace existing translations, including manual corrections')
     args = parser.parse_args()
     root = args.root.resolve()
+    existing = [root / f'translations/dante-inferno-c{number:02}.en.json'
+                for number in range(1, 35)]
+    if not args.force and any(path.exists() for path in existing):
+        parser.error('Inferno translations already exist; use --force to replace them and discard manual corrections')
     if args.source:
         english = args.source.read_text(encoding='utf-8-sig')
     else:
