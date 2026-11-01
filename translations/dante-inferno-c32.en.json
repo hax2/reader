@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "aff4d3629eeab9bfc036c20711f57f8ace598c08a3602c74863cb268244e41cb",
   "blocks": [
@@ -180,7 +180,7 @@
     },
     {
       "source": "livide, insin là dove appar vergogna",
-      "translation": "Livid, as far down as where shame appears,",
+      "translation": "Livid, up to their faces, where shame appears,",
       "line": 34
     },
     {
@@ -625,7 +625,7 @@
     },
     {
       "source": "ch’aprì Faenza quando si dormia».",
-      "translation": "Who oped Faenza when the people slep.”",
+      "translation": "Who oped Faenza when the people slept.”",
       "line": 123
     },
     {
