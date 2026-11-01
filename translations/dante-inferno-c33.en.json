@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "3ca66d816125acdd08da3cd96c783581f6cf2ea57cfbb6448721fccea94a8ceb",
   "blocks": [
@@ -170,7 +170,7 @@
     },
     {
       "source": "Gualandi con Sismondi e con Lanfranchi",
-      "translation": "Gualandi with Sismondi and Lanfianchi",
+      "translation": "Gualandi with Sismondi and Lanfranchi",
       "line": 32
     },
     {
@@ -380,12 +380,12 @@
     },
     {
       "source": "e due dì li chiamai, poi che fur morti.",
-      "translation": "And three days called them after they were dead;",
+      "translation": "And two days called them after they were dead;",
       "line": 74
     },
     {
       "source": "Poscia, più che ’l dolor, poté ’l digiuno».",
-      "translation": "Then hunger did what sorrow could not do.”",
+      "translation": "Then fasting proved more powerful than grief.”",
       "line": 75
     },
     {
@@ -640,7 +640,7 @@
     },
     {
       "source": "innanzi ch’Atropòs mossa le dea.",
-      "translation": "Sooner than Atropos in motion sets it.",
+      "translation": "Before Atropos has set it loose.",
       "line": 126
     },
     {
@@ -740,12 +740,12 @@
     },
     {
       "source": "nel corpo suo, ed un suo prossimano",
-      "translation": "In his own body and one near of kin,",
+      "translation": "Within his body, and likewise a near kinsman",
       "line": 146
     },
     {
       "source": "che ’l tradimento insieme con lui fece.",
-      "translation": "Who made together with him the betrayal.",
+      "translation": "Who had committed that betrayal with him.",
       "line": 147
     },
     {
