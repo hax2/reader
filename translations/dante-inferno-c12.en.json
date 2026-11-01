@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "f7ac846a826ee03a9558bbd32510206ba446e324945d52bb60285f4cdf73dd73",
   "blocks": [
@@ -205,7 +205,7 @@
     },
     {
       "source": "levò a Dite del cerchio superno,",
-      "translation": "Bore off from Dis, in the supernal circle,",
+      "translation": "From Dis, out of the upper circle, bore away,",
       "line": 39
     },
     {
@@ -495,7 +495,7 @@
     },
     {
       "source": "Chirón si volse in su la destra poppa,",
-      "translation": "Upon his right breast Chiron wheeled about,",
+      "translation": "Upon his right haunch Chiron wheeled about,",
       "line": 97
     },
     {
@@ -635,7 +635,7 @@
     },
     {
       "source": "quel sangue, sì che cocea pur li piedi;",
-      "translation": "That blood, so that the feet alone it covered;",
+      "translation": "That blood, so that it boiled the feet alone;",
       "line": 125
     },
     {
