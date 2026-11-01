@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "b6807c5063a1130f55a6b1cc29922ee19c2e75c0dde50eb363e92e98171c0e43",
   "blocks": [
@@ -185,7 +185,7 @@
     },
     {
       "source": "là giù per quella ripa che più giace,",
-      "translation": "Down there along that bank which lowest lies,",
+      "translation": "Down there along that bank which slopes more gently,",
       "line": 35
     },
     {
