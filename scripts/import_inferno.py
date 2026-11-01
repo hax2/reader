@@ -46,6 +46,9 @@ def import_cantos(root: Path) -> None:
             entry.update(old)
         else:
             entry["text"] = text_path
+        cover = f"covers/dante_inferno_c{number:02}.webp"
+        if (root / cover).is_file():
+            entry["cover"] = cover
         sections.append(entry)
     others = [entry for entry in library if entry["id"] != "dante-inferno" and not entry["id"].startswith("dante-inferno-c")]
     path.write_text(json.dumps(others + sections, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

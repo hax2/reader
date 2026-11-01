@@ -65,3 +65,16 @@ centered 848 × 1264 WebP derivatives:
   (https://commons.wikimedia.org/wiki/File:Adventure_with_the_Windmills.jpg)
 - `quijote_p1_s05.webp` — the aftermath of the fight with the Biscayan
   (https://commons.wikimedia.org/wiki/File:Don_Quixote_10.jpg)
+
+## Dante — Inferno
+
+`dante_inferno_c01.webp` through `dante_inferno_c34.webp` are original
+AI-generated illustrations created for this project on 2026-11-01 with OpenAI’s
+built-in image-generation tool. Each canto has a distinct scene from the poem.
+The set uses nineteenth-century engraved crosshatching inspired by Gustave Doré,
+ivory paper, charcoal shadows, and restrained red accents. These are newly
+generated illustrations, not scans of Doré’s historical engravings.
+
+All covers are 848 × 1272 WebP images without typography. The final generation
+prompts and canto-to-scene mapping are recorded in
+[`dante_inferno_prompts.json`](dante_inferno_prompts.json).
