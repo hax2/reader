@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "eb4f75c955e136f7b2e8184d8ac24b37d81e352cab1e394e6bfa4589854207f2",
   "blocks": [
@@ -40,7 +40,7 @@
     },
     {
       "source": "non ci torrà lo scender questa roccia».",
-      "translation": "Shall not prevent thy going down this crag.”",
+      "translation": "Shall not prevent our going down this crag.”",
       "line": 6
     },
     {
