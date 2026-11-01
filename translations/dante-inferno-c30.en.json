@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "3107404b5e84452721b343746e1d985e3c98ad5e14229240c5acdca9a210e293",
   "blocks": [
@@ -80,7 +80,7 @@
     },
     {
       "source": "l’altezza de’ Troian che tutto ardiva,",
-      "translation": "The Trojan’s arrogance, that all things dared,",
+      "translation": "The greatness of the Trojans, who dared all,",
       "line": 14
     },
     {
@@ -635,7 +635,7 @@
     },
     {
       "source": "la bocca tua per tuo mal come suole;",
-      "translation": "Thy mouth for speaking evil, as ’tis wont;",
+      "translation": "Thy mouth in pain, as it is wont to do;",
       "line": 125
     },
     {
