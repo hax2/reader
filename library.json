@@ -1412,15 +1412,19 @@
       "Virgilio"
     ],
     "source": "https://www.gutenberg.org/ebooks/1009",
-    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.",
+    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.; project-produced local narration",
     "id": "dante-inferno-c01",
     "title": "Inferno 01: Canto I",
     "collection": "dante-inferno",
     "canto": 1,
     "description": "Canto I of Dante’s Inferno in the original Italian (section 1 of 34).",
-    "text": "texts/dante_inferno_c01.txt",
     "wordCount": 995,
-    "minutes": 6
+    "minutes": 5,
+    "sourceText": "texts/dante_inferno_c01.txt",
+    "audio": "dante_inferno_c01.m4a",
+    "transcript": "dante_inferno_c01.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "88d57b105f193451"
   },
   {
     "author": "Dante Alighieri",
