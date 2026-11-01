@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "9e5ac5d6cf52db0812315c6ef949d9abf3ff7032d8b8b8e2888f66704ab682bc",
   "blocks": [
@@ -35,7 +35,7 @@
     },
     {
       "source": "per lo nostro sermone e per la mente",
-      "translation": "By reason of our speech and memory,",
+      "translation": "By reason of our speech and of our minds,",
       "line": 5
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "source": "per li Troiani e per la lunga guerra",
-      "translation": "Shed by the Romans and the lingering war",
+      "translation": "Shed by the Trojans and the lingering war",
       "line": 10
     },
     {
@@ -690,7 +690,7 @@
     },
     {
       "source": "Io feci il padre e ’l figlio in sé ribelli;",
-      "translation": "I made the father and the son rebellious;",
+      "translation": "I made the father and the son rebel against each other;",
       "line": 136
     },
     {
