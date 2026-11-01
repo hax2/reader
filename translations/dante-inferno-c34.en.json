@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "977978118d5b1ad58c4e2950c9e896d5c4d9eff21b9f25ec1f960433b2f18ab4",
   "blocks": [
@@ -80,7 +80,7 @@
     },
     {
       "source": "quella col capo e quella con le piante;",
-      "translation": "This with the head, and that one with the soles;",
+      "translation": "This head first, and that one feet first;",
       "line": 14
     },
     {
@@ -305,7 +305,7 @@
     },
     {
       "source": "verso ’l graffiar, che talvolta la schiena",
-      "translation": "Unto the clawing, for sometimes the spine",
+      "translation": "Unto the clawing, for sometimes the back",
       "line": 59
     },
     {
@@ -445,7 +445,7 @@
     },
     {
       "source": "appresso porse a me l’accorto passo.",
-      "translation": "Then tow’rds me he outstretched his wary step.",
+      "translation": "Then with a cautious step he joined me there.",
       "line": 87
     },
     {
