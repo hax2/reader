@@ -1444,15 +1444,19 @@
       "Virgilio"
     ],
     "source": "https://www.gutenberg.org/ebooks/1009",
-    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.",
+    "rights": "Public-domain original Italian work; Project Gutenberg ebook #1009 transcription.; project-produced local narration",
     "id": "dante-inferno-c02",
     "title": "Inferno 02: Canto II",
     "collection": "dante-inferno",
     "canto": 2,
     "description": "Canto II of Dante’s Inferno in the original Italian (section 2 of 34).",
-    "text": "texts/dante_inferno_c02.txt",
     "wordCount": 1036,
-    "minutes": 6
+    "minutes": 6,
+    "sourceText": "texts/dante_inferno_c02.txt",
+    "audio": "dante_inferno_c02.m4a",
+    "transcript": "dante_inferno_c02.json",
+    "audioGenerator": "Qwen3-TTS 1.7B local voice clone",
+    "mediaVersion": "e7eba47e78e55612"
   },
   {
     "author": "Dante Alighieri",
