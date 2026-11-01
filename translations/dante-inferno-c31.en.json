@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "1d1d40859e0e4aa4fcafdf93aef2fa9044cd00627c4b6e6daba56837f347fc3a",
   "blocks": [
@@ -345,7 +345,7 @@
     },
     {
       "source": "«Raphèl maì amècche zabì almi»,",
-      "translation": "“Raphael mai amech izabi almi,”",
+      "translation": "“Raphèl maì amècche zabì almi,”",
       "line": 67
     },
     {
@@ -425,7 +425,7 @@
     },
     {
       "source": "vòlti a sinistra; e al trar d’un balestro",
-      "translation": "Turned to the left, and a crossbow-shot oft",
+      "translation": "Turned to the left, and a crossbow-shot off",
       "line": 83
     },
     {
@@ -700,7 +700,7 @@
     },
     {
       "source": "sovr’ essa sì, ched ella incontro penda:",
-      "translation": "Above it so that opposite it hangs;",
+      "translation": "Above it, so that it seems to lean against the cloud;",
       "line": 138
     },
     {
