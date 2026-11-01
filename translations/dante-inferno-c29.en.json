@@ -5,7 +5,7 @@
   "translator": "Henry Wadsworth Longfellow",
   "translationYear": 1867,
   "source": "https://www.gutenberg.org/ebooks/1001",
-  "rights": "Public-domain English translation; Project Gutenberg ebook #1001.",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
   "alignment": "verse-line",
   "sourceHash": "8302b8cc666e458d50d3267a14d9e34c02c6d93744e5cf112f241e535d35351d",
   "blocks": [
@@ -580,7 +580,7 @@
     },
     {
       "source": "e quei, ch’avea vaghezza e senno poco,",
-      "translation": "And he who had conceit, but little wit,",
+      "translation": "And he, who had great longing but little wit,",
       "line": 114
     },
     {
@@ -665,7 +665,7 @@
     },
     {
       "source": "Caccia d’Ascian la vigna e la gran fonda,",
-      "translation": "Caccia d’Ascian his vineyards and vast woods,",
+      "translation": "Caccia d’Ascian his vineyard and great wealth,",
       "line": 131
     },
     {
