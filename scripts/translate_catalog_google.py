@@ -30,6 +30,7 @@ def main() -> None:
     parser.add_argument("--track", action="append", default=[], help="translate only this track ID (repeatable)")
     parser.add_argument("--dry-run", action="store_true", help="show the work without contacting Google")
     parser.add_argument("--check", action="store_true", help="validate saved translations without writing")
+    parser.add_argument("--replace-existing", action="store_true", help="allow replacing existing translations, including manual corrections")
     parser.add_argument("--max-characters", type=int, default=DEFAULT_MAX_CHARACTERS)
     parser.add_argument("--batch-characters", type=int, default=DEFAULT_BATCH_CHARACTERS)
     args = parser.parse_args()
@@ -68,6 +69,7 @@ def main() -> None:
             state = "saved" if job["complete"] else f'{job["pendingCharacters"]:,} pending characters'
             print(f'- {job["id"]}: {len(job["blocks"]):,} paragraphs, {state}')
         return
+    ensure_no_overwrite(jobs, args.replace_existing)
     if pending_characters > args.max_characters:
         fail(
             f"This run would send {pending_characters:,} new characters, above the "
@@ -111,6 +113,14 @@ def main() -> None:
         atomic_write_json(manifest_path, library)
         print("Updated library.json to use the saved translations")
     print(f"Done · {sent:,} characters sent to Google in this run")
+
+
+def ensure_no_overwrite(jobs: list[dict], replace_existing: bool) -> None:
+    """Fail before translation if a saved file would be replaced without consent."""
+    existing = [job["id"] for job in jobs if not job["complete"] and job["outputPath"].exists()]
+    if existing and not replace_existing:
+        fail("Existing translations would be replaced: " + ", ".join(existing) +
+             ". Use --replace-existing to discard their current contents.")
 
 
 def build_job(root: Path, track: dict) -> dict:

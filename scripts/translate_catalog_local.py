@@ -12,7 +12,7 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-from translate_catalog_google import atomic_write_json, build_job, fail, read_json
+from translate_catalog_google import atomic_write_json, build_job, ensure_no_overwrite, fail, read_json
 
 OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 DEFAULT_MODEL = "translategemma:4b"
@@ -33,6 +33,7 @@ def main() -> None:
     parser.add_argument("--batch-characters", type=int, default=DEFAULT_BATCH_CHARACTERS)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--replace-existing", action="store_true", help="allow replacing existing translations, including manual corrections")
     args = parser.parse_args()
 
     root = args.root.resolve()
@@ -74,6 +75,7 @@ def main() -> None:
             state = "saved" if job["complete"] else f'{job["pendingCharacters"]:,} pending characters'
             print(f'- {job["id"]}: {len(job["blocks"]):,} paragraphs, {state}')
         return
+    ensure_no_overwrite(jobs, args.replace_existing)
 
     completed_paths: dict[str, str] = {}
     started = time.monotonic()
