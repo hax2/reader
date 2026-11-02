@@ -139,6 +139,8 @@
 
 html {
   background: var(--paper);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -733,7 +735,7 @@ h2 {
 
 .reader-view {
   padding-bottom: 150px;
-  padding-top: 60px;
+  padding-top: 0;
 }
 
 .listen-panel {
@@ -885,7 +887,7 @@ h2 {
   padding: 12px 16px;
   background: var(--sticky-bg);
   border-bottom: 1px solid var(--reader-border);
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -1437,9 +1439,60 @@ h2 {
   }
 
   .mode-selector [role="radio"] {
+    flex: 1;
     padding: 0 9px;
-    min-height: 26px;
-    font-size: 0.72rem;
+    min-height: 40px;
+    font-size: 0.85rem;
+  }
+
+  .reader-topbar {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    gap: 8px;
+    padding: calc(8px + env(safe-area-inset-top)) 8px 8px;
+  }
+
+  .reader-topbar > .utility-button,
+  .reader-topbar .settings-menu summary {
+    width: 44px;
+    height: 44px;
+  }
+
+  .reader-topbar > .settings-menu {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .reader-topbar .mode-selector {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .settings-menu .appearance-controls {
+    overscroll-behavior: contain;
+  }
+
+  /* Keep native controls usable without shrinking the page to fit them. */
+  input,
+  select,
+  textarea {
+    min-width: 0;
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  .appearance-controls select {
+    font-size: 16px;
+  }
+
+  .file-control {
+    display: grid;
+    min-width: 0;
+    gap: 6px;
+  }
+
+  .file-control input {
+    width: 100%;
   }
 
   .passage-practice {
@@ -1526,12 +1579,20 @@ h2 {
   z-index: 100;
   width: min(320px, calc(100vw - 36px));
   max-height: calc(100vh - 86px);
+  max-height: calc(100dvh - 86px);
   overflow-y: auto;
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.15);
   border-radius: 16px;
   border: 1px solid var(--reader-border);
   background: var(--popover-bg);
   backdrop-filter: blur(20px);
+}
+
+@media (max-width: 600px) {
+  .settings-menu .appearance-controls {
+    width: min(320px, calc(100vw - 60px));
+    max-height: calc(100dvh - 150px - env(safe-area-inset-top));
+  }
 }
 
 .settings-menu .appearance-controls.is-adjusting {
@@ -1558,7 +1619,7 @@ h2 {
 .workspace {
   display: grid;
   gap: 24px;
-  padding: 80px 0 0;
+  padding: 24px 0 0;
 }
 
 .reader-shell {
@@ -1614,6 +1675,7 @@ h2 {
 }
 
 .reader {
+  scroll-margin-top: 80px;
   max-width: var(--reader-max-width);
   margin: 0 auto;
   padding: clamp(22px, 5vw, 54px) clamp(18px, 5vw, 60px);
@@ -1625,6 +1687,13 @@ h2 {
   font-family: var(--reader-font-family);
   font-size: var(--reader-font-size);
   line-height: var(--reader-line-height);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .reader {
+    scroll-margin-top: calc(132px + env(safe-area-inset-top));
+  }
 }
 
 :root[data-reader-font="sans"] {
@@ -2595,7 +2664,7 @@ textarea {
 
   .side-panel {
     position: sticky;
-    top: 28px;
+    top: 84px;
     margin: 0;
   }
 
@@ -4522,10 +4591,6 @@ textarea {
   font-size: 0.72rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-}
-
-.reader-topbar {
-  position: relative;
 }
 
 .reader-topbar-progress {
