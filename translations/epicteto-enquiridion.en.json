@@ -26,15 +26,15 @@
     },
     {
       "source": "La cojera es un impedimento para la pierna, mas no para el propósito interior; di esto mismo ante cada accidente de la vida y descubrirás que es un impedimento para otra cosa, pero no para ti. Recuerda que debes comportarte en la vida como en un banquete. ¿Llega hasta ti el plato que se sirve? Extiende la mano y toma tu parte con moderación y cortesía.",
-      "translation": "Lameness is an impediment to the leg, but not to inner purpose; say this at every accident that befalls you, and you will find it an impediment to something else, but not to yourself. Remember that you ought to conduct yourself in life as at a banquet. Has a dish been passed to you? Reach out your hand and take your share with moderation and courtesy. Does it pass you by? Do not detain it. Has it not yet come? Do not project your desire from afar, but wait quietly until it reaches your side."
+      "translation": "Lameness is an impediment to the leg, but not to inner purpose; say this at every accident that befalls you, and you will find it an impediment to something else, but not to yourself. Remember that you ought to conduct yourself in life as at a banquet. Has the dish being served come to you? Reach out your hand and take your share with moderation and courtesy."
     },
     {
       "source": "¿Pasa de largo? No lo retengas. ¿Aún no llega? No lances desde lejos tu deseo, sino aguarda en calma hasta que llegue a tu lado.",
-      "translation": "Remember too that you are an actor in a play of such a kind as the author chooses: short if it be short, long if it be long. Your business is to act nobly the role that has been assigned to you; to choose that role belongs to another. How long will you put off counting yourself worthy of the highest things and following the voice of reason? You are no longer a youth, but a grown person: if you are careless now and postpone your progress day after day, you will pass through life and die without noticing that you never began to live wisely."
+      "translation": "Does it pass you by? Do not detain it. Has it not yet come? Do not send your desire out to meet it, but wait calmly until it reaches your side."
     },
     {
       "source": "Recuerda también que eres actor de un drama tal como el director lo ha dispuesto: breve si es breve, largo si es largo. A ti te corresponde representar noblemente el papel que te ha sido confiado; elegir ese papel corresponde a otro. ¿Hasta cuándo aplazarás el considerarte digno de lo mejor y el seguir la voz de la razón? Ya no eres un adolescente, sino una persona madura: si ahora te descuidas y pospones tu mejora día tras día, pasarás por la vida y morirás sin darte cuenta de que nunca empezaste a vivir con sabiduría.",
-      "translation": ""
+      "translation": "Remember too that you are an actor in a play as the director has arranged it: short if it is short, long if it is long. Your part is to act nobly the role entrusted to you; to choose that role belongs to another. How long will you put off counting yourself worthy of the best and following the voice of reason? You are no longer a youth, but a grown person: if you are careless now and postpone your progress day after day, you will pass through life and die without noticing that you never began to live wisely."
     },
     {
       "source": "De todas las cosas del mundo, unas dependen de nosotros y otras no dependen de nosotros.",
@@ -110,26 +110,42 @@
     },
     {
       "source": "¿Llega hasta ti el plato que se sirve?",
-      "translation": "Has a dish been passed to you? Reach out your hand and take your share with moderation and courtesy."
+      "translation": "Has the dish being served come to you?"
     },
     {
       "source": "Extiende la mano y toma tu parte con moderación y cortesía.",
-      "translation": "Does it pass you by? Do not detain it. Has it not yet come? Do not project your desire from afar, but wait quietly until it reaches your side."
+      "translation": "Reach out your hand and take your share with moderation and courtesy."
     },
     {
       "source": "¿Pasa de largo?",
-      "translation": "Remember too that you are an actor in a play of such a kind as the author chooses: short if it be short, long if it be long."
+      "translation": "Does it pass you by?"
     },
     {
       "source": "No lo retengas.",
-      "translation": "Your business is to act nobly the role that has been assigned to you; to choose that role belongs to another."
+      "translation": "Do not detain it."
     },
     {
       "source": "¿Aún no llega?",
-      "translation": "How long will you put off counting yourself worthy of the highest things and following the voice of reason?"
+      "translation": "Has it not yet come?"
     },
     {
       "source": "No lances desde lejos tu deseo, sino aguarda en calma hasta que llegue a tu lado.",
+      "translation": "Do not send your desire out to meet it, but wait calmly until it reaches your side."
+    },
+    {
+      "source": "Recuerda también que eres actor de un drama tal como el director lo ha dispuesto: breve si es breve, largo si es largo.",
+      "translation": "Remember too that you are an actor in a play as the director has arranged it: short if it is short, long if it is long."
+    },
+    {
+      "source": "A ti te corresponde representar noblemente el papel que te ha sido confiado; elegir ese papel corresponde a otro.",
+      "translation": "Your part is to act nobly the role entrusted to you; to choose that role belongs to another."
+    },
+    {
+      "source": "¿Hasta cuándo aplazarás el considerarte digno de lo mejor y el seguir la voz de la razón?",
+      "translation": "How long will you put off counting yourself worthy of the best and following the voice of reason?"
+    },
+    {
+      "source": "Ya no eres un adolescente, sino una persona madura: si ahora te descuidas y pospones tu mejora día tras día, pasarás por la vida y morirás sin darte cuenta de que nunca empezaste a vivir con sabiduría.",
       "translation": "You are no longer a youth, but a grown person: if you are careless now and postpone your progress day after day, you will pass through life and die without noticing that you never began to live wisely."
     }
   ]
