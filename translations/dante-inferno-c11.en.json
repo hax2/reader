@@ -1,0 +1,592 @@
+{
+  "trackId": "dante-inferno-c11",
+  "sourceLanguage": "it",
+  "targetLanguage": "en",
+  "translator": "Henry Wadsworth Longfellow",
+  "translationYear": 1867,
+  "source": "https://www.gutenberg.org/ebooks/1001",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
+  "alignment": "verse-line",
+  "sourceHash": "5280241e4d47b1fd715c6d84bf0ee45a5b04a92946923749fc1fec2da28391de",
+  "blocks": [
+    {
+      "source": "Canto XI",
+      "translation": "Canto XI"
+    },
+    {
+      "source": "In su l’estremità d’un’alta ripa",
+      "translation": "Upon the margin of a lofty bank",
+      "line": 1
+    },
+    {
+      "source": "che facevan gran pietre rotte in cerchio,",
+      "translation": "Which great rocks broken in a circle made,",
+      "line": 2
+    },
+    {
+      "source": "venimmo sopra più crudele stipa;",
+      "translation": "We came upon a still more cruel throng;",
+      "line": 3
+    },
+    {
+      "source": "e quivi, per l’orribile soperchio",
+      "translation": "And there, by reason of the horrible",
+      "line": 4
+    },
+    {
+      "source": "del puzzo che ’l profondo abisso gitta,",
+      "translation": "Excess of stench the deep abyss throws out,",
+      "line": 5
+    },
+    {
+      "source": "ci raccostammo, in dietro, ad un coperchio",
+      "translation": "We drew ourselves aside behind the cover",
+      "line": 6
+    },
+    {
+      "source": "d’un grand’ avello, ov’ io vidi una scritta",
+      "translation": "Of a great tomb, whereon I saw a writing,",
+      "line": 7
+    },
+    {
+      "source": "che dicea: ‘Anastasio papa guardo,",
+      "translation": "Which said: “Pope Anastasius I hold,",
+      "line": 8
+    },
+    {
+      "source": "lo qual trasse Fotin de la via dritta’.",
+      "translation": "Whom out of the right way Photinus drew.”",
+      "line": 9
+    },
+    {
+      "source": "«Lo nostro scender conviene esser tardo,",
+      "translation": "“Slow it behoveth our descent to be,",
+      "line": 10
+    },
+    {
+      "source": "sì che s’ausi un poco in prima il senso",
+      "translation": "So that the sense be first a little used",
+      "line": 11
+    },
+    {
+      "source": "al tristo fiato; e poi no i fia riguardo».",
+      "translation": "To the sad blast, and then we shall not heed it.”",
+      "line": 12
+    },
+    {
+      "source": "Così ’l maestro; e io «Alcun compenso»,",
+      "translation": "The Master thus; and unto him I said,",
+      "line": 13
+    },
+    {
+      "source": "dissi lui, «trova che ’l tempo non passi",
+      "translation": "“Some compensation find, that the time pass not",
+      "line": 14
+    },
+    {
+      "source": "perduto». Ed elli: «Vedi ch’a ciò penso».",
+      "translation": "Idly;” and he: “Thou seest I think of that.",
+      "line": 15
+    },
+    {
+      "source": "«Figliuol mio, dentro da cotesti sassi»,",
+      "translation": "My son, upon the inside of these rocks,”",
+      "line": 16
+    },
+    {
+      "source": "cominciò poi a dir, «son tre cerchietti",
+      "translation": "Began he then to say, “are three small circles,",
+      "line": 17
+    },
+    {
+      "source": "di grado in grado, come que’ che lassi.",
+      "translation": "From grade to grade, like those which thou art leaving.",
+      "line": 18
+    },
+    {
+      "source": "Tutti son pien di spirti maladetti;",
+      "translation": "They all are full of spirits maledict;",
+      "line": 19
+    },
+    {
+      "source": "ma perché poi ti basti pur la vista,",
+      "translation": "But that hereafter sight alone suffice thee,",
+      "line": 20
+    },
+    {
+      "source": "intendi come e perché son costretti.",
+      "translation": "Hear how and wherefore they are in constraint.",
+      "line": 21
+    },
+    {
+      "source": "D’ogne malizia, ch’odio in cielo acquista,",
+      "translation": "Of every malice that wins hate in Heaven,",
+      "line": 22
+    },
+    {
+      "source": "ingiuria è ’l fine, ed ogne fin cotale",
+      "translation": "Injury is the end; and all such end",
+      "line": 23
+    },
+    {
+      "source": "o con forza o con frode altrui contrista.",
+      "translation": "Either by force or fraud afflicteth others.",
+      "line": 24
+    },
+    {
+      "source": "Ma perché frode è de l’uom proprio male,",
+      "translation": "But because fraud is man’s peculiar vice,",
+      "line": 25
+    },
+    {
+      "source": "più spiace a Dio; e però stan di sotto",
+      "translation": "More it displeases God; and so stand lowest",
+      "line": 26
+    },
+    {
+      "source": "li frodolenti, e più dolor li assale.",
+      "translation": "The fraudulent, and greater dole assails them.",
+      "line": 27
+    },
+    {
+      "source": "Di vïolenti il primo cerchio è tutto;",
+      "translation": "All the first circle of the Violent is;",
+      "line": 28
+    },
+    {
+      "source": "ma perché si fa forza a tre persone,",
+      "translation": "But since force may be used against three persons,",
+      "line": 29
+    },
+    {
+      "source": "in tre gironi è distinto e costrutto.",
+      "translation": "In three rounds ’tis divided and constructed.",
+      "line": 30
+    },
+    {
+      "source": "A Dio, a sé, al prossimo si pòne",
+      "translation": "To God, to ourselves, and to our neighbour can we",
+      "line": 31
+    },
+    {
+      "source": "far forza, dico in loro e in lor cose,",
+      "translation": "Use force; I say on them and on their things,",
+      "line": 32
+    },
+    {
+      "source": "come udirai con aperta ragione.",
+      "translation": "As thou shalt hear with reason manifest.",
+      "line": 33
+    },
+    {
+      "source": "Morte per forza e ferute dogliose",
+      "translation": "A death by violence, and painful wounds,",
+      "line": 34
+    },
+    {
+      "source": "nel prossimo si danno, e nel suo avere",
+      "translation": "Are to our neighbour given; and in his substance",
+      "line": 35
+    },
+    {
+      "source": "ruine, incendi e tollette dannose;",
+      "translation": "Ruin, and arson, and injurious thefts;",
+      "line": 36
+    },
+    {
+      "source": "onde omicide e ciascun che mal fiere,",
+      "translation": "Whence homicides, and he who smites unjustly,",
+      "line": 37
+    },
+    {
+      "source": "guastatori e predon, tutti tormenta",
+      "translation": "Marauders, and freebooters, the first round",
+      "line": 38
+    },
+    {
+      "source": "lo giron primo per diverse schiere.",
+      "translation": "Tormenteth all in companies diverse.",
+      "line": 39
+    },
+    {
+      "source": "Puote omo avere in sé man vïolenta",
+      "translation": "Man may lay violent hands upon himself",
+      "line": 40
+    },
+    {
+      "source": "e ne’ suoi beni; e però nel secondo",
+      "translation": "And his own goods; and therefore in the second",
+      "line": 41
+    },
+    {
+      "source": "giron convien che sanza pro si penta",
+      "translation": "Round must perforce without avail repent",
+      "line": 42
+    },
+    {
+      "source": "qualunque priva sé del vostro mondo,",
+      "translation": "Whoever of your world deprives himself,",
+      "line": 43
+    },
+    {
+      "source": "biscazza e fonde la sua facultade,",
+      "translation": "Or games, and dissipates his property,",
+      "line": 44
+    },
+    {
+      "source": "e piange là dov’ esser de’ giocondo.",
+      "translation": "And weepeth there, where he should jocund be.",
+      "line": 45
+    },
+    {
+      "source": "Puossi far forza ne la deïtade,",
+      "translation": "Violence can be done the Deity,",
+      "line": 46
+    },
+    {
+      "source": "col cor negando e bestemmiando quella,",
+      "translation": "In heart denying and blaspheming Him,",
+      "line": 47
+    },
+    {
+      "source": "e spregiando natura e sua bontade;",
+      "translation": "And by disdaining Nature and her bounty.",
+      "line": 48
+    },
+    {
+      "source": "e però lo minor giron suggella",
+      "translation": "And for this reason doth the smallest round",
+      "line": 49
+    },
+    {
+      "source": "del segno suo e Soddoma e Caorsa",
+      "translation": "Seal with its signet Sodom and Cahors,",
+      "line": 50
+    },
+    {
+      "source": "e chi, spregiando Dio col cor, favella.",
+      "translation": "And who, disdaining God, speaks from the heart.",
+      "line": 51
+    },
+    {
+      "source": "La frode, ond’ ogne coscïenza è morsa,",
+      "translation": "Fraud, wherewithal is every conscience stung,",
+      "line": 52
+    },
+    {
+      "source": "può l’omo usare in colui che ’n lui fida",
+      "translation": "A man may practise upon him who trusts,",
+      "line": 53
+    },
+    {
+      "source": "e in quel che fidanza non imborsa.",
+      "translation": "And him who doth no confidence imburse.",
+      "line": 54
+    },
+    {
+      "source": "Questo modo di retro par ch’incida",
+      "translation": "This latter mode, it would appear, dissevers",
+      "line": 55
+    },
+    {
+      "source": "pur lo vinco d’amor che fa natura;",
+      "translation": "Only the bond of love which Nature makes;",
+      "line": 56
+    },
+    {
+      "source": "onde nel cerchio secondo s’annida",
+      "translation": "Wherefore within the second circle nestle",
+      "line": 57
+    },
+    {
+      "source": "ipocresia, lusinghe e chi affattura,",
+      "translation": "Hypocrisy, flattery, and who deals in magic,",
+      "line": 58
+    },
+    {
+      "source": "falsità, ladroneccio e simonia,",
+      "translation": "Falsification, theft, and simony,",
+      "line": 59
+    },
+    {
+      "source": "ruffian, baratti e simile lordura.",
+      "translation": "Panders, and barrators, and the like filth.",
+      "line": 60
+    },
+    {
+      "source": "Per l’altro modo quell’ amor s’oblia",
+      "translation": "By the other mode, forgotten is that love",
+      "line": 61
+    },
+    {
+      "source": "che fa natura, e quel ch’è poi aggiunto,",
+      "translation": "Which Nature makes, and what is after added,",
+      "line": 62
+    },
+    {
+      "source": "di che la fede spezïal si cria;",
+      "translation": "From which there is a special faith engendered.",
+      "line": 63
+    },
+    {
+      "source": "onde nel cerchio minore, ov’ è ’l punto",
+      "translation": "Hence in the smallest circle, where the point is",
+      "line": 64
+    },
+    {
+      "source": "de l’universo in su che Dite siede,",
+      "translation": "Of the Universe, upon which Dis is seated,",
+      "line": 65
+    },
+    {
+      "source": "qualunque trade in etterno è consunto».",
+      "translation": "Whoe’er betrays for ever is consumed.”",
+      "line": 66
+    },
+    {
+      "source": "E io: «Maestro, assai chiara procede",
+      "translation": "And I: “My Master, clear enough proceeds",
+      "line": 67
+    },
+    {
+      "source": "la tua ragione, e assai ben distingue",
+      "translation": "Thy reasoning, and full well distinguishes",
+      "line": 68
+    },
+    {
+      "source": "questo baràtro e ’l popol ch’e’ possiede.",
+      "translation": "This cavern and the people it contains.",
+      "line": 69
+    },
+    {
+      "source": "Ma dimmi: quei de la palude pingue,",
+      "translation": "But tell me, those within the fat lagoon,",
+      "line": 70
+    },
+    {
+      "source": "che mena il vento, e che batte la pioggia,",
+      "translation": "Whom the wind drives, and whom the rain doth beat,",
+      "line": 71
+    },
+    {
+      "source": "e che s’incontran con sì aspre lingue,",
+      "translation": "And who encounter with such bitter tongues,",
+      "line": 72
+    },
+    {
+      "source": "perché non dentro da la città roggia",
+      "translation": "Wherefore are they inside of the red city",
+      "line": 73
+    },
+    {
+      "source": "sono ei puniti, se Dio li ha in ira?",
+      "translation": "Not punished, if God has them in his wrath,",
+      "line": 74
+    },
+    {
+      "source": "e se non li ha, perché sono a tal foggia?».",
+      "translation": "And if he has not, wherefore in such fashion?”",
+      "line": 75
+    },
+    {
+      "source": "Ed elli a me «Perché tanto delira»,",
+      "translation": "And unto me he said: “Why wanders so",
+      "line": 76
+    },
+    {
+      "source": "disse, «lo ’ngegno tuo da quel che sòle?",
+      "translation": "Thine intellect from that which it is wont?",
+      "line": 77
+    },
+    {
+      "source": "o ver la mente dove altrove mira?",
+      "translation": "Or, sooth, thy mind where is it elsewhere looking?",
+      "line": 78
+    },
+    {
+      "source": "Non ti rimembra di quelle parole",
+      "translation": "Hast thou no recollection of those words",
+      "line": 79
+    },
+    {
+      "source": "con le quai la tua Etica pertratta",
+      "translation": "With which thine Ethics thoroughly discusses",
+      "line": 80
+    },
+    {
+      "source": "le tre disposizion che ’l ciel non vole,",
+      "translation": "The dispositions three, that Heaven abides not,—",
+      "line": 81
+    },
+    {
+      "source": "incontenenza, malizia e la matta",
+      "translation": "Incontinence, and Malice, and insane",
+      "line": 82
+    },
+    {
+      "source": "bestialitade? e come incontenenza",
+      "translation": "Bestiality? and how Incontinence",
+      "line": 83
+    },
+    {
+      "source": "men Dio offende e men biasimo accatta?",
+      "translation": "Less God offendeth, and less blame attracts?",
+      "line": 84
+    },
+    {
+      "source": "Se tu riguardi ben questa sentenza,",
+      "translation": "If thou regardest this conclusion well,",
+      "line": 85
+    },
+    {
+      "source": "e rechiti a la mente chi son quelli",
+      "translation": "And to thy mind recallest who they are",
+      "line": 86
+    },
+    {
+      "source": "che sù di fuor sostegnon penitenza,",
+      "translation": "That up outside are undergoing penance,",
+      "line": 87
+    },
+    {
+      "source": "tu vedrai ben perché da questi felli",
+      "translation": "Clearly wilt thou perceive why from these felons",
+      "line": 88
+    },
+    {
+      "source": "sien dipartiti, e perché men crucciata",
+      "translation": "They separated are, and why less wroth",
+      "line": 89
+    },
+    {
+      "source": "la divina vendetta li martelli».",
+      "translation": "Justice divine doth smite them with its hammer.”",
+      "line": 90
+    },
+    {
+      "source": "«O sol che sani ogne vista turbata,",
+      "translation": "“O Sun, that healest all distempered vision,",
+      "line": 91
+    },
+    {
+      "source": "tu mi contenti sì quando tu solvi,",
+      "translation": "Thou dost content me so, when thou resolvest,",
+      "line": 92
+    },
+    {
+      "source": "che, non men che saver, dubbiar m’aggrata.",
+      "translation": "That doubting pleases me no less than knowing!",
+      "line": 93
+    },
+    {
+      "source": "Ancora in dietro un poco ti rivolvi»,",
+      "translation": "Once more a little backward turn thee,” said I,",
+      "line": 94
+    },
+    {
+      "source": "diss’ io, «là dove di’ ch’usura offende",
+      "translation": "“There where thou sayest that usury offends",
+      "line": 95
+    },
+    {
+      "source": "la divina bontade, e ’l groppo solvi».",
+      "translation": "Goodness divine, and disengage the knot.”",
+      "line": 96
+    },
+    {
+      "source": "«Filosofia», mi disse, «a chi la ’ntende,",
+      "translation": "“Philosophy,” he said, “to him who heeds it,",
+      "line": 97
+    },
+    {
+      "source": "nota, non pure in una sola parte,",
+      "translation": "Noteth, not only in one place alone,",
+      "line": 98
+    },
+    {
+      "source": "come natura lo suo corso prende",
+      "translation": "After what manner Nature takes her course",
+      "line": 99
+    },
+    {
+      "source": "dal divino ’ntelletto e da sua arte;",
+      "translation": "From Intellect Divine, and from its art;",
+      "line": 100
+    },
+    {
+      "source": "e se tu ben la tua Fisica note,",
+      "translation": "And if thy Physics carefully thou notest,",
+      "line": 101
+    },
+    {
+      "source": "tu troverai, non dopo molte carte,",
+      "translation": "After not many pages shalt thou find,",
+      "line": 102
+    },
+    {
+      "source": "che l’arte vostra quella, quanto pote,",
+      "translation": "That this your art as far as possible",
+      "line": 103
+    },
+    {
+      "source": "segue, come ’l maestro fa ’l discente;",
+      "translation": "Follows, as the disciple doth the master;",
+      "line": 104
+    },
+    {
+      "source": "sì che vostr’ arte a Dio quasi è nepote.",
+      "translation": "So that your art is, as it were, God’s grandchild.",
+      "line": 105
+    },
+    {
+      "source": "Da queste due, se tu ti rechi a mente",
+      "translation": "From these two, if thou bringest to thy mind",
+      "line": 106
+    },
+    {
+      "source": "lo Genesì dal principio, convene",
+      "translation": "Genesis at the beginning, it behoves",
+      "line": 107
+    },
+    {
+      "source": "prender sua vita e avanzar la gente;",
+      "translation": "Mankind to gain their life and to advance;",
+      "line": 108
+    },
+    {
+      "source": "e perché l’usuriere altra via tene,",
+      "translation": "And since the usurer takes another way,",
+      "line": 109
+    },
+    {
+      "source": "per sé natura e per la sua seguace",
+      "translation": "Nature herself and in her follower",
+      "line": 110
+    },
+    {
+      "source": "dispregia, poi ch’in altro pon la spene.",
+      "translation": "Disdains he, for elsewhere he puts his hope.",
+      "line": 111
+    },
+    {
+      "source": "Ma seguimi oramai che ’l gir mi piace;",
+      "translation": "But follow, now, as I would fain go on,",
+      "line": 112
+    },
+    {
+      "source": "ché i Pesci guizzan su per l’orizzonta,",
+      "translation": "For quivering are the Fishes on the horizon,",
+      "line": 113
+    },
+    {
+      "source": "e ’l Carro tutto sovra ’l Coro giace,",
+      "translation": "And the Wain wholly over Caurus lies,",
+      "line": 114
+    },
+    {
+      "source": "e ’l balzo via là oltra si dismonta».",
+      "translation": "And far beyond there we descend the crag.”",
+      "line": 115
+    }
+  ]
+}

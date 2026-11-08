@@ -1,0 +1,697 @@
+{
+  "trackId": "dante-inferno-c03",
+  "sourceLanguage": "it",
+  "targetLanguage": "en",
+  "translator": "Henry Wadsworth Longfellow",
+  "translationYear": 1867,
+  "source": "https://www.gutenberg.org/ebooks/1001",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
+  "alignment": "verse-line",
+  "sourceHash": "1dc8877c22d9f5b6aa33047e771faa2bc3cee47091e88159665911baeac62dad",
+  "blocks": [
+    {
+      "source": "Canto III",
+      "translation": "Canto III"
+    },
+    {
+      "source": "‘Per me si va ne la città dolente,",
+      "translation": "“Through me the way is to the city dolent;",
+      "line": 1
+    },
+    {
+      "source": "per me si va ne l’etterno dolore,",
+      "translation": "Through me the way is to eternal dole;",
+      "line": 2
+    },
+    {
+      "source": "per me si va tra la perduta gente.",
+      "translation": "Through me the way among the people lost.",
+      "line": 3
+    },
+    {
+      "source": "Giustizia mosse il mio alto fattore;",
+      "translation": "Justice incited my sublime Creator;",
+      "line": 4
+    },
+    {
+      "source": "fecemi la divina podestate,",
+      "translation": "Created me divine Omnipotence,",
+      "line": 5
+    },
+    {
+      "source": "la somma sapïenza e ’l primo amore.",
+      "translation": "The highest Wisdom and the primal Love.",
+      "line": 6
+    },
+    {
+      "source": "Dinanzi a me non fuor cose create",
+      "translation": "Before me there were no created things,",
+      "line": 7
+    },
+    {
+      "source": "se non etterne, e io etterno duro.",
+      "translation": "Only eterne, and I eternal last.",
+      "line": 8
+    },
+    {
+      "source": "Lasciate ogne speranza, voi ch’intrate’.",
+      "translation": "All hope abandon, ye who enter in!”",
+      "line": 9
+    },
+    {
+      "source": "Queste parole di colore oscuro",
+      "translation": "These words in sombre colour I beheld",
+      "line": 10
+    },
+    {
+      "source": "vid’ ïo scritte al sommo d’una porta;",
+      "translation": "Written upon the summit of a gate;",
+      "line": 11
+    },
+    {
+      "source": "per ch’io: «Maestro, il senso lor m’è duro».",
+      "translation": "Whence I: “Their sense is, Master, hard to me!”",
+      "line": 12
+    },
+    {
+      "source": "Ed elli a me, come persona accorta:",
+      "translation": "And he to me, as one experienced:",
+      "line": 13
+    },
+    {
+      "source": "«Qui si convien lasciare ogne sospetto;",
+      "translation": "“Here all suspicion needs must be abandoned,",
+      "line": 14
+    },
+    {
+      "source": "ogne viltà convien che qui sia morta.",
+      "translation": "All cowardice must needs be here extinct.",
+      "line": 15
+    },
+    {
+      "source": "Noi siam venuti al loco ov’ i’ t’ho detto",
+      "translation": "We to the place have come, where I have told thee",
+      "line": 16
+    },
+    {
+      "source": "che tu vedrai le genti dolorose",
+      "translation": "Thou shalt behold the people dolorous",
+      "line": 17
+    },
+    {
+      "source": "c’hanno perduto il ben de l’intelletto».",
+      "translation": "Who have foregone the good of intellect.”",
+      "line": 18
+    },
+    {
+      "source": "E poi che la sua mano a la mia puose",
+      "translation": "And after he had laid his hand on mine",
+      "line": 19
+    },
+    {
+      "source": "con lieto volto, ond’ io mi confortai,",
+      "translation": "With joyful mien, whence I was comforted,",
+      "line": 20
+    },
+    {
+      "source": "mi mise dentro a le segrete cose.",
+      "translation": "He led me in among the secret things.",
+      "line": 21
+    },
+    {
+      "source": "Quivi sospiri, pianti e alti guai",
+      "translation": "There sighs, complaints, and ululations loud",
+      "line": 22
+    },
+    {
+      "source": "risonavan per l’aere sanza stelle,",
+      "translation": "Resounded through the air without a star,",
+      "line": 23
+    },
+    {
+      "source": "per ch’io al cominciar ne lagrimai.",
+      "translation": "Whence I, at the beginning, wept thereat.",
+      "line": 24
+    },
+    {
+      "source": "Diverse lingue, orribili favelle,",
+      "translation": "Languages diverse, horrible dialects,",
+      "line": 25
+    },
+    {
+      "source": "parole di dolore, accenti d’ira,",
+      "translation": "Words of sorrow, accents of anger,",
+      "line": 26
+    },
+    {
+      "source": "voci alte e fioche, e suon di man con elle",
+      "translation": "And voices high and hoarse, with sound of hands,",
+      "line": 27
+    },
+    {
+      "source": "facevano un tumulto, il qual s’aggira",
+      "translation": "Made up a tumult that goes whirling on",
+      "line": 28
+    },
+    {
+      "source": "sempre in quell’ aura sanza tempo tinta,",
+      "translation": "For ever in that air for ever black,",
+      "line": 29
+    },
+    {
+      "source": "come la rena quando turbo spira.",
+      "translation": "Even as the sand doth, when the whirlwind breathes.",
+      "line": 30
+    },
+    {
+      "source": "E io ch’avea d’error la testa cinta,",
+      "translation": "And I, who had my head with horror bound,",
+      "line": 31
+    },
+    {
+      "source": "dissi: «Maestro, che è quel ch’i’ odo?",
+      "translation": "Said: “Master, what is this which now I hear?",
+      "line": 32
+    },
+    {
+      "source": "e che gent’ è che par nel duol sì vinta?».",
+      "translation": "What folk is this, which seems by pain so vanquished?”",
+      "line": 33
+    },
+    {
+      "source": "Ed elli a me: «Questo misero modo",
+      "translation": "And he to me: “This miserable mode",
+      "line": 34
+    },
+    {
+      "source": "tegnon l’anime triste di coloro",
+      "translation": "Maintain the melancholy souls of those",
+      "line": 35
+    },
+    {
+      "source": "che visser sanza ’nfamia e sanza lodo.",
+      "translation": "Who lived withouten infamy or praise.",
+      "line": 36
+    },
+    {
+      "source": "Mischiate sono a quel cattivo coro",
+      "translation": "Commingled are they with that caitiff choir",
+      "line": 37
+    },
+    {
+      "source": "de li angeli che non furon ribelli",
+      "translation": "Of Angels, who have not rebellious been,",
+      "line": 38
+    },
+    {
+      "source": "né fur fedeli a Dio, ma per sé fuoro.",
+      "translation": "Nor faithful were to God, but were for self.",
+      "line": 39
+    },
+    {
+      "source": "Caccianli i ciel per non esser men belli,",
+      "translation": "The heavens expelled them, not to be less fair;",
+      "line": 40
+    },
+    {
+      "source": "né lo profondo inferno li riceve,",
+      "translation": "Nor them the nethermore abyss receives,",
+      "line": 41
+    },
+    {
+      "source": "ch’alcuna gloria i rei avrebber d’elli».",
+      "translation": "For the wicked would have some glory over them.”",
+      "line": 42
+    },
+    {
+      "source": "E io: «Maestro, che è tanto greve",
+      "translation": "And I: “O Master, what so grievous is",
+      "line": 43
+    },
+    {
+      "source": "a lor che lamentar li fa sì forte?».",
+      "translation": "To these, that maketh them lament so sore?”",
+      "line": 44
+    },
+    {
+      "source": "Rispuose: «Dicerolti molto breve.",
+      "translation": "He answered: “I will tell thee very briefly.",
+      "line": 45
+    },
+    {
+      "source": "Questi non hanno speranza di morte,",
+      "translation": "These have no longer any hope of death;",
+      "line": 46
+    },
+    {
+      "source": "e la lor cieca vita è tanto bassa,",
+      "translation": "And this blind life of theirs is so debased,",
+      "line": 47
+    },
+    {
+      "source": "che ’nvidïosi son d’ogne altra sorte.",
+      "translation": "They envious are of every other fate.",
+      "line": 48
+    },
+    {
+      "source": "Fama di loro il mondo esser non lassa;",
+      "translation": "No fame of them the world permits to be;",
+      "line": 49
+    },
+    {
+      "source": "misericordia e giustizia li sdegna:",
+      "translation": "Misericord and Justice both disdain them.",
+      "line": 50
+    },
+    {
+      "source": "non ragioniam di lor, ma guarda e passa».",
+      "translation": "Let us not speak of them, but look, and pass.”",
+      "line": 51
+    },
+    {
+      "source": "E io, che riguardai, vidi una ’nsegna",
+      "translation": "And I, who looked again, beheld a banner,",
+      "line": 52
+    },
+    {
+      "source": "che girando correva tanto ratta,",
+      "translation": "Which, whirling round, ran on so rapidly,",
+      "line": 53
+    },
+    {
+      "source": "che d’ogne posa mi parea indegna;",
+      "translation": "That of all pause it seemed to me indignant;",
+      "line": 54
+    },
+    {
+      "source": "e dietro le venìa sì lunga tratta",
+      "translation": "And after it there came so long a train",
+      "line": 55
+    },
+    {
+      "source": "di gente, ch’i’ non averei creduto",
+      "translation": "Of people, that I ne’er would have believed",
+      "line": 56
+    },
+    {
+      "source": "che morte tanta n’avesse disfatta.",
+      "translation": "That ever Death so many had undone.",
+      "line": 57
+    },
+    {
+      "source": "Poscia ch’io v’ebbi alcun riconosciuto,",
+      "translation": "When some among them I had recognised,",
+      "line": 58
+    },
+    {
+      "source": "vidi e conobbi l’ombra di colui",
+      "translation": "I looked, and I beheld the shade of him",
+      "line": 59
+    },
+    {
+      "source": "che fece per viltade il gran rifiuto.",
+      "translation": "Who made through cowardice the great refusal.",
+      "line": 60
+    },
+    {
+      "source": "Incontanente intesi e certo fui",
+      "translation": "Forthwith I comprehended, and was certain,",
+      "line": 61
+    },
+    {
+      "source": "che questa era la setta d’i cattivi,",
+      "translation": "That this the sect was of the caitiff wretches",
+      "line": 62
+    },
+    {
+      "source": "a Dio spiacenti e a’ nemici sui.",
+      "translation": "Hateful to God and to his enemies.",
+      "line": 63
+    },
+    {
+      "source": "Questi sciaurati, che mai non fur vivi,",
+      "translation": "These miscreants, who never were alive,",
+      "line": 64
+    },
+    {
+      "source": "erano ignudi e stimolati molto",
+      "translation": "Were naked, and were stung exceedingly",
+      "line": 65
+    },
+    {
+      "source": "da mosconi e da vespe ch’eran ivi.",
+      "translation": "By gadflies and by hornets that were there.",
+      "line": 66
+    },
+    {
+      "source": "Elle rigavan lor di sangue il volto,",
+      "translation": "These did their faces irrigate with blood,",
+      "line": 67
+    },
+    {
+      "source": "che, mischiato di lagrime, a’ lor piedi",
+      "translation": "Which, with their tears commingled, at their feet",
+      "line": 68
+    },
+    {
+      "source": "da fastidiosi vermi era ricolto.",
+      "translation": "By the disgusting worms was gathered up.",
+      "line": 69
+    },
+    {
+      "source": "E poi ch’a riguardar oltre mi diedi,",
+      "translation": "And when to gazing farther I betook me.",
+      "line": 70
+    },
+    {
+      "source": "vidi genti a la riva d’un gran fiume;",
+      "translation": "People I saw on a great river’s bank;",
+      "line": 71
+    },
+    {
+      "source": "per ch’io dissi: «Maestro, or mi concedi",
+      "translation": "Whence said I: “Master, now vouchsafe to me,",
+      "line": 72
+    },
+    {
+      "source": "ch’i’ sappia quali sono, e qual costume",
+      "translation": "That I may know who these are, and what law",
+      "line": 73
+    },
+    {
+      "source": "le fa di trapassar parer sì pronte,",
+      "translation": "Makes them appear so ready to pass over,",
+      "line": 74
+    },
+    {
+      "source": "com’ i’ discerno per lo fioco lume».",
+      "translation": "As I discern athwart the dusky light.”",
+      "line": 75
+    },
+    {
+      "source": "Ed elli a me: «Le cose ti fier conte",
+      "translation": "And he to me: “These things shall all be known",
+      "line": 76
+    },
+    {
+      "source": "quando noi fermerem li nostri passi",
+      "translation": "To thee, as soon as we our footsteps stay",
+      "line": 77
+    },
+    {
+      "source": "su la trista riviera d’Acheronte».",
+      "translation": "Upon the dismal shore of Acheron.”",
+      "line": 78
+    },
+    {
+      "source": "Allor con li occhi vergognosi e bassi,",
+      "translation": "Then with mine eyes ashamed and downward cast,",
+      "line": 79
+    },
+    {
+      "source": "temendo no ’l mio dir li fosse grave,",
+      "translation": "Fearing my words might irksome be to him,",
+      "line": 80
+    },
+    {
+      "source": "infino al fiume del parlar mi trassi.",
+      "translation": "From speech refrained I till we reached the river.",
+      "line": 81
+    },
+    {
+      "source": "Ed ecco verso noi venir per nave",
+      "translation": "And lo! towards us coming in a boat",
+      "line": 82
+    },
+    {
+      "source": "un vecchio, bianco per antico pelo,",
+      "translation": "An old man, hoary with the hair of eld,",
+      "line": 83
+    },
+    {
+      "source": "gridando: «Guai a voi, anime prave!",
+      "translation": "Crying: “Woe unto you, ye souls depraved!",
+      "line": 84
+    },
+    {
+      "source": "Non isperate mai veder lo cielo:",
+      "translation": "Hope nevermore to look upon the heavens;",
+      "line": 85
+    },
+    {
+      "source": "i’ vegno per menarvi a l’altra riva",
+      "translation": "I come to lead you to the other shore,",
+      "line": 86
+    },
+    {
+      "source": "ne le tenebre etterne, in caldo e ’n gelo.",
+      "translation": "To the eternal shades in heat and frost.",
+      "line": 87
+    },
+    {
+      "source": "E tu che se’ costì, anima viva,",
+      "translation": "And thou, that yonder standest, living soul,",
+      "line": 88
+    },
+    {
+      "source": "pàrtiti da cotesti che son morti».",
+      "translation": "Withdraw thee from these people, who are dead!”",
+      "line": 89
+    },
+    {
+      "source": "Ma poi che vide ch’io non mi partiva,",
+      "translation": "But when he saw that I did not withdraw,",
+      "line": 90
+    },
+    {
+      "source": "disse: «Per altra via, per altri porti",
+      "translation": "He said: “By other ways, by other ports",
+      "line": 91
+    },
+    {
+      "source": "verrai a piaggia, non qui, per passare:",
+      "translation": "Thou to the shore shalt come, not here, for passage;",
+      "line": 92
+    },
+    {
+      "source": "più lieve legno convien che ti porti».",
+      "translation": "A lighter vessel needs must carry thee.”",
+      "line": 93
+    },
+    {
+      "source": "E ’l duca lui: «Caron, non ti crucciare:",
+      "translation": "And unto him the Guide: “Vex thee not, Charon;",
+      "line": 94
+    },
+    {
+      "source": "vuolsi così colà dove si puote",
+      "translation": "It is so willed there where is power to do",
+      "line": 95
+    },
+    {
+      "source": "ciò che si vuole, e più non dimandare».",
+      "translation": "That which is willed; and farther question not.”",
+      "line": 96
+    },
+    {
+      "source": "Quinci fuor quete le lanose gote",
+      "translation": "Thereat were quieted the fleecy cheeks",
+      "line": 97
+    },
+    {
+      "source": "al nocchier de la livida palude,",
+      "translation": "Of him the ferryman of the livid fen,",
+      "line": 98
+    },
+    {
+      "source": "che ’ntorno a li occhi avea di fiamme rote.",
+      "translation": "Who round about his eyes had wheels of flame.",
+      "line": 99
+    },
+    {
+      "source": "Ma quell’ anime, ch’eran lasse e nude,",
+      "translation": "But all those souls who weary were and naked",
+      "line": 100
+    },
+    {
+      "source": "cangiar colore e dibattero i denti,",
+      "translation": "Their colour changed and gnashed their teeth together,",
+      "line": 101
+    },
+    {
+      "source": "ratto che ’nteser le parole crude.",
+      "translation": "As soon as they had heard those cruel words.",
+      "line": 102
+    },
+    {
+      "source": "Bestemmiavano Dio e lor parenti,",
+      "translation": "God they blasphemed and their progenitors,",
+      "line": 103
+    },
+    {
+      "source": "l’umana spezie e ’l loco e ’l tempo e ’l seme",
+      "translation": "The human race, the place, the time, the seed",
+      "line": 104
+    },
+    {
+      "source": "di lor semenza e di lor nascimenti.",
+      "translation": "Of their engendering and of their birth!",
+      "line": 105
+    },
+    {
+      "source": "Poi si ritrasser tutte quante insieme,",
+      "translation": "Thereafter all together they drew back,",
+      "line": 106
+    },
+    {
+      "source": "forte piangendo, a la riva malvagia",
+      "translation": "Bitterly weeping, to the accursed shore,",
+      "line": 107
+    },
+    {
+      "source": "ch’attende ciascun uom che Dio non teme.",
+      "translation": "Which waiteth every man who fears not God.",
+      "line": 108
+    },
+    {
+      "source": "Caron dimonio, con occhi di bragia",
+      "translation": "Charon the demon, with the eyes of glede,",
+      "line": 109
+    },
+    {
+      "source": "loro accennando, tutte le raccoglie;",
+      "translation": "Beckoning to them, collects them all together,",
+      "line": 110
+    },
+    {
+      "source": "batte col remo qualunque s’adagia.",
+      "translation": "Beats with his oar whoever lags behind.",
+      "line": 111
+    },
+    {
+      "source": "Come d’autunno si levan le foglie",
+      "translation": "As in the autumn-time the leaves fall off,",
+      "line": 112
+    },
+    {
+      "source": "l’una appresso de l’altra, fin che ’l ramo",
+      "translation": "First one and then another, till the branch",
+      "line": 113
+    },
+    {
+      "source": "vede a la terra tutte le sue spoglie,",
+      "translation": "Unto the earth surrenders all its spoils;",
+      "line": 114
+    },
+    {
+      "source": "similemente il mal seme d’Adamo",
+      "translation": "In similar wise the evil seed of Adam",
+      "line": 115
+    },
+    {
+      "source": "gittansi di quel lito ad una ad una,",
+      "translation": "Throw themselves from that margin one by one,",
+      "line": 116
+    },
+    {
+      "source": "per cenni come augel per suo richiamo.",
+      "translation": "At signals, as a bird unto its lure.",
+      "line": 117
+    },
+    {
+      "source": "Così sen vanno su per l’onda bruna,",
+      "translation": "So they depart across the dusky wave,",
+      "line": 118
+    },
+    {
+      "source": "e avanti che sien di là discese,",
+      "translation": "And ere upon the other side they land,",
+      "line": 119
+    },
+    {
+      "source": "anche di qua nuova schiera s’auna.",
+      "translation": "Again on this side a new troop assembles.",
+      "line": 120
+    },
+    {
+      "source": "«Figliuol mio», disse ’l maestro cortese,",
+      "translation": "“My son,” the courteous Master said to me,",
+      "line": 121
+    },
+    {
+      "source": "«quelli che muoion ne l’ira di Dio",
+      "translation": "“All those who perish in the wrath of God",
+      "line": 122
+    },
+    {
+      "source": "tutti convegnon qui d’ogne paese;",
+      "translation": "Here meet together out of every land;",
+      "line": 123
+    },
+    {
+      "source": "e pronti sono a trapassar lo rio,",
+      "translation": "And ready are they to pass o’er the river,",
+      "line": 124
+    },
+    {
+      "source": "ché la divina giustizia li sprona,",
+      "translation": "Because celestial Justice spurs them on,",
+      "line": 125
+    },
+    {
+      "source": "sì che la tema si volve in disio.",
+      "translation": "So that their fear is turned into desire.",
+      "line": 126
+    },
+    {
+      "source": "Quinci non passa mai anima buona;",
+      "translation": "This way there never passes a good soul;",
+      "line": 127
+    },
+    {
+      "source": "e però, se Caron di te si lagna,",
+      "translation": "And hence if Charon doth complain of thee,",
+      "line": 128
+    },
+    {
+      "source": "ben puoi sapere omai che ’l suo dir suona».",
+      "translation": "Well mayst thou know now what his speech imports.”",
+      "line": 129
+    },
+    {
+      "source": "Finito questo, la buia campagna",
+      "translation": "This being finished, all the dusk champaign",
+      "line": 130
+    },
+    {
+      "source": "tremò sì forte, che de lo spavento",
+      "translation": "Trembled so violently, that of that terror",
+      "line": 131
+    },
+    {
+      "source": "la mente di sudore ancor mi bagna.",
+      "translation": "The recollection bathes me still with sweat.",
+      "line": 132
+    },
+    {
+      "source": "La terra lagrimosa diede vento,",
+      "translation": "The land of tears gave forth a blast of wind,",
+      "line": 133
+    },
+    {
+      "source": "che balenò una luce vermiglia",
+      "translation": "And fulminated a vermilion light,",
+      "line": 134
+    },
+    {
+      "source": "la qual mi vinse ciascun sentimento;",
+      "translation": "Which overmastered in me every sense,",
+      "line": 135
+    },
+    {
+      "source": "e caddi come l’uom cui sonno piglia.",
+      "translation": "And as a man whom sleep hath seized I fell.",
+      "line": 136
+    }
+  ]
+}

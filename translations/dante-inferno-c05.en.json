@@ -1,0 +1,727 @@
+{
+  "trackId": "dante-inferno-c05",
+  "sourceLanguage": "it",
+  "targetLanguage": "en",
+  "translator": "Henry Wadsworth Longfellow",
+  "translationYear": 1867,
+  "source": "https://www.gutenberg.org/ebooks/1001",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
+  "alignment": "verse-line",
+  "sourceHash": "f83044a41e4d05954b1f22a62aa7ea53a24791e9142f002011fcaa116694cd25",
+  "blocks": [
+    {
+      "source": "Canto V",
+      "translation": "Canto V"
+    },
+    {
+      "source": "Così discesi del cerchio primaio",
+      "translation": "Thus I descended out of the first circle",
+      "line": 1
+    },
+    {
+      "source": "giù nel secondo, che men loco cinghia",
+      "translation": "Down to the second, that less space begirds,",
+      "line": 2
+    },
+    {
+      "source": "e tanto più dolor, che punge a guaio.",
+      "translation": "And so much greater dole, that goads to wailing.",
+      "line": 3
+    },
+    {
+      "source": "Stavvi Minòs orribilmente, e ringhia:",
+      "translation": "There standeth Minos horribly, and snarls;",
+      "line": 4
+    },
+    {
+      "source": "essamina le colpe ne l’intrata;",
+      "translation": "Examines the transgressions at the entrance;",
+      "line": 5
+    },
+    {
+      "source": "giudica e manda secondo ch’avvinghia.",
+      "translation": "Judges, and sends according as he girds him.",
+      "line": 6
+    },
+    {
+      "source": "Dico che quando l’anima mal nata",
+      "translation": "I say, that when the spirit evil-born",
+      "line": 7
+    },
+    {
+      "source": "li vien dinanzi, tutta si confessa;",
+      "translation": "Cometh before him, wholly it confesses;",
+      "line": 8
+    },
+    {
+      "source": "e quel conoscitor de le peccata",
+      "translation": "And this discriminator of transgressions",
+      "line": 9
+    },
+    {
+      "source": "vede qual loco d’inferno è da essa;",
+      "translation": "Seeth what place in Hell is meet for it;",
+      "line": 10
+    },
+    {
+      "source": "cignesi con la coda tante volte",
+      "translation": "Girds himself with his tail as many times",
+      "line": 11
+    },
+    {
+      "source": "quantunque gradi vuol che giù sia messa.",
+      "translation": "As grades he wishes it should be thrust down.",
+      "line": 12
+    },
+    {
+      "source": "Sempre dinanzi a lui ne stanno molte:",
+      "translation": "Always before him many of them stand;",
+      "line": 13
+    },
+    {
+      "source": "vanno a vicenda ciascuna al giudizio,",
+      "translation": "They go by turns each one unto the judgment;",
+      "line": 14
+    },
+    {
+      "source": "dicono e odono e poi son giù volte.",
+      "translation": "They speak, and hear, and then are downward hurled.",
+      "line": 15
+    },
+    {
+      "source": "«O tu che vieni al doloroso ospizio»,",
+      "translation": "“O thou, that to this dolorous hostelry",
+      "line": 16
+    },
+    {
+      "source": "disse Minòs a me quando mi vide,",
+      "translation": "Comest,” said Minos to me, when he saw me,",
+      "line": 17
+    },
+    {
+      "source": "lasciando l’atto di cotanto offizio,",
+      "translation": "Leaving the practice of so great an office,",
+      "line": 18
+    },
+    {
+      "source": "«guarda com’ entri e di cui tu ti fide;",
+      "translation": "“Look how thou enterest, and in whom thou trustest;",
+      "line": 19
+    },
+    {
+      "source": "non t’inganni l’ampiezza de l’intrare!».",
+      "translation": "Let not the portal’s amplitude deceive thee.”",
+      "line": 20
+    },
+    {
+      "source": "E ’l duca mio a lui: «Perché pur gride?",
+      "translation": "And unto him my Guide: “Why criest thou too?",
+      "line": 21
+    },
+    {
+      "source": "Non impedir lo suo fatale andare:",
+      "translation": "Do not impede his journey fate-ordained;",
+      "line": 22
+    },
+    {
+      "source": "vuolsi così colà dove si puote",
+      "translation": "It is so willed there where is power to do",
+      "line": 23
+    },
+    {
+      "source": "ciò che si vuole, e più non dimandare».",
+      "translation": "That which is willed; and ask no further question.”",
+      "line": 24
+    },
+    {
+      "source": "Or incomincian le dolenti note",
+      "translation": "And now begin the dolesome notes to grow",
+      "line": 25
+    },
+    {
+      "source": "a farmisi sentire; or son venuto",
+      "translation": "Audible unto me; now am I come",
+      "line": 26
+    },
+    {
+      "source": "là dove molto pianto mi percuote.",
+      "translation": "There where much lamentation strikes upon me.",
+      "line": 27
+    },
+    {
+      "source": "Io venni in loco d’ogne luce muto,",
+      "translation": "I came into a place mute of all light,",
+      "line": 28
+    },
+    {
+      "source": "che mugghia come fa mar per tempesta,",
+      "translation": "Which bellows as the sea does in a tempest,",
+      "line": 29
+    },
+    {
+      "source": "se da contrari venti è combattuto.",
+      "translation": "If by opposing winds ’t is combated.",
+      "line": 30
+    },
+    {
+      "source": "La bufera infernal, che mai non resta,",
+      "translation": "The infernal hurricane that never rests",
+      "line": 31
+    },
+    {
+      "source": "mena li spirti con la sua rapina;",
+      "translation": "Hurtles the spirits onward in its rapine;",
+      "line": 32
+    },
+    {
+      "source": "voltando e percotendo li molesta.",
+      "translation": "Whirling them round, and smiting, it molests them.",
+      "line": 33
+    },
+    {
+      "source": "Quando giungon davanti a la ruina,",
+      "translation": "When they arrive before the precipice,",
+      "line": 34
+    },
+    {
+      "source": "quivi le strida, il compianto, il lamento;",
+      "translation": "There are the shrieks, the plaints, and the laments,",
+      "line": 35
+    },
+    {
+      "source": "bestemmian quivi la virtù divina.",
+      "translation": "There they blaspheme the puissance divine.",
+      "line": 36
+    },
+    {
+      "source": "Intesi ch’a così fatto tormento",
+      "translation": "I understood that unto such a torment",
+      "line": 37
+    },
+    {
+      "source": "enno dannati i peccator carnali,",
+      "translation": "The carnal malefactors were condemned,",
+      "line": 38
+    },
+    {
+      "source": "che la ragion sommettono al talento.",
+      "translation": "Who reason subjugate to appetite.",
+      "line": 39
+    },
+    {
+      "source": "E come li stornei ne portan l’ali",
+      "translation": "And as the wings of starlings bear them on",
+      "line": 40
+    },
+    {
+      "source": "nel freddo tempo, a schiera larga e piena,",
+      "translation": "In the cold season in large band and full,",
+      "line": 41
+    },
+    {
+      "source": "così quel fiato li spiriti mali",
+      "translation": "So doth that blast the spirits maledict;",
+      "line": 42
+    },
+    {
+      "source": "di qua, di là, di giù, di sù li mena;",
+      "translation": "It hither, thither, downward, upward, drives them;",
+      "line": 43
+    },
+    {
+      "source": "nulla speranza li conforta mai,",
+      "translation": "No hope doth comfort them for evermore,",
+      "line": 44
+    },
+    {
+      "source": "non che di posa, ma di minor pena.",
+      "translation": "Not of repose, but even of lesser pain.",
+      "line": 45
+    },
+    {
+      "source": "E come i gru van cantando lor lai,",
+      "translation": "And as the cranes go chanting forth their lays,",
+      "line": 46
+    },
+    {
+      "source": "faccendo in aere di sé lunga riga,",
+      "translation": "Making in air a long line of themselves,",
+      "line": 47
+    },
+    {
+      "source": "così vid’ io venir, traendo guai,",
+      "translation": "So saw I coming, uttering lamentations,",
+      "line": 48
+    },
+    {
+      "source": "ombre portate da la detta briga;",
+      "translation": "Shadows borne onward by the aforesaid stress.",
+      "line": 49
+    },
+    {
+      "source": "per ch’i’ dissi: «Maestro, chi son quelle",
+      "translation": "Whereupon said I: “Master, who are those",
+      "line": 50
+    },
+    {
+      "source": "genti che l’aura nera sì gastiga?».",
+      "translation": "People, whom the black air so castigates?”",
+      "line": 51
+    },
+    {
+      "source": "«La prima di color di cui novelle",
+      "translation": "“The first of those, of whom intelligence",
+      "line": 52
+    },
+    {
+      "source": "tu vuo’ saper», mi disse quelli allotta,",
+      "translation": "Thou fain wouldst have,” then said he unto me,",
+      "line": 53
+    },
+    {
+      "source": "«fu imperadrice di molte favelle.",
+      "translation": "“The empress was of many languages.",
+      "line": 54
+    },
+    {
+      "source": "A vizio di lussuria fu sì rotta,",
+      "translation": "To sensual vices she was so abandoned,",
+      "line": 55
+    },
+    {
+      "source": "che libito fé licito in sua legge,",
+      "translation": "That she made lawful in her law whatever pleased her,",
+      "line": 56
+    },
+    {
+      "source": "per tòrre il biasmo in che era condotta.",
+      "translation": "To remove the blame to which she had been led.",
+      "line": 57
+    },
+    {
+      "source": "Ell’ è Semiramìs, di cui si legge",
+      "translation": "She is Semiramis, of whom we read",
+      "line": 58
+    },
+    {
+      "source": "che succedette a Nino e fu sua sposa:",
+      "translation": "That she succeeded Ninus, and was his spouse;",
+      "line": 59
+    },
+    {
+      "source": "tenne la terra che ’l Soldan corregge.",
+      "translation": "She held the land which now the Sultan rules.",
+      "line": 60
+    },
+    {
+      "source": "L’altra è colei che s’ancise amorosa,",
+      "translation": "The next is she who killed herself for love,",
+      "line": 61
+    },
+    {
+      "source": "e ruppe fede al cener di Sicheo;",
+      "translation": "And broke faith with the ashes of Sichaeus;",
+      "line": 62
+    },
+    {
+      "source": "poi è Cleopatràs lussurïosa.",
+      "translation": "Then Cleopatra the voluptuous.",
+      "line": 63
+    },
+    {
+      "source": "Elena vedi, per cui tanto reo",
+      "translation": "“See Helen, for whose sake so much evil",
+      "line": 64
+    },
+    {
+      "source": "tempo si volse, e vedi ’l grande Achille,",
+      "translation": "Time passed, and see the great Achilles,",
+      "line": 65
+    },
+    {
+      "source": "che con amore al fine combatteo.",
+      "translation": "Who at the last hour combated with Love.",
+      "line": 66
+    },
+    {
+      "source": "Vedi Parìs, Tristano»; e più di mille",
+      "translation": "See Paris, Tristan”; and more than a thousand",
+      "line": 67
+    },
+    {
+      "source": "ombre mostrommi e nominommi a dito,",
+      "translation": "Shades did he name and point out with his finger,",
+      "line": 68
+    },
+    {
+      "source": "ch’amor di nostra vita dipartille.",
+      "translation": "Whom Love had separated from our life.",
+      "line": 69
+    },
+    {
+      "source": "Poscia ch’io ebbi ’l mio dottore udito",
+      "translation": "After that I had listened to my Teacher,",
+      "line": 70
+    },
+    {
+      "source": "nomar le donne antiche e ’ cavalieri,",
+      "translation": "Naming the dames of eld and cavaliers,",
+      "line": 71
+    },
+    {
+      "source": "pietà mi giunse, e fui quasi smarrito.",
+      "translation": "Pity prevailed, and I was nigh bewildered.",
+      "line": 72
+    },
+    {
+      "source": "I’ cominciai: «Poeta, volontieri",
+      "translation": "And I began: “O Poet, willingly",
+      "line": 73
+    },
+    {
+      "source": "parlerei a quei due che ’nsieme vanno,",
+      "translation": "Speak would I to those two, who go together,",
+      "line": 74
+    },
+    {
+      "source": "e paion sì al vento esser leggeri».",
+      "translation": "And seem upon the wind to be so light.”",
+      "line": 75
+    },
+    {
+      "source": "Ed elli a me: «Vedrai quando saranno",
+      "translation": "And, he to me: “Thou’lt mark, when they shall be",
+      "line": 76
+    },
+    {
+      "source": "più presso a noi; e tu allor li priega",
+      "translation": "Nearer to us; and then do thou implore them",
+      "line": 77
+    },
+    {
+      "source": "per quello amor che i mena, ed ei verranno».",
+      "translation": "By love which leadeth them, and they will come.”",
+      "line": 78
+    },
+    {
+      "source": "Sì tosto come il vento a noi li piega,",
+      "translation": "Soon as the wind in our direction sways them,",
+      "line": 79
+    },
+    {
+      "source": "mossi la voce: «O anime affannate,",
+      "translation": "My voice uplift I: “O ye weary souls!",
+      "line": 80
+    },
+    {
+      "source": "venite a noi parlar, s’altri nol niega!».",
+      "translation": "Come speak to us, if no one interdicts it.”",
+      "line": 81
+    },
+    {
+      "source": "Quali colombe dal disio chiamate",
+      "translation": "As turtle-doves, called onward by desire,",
+      "line": 82
+    },
+    {
+      "source": "con l’ali alzate e ferme al dolce nido",
+      "translation": "With open and steady wings to the sweet nest",
+      "line": 83
+    },
+    {
+      "source": "vegnon per l’aere, dal voler portate;",
+      "translation": "Fly through the air by their volition borne,",
+      "line": 84
+    },
+    {
+      "source": "cotali uscir de la schiera ov’ è Dido,",
+      "translation": "So came they from the band where Dido is,",
+      "line": 85
+    },
+    {
+      "source": "a noi venendo per l’aere maligno,",
+      "translation": "Approaching us athwart the air malign,",
+      "line": 86
+    },
+    {
+      "source": "sì forte fu l’affettüoso grido.",
+      "translation": "So strong was the affectionate appeal.",
+      "line": 87
+    },
+    {
+      "source": "«O animal grazïoso e benigno",
+      "translation": "“O living creature gracious and benignant,",
+      "line": 88
+    },
+    {
+      "source": "che visitando vai per l’aere perso",
+      "translation": "Who visiting goest through the purple air",
+      "line": 89
+    },
+    {
+      "source": "noi che tignemmo il mondo di sanguigno,",
+      "translation": "Us, who have stained the world incarnadine,",
+      "line": 90
+    },
+    {
+      "source": "se fosse amico il re de l’universo,",
+      "translation": "If were the King of the Universe our friend,",
+      "line": 91
+    },
+    {
+      "source": "noi pregheremmo lui de la tua pace,",
+      "translation": "We would pray unto him to give thee peace,",
+      "line": 92
+    },
+    {
+      "source": "poi c’hai pietà del nostro mal perverso.",
+      "translation": "Since thou hast pity on our woe perverse.",
+      "line": 93
+    },
+    {
+      "source": "Di quel che udire e che parlar vi piace,",
+      "translation": "Of what it pleases thee to hear and speak,",
+      "line": 94
+    },
+    {
+      "source": "noi udiremo e parleremo a voi,",
+      "translation": "That will we hear, and we will speak to you,",
+      "line": 95
+    },
+    {
+      "source": "mentre che ’l vento, come fa, ci tace.",
+      "translation": "While silent is the wind, as it is now.",
+      "line": 96
+    },
+    {
+      "source": "Siede la terra dove nata fui",
+      "translation": "Sitteth the city, wherein I was born,",
+      "line": 97
+    },
+    {
+      "source": "su la marina dove ’l Po discende",
+      "translation": "Upon the sea-shore where the Po descends",
+      "line": 98
+    },
+    {
+      "source": "per aver pace co’ seguaci sui.",
+      "translation": "To rest in peace with all his retinue.",
+      "line": 99
+    },
+    {
+      "source": "Amor, ch’al cor gentil ratto s’apprende,",
+      "translation": "Love, that on gentle heart doth swiftly seize,",
+      "line": 100
+    },
+    {
+      "source": "prese costui de la bella persona",
+      "translation": "Seized this man for the person beautiful",
+      "line": 101
+    },
+    {
+      "source": "che mi fu tolta; e ’l modo ancor m’offende.",
+      "translation": "That was ta’en from me, and still the mode offends me.",
+      "line": 102
+    },
+    {
+      "source": "Amor, ch’a nullo amato amar perdona,",
+      "translation": "Love, that exempts no one beloved from loving,",
+      "line": 103
+    },
+    {
+      "source": "mi prese del costui piacer sì forte,",
+      "translation": "Seized me with pleasure of this man so strongly,",
+      "line": 104
+    },
+    {
+      "source": "che, come vedi, ancor non m’abbandona.",
+      "translation": "That, as thou seest, it doth not yet desert me;",
+      "line": 105
+    },
+    {
+      "source": "Amor condusse noi ad una morte.",
+      "translation": "Love has conducted us unto one death;",
+      "line": 106
+    },
+    {
+      "source": "Caina attende chi a vita ci spense».",
+      "translation": "Caina waiteth him who quenched our life!”",
+      "line": 107
+    },
+    {
+      "source": "Queste parole da lor ci fuor porte.",
+      "translation": "These words were borne along from them to us.",
+      "line": 108
+    },
+    {
+      "source": "Quand’ io intesi quell’ anime offense,",
+      "translation": "As soon as I had heard those souls tormented,",
+      "line": 109
+    },
+    {
+      "source": "china’ il viso, e tanto il tenni basso,",
+      "translation": "I bowed my face, and so long held it down",
+      "line": 110
+    },
+    {
+      "source": "fin che ’l poeta mi disse: «Che pense?».",
+      "translation": "Until the Poet said to me: “What thinkest?”",
+      "line": 111
+    },
+    {
+      "source": "Quando rispuosi, cominciai: «Oh lasso,",
+      "translation": "When I made answer, I began: “Alas!",
+      "line": 112
+    },
+    {
+      "source": "quanti dolci pensier, quanto disio",
+      "translation": "How many pleasant thoughts, how much desire,",
+      "line": 113
+    },
+    {
+      "source": "menò costoro al doloroso passo!».",
+      "translation": "Conducted these unto the dolorous pass!”",
+      "line": 114
+    },
+    {
+      "source": "Poi mi rivolsi a loro e parla’ io,",
+      "translation": "Then unto them I turned me, and I spake,",
+      "line": 115
+    },
+    {
+      "source": "e cominciai: «Francesca, i tuoi martìri",
+      "translation": "And I began: “Thine agonies, Francesca,",
+      "line": 116
+    },
+    {
+      "source": "a lagrimar mi fanno tristo e pio.",
+      "translation": "Sad and compassionate to weeping make me.",
+      "line": 117
+    },
+    {
+      "source": "Ma dimmi: al tempo d’i dolci sospiri,",
+      "translation": "But tell me, at the time of those sweet sighs,",
+      "line": 118
+    },
+    {
+      "source": "a che e come concedette amore",
+      "translation": "By what and in what manner Love conceded,",
+      "line": 119
+    },
+    {
+      "source": "che conosceste i dubbiosi disiri?».",
+      "translation": "That you should know your dubious desires?”",
+      "line": 120
+    },
+    {
+      "source": "E quella a me: «Nessun maggior dolore",
+      "translation": "And she to me: “There is no greater sorrow",
+      "line": 121
+    },
+    {
+      "source": "che ricordarsi del tempo felice",
+      "translation": "Than to be mindful of the happy time",
+      "line": 122
+    },
+    {
+      "source": "ne la miseria; e ciò sa ’l tuo dottore.",
+      "translation": "In misery, and that thy Teacher knows.",
+      "line": 123
+    },
+    {
+      "source": "Ma s’a conoscer la prima radice",
+      "translation": "But, if to recognise the earliest root",
+      "line": 124
+    },
+    {
+      "source": "del nostro amor tu hai cotanto affetto,",
+      "translation": "Of love in us thou hast so great desire,",
+      "line": 125
+    },
+    {
+      "source": "dirò come colui che piange e dice.",
+      "translation": "I will do even as he who weeps and speaks.",
+      "line": 126
+    },
+    {
+      "source": "Noi leggiavamo un giorno per diletto",
+      "translation": "One day we reading were for our delight",
+      "line": 127
+    },
+    {
+      "source": "di Lancialotto come amor lo strinse;",
+      "translation": "Of Launcelot, how Love did him enthral.",
+      "line": 128
+    },
+    {
+      "source": "soli eravamo e sanza alcun sospetto.",
+      "translation": "Alone we were and without any fear.",
+      "line": 129
+    },
+    {
+      "source": "Per più fïate li occhi ci sospinse",
+      "translation": "Full many a time our eyes together drew",
+      "line": 130
+    },
+    {
+      "source": "quella lettura, e scolorocci il viso;",
+      "translation": "That reading, and drove the colour from our faces;",
+      "line": 131
+    },
+    {
+      "source": "ma solo un punto fu quel che ci vinse.",
+      "translation": "But one point only was it that o’ercame us.",
+      "line": 132
+    },
+    {
+      "source": "Quando leggemmo il disïato riso",
+      "translation": "When as we read of the much-longed-for smile",
+      "line": 133
+    },
+    {
+      "source": "esser basciato da cotanto amante,",
+      "translation": "Being by such a noble lover kissed,",
+      "line": 134
+    },
+    {
+      "source": "questi, che mai da me non fia diviso,",
+      "translation": "This one, who ne’er from me shall be divided,",
+      "line": 135
+    },
+    {
+      "source": "la bocca mi basciò tutto tremante.",
+      "translation": "Kissed me upon the mouth all palpitating.",
+      "line": 136
+    },
+    {
+      "source": "Galeotto fu ’l libro e chi lo scrisse:",
+      "translation": "Galeotto was the book and he who wrote it.",
+      "line": 137
+    },
+    {
+      "source": "quel giorno più non vi leggemmo avante».",
+      "translation": "That day no farther did we read therein.”",
+      "line": 138
+    },
+    {
+      "source": "Mentre che l’uno spirto questo disse,",
+      "translation": "And all the while one spirit uttered this,",
+      "line": 139
+    },
+    {
+      "source": "l’altro piangëa; sì che di pietade",
+      "translation": "The other one did weep so, that, for pity,",
+      "line": 140
+    },
+    {
+      "source": "io venni men così com’ io morisse.",
+      "translation": "I swooned away as if I had been dying,",
+      "line": 141
+    },
+    {
+      "source": "E caddi come corpo morto cade.",
+      "translation": "And fell, even as a dead body falls.",
+      "line": 142
+    }
+  ]
+}

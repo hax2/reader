@@ -1,0 +1,667 @@
+{
+  "trackId": "dante-inferno-c20",
+  "sourceLanguage": "it",
+  "targetLanguage": "en",
+  "translator": "Henry Wadsworth Longfellow",
+  "translationYear": 1867,
+  "source": "https://www.gutenberg.org/ebooks/1001",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
+  "alignment": "verse-line",
+  "sourceHash": "bb2cf78d007ca99fac291af0137b2a10cca03bf3e5560e9e8e08e8d8add75392",
+  "blocks": [
+    {
+      "source": "Canto XX",
+      "translation": "Canto XX"
+    },
+    {
+      "source": "Di nova pena mi conven far versi",
+      "translation": "Of a new pain behoves me to make verses",
+      "line": 1
+    },
+    {
+      "source": "e dar matera al ventesimo canto",
+      "translation": "And give material to the twentieth canto",
+      "line": 2
+    },
+    {
+      "source": "de la prima canzon, ch’è d’i sommersi.",
+      "translation": "Of the first song, which is of the submerged.",
+      "line": 3
+    },
+    {
+      "source": "Io era già disposto tutto quanto",
+      "translation": "I was already thoroughly disposed",
+      "line": 4
+    },
+    {
+      "source": "a riguardar ne lo scoperto fondo,",
+      "translation": "To peer down into the uncovered depth,",
+      "line": 5
+    },
+    {
+      "source": "che si bagnava d’angoscioso pianto;",
+      "translation": "Which bathed itself with tears of agony;",
+      "line": 6
+    },
+    {
+      "source": "e vidi gente per lo vallon tondo",
+      "translation": "And people saw I through the circular valley,",
+      "line": 7
+    },
+    {
+      "source": "venir, tacendo e lagrimando, al passo",
+      "translation": "Silent and weeping, coming at the pace",
+      "line": 8
+    },
+    {
+      "source": "che fanno le letane in questo mondo.",
+      "translation": "Which in this world the Litanies assume.",
+      "line": 9
+    },
+    {
+      "source": "Come ’l viso mi scese in lor più basso,",
+      "translation": "As lower down my sight descended on them,",
+      "line": 10
+    },
+    {
+      "source": "mirabilmente apparve esser travolto",
+      "translation": "Wondrously each one seemed to be distorted",
+      "line": 11
+    },
+    {
+      "source": "ciascun tra ’l mento e ’l principio del casso,",
+      "translation": "From chin to the beginning of the chest;",
+      "line": 12
+    },
+    {
+      "source": "ché da le reni era tornato ’l volto,",
+      "translation": "For tow’rds the reins the countenance was turned,",
+      "line": 13
+    },
+    {
+      "source": "e in dietro venir li convenia,",
+      "translation": "And backward it behoved them to advance,",
+      "line": 14
+    },
+    {
+      "source": "perché ’l veder dinanzi era lor tolto.",
+      "translation": "As to look forward had been taken from them.",
+      "line": 15
+    },
+    {
+      "source": "Forse per forza già di parlasia",
+      "translation": "Perchance indeed by violence of palsy",
+      "line": 16
+    },
+    {
+      "source": "si travolse così alcun del tutto;",
+      "translation": "Some one has been thus wholly turned awry;",
+      "line": 17
+    },
+    {
+      "source": "ma io nol vidi, né credo che sia.",
+      "translation": "But I ne’er saw it, nor believe it can be.",
+      "line": 18
+    },
+    {
+      "source": "Se Dio ti lasci, lettor, prender frutto",
+      "translation": "As God may let thee, Reader, gather fruit",
+      "line": 19
+    },
+    {
+      "source": "di tua lezione, or pensa per te stesso",
+      "translation": "From this thy reading, think now for thyself",
+      "line": 20
+    },
+    {
+      "source": "com’ io potea tener lo viso asciutto,",
+      "translation": "How I could ever keep my face unmoistened,",
+      "line": 21
+    },
+    {
+      "source": "quando la nostra imagine di presso",
+      "translation": "When our own image near me I beheld",
+      "line": 22
+    },
+    {
+      "source": "vidi sì torta, che ’l pianto de li occhi",
+      "translation": "Distorted so, the weeping of the eyes",
+      "line": 23
+    },
+    {
+      "source": "le natiche bagnava per lo fesso.",
+      "translation": "Along the fissure bathed the hinder parts.",
+      "line": 24
+    },
+    {
+      "source": "Certo io piangea, poggiato a un de’ rocchi",
+      "translation": "Truly I wept, leaning upon a peak",
+      "line": 25
+    },
+    {
+      "source": "del duro scoglio, sì che la mia scorta",
+      "translation": "Of the hard crag, so that my Escort said",
+      "line": 26
+    },
+    {
+      "source": "mi disse: «Ancor se’ tu de li altri sciocchi?",
+      "translation": "To me: “Art thou, too, of the other fools?",
+      "line": 27
+    },
+    {
+      "source": "Qui vive la pietà quand’ è ben morta;",
+      "translation": "Here pity lives when it is wholly dead;",
+      "line": 28
+    },
+    {
+      "source": "chi è più scellerato che colui",
+      "translation": "Who is a greater reprobate than he",
+      "line": 29
+    },
+    {
+      "source": "che al giudicio divin passion comporta?",
+      "translation": "Who feels compassion at the doom divine?",
+      "line": 30
+    },
+    {
+      "source": "Drizza la testa, drizza, e vedi a cui",
+      "translation": "Lift up, lift up thy head, and see for whom",
+      "line": 31
+    },
+    {
+      "source": "s’aperse a li occhi d’i Teban la terra;",
+      "translation": "Opened the earth before the Thebans’ eyes;",
+      "line": 32
+    },
+    {
+      "source": "per ch’ei gridavan tutti: “Dove rui,",
+      "translation": "Wherefore they all cried: ‘Whither rushest thou,",
+      "line": 33
+    },
+    {
+      "source": "Anfïarao? perché lasci la guerra?”.",
+      "translation": "Amphiaraus?  Why dost leave the war?’",
+      "line": 34
+    },
+    {
+      "source": "E non restò di ruinare a valle",
+      "translation": "And downward ceased he not to fall amain",
+      "line": 35
+    },
+    {
+      "source": "fino a Minòs che ciascheduno afferra.",
+      "translation": "As far as Minos, who lays hold on all.",
+      "line": 36
+    },
+    {
+      "source": "Mira c’ha fatto petto de le spalle;",
+      "translation": "See, he has made a bosom of his shoulders!",
+      "line": 37
+    },
+    {
+      "source": "perché volle veder troppo davante,",
+      "translation": "Because he wished to see too far before him",
+      "line": 38
+    },
+    {
+      "source": "di retro guarda e fa retroso calle.",
+      "translation": "Behind he looks, and backward goes his way:",
+      "line": 39
+    },
+    {
+      "source": "Vedi Tiresia, che mutò sembiante",
+      "translation": "Behold Tiresias, who his semblance changed,",
+      "line": 40
+    },
+    {
+      "source": "quando di maschio femmina divenne,",
+      "translation": "When from a male a female he became,",
+      "line": 41
+    },
+    {
+      "source": "cangiandosi le membra tutte quante;",
+      "translation": "His members being all of them transformed;",
+      "line": 42
+    },
+    {
+      "source": "e prima, poi, ribatter li convenne",
+      "translation": "And afterwards was forced to strike once more",
+      "line": 43
+    },
+    {
+      "source": "li duo serpenti avvolti, con la verga,",
+      "translation": "The two entangled serpents with his rod,",
+      "line": 44
+    },
+    {
+      "source": "che rïavesse le maschili penne.",
+      "translation": "Ere he could have again his manly plumes.",
+      "line": 45
+    },
+    {
+      "source": "Aronta è quel ch’al ventre li s’atterga,",
+      "translation": "That Aruns is, who backs the other’s belly,",
+      "line": 46
+    },
+    {
+      "source": "che ne’ monti di Luni, dove ronca",
+      "translation": "Who in the hills of Luni, there where grubs",
+      "line": 47
+    },
+    {
+      "source": "lo Carrarese che di sotto alberga,",
+      "translation": "The Carrarese who houses underneath,",
+      "line": 48
+    },
+    {
+      "source": "ebbe tra ’ bianchi marmi la spelonca",
+      "translation": "Among the marbles white a cavern had",
+      "line": 49
+    },
+    {
+      "source": "per sua dimora; onde a guardar le stelle",
+      "translation": "For his abode; whence to behold the stars",
+      "line": 50
+    },
+    {
+      "source": "e ’l mar non li era la veduta tronca.",
+      "translation": "And sea, the view was not cut off from him.",
+      "line": 51
+    },
+    {
+      "source": "E quella che ricuopre le mammelle,",
+      "translation": "And she there, who is covering up her breasts,",
+      "line": 52
+    },
+    {
+      "source": "che tu non vedi, con le trecce sciolte,",
+      "translation": "Which thou beholdest not, with loosened tresses,",
+      "line": 53
+    },
+    {
+      "source": "e ha di là ogne pilosa pelle,",
+      "translation": "And on that side has all the hairy skin,",
+      "line": 54
+    },
+    {
+      "source": "Manto fu, che cercò per terre molte;",
+      "translation": "Was Manto, who made quest through many lands,",
+      "line": 55
+    },
+    {
+      "source": "poscia si puose là dove nacqu’ io;",
+      "translation": "Afterwards tarried there where I was born;",
+      "line": 56
+    },
+    {
+      "source": "onde un poco mi piace che m’ascolte.",
+      "translation": "Whereof I would thou list to me a little.",
+      "line": 57
+    },
+    {
+      "source": "Poscia che ’l padre suo di vita uscìo",
+      "translation": "After her father had from life departed,",
+      "line": 58
+    },
+    {
+      "source": "e venne serva la città di Baco,",
+      "translation": "And the city of Bacchus had become enslaved,",
+      "line": 59
+    },
+    {
+      "source": "questa gran tempo per lo mondo gio.",
+      "translation": "She a long season wandered through the world.",
+      "line": 60
+    },
+    {
+      "source": "Suso in Italia bella giace un laco,",
+      "translation": "Above in beauteous Italy lies a lake",
+      "line": 61
+    },
+    {
+      "source": "a piè de l’Alpe che serra Lamagna",
+      "translation": "At the Alp’s foot that shuts in Germany",
+      "line": 62
+    },
+    {
+      "source": "sovra Tiralli, c’ha nome Benaco.",
+      "translation": "Over Tyrol, and has the name Benaco.",
+      "line": 63
+    },
+    {
+      "source": "Per mille fonti, credo, e più si bagna",
+      "translation": "By a thousand springs, I think, and more, is watered",
+      "line": 64
+    },
+    {
+      "source": "tra Garda e Val Camonica e Pennino",
+      "translation": "The land between Garda, Val Camonica, and Pennino,",
+      "line": 65
+    },
+    {
+      "source": "de l’acqua che nel detto laco stagna.",
+      "translation": "With waters gathered in the aforesaid lake.",
+      "line": 66
+    },
+    {
+      "source": "Loco è nel mezzo là dove ’l trentino",
+      "translation": "Midway a place is where the Trentine Pastor,",
+      "line": 67
+    },
+    {
+      "source": "pastore e quel di Brescia e ’l veronese",
+      "translation": "And he of Brescia, and the Veronese",
+      "line": 68
+    },
+    {
+      "source": "segnar poria, s’e’ fesse quel cammino.",
+      "translation": "Might give his blessing, if he passed that way.",
+      "line": 69
+    },
+    {
+      "source": "Siede Peschiera, bello e forte arnese",
+      "translation": "Sitteth Peschiera, fortress fair and strong,",
+      "line": 70
+    },
+    {
+      "source": "da fronteggiar Bresciani e Bergamaschi,",
+      "translation": "To front the Brescians and the Bergamasks,",
+      "line": 71
+    },
+    {
+      "source": "ove la riva ’ntorno più discese.",
+      "translation": "Where round about the bank descendeth lowest.",
+      "line": 72
+    },
+    {
+      "source": "Ivi convien che tutto quanto caschi",
+      "translation": "There of necessity must fall whatever",
+      "line": 73
+    },
+    {
+      "source": "ciò che ’n grembo a Benaco star non può,",
+      "translation": "In bosom of Benaco cannot stay,",
+      "line": 74
+    },
+    {
+      "source": "e fassi fiume giù per verdi paschi.",
+      "translation": "And grows a river down through verdant pastures.",
+      "line": 75
+    },
+    {
+      "source": "Tosto che l’acqua a correr mette co,",
+      "translation": "Soon as the water doth begin to run,",
+      "line": 76
+    },
+    {
+      "source": "non più Benaco, ma Mencio si chiama",
+      "translation": "No more Benaco is it called, but Mincio,",
+      "line": 77
+    },
+    {
+      "source": "fino a Governol, dove cade in Po.",
+      "translation": "Far as Governo, where it falls in Po.",
+      "line": 78
+    },
+    {
+      "source": "Non molto ha corso, ch’el trova una lama,",
+      "translation": "Not far it runs before it finds a plain",
+      "line": 79
+    },
+    {
+      "source": "ne la qual si distende e la ’mpaluda;",
+      "translation": "In which it spreads itself, and makes it marshy,",
+      "line": 80
+    },
+    {
+      "source": "e suol di state talor essere grama.",
+      "translation": "And oft ’tis wont in summer to be sickly.",
+      "line": 81
+    },
+    {
+      "source": "Quindi passando la vergine cruda",
+      "translation": "Passing that way the virgin pitiless",
+      "line": 82
+    },
+    {
+      "source": "vide terra, nel mezzo del pantano,",
+      "translation": "Land in the middle of the fen descried,",
+      "line": 83
+    },
+    {
+      "source": "sanza coltura e d’abitanti nuda.",
+      "translation": "Untilled and naked of inhabitants;",
+      "line": 84
+    },
+    {
+      "source": "Lì, per fuggire ogne consorzio umano,",
+      "translation": "There to escape all human intercourse,",
+      "line": 85
+    },
+    {
+      "source": "ristette con suoi servi a far sue arti,",
+      "translation": "She with her servants stayed, her arts to practise",
+      "line": 86
+    },
+    {
+      "source": "e visse, e vi lasciò suo corpo vano.",
+      "translation": "And lived, and left her empty body there.",
+      "line": 87
+    },
+    {
+      "source": "Li uomini poi che ’ntorno erano sparti",
+      "translation": "The men, thereafter, who were scattered round,",
+      "line": 88
+    },
+    {
+      "source": "s’accolsero a quel loco, ch’era forte",
+      "translation": "Collected in that place, which was made strong",
+      "line": 89
+    },
+    {
+      "source": "per lo pantan ch’avea da tutte parti.",
+      "translation": "By the lagoon it had on every side;",
+      "line": 90
+    },
+    {
+      "source": "Fer la città sovra quell’ ossa morte;",
+      "translation": "They built their city over those dead bones,",
+      "line": 91
+    },
+    {
+      "source": "e per colei che ’l loco prima elesse,",
+      "translation": "And, after her who first the place selected,",
+      "line": 92
+    },
+    {
+      "source": "Mantüa l’appellar sanz’ altra sorte.",
+      "translation": "Mantua named it, without other omen.",
+      "line": 93
+    },
+    {
+      "source": "Già fuor le genti sue dentro più spesse,",
+      "translation": "Its people once within more crowded were,",
+      "line": 94
+    },
+    {
+      "source": "prima che la mattia da Casalodi",
+      "translation": "Ere the stupidity of Casalodi",
+      "line": 95
+    },
+    {
+      "source": "da Pinamonte inganno ricevesse.",
+      "translation": "From Pinamonte had received deceit.",
+      "line": 96
+    },
+    {
+      "source": "Però t’assenno che, se tu mai odi",
+      "translation": "Therefore I caution thee, if e’er thou hearest",
+      "line": 97
+    },
+    {
+      "source": "originar la mia terra altrimenti,",
+      "translation": "Originate my city otherwise,",
+      "line": 98
+    },
+    {
+      "source": "la verità nulla menzogna frodi».",
+      "translation": "No falsehood may the verity defraud.”",
+      "line": 99
+    },
+    {
+      "source": "E io: «Maestro, i tuoi ragionamenti",
+      "translation": "And I: “My Master, thy discourses are",
+      "line": 100
+    },
+    {
+      "source": "mi son sì certi e prendon sì mia fede,",
+      "translation": "To me so certain, and so take my faith,",
+      "line": 101
+    },
+    {
+      "source": "che li altri mi sarien carboni spenti.",
+      "translation": "That unto me the rest would be spent coals.",
+      "line": 102
+    },
+    {
+      "source": "Ma dimmi, de la gente che procede,",
+      "translation": "But tell me of the people who are passing,",
+      "line": 103
+    },
+    {
+      "source": "se tu ne vedi alcun degno di nota;",
+      "translation": "If any one note-worthy thou beholdest,",
+      "line": 104
+    },
+    {
+      "source": "ché solo a ciò la mia mente rifiede».",
+      "translation": "For only unto that my mind reverts.”",
+      "line": 105
+    },
+    {
+      "source": "Allor mi disse: «Quel che da la gota",
+      "translation": "Then said he to me: “He who from the cheek",
+      "line": 106
+    },
+    {
+      "source": "porge la barba in su le spalle brune,",
+      "translation": "Thrusts out his beard upon his swarthy shoulders",
+      "line": 107
+    },
+    {
+      "source": "fu—quando Grecia fu di maschi vòta,",
+      "translation": "Was, at the time when Greece was void of males,",
+      "line": 108
+    },
+    {
+      "source": "sì ch’a pena rimaser per le cune—",
+      "translation": "So that there scarce remained one in the cradle,",
+      "line": 109
+    },
+    {
+      "source": "augure, e diede ’l punto con Calcanta",
+      "translation": "An augur, and with Calchas gave the moment,",
+      "line": 110
+    },
+    {
+      "source": "in Aulide a tagliar la prima fune.",
+      "translation": "In Aulis, when to sever the first cable.",
+      "line": 111
+    },
+    {
+      "source": "Euripilo ebbe nome, e così ’l canta",
+      "translation": "Eurypylus his name was, and so sings",
+      "line": 112
+    },
+    {
+      "source": "l’alta mia tragedìa in alcun loco:",
+      "translation": "My lofty Tragedy in some part or other;",
+      "line": 113
+    },
+    {
+      "source": "ben lo sai tu che la sai tutta quanta.",
+      "translation": "That knowest thou well, who knowest the whole of it.",
+      "line": 114
+    },
+    {
+      "source": "Quell’ altro che ne’ fianchi è così poco,",
+      "translation": "The next, who is so slender in the flanks,",
+      "line": 115
+    },
+    {
+      "source": "Michele Scotto fu, che veramente",
+      "translation": "Was Michael Scott, who of a verity",
+      "line": 116
+    },
+    {
+      "source": "de le magiche frode seppe ’l gioco.",
+      "translation": "Of magical illusions knew the game.",
+      "line": 117
+    },
+    {
+      "source": "Vedi Guido Bonatti; vedi Asdente,",
+      "translation": "Behold Guido Bonatti, behold Asdente,",
+      "line": 118
+    },
+    {
+      "source": "ch’avere inteso al cuoio e a lo spago",
+      "translation": "Who now unto his leather and his thread",
+      "line": 119
+    },
+    {
+      "source": "ora vorrebbe, ma tardi si pente.",
+      "translation": "Would fain have stuck, but he too late repents.",
+      "line": 120
+    },
+    {
+      "source": "Vedi le triste che lasciaron l’ago,",
+      "translation": "Behold the wretched ones, who left the needle,",
+      "line": 121
+    },
+    {
+      "source": "la spuola e ’l fuso, e fecersi ’ndivine;",
+      "translation": "The shuttle and spindle, and made them fortune-tellers;",
+      "line": 122
+    },
+    {
+      "source": "fecer malie con erbe e con imago.",
+      "translation": "They wrought their magic spells with herb and image.",
+      "line": 123
+    },
+    {
+      "source": "Ma vienne omai, ché già tiene ’l confine",
+      "translation": "But come now, for already holds the confines",
+      "line": 124
+    },
+    {
+      "source": "d’amendue li emisperi e tocca l’onda",
+      "translation": "Of both the hemispheres, and under Seville",
+      "line": 125
+    },
+    {
+      "source": "sotto Sobilia Caino e le spine;",
+      "translation": "Touches the ocean-wave, Cain and the thorns,",
+      "line": 126
+    },
+    {
+      "source": "e già iernotte fu la luna tonda:",
+      "translation": "And yesternight the moon was round already;",
+      "line": 127
+    },
+    {
+      "source": "ben ten de’ ricordar, ché non ti nocque",
+      "translation": "Thou shouldst remember well it did not harm thee",
+      "line": 128
+    },
+    {
+      "source": "alcuna volta per la selva fonda».",
+      "translation": "From time to time within the forest deep.”",
+      "line": 129
+    },
+    {
+      "source": "Sì mi parlava, e andavamo introcque.",
+      "translation": "Thus spake he to me, and we walked the while.",
+      "line": 130
+    }
+  ]
+}

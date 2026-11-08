@@ -1,0 +1,757 @@
+{
+  "trackId": "dante-inferno-c23",
+  "sourceLanguage": "it",
+  "targetLanguage": "en",
+  "translator": "Henry Wadsworth Longfellow",
+  "translationYear": 1867,
+  "source": "https://www.gutenberg.org/ebooks/1001",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
+  "alignment": "verse-line",
+  "sourceHash": "1861864ad63b81e4c72e7ec47b2dca544b12bc5b81fe6b5cc96dfa40b7da418e",
+  "blocks": [
+    {
+      "source": "Canto XXIII",
+      "translation": "Canto XXIII"
+    },
+    {
+      "source": "Taciti, soli, sanza compagnia",
+      "translation": "Silent, alone, and without company",
+      "line": 1
+    },
+    {
+      "source": "n’andavam l’un dinanzi e l’altro dopo,",
+      "translation": "We went, the one in front, the other after,",
+      "line": 2
+    },
+    {
+      "source": "come frati minor vanno per via.",
+      "translation": "As go the Minor Friars along their way.",
+      "line": 3
+    },
+    {
+      "source": "Vòlt’ era in su la favola d’Isopo",
+      "translation": "Upon the fable of Aesop was directed",
+      "line": 4
+    },
+    {
+      "source": "lo mio pensier per la presente rissa,",
+      "translation": "My thought, by reason of the present quarrel,",
+      "line": 5
+    },
+    {
+      "source": "dov’ el parlò de la rana e del topo;",
+      "translation": "Where he has spoken of the frog and mouse;",
+      "line": 6
+    },
+    {
+      "source": "ché più non si pareggia ‘mo’ e ‘issa’",
+      "translation": "For ‘mo’ and ‘issa’ are not more alike",
+      "line": 7
+    },
+    {
+      "source": "che l’un con l’altro fa, se ben s’accoppia",
+      "translation": "Than this one is to that, if well we couple",
+      "line": 8
+    },
+    {
+      "source": "principio e fine con la mente fissa.",
+      "translation": "End and beginning with a steadfast mind.",
+      "line": 9
+    },
+    {
+      "source": "E come l’un pensier de l’altro scoppia,",
+      "translation": "And even as one thought from another springs,",
+      "line": 10
+    },
+    {
+      "source": "così nacque di quello un altro poi,",
+      "translation": "So afterward from that was born another,",
+      "line": 11
+    },
+    {
+      "source": "che la prima paura mi fé doppia.",
+      "translation": "Which the first fear within me double made.",
+      "line": 12
+    },
+    {
+      "source": "Io pensava così: ‘Questi per noi",
+      "translation": "Thus did I ponder: “These on our account",
+      "line": 13
+    },
+    {
+      "source": "sono scherniti con danno e con beffa",
+      "translation": "Are laughed to scorn, with injury and scoff",
+      "line": 14
+    },
+    {
+      "source": "sì fatta, ch’assai credo che lor nòi.",
+      "translation": "So great, that much I think it must annoy them.",
+      "line": 15
+    },
+    {
+      "source": "Se l’ira sovra ’l mal voler s’aggueffa,",
+      "translation": "If anger be engrafted on ill-will,",
+      "line": 16
+    },
+    {
+      "source": "ei ne verranno dietro più crudeli",
+      "translation": "They will come after us more merciless",
+      "line": 17
+    },
+    {
+      "source": "che ’l cane a quella lievre ch’elli acceffa’.",
+      "translation": "Than dog upon the leveret which he seizes,”",
+      "line": 18
+    },
+    {
+      "source": "Già mi sentia tutti arricciar li peli",
+      "translation": "I felt my hair stand all on end already",
+      "line": 19
+    },
+    {
+      "source": "de la paura e stava in dietro intento,",
+      "translation": "With terror, and stood backwardly intent,",
+      "line": 20
+    },
+    {
+      "source": "quand’ io dissi: «Maestro, se non celi",
+      "translation": "When said I: “Master, if thou hidest not",
+      "line": 21
+    },
+    {
+      "source": "te e me tostamente, i’ ho pavento",
+      "translation": "Thyself and me forthwith, of Malebranche",
+      "line": 22
+    },
+    {
+      "source": "d’i Malebranche. Noi li avem già dietro;",
+      "translation": "I am in dread; we have them now behind us;",
+      "line": 23
+    },
+    {
+      "source": "io li ’magino sì, che già li sento».",
+      "translation": "I so imagine them, I already feel them.”",
+      "line": 24
+    },
+    {
+      "source": "E quei: «S’i’ fossi di piombato vetro,",
+      "translation": "And he: “If I were made of leaded glass,",
+      "line": 25
+    },
+    {
+      "source": "l’imagine di fuor tua non trarrei",
+      "translation": "Thine outward image I should not attract",
+      "line": 26
+    },
+    {
+      "source": "più tosto a me, che quella dentro ’mpetro.",
+      "translation": "Sooner to me than I imprint the inner.",
+      "line": 27
+    },
+    {
+      "source": "Pur mo venieno i tuo’ pensier tra ’ miei,",
+      "translation": "Just now thy thoughts came in among my own,",
+      "line": 28
+    },
+    {
+      "source": "con simile atto e con simile faccia,",
+      "translation": "With similar attitude and similar face,",
+      "line": 29
+    },
+    {
+      "source": "sì che d’intrambi un sol consiglio fei.",
+      "translation": "So that of both one counsel sole I made.",
+      "line": 30
+    },
+    {
+      "source": "S’elli è che sì la destra costa giaccia,",
+      "translation": "If peradventure the right bank so slope",
+      "line": 31
+    },
+    {
+      "source": "che noi possiam ne l’altra bolgia scendere,",
+      "translation": "That we to the next Bolgia can descend,",
+      "line": 32
+    },
+    {
+      "source": "noi fuggirem l’imaginata caccia».",
+      "translation": "We shall escape from the imagined chase.”",
+      "line": 33
+    },
+    {
+      "source": "Già non compié di tal consiglio rendere,",
+      "translation": "Not yet he finished rendering such opinion,",
+      "line": 34
+    },
+    {
+      "source": "ch’io li vidi venir con l’ali tese",
+      "translation": "When I beheld them come with outstretched wings,",
+      "line": 35
+    },
+    {
+      "source": "non molto lungi, per volerne prendere.",
+      "translation": "Not far remote, with will to seize upon us.",
+      "line": 36
+    },
+    {
+      "source": "Lo duca mio di sùbito mi prese,",
+      "translation": "My Leader on a sudden seized me up,",
+      "line": 37
+    },
+    {
+      "source": "come la madre ch’al romore è desta",
+      "translation": "Even as a mother who by noise is wakened,",
+      "line": 38
+    },
+    {
+      "source": "e vede presso a sé le fiamme accese,",
+      "translation": "And close beside her sees the enkindled flames,",
+      "line": 39
+    },
+    {
+      "source": "che prende il figlio e fugge e non s’arresta,",
+      "translation": "Who takes her son, and flies, and does not stop,",
+      "line": 40
+    },
+    {
+      "source": "avendo più di lui che di sé cura,",
+      "translation": "Having more care of him than of herself,",
+      "line": 41
+    },
+    {
+      "source": "tanto che solo una camiscia vesta;",
+      "translation": "So that she clothes her only with a shift;",
+      "line": 42
+    },
+    {
+      "source": "e giù dal collo de la ripa dura",
+      "translation": "And downward from the top of the hard bank",
+      "line": 43
+    },
+    {
+      "source": "supin si diede a la pendente roccia,",
+      "translation": "Supine he gave him to the pendent rock,",
+      "line": 44
+    },
+    {
+      "source": "che l’un de’ lati a l’altra bolgia tura.",
+      "translation": "That one side of the other Bolgia walls.",
+      "line": 45
+    },
+    {
+      "source": "Non corse mai sì tosto acqua per doccia",
+      "translation": "Ne’er ran so swiftly water through a sluice",
+      "line": 46
+    },
+    {
+      "source": "a volger ruota di molin terragno,",
+      "translation": "To turn the wheel of any land-built mill,",
+      "line": 47
+    },
+    {
+      "source": "quand’ ella più verso le pale approccia,",
+      "translation": "When nearest to the paddles it approaches,",
+      "line": 48
+    },
+    {
+      "source": "come ’l maestro mio per quel vivagno,",
+      "translation": "As did my Master down along that border,",
+      "line": 49
+    },
+    {
+      "source": "portandosene me sovra ’l suo petto,",
+      "translation": "Bearing me with him on his breast away,",
+      "line": 50
+    },
+    {
+      "source": "come suo figlio, non come compagno.",
+      "translation": "As his own son, and not as a companion.",
+      "line": 51
+    },
+    {
+      "source": "A pena fuoro i piè suoi giunti al letto",
+      "translation": "Hardly the bed of the ravine below",
+      "line": 52
+    },
+    {
+      "source": "del fondo giù, ch’e’ furon in sul colle",
+      "translation": "His feet had reached, ere they had reached the hill",
+      "line": 53
+    },
+    {
+      "source": "sovresso noi; ma non lì era sospetto:",
+      "translation": "Right over us; but there was naught to fear;",
+      "line": 54
+    },
+    {
+      "source": "ché l’alta provedenza che lor volle",
+      "translation": "For the high Providence, which had ordained",
+      "line": 55
+    },
+    {
+      "source": "porre ministri de la fossa quinta,",
+      "translation": "To place them ministers of the fifth moat,",
+      "line": 56
+    },
+    {
+      "source": "poder di partirs’ indi a tutti tolle.",
+      "translation": "The power of thence departing took from all.",
+      "line": 57
+    },
+    {
+      "source": "Là giù trovammo una gente dipinta",
+      "translation": "A painted people there below we found,",
+      "line": 58
+    },
+    {
+      "source": "che giva intorno assai con lenti passi,",
+      "translation": "Who went about with footsteps very slow,",
+      "line": 59
+    },
+    {
+      "source": "piangendo e nel sembiante stanca e vinta.",
+      "translation": "Weeping and in their semblance tired and vanquished.",
+      "line": 60
+    },
+    {
+      "source": "Elli avean cappe con cappucci bassi",
+      "translation": "They had on mantles with the hoods low down",
+      "line": 61
+    },
+    {
+      "source": "dinanzi a li occhi, fatte de la taglia",
+      "translation": "Before their eyes, and fashioned of the cut",
+      "line": 62
+    },
+    {
+      "source": "che in Clugnì per li monaci fassi.",
+      "translation": "That at Cluny is fashioned for the monks.",
+      "line": 63
+    },
+    {
+      "source": "Di fuor dorate son, sì ch’elli abbaglia;",
+      "translation": "Without, they gilded are so that it dazzles;",
+      "line": 64
+    },
+    {
+      "source": "ma dentro tutte piombo, e gravi tanto,",
+      "translation": "But inwardly all leaden and so heavy",
+      "line": 65
+    },
+    {
+      "source": "che Federigo le mettea di paglia.",
+      "translation": "That Frederick’s were but straw compared with these.",
+      "line": 66
+    },
+    {
+      "source": "Oh in etterno faticoso manto!",
+      "translation": "O everlastingly fatiguing mantle!",
+      "line": 67
+    },
+    {
+      "source": "Noi ci volgemmo ancor pur a man manca",
+      "translation": "Again we turned us, still to the left hand",
+      "line": 68
+    },
+    {
+      "source": "con loro insieme, intenti al tristo pianto;",
+      "translation": "Along with them, intent on their sad plaint;",
+      "line": 69
+    },
+    {
+      "source": "ma per lo peso quella gente stanca",
+      "translation": "But owing to the weight, that weary folk",
+      "line": 70
+    },
+    {
+      "source": "venìa sì pian, che noi eravam nuovi",
+      "translation": "Came on so tardily, that we were new",
+      "line": 71
+    },
+    {
+      "source": "di compagnia ad ogne mover d’anca.",
+      "translation": "In company at each motion of the haunch.",
+      "line": 72
+    },
+    {
+      "source": "Per ch’io al duca mio: «Fa che tu trovi",
+      "translation": "Whence I unto my Leader: “See thou find",
+      "line": 73
+    },
+    {
+      "source": "alcun ch’al fatto o al nome si conosca,",
+      "translation": "Some one who may by deed or name be known,",
+      "line": 74
+    },
+    {
+      "source": "e li occhi, sì andando, intorno movi».",
+      "translation": "And thus in going move thine eye about.”",
+      "line": 75
+    },
+    {
+      "source": "E un che ’ntese la parola tosca,",
+      "translation": "And one, who understood the Tuscan speech,",
+      "line": 76
+    },
+    {
+      "source": "di retro a noi gridò: «Tenete i piedi,",
+      "translation": "Cried to us from behind: “Stay ye your feet,",
+      "line": 77
+    },
+    {
+      "source": "voi che correte sì per l’aura fosca!",
+      "translation": "Ye, who so run athwart the dusky air!",
+      "line": 78
+    },
+    {
+      "source": "Forse ch’avrai da me quel che tu chiedi».",
+      "translation": "Perhaps thou’lt have from me what thou demandest.”",
+      "line": 79
+    },
+    {
+      "source": "Onde ’l duca si volse e disse: «Aspetta,",
+      "translation": "Whereat the Leader turned him, and said: “Wait,",
+      "line": 80
+    },
+    {
+      "source": "e poi secondo il suo passo procedi».",
+      "translation": "And then according to his pace proceed.”",
+      "line": 81
+    },
+    {
+      "source": "Ristetti, e vidi due mostrar gran fretta",
+      "translation": "I stopped, and two beheld I show great haste",
+      "line": 82
+    },
+    {
+      "source": "de l’animo, col viso, d’esser meco;",
+      "translation": "Of spirit, in their faces, to be with me;",
+      "line": 83
+    },
+    {
+      "source": "ma tardavali ’l carco e la via stretta.",
+      "translation": "But the burden and the narrow way delayed them.",
+      "line": 84
+    },
+    {
+      "source": "Quando fuor giunti, assai con l’occhio bieco",
+      "translation": "When they came up, long with an eye askance",
+      "line": 85
+    },
+    {
+      "source": "mi rimiraron sanza far parola;",
+      "translation": "They scanned me without uttering a word.",
+      "line": 86
+    },
+    {
+      "source": "poi si volsero in sé, e dicean seco:",
+      "translation": "Then to each other turned, and said together:",
+      "line": 87
+    },
+    {
+      "source": "«Costui par vivo a l’atto de la gola;",
+      "translation": "“He by the action of his throat seems living;",
+      "line": 88
+    },
+    {
+      "source": "e s’e’ son morti, per qual privilegio",
+      "translation": "And if they dead are, by what privilege",
+      "line": 89
+    },
+    {
+      "source": "vanno scoperti de la grave stola?».",
+      "translation": "Go they uncovered by the heavy stole?”",
+      "line": 90
+    },
+    {
+      "source": "Poi disser me: «O Tosco, ch’al collegio",
+      "translation": "Then said to me: “Tuscan, who to the college",
+      "line": 91
+    },
+    {
+      "source": "de l’ipocriti tristi se’ venuto,",
+      "translation": "Of miserable hypocrites art come,",
+      "line": 92
+    },
+    {
+      "source": "dir chi tu se’ non avere in dispregio».",
+      "translation": "Do not disdain to tell us who thou art.”",
+      "line": 93
+    },
+    {
+      "source": "E io a loro: «I’ fui nato e cresciuto",
+      "translation": "And I to them: “Born was I, and grew up",
+      "line": 94
+    },
+    {
+      "source": "sovra ’l bel fiume d’Arno a la gran villa,",
+      "translation": "In the great town on the fair river of Arno,",
+      "line": 95
+    },
+    {
+      "source": "e son col corpo ch’i’ ho sempre avuto.",
+      "translation": "And with the body am I’ve always had.",
+      "line": 96
+    },
+    {
+      "source": "Ma voi chi siete, a cui tanto distilla",
+      "translation": "But who are ye, in whom there trickles down",
+      "line": 97
+    },
+    {
+      "source": "quant’ i’ veggio dolor giù per le guance?",
+      "translation": "Along your cheeks such grief as I behold?",
+      "line": 98
+    },
+    {
+      "source": "e che pena è in voi che sì sfavilla?».",
+      "translation": "And what pain is upon you, that so sparkles?”",
+      "line": 99
+    },
+    {
+      "source": "E l’un rispuose a me: «Le cappe rance",
+      "translation": "And one replied to me: “These orange cloaks",
+      "line": 100
+    },
+    {
+      "source": "son di piombo sì grosse, che li pesi",
+      "translation": "Are made of lead so heavy, that the weights",
+      "line": 101
+    },
+    {
+      "source": "fan così cigolar le lor bilance.",
+      "translation": "Cause in this way their balances to creak.",
+      "line": 102
+    },
+    {
+      "source": "Frati godenti fummo, e bolognesi;",
+      "translation": "Frati Gaudenti were we, and Bolognese;",
+      "line": 103
+    },
+    {
+      "source": "io Catalano e questi Loderingo",
+      "translation": "I Catalano, and he Loderingo",
+      "line": 104
+    },
+    {
+      "source": "nomati, e da tua terra insieme presi",
+      "translation": "Named, and together taken by thy city,",
+      "line": 105
+    },
+    {
+      "source": "come suole esser tolto un uom solingo,",
+      "translation": "As the wont is to take one man alone,",
+      "line": 106
+    },
+    {
+      "source": "per conservar sua pace; e fummo tali,",
+      "translation": "For maintenance of its peace; and we were such",
+      "line": 107
+    },
+    {
+      "source": "ch’ancor si pare intorno dal Gardingo».",
+      "translation": "That still it is apparent round Gardingo.”",
+      "line": 108
+    },
+    {
+      "source": "Io cominciai: «O frati, i vostri mali . . . »;",
+      "translation": "“O Friars,” began I, “your iniquitous. . .”",
+      "line": 109
+    },
+    {
+      "source": "ma più non dissi, ch’a l’occhio mi corse",
+      "translation": "But said no more; for to mine eyes there rushed",
+      "line": 110
+    },
+    {
+      "source": "un, crucifisso in terra con tre pali.",
+      "translation": "One crucified with three stakes on the ground.",
+      "line": 111
+    },
+    {
+      "source": "Quando mi vide, tutto si distorse,",
+      "translation": "When me he saw, he writhed himself all over,",
+      "line": 112
+    },
+    {
+      "source": "soffiando ne la barba con sospiri;",
+      "translation": "Blowing into his beard with suspirations;",
+      "line": 113
+    },
+    {
+      "source": "e ’l frate Catalan, ch’a ciò s’accorse,",
+      "translation": "And the Friar Catalan, who noticed this,",
+      "line": 114
+    },
+    {
+      "source": "mi disse: «Quel confitto che tu miri,",
+      "translation": "Said to me: “This transfixed one, whom thou seest,",
+      "line": 115
+    },
+    {
+      "source": "consigliò i Farisei che convenia",
+      "translation": "Counselled the Pharisees that it was meet",
+      "line": 116
+    },
+    {
+      "source": "porre un uom per lo popolo a’ martìri.",
+      "translation": "To put one man to torture for the people.",
+      "line": 117
+    },
+    {
+      "source": "Attraversato è, nudo, ne la via,",
+      "translation": "Crosswise and naked is he on the path,",
+      "line": 118
+    },
+    {
+      "source": "come tu vedi, ed è mestier ch’el senta",
+      "translation": "As thou perceivest; and he needs must feel,",
+      "line": 119
+    },
+    {
+      "source": "qualunque passa, come pesa, pria.",
+      "translation": "Whoever passes, first how much he weighs;",
+      "line": 120
+    },
+    {
+      "source": "E a tal modo il socero si stenta",
+      "translation": "And in like mode his father-in-law is punished",
+      "line": 121
+    },
+    {
+      "source": "in questa fossa, e li altri dal concilio",
+      "translation": "Within this moat, and the others of the council,",
+      "line": 122
+    },
+    {
+      "source": "che fu per li Giudei mala sementa».",
+      "translation": "Which for the Jews was a malignant seed.”",
+      "line": 123
+    },
+    {
+      "source": "Allor vid’ io maravigliar Virgilio",
+      "translation": "And thereupon I saw Virgilius marvel",
+      "line": 124
+    },
+    {
+      "source": "sovra colui ch’era disteso in croce",
+      "translation": "O’er him who was extended on the cross",
+      "line": 125
+    },
+    {
+      "source": "tanto vilmente ne l’etterno essilio.",
+      "translation": "So vilely in eternal banishment.",
+      "line": 126
+    },
+    {
+      "source": "Poscia drizzò al frate cotal voce:",
+      "translation": "Then he directed to the Friar this voice:",
+      "line": 127
+    },
+    {
+      "source": "«Non vi dispiaccia, se vi lece, dirci",
+      "translation": "“Be not displeased, if granted thee, to tell us",
+      "line": 128
+    },
+    {
+      "source": "s’a la man destra giace alcuna foce",
+      "translation": "If to the right hand any pass slope down",
+      "line": 129
+    },
+    {
+      "source": "onde noi amendue possiamo uscirci,",
+      "translation": "By which we two may issue forth from here,",
+      "line": 130
+    },
+    {
+      "source": "sanza costrigner de li angeli neri",
+      "translation": "Without constraining some of the black angels",
+      "line": 131
+    },
+    {
+      "source": "che vegnan d’esto fondo a dipartirci».",
+      "translation": "To come and extricate us from this deep.”",
+      "line": 132
+    },
+    {
+      "source": "Rispuose adunque: «Più che tu non speri",
+      "translation": "Then he made answer: “Nearer than thou hopest",
+      "line": 133
+    },
+    {
+      "source": "s’appressa un sasso che da la gran cerchia",
+      "translation": "There is a rock, that forth from the great circle",
+      "line": 134
+    },
+    {
+      "source": "si move e varca tutt’ i vallon feri,",
+      "translation": "Proceeds, and crosses all the cruel valleys,",
+      "line": 135
+    },
+    {
+      "source": "salvo che ’n questo è rotto e nol coperchia;",
+      "translation": "Save that at this ’tis broken, and does not bridge it;",
+      "line": 136
+    },
+    {
+      "source": "montar potrete su per la ruina,",
+      "translation": "You will be able to mount up the ruin,",
+      "line": 137
+    },
+    {
+      "source": "che giace in costa e nel fondo soperchia».",
+      "translation": "That sidelong slopes and at the bottom rises.”",
+      "line": 138
+    },
+    {
+      "source": "Lo duca stette un poco a testa china;",
+      "translation": "The Leader stood awhile with head bowed down;",
+      "line": 139
+    },
+    {
+      "source": "poi disse: «Mal contava la bisogna",
+      "translation": "Then said: “The business badly he recounted",
+      "line": 140
+    },
+    {
+      "source": "colui che i peccator di qua uncina».",
+      "translation": "Who grapples with his hook the sinners yonder.”",
+      "line": 141
+    },
+    {
+      "source": "E ’l frate: «Io udi’ già dire a Bologna",
+      "translation": "And the Friar: “Many of the Devil’s vices",
+      "line": 142
+    },
+    {
+      "source": "del diavol vizi assai, tra ’ quali udi’",
+      "translation": "Once heard I at Bologna, and among them,",
+      "line": 143
+    },
+    {
+      "source": "ch’elli è bugiardo, e padre di menzogna».",
+      "translation": "That he’s a liar and the father of lies.”",
+      "line": 144
+    },
+    {
+      "source": "Appresso il duca a gran passi sen gì,",
+      "translation": "Thereat my Leader with great strides went on,",
+      "line": 145
+    },
+    {
+      "source": "turbato un poco d’ira nel sembiante;",
+      "translation": "Somewhat disturbed with anger in his looks;",
+      "line": 146
+    },
+    {
+      "source": "ond’ io da li ’ncarcati mi parti’",
+      "translation": "Whence from the heavy-laden I departed",
+      "line": 147
+    },
+    {
+      "source": "dietro a le poste de le care piante.",
+      "translation": "After the prints of his beloved feet.",
+      "line": 148
+    }
+  ]
+}

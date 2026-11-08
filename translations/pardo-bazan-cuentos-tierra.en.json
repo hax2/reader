@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "trackId": "pardo-bazan-cuentos-tierra",
+  "sourceHash": "1e80b7b3f3db6aea5636090c402bcb31be3e6872ab1eb48f8e2fd8ac95dc542c",
+  "provider": "ollama/translategemma:4b",
+  "sourceLanguage": "es",
+  "targetLanguage": "en",
+  "translatedAt": "2026-08-15T08:19:26.784711+00:00",
+  "characters": 8164,
+  "blocks": [
+    {
+      "source": "Los rizos y cuando pasa la reducida cajita blanca con bros, va camino del cementerio, no volvemos la cabeza siquiera. El tráfago de vivir es tal que no hay tiempo de mirar cómo desfila la muerte, cegando capullos con el mismo brío certero con que ciega los árboles añosos. Aquella caja, sin embargo, rosados eran los filetes. Me obligó a recordar un incidente ya olvidado.",
+      "translation": "The Curls. When the little white coffin passes, carried on shoulders toward the cemetery, we do not even turn our heads. The bustle of living is such that there is no time to watch death pass by, cutting down buds with the same unerring vigor with which it fells ancient trees. That coffin, however—its trim was pink—made me recall an incident I had already forgotten."
+    },
+    {
+      "source": "La señora que me acompañaba me refrescó la memoria. ¿Sabe usted de quién es el entierro? Pues de la chiquilla bonita que le llamó a usted la atención, y mucho. En la visita a las escuelas municipales, cuando fuimos a designar las niñas para la colonia escolar del año, hace ya lo menos dos o tres que sucedió eso.",
+      "translation": "The lady accompanying me refreshed my memory. \"Do you know whose funeral this is? The pretty little girl who caught your attention—very much so—when we visited the municipal schools to choose the girls for that year’s school holiday camp.\" \"That happened at least two or three years ago now.\""
+    },
+    {
+      "source": "Sí, me acuerdo ahora perfectamente. Una criatura morena de facciones de cera, perfiladitas, con unos ojos oscuros, grandes, que le comían la cara, y unos rizos negros también, flotantes por los hombros. Una melena maravillosa. ¿Y es esa?",
+      "translation": "\"Yes, now I remember perfectly. A dark-haired little girl with delicate, finely shaped, waxlike features, large dark eyes that seemed to fill her face, and black curls flowing over her shoulders. A marvelous head of hair. And is that her?\""
+    },
+    {
+      "source": "Esa misma. Evoqué la escena. El rebaño de criaturitas en pie ante sus pupitres. Respetuosamente derechas e inmóviles a la voz de la profesora.",
+      "translation": "\"The very same.\" I recalled the scene: the flock of little children standing before their desks, respectfully upright and motionless at the teacher’s command."
+    },
+    {
+      "source": "Una serie de cabecitas mal peinadas, de pelo bravío, corto y revuelto, desemblantes colorados y cachetudos, o más y lentos, señalados por el linfatismo, con el estigma que anuncia tan graves desórdenes fisiológicos para el porvenir. Un calabazal gracioso a veces. La niñez es tan fácilmente graciosa. Pero, en conjunto, entristecedor, como lo son las muchedumbres infantiles de asilos y hospicios, como suele ser la prole numerosa de los necesitados, las privaciones, que se En la estructura ósea del chiquillo, las descubre el nobelsta en lo reviejo de la tés, en la impureza de los ojos, en la naciente deformidad de los miembros.",
+      "translation": "A row of poorly combed little heads with short, unruly, tousled hair; faces either rosy and chubby or pallid and gaunt, marked by a lymphatic constitution with the stigma that foretells such serious physiological disorders in later life. A droll patch of little pumpkins at times—childhood is so easily charming! Yet saddening as a whole, like crowds of children in charitable homes and orphanages, like the numerous offspring of the needy. The novelist detects deprivation in the prematurely aged complexion, the clouded eyes, and the beginnings of deformity in their limbs, as well as in the child’s bone structure."
+    },
+    {
+      "source": "El niño está más cerca que el adulto de la vida vegetativa. Bien cuidado, parece una flor regada y lozana. Mal cuidado, es la planta que se ahila por falta de agua y de aire. Entre el plantel destacóse la niña de los risos y ante el tono algo serio de su menuda faz encantadora, a un tiempo resolvimos.",
+      "translation": "A child is closer than an adult to the life of a plant. Well cared for, a child resembles a watered, flourishing flower. Badly cared for, a child is like a plant that grows thin and weak for lack of water and air. Among this little nursery, the girl with the curls stood out, and at the somewhat serious expression on her tiny, enchanting face, we all decided at once:"
+    },
+    {
+      "source": "Esta necesita playa y campo. Habrá que cortarle el pelo. Observó alguien de nosotros, en el tono con que se reconoce una necesidad dolorosa, porque El pelo nos había deslumbrado desde el primer momento, como deslumbra la pluma magnífica, tornasolada de un ave tropical. Sabíamos de sobra que la rapadura es el rito inicial de caridad y de higiene en las colonias.",
+      "translation": "\"This one needs the beach and the countryside.\" \"We shall have to cut her hair,\" one of us remarked in the tone used to acknowledge a painful necessity, for her hair had dazzled us from the first moment, like the magnificent, iridescent plumage of a tropical bird. We knew all too well that shaving the head was the initial rite of charity and hygiene at the holiday camps."
+    },
+    {
+      "source": "De caridad, porque es preciso tenerla para realizar y hasta para ordenar y dirigir esa operación que descubre tantas veces en las cabelleras infantiles la fauna asquerosa de la miseria. De higiene, porque al niño que le medran los cabellos se le desmedra el cuerpo es sabido, ni aún para los hijos de los ricos, familiarizados con el peine y los petróleos de tocador, es bueno cultivar esos bucles de paje del siglo XV. Sin embargo, desde que pronunciamos las fatales palabras, habrá que cortarla el pelo, comprendimos que no sería fácil. La niña, fijándonos desde lo hondo con el par de moras maduras de sus hojasos, parecía decirnos silenciosa y expresivamente, no me quitaréis mis risos, no tal.",
+      "translation": "Of charity, because compassion is needed to carry out, or even to order and direct, an operation that so often uncovers in children’s hair the disgusting vermin of poverty. Of hygiene, because it is well known that when a child’s hair flourishes, the body wastes away; even for the children of the rich, familiar with combs and grooming oils, it is not good to cultivate those fifteenth-century pageboy curls. Yet as soon as we uttered the fatal words, \"We shall have to cut her hair,\" we understood that it would not be easy. Fixing us with the deep gaze of her great eyes, like two ripe blackberries, the little girl seemed to say silently and expressively, \"You will not take my curls away—indeed you will not.\""
+    },
+    {
+      "source": "El asito colorado, que una coquetería de madre engreida de la belleza de una criatura había prendido cerca, de la cien izquierda, era como banderín de la vanidad de aquellos siete u ocho años, ya femeniles, y los ojos sombríos nos miraban maldiciéndonos, y las se contraían con moín de repugnancia. Al día siguiente lo supimos ya, de un modo positivo, por referencias diversas. La niña de los risos no vendría a la colonia. Su familia compartía la opinión de que la salud no compensa el desmoche de unos tirabuzones tan ricos y tan ondeantes.",
+      "translation": "The little red ribbon that a mother’s vanity, proud of her child’s beauty, had pinned near her left temple was like a pennant of the already feminine vanity of those seven or eight years. Her dark eyes looked at us as if cursing us, and her face contracted in a grimace of disgust. By the next day we knew for certain, from various reports: the girl with the curls would not come to the holiday camp. Her family shared the view that better health did not compensate for cutting off such rich, flowing ringlets."
+    },
+    {
+      "source": "Mejor dicho, conviene ser exactos, aquel menaje de obreros, habituado a la vida sordida y angustiada, en que, si no falta el pan del todo, no lo hay nunca de sobra, reñido con el jabón y el aseo, en la promiscuidad y estrechez del domicilio. Creía firmemente que eso de rapar a los chicos es una manía de burgueses metidos a filántropos. Que distraen el aburrimiento inventando molestias a cambio de problemáticos beneficios. Llevarse a la chica un mes a una playa, gran puñado son tres moscas, y en cambio, quitarla aquellos risos orgullo de la madre, envidia de la demás chiquillería y comadrería del barrio.",
+      "translation": "Or rather—we should be precise—that working-class household, accustomed to a sordid, anxious life in which bread, though not entirely lacking, was never plentiful, at odds with soap and cleanliness amid the crowded confines of its home, firmly believed that shaving children’s heads was a fad of bourgeois people playing at philanthropy. They relieved their boredom by inventing nuisances in exchange for dubious benefits. Taking the girl to the beach for a month—what did that amount to?—and in return cutting off those curls, her mother’s pride and the envy of the other children and the neighborhood women!"
+    },
+    {
+      "source": "El único lujo del hogar, lo que hacía sonreír babosamente al padre, cuando conducía a su hija al gallinero del teatro por horas o al cine, y en el ambiente viciado, del etéreo, cargado de olor humano, resonaban las frases de admiración. Mira ese pelo, mira esa pequeña, si parece un cromo. Observe gongs, tuvimos que sustituir a la niña de la melena, por otra que se dejó sin oposición, aunque no sin pena, pues es increíble el cariño que tienen a su áspera salea hasta los chicos más feos y pobres. Las criaturas fueron lavadas y fregadas.",
+      "translation": "The home’s only luxury, what made the father grin dotingly when he took his daughter to the cheap theater gallery or the cinema, where, in the stale air heavy with human odors, cries of admiration rang out: \"Look at that hair! Look at that little girl—she is like a picture!\" We had to replace the girl with the flowing hair with another who submitted without resistance, though not without sorrow: it is incredible how fond even the poorest, plainest children are of their rough fleece of hair. The children were washed and scrubbed."
+    },
+    {
+      "source": "Averiguaron que a unos huesos que tenemos en la boca, hay que flotarlos diariamente con cepillo. Se vistieron de limpio, comieron a mantel blanco, con flores silvestres en el centro y servilleta nívea, corretearon en la playa, ganaron en peso y en estatura. Se pusieron alegres y morenas, el moreno sano del pan integro, y volvieron al pueblo contentas, empanecidas del veraneo aquel, con hábitos de señoritas, que en sus casas eran reprobados. La de los risos seguía causando la misma impresión, mientras jugaba en el arroyo, vestida de percal rosa sucio, y con el monito rojo entre las alborotadas y finas ondas del soberbio pelo.",
+      "translation": "They learned that the bones in their mouths had to be rubbed daily with a brush. They put on clean clothes, ate at a table with a white cloth, wildflowers in the center, and snowy napkins, ran about on the beach, and gained weight and height. They grew cheerful and brown, the healthy brown of wholemeal bread, and returned to town happy and plumper from that summer holiday, with young ladies’ habits that were disapproved of at home. The girl with the curls continued to make the same impression as she played in the gutter, dressed in dirty pink cotton, with the little red bow among the fine, tousled waves of her magnificent hair."
+    },
+    {
+      "source": "Sin embargo, transcurrido bastante tiempo después del día en que la conocimos, las frases de la gente que la admiraba se habían modificado un poco. ¡Qué pelo! Era siempre lo primero, y después está consumidita. ¡Qué color tan malo!",
+      "translation": "Yet, a considerable time after the day we met her, the remarks of those who admired her had changed a little. \"What hair!\" still came first, and afterward, \"She is wasting away! What an unhealthy complexion!\""
+    },
+    {
+      "source": "La gente del pueblo nadie lo ignora. No se anda en contemplaciones para decir lo que piensa en la cara de todo el mundo. Hubo quien soltó crudamente. ¡Qué lástima!",
+      "translation": "The ordinary people of the town, as everyone knows, do not mince words when telling anyone to their face what they think. Someone blurted out bluntly, \"What a pity!"
+    },
+    {
+      "source": "Esta no llega a grande. ¿Cayeron en la cuenta los padres? ¿Consultaron médico? Ello es que, al cabo, la madre murmuró tristemente la misma frase por nosotros pronunciada.",
+      "translation": "This girl will never grow up.\" Did the parents realize what was happening? Did they consult a doctor? At last the mother sadly murmured the same words we had spoken:"
+    },
+    {
+      "source": "Habrá que cortarla el pelo, el desconsolado llanto de la niña, próxima a convertirse en mujercita, impidió que se verificase la poda, el doctor que la vio, postrada ya en mal jergón, que compartía con dos hermanos menores, movió la cabeza y decidió que era inútil darle al disgusto. De todas maneras, había de ser igual. Y los rizos no cayeron bajo la fría mordedura de la tijera, y envuelta en su regia a obreola de sombra, la colocaron en la exigua caja blanca con filetes rosados que los compañeros del padre, marmolicias, gente muy familiarizada con el cementerio y sus esplendores. Conducían a hombros cuando acertamos a verla.",
+      "translation": "\"We shall have to cut her hair.\" The inconsolable weeping of the girl, now almost a young woman, prevented the shearing. The doctor who saw her, already prostrate on a poor straw mattress she shared with two younger siblings, shook his head and decided there was no use upsetting her. It would make no difference to the outcome. And the curls never fell beneath the cold bite of the scissors. Enveloped in her regal halo of dark hair, she was laid in the tiny white coffin with pink trim that her father’s workmates—marble workers, men very familiar with the cemetery and its splendors—were carrying on their shoulders when we happened to see it."
+    },
+    {
+      "source": "En el fondo de mi alma de artista, a qué negarlo, latía una especie de respeto ante aquella muerte ocasionada por el culto ciego, inconsciente, idolátrico de la belleza. Yo hubiese mandado a tiempo transquilar a la desdichada Absalona, víctima de su hermosa cabellera. Sí, en nombre de la ciencia y del bien, yo hubiese dispuesto sin ningún escrúpulo ese crimen. Pero como tengo dos almas, dos lo menos, me gusta que en el ara de la eterna hermosura se sacrifiquen sin piedad, niños y adultos.",
+      "translation": "In the depths of my artist’s soul—why deny it?—there stirred a kind of respect before that death caused by the blind, unconscious, idolatrous worship of beauty. I would have ordered the unfortunate female Absalom, victim of her beautiful hair, to be shorn in time. Yes, in the name of science and what is right, I would have ordered that crime without any scruples. But since I have two souls—at least two—I like to see children and adults sacrificed without mercy on the altar of eternal beauty."
+    },
+    {
+      "source": "El olor de tales sacrificios es grato a la impasible diosa. Sobre esta edición electrónica, este libro electrónico proviene de la versión en español de la biblioteca digital Wikisorce, esta biblioteca digital multilingüe. Realizada por voluntarios, tiene el objetivo de poner a disposición de todo el mundo el mayor número posible de documentos públicos de todo tipo. Novelas, poesías, revistas, cartas, etc.",
+      "translation": "The scent of such sacrifices pleases the impassive goddess. About this electronic edition: this e-book comes from the Spanish-language Wikisource digital library. This multilingual digital library, created by volunteers, aims to make as many public documents of every kind as possible available to everyone: novels, poems, magazines, letters, and so on."
+    },
+    {
+      "source": "Lo proporcionamos de manera gratuita, gracias a que los textos utilizados son libres de derechos o están bajo licencia libre. Puede utilizar nuestros libros electrónicos de manera totalmente libre con finalidades comerciales o no, respetando las cláusulas de la licencia Creative Commons B .S .S .E .E. 3 .0. 2.",
+      "translation": "We provide it free of charge because the texts used are out of copyright or available under a free license. You may use our e-books freely for commercial or noncommercial purposes, respecting the terms of the Creative Commons license [name garbled in the transcript], version 3.0,"
+    },
+    {
+      "source": "Según SEA, de la licencia GANU FDL 3 de Wikisorce, está constantemente buscando nuevos colaboradores. No duden colaborar con nosotros. A pesar de nuestro cuidado, puede ser que se escape algún error en la transcripción del texto a partir del faxinmil. Puede avisar de errores en esta dirección, OUSH.",
+      "translation": "as applicable, or the GNU FDL license. Wikisource is constantly looking for new contributors. Do not hesitate to collaborate with us. Despite our care, an error may slip into the transcription of the text from the facsimile. You can report errors at the following address [address garbled in the transcript]."
+    },
+    {
+      "source": "Los siguientes contribuidores han permitido la realización de este libro.",
+      "translation": "The following contributors have made this book possible."
+    }
+  ]
+}

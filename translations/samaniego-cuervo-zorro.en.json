@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "trackId": "samaniego-cuervo-zorro",
+  "sourceHash": "ac6a3902ce8dc5cc6ce8f6c6b999538e77598802d5d9e4a9dcb974744daf54a8",
+  "provider": "ollama/translategemma:4b",
+  "sourceLanguage": "es",
+  "targetLanguage": "en",
+  "translatedAt": "2026-08-15T08:09:37.675448+00:00",
+  "characters": 868,
+  "blocks": [
+    {
+      "source": "el cuervo y el zorro Félix María Samaniego. En la rama de un árbol, bien ufano y contento, con un queso en el pico, estaba el señor Cuervo. Del olor atraído, un zorro muy maestro, le dijo estas palabras un poco más o menos. Tenga usted buenos días, señor Cuervo, mi dueño.",
+      "translation": "The Crow and the Fox, by Félix María Samaniego. On a branch of a tree sat Mr. Crow, proud and content, with a cheese in his beak. Attracted by the smell, a very crafty fox said to him words more or less like these: \"Good morning to you, Mr. Crow, my lord."
+    },
+    {
+      "source": "Vaya que estáis donoso, mono, lindo en extremo. Yo no gasto lisonjas, y digo lo que siento. Que si a tu bella traza corresponde el gorjeo, juro a la diosa Ceres, siendo testigo el cielo, que tú serás el Félix de sus vastos imperios. Al oír un discurso tan dulce y halagüeño, de vanidad llevado, quiso cantar el cuervo.",
+      "translation": "Why, you are charming, handsome, and exceedingly beautiful! I do not indulge in flattery; I say what I feel. If your song matches your fine appearance, I swear to the goddess Ceres, with heaven as my witness, that you will be the phoenix of her vast domains.\" Hearing such sweet and flattering words, the crow, carried away by vanity, wanted to sing."
+    },
+    {
+      "source": "Abrió su negro pico, dejó caer el queso. El muy astuto zorro, después de haberle preso, le dijo. Señor Bobo, pues sin otro alimento, quedáis con alabanzas tan hinchado y repleto, digerid las lisonjas, mientras yo digiero el queso. Quien oye aduladores, nunca espere otro premio.",
+      "translation": "He opened his black beak and dropped the cheese. The very cunning fox, after catching it, said to him, \"Mr. Fool, since praise leaves you so puffed up and full without any other food, digest the flattery while I digest the cheese.\" Whoever listens to flatterers should never expect any other reward."
+    }
+  ]
+}

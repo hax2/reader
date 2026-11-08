@@ -1,0 +1,667 @@
+{
+  "trackId": "dante-inferno-c07",
+  "sourceLanguage": "it",
+  "targetLanguage": "en",
+  "translator": "Henry Wadsworth Longfellow",
+  "translationYear": 1867,
+  "source": "https://www.gutenberg.org/ebooks/1001",
+  "rights": "Adapted from the public-domain English translation by Henry Wadsworth Longfellow; Project Gutenberg ebook #1001.",
+  "alignment": "verse-line",
+  "sourceHash": "eb4f75c955e136f7b2e8184d8ac24b37d81e352cab1e394e6bfa4589854207f2",
+  "blocks": [
+    {
+      "source": "Canto VII",
+      "translation": "Canto VII"
+    },
+    {
+      "source": "«Pape Satàn, pape Satàn aleppe!»,",
+      "translation": "“Pape Satan, Pape Satan, Aleppe!”",
+      "line": 1
+    },
+    {
+      "source": "cominciò Pluto con la voce chioccia;",
+      "translation": "Thus Plutus with his clucking voice began;",
+      "line": 2
+    },
+    {
+      "source": "e quel savio gentil, che tutto seppe,",
+      "translation": "And that benignant Sage, who all things knew,",
+      "line": 3
+    },
+    {
+      "source": "disse per confortarmi: «Non ti noccia",
+      "translation": "Said, to encourage me: “Let not thy fear",
+      "line": 4
+    },
+    {
+      "source": "la tua paura; ché, poder ch’elli abbia,",
+      "translation": "Harm thee; for any power that he may have",
+      "line": 5
+    },
+    {
+      "source": "non ci torrà lo scender questa roccia».",
+      "translation": "Shall not prevent our going down this crag.”",
+      "line": 6
+    },
+    {
+      "source": "Poi si rivolse a quella ’nfiata labbia,",
+      "translation": "Then he turned round unto that bloated lip,",
+      "line": 7
+    },
+    {
+      "source": "e disse: «Taci, maladetto lupo!",
+      "translation": "And said: “Be silent, thou accursed wolf;",
+      "line": 8
+    },
+    {
+      "source": "consuma dentro te con la tua rabbia.",
+      "translation": "Consume within thyself with thine own rage.",
+      "line": 9
+    },
+    {
+      "source": "Non è sanza cagion l’andare al cupo:",
+      "translation": "Not causeless is this journey to the abyss;",
+      "line": 10
+    },
+    {
+      "source": "vuolsi ne l’alto, là dove Michele",
+      "translation": "Thus is it willed on high, where Michael wrought",
+      "line": 11
+    },
+    {
+      "source": "fé la vendetta del superbo strupo».",
+      "translation": "Vengeance upon the proud adultery.”",
+      "line": 12
+    },
+    {
+      "source": "Quali dal vento le gonfiate vele",
+      "translation": "Even as the sails inflated by the wind",
+      "line": 13
+    },
+    {
+      "source": "caggiono avvolte, poi che l’alber fiacca,",
+      "translation": "Involved together fall when snaps the mast,",
+      "line": 14
+    },
+    {
+      "source": "tal cadde a terra la fiera crudele.",
+      "translation": "So fell the cruel monster to the earth.",
+      "line": 15
+    },
+    {
+      "source": "Così scendemmo ne la quarta lacca,",
+      "translation": "Thus we descended into the fourth chasm,",
+      "line": 16
+    },
+    {
+      "source": "pigliando più de la dolente ripa",
+      "translation": "Gaining still farther on the dolesome shore",
+      "line": 17
+    },
+    {
+      "source": "che ’l mal de l’universo tutto insacca.",
+      "translation": "Which all the woe of the universe insacks.",
+      "line": 18
+    },
+    {
+      "source": "Ahi giustizia di Dio! tante chi stipa",
+      "translation": "Justice of God, ah! who heaps up so many",
+      "line": 19
+    },
+    {
+      "source": "nove travaglie e pene quant’ io viddi?",
+      "translation": "New toils and sufferings as I beheld?",
+      "line": 20
+    },
+    {
+      "source": "e perché nostra colpa sì ne scipa?",
+      "translation": "And why doth our transgression waste us so?",
+      "line": 21
+    },
+    {
+      "source": "Come fa l’onda là sovra Cariddi,",
+      "translation": "As doth the billow there upon Charybdis,",
+      "line": 22
+    },
+    {
+      "source": "che si frange con quella in cui s’intoppa,",
+      "translation": "That breaks itself on that which it encounters,",
+      "line": 23
+    },
+    {
+      "source": "così convien che qui la gente riddi.",
+      "translation": "So here the folk must dance their roundelay.",
+      "line": 24
+    },
+    {
+      "source": "Qui vid’ i’ gente più ch’altrove troppa,",
+      "translation": "Here saw I people, more than elsewhere, many,",
+      "line": 25
+    },
+    {
+      "source": "e d’una parte e d’altra, con grand’ urli,",
+      "translation": "On one side and the other, with great howls,",
+      "line": 26
+    },
+    {
+      "source": "voltando pesi per forza di poppa.",
+      "translation": "Rolling weights forward by main force of chest.",
+      "line": 27
+    },
+    {
+      "source": "Percotëansi ’ncontro; e poscia pur lì",
+      "translation": "They clashed together, and then at that point",
+      "line": 28
+    },
+    {
+      "source": "si rivolgea ciascun, voltando a retro,",
+      "translation": "Each one turned backward, rolling retrograde,",
+      "line": 29
+    },
+    {
+      "source": "gridando: «Perché tieni?» e «Perché burli?».",
+      "translation": "Crying, “Why keepest?” and, “Why squanderest thou?”",
+      "line": 30
+    },
+    {
+      "source": "Così tornavan per lo cerchio tetro",
+      "translation": "Thus they returned along the lurid circle",
+      "line": 31
+    },
+    {
+      "source": "da ogne mano a l’opposito punto,",
+      "translation": "On either hand unto the opposite point,",
+      "line": 32
+    },
+    {
+      "source": "gridandosi anche loro ontoso metro;",
+      "translation": "Shouting their shameful metre evermore.",
+      "line": 33
+    },
+    {
+      "source": "poi si volgea ciascun, quand’ era giunto,",
+      "translation": "Then each, when he arrived there, wheeled about",
+      "line": 34
+    },
+    {
+      "source": "per lo suo mezzo cerchio a l’altra giostra.",
+      "translation": "Through his half-circle to another joust;",
+      "line": 35
+    },
+    {
+      "source": "E io, ch’avea lo cor quasi compunto,",
+      "translation": "And I, who had my heart pierced as it were,",
+      "line": 36
+    },
+    {
+      "source": "dissi: «Maestro mio, or mi dimostra",
+      "translation": "Exclaimed: “My Master, now declare to me",
+      "line": 37
+    },
+    {
+      "source": "che gente è questa, e se tutti fuor cherci",
+      "translation": "What people these are, and if all were clerks,",
+      "line": 38
+    },
+    {
+      "source": "questi chercuti a la sinistra nostra».",
+      "translation": "These shaven crowns upon the left of us.”",
+      "line": 39
+    },
+    {
+      "source": "Ed elli a me: «Tutti quanti fuor guerci",
+      "translation": "And he to me: “All of them were asquint",
+      "line": 40
+    },
+    {
+      "source": "sì de la mente in la vita primaia,",
+      "translation": "In intellect in the first life, so much",
+      "line": 41
+    },
+    {
+      "source": "che con misura nullo spendio ferci.",
+      "translation": "That there with measure they no spending made.",
+      "line": 42
+    },
+    {
+      "source": "Assai la voce lor chiaro l’abbaia,",
+      "translation": "Clearly enough their voices bark it forth,",
+      "line": 43
+    },
+    {
+      "source": "quando vegnono a’ due punti del cerchio",
+      "translation": "Whene’er they reach the two points of the circle,",
+      "line": 44
+    },
+    {
+      "source": "dove colpa contraria li dispaia.",
+      "translation": "Where sunders them the opposite defect.",
+      "line": 45
+    },
+    {
+      "source": "Questi fuor cherci, che non han coperchio",
+      "translation": "Clerks those were who no hairy covering",
+      "line": 46
+    },
+    {
+      "source": "piloso al capo, e papi e cardinali,",
+      "translation": "Have on the head, and Popes and Cardinals,",
+      "line": 47
+    },
+    {
+      "source": "in cui usa avarizia il suo soperchio».",
+      "translation": "In whom doth Avarice practise its excess.”",
+      "line": 48
+    },
+    {
+      "source": "E io: «Maestro, tra questi cotali",
+      "translation": "And I: “My Master, among such as these",
+      "line": 49
+    },
+    {
+      "source": "dovre’ io ben riconoscere alcuni",
+      "translation": "I ought forsooth to recognise some few,",
+      "line": 50
+    },
+    {
+      "source": "che furo immondi di cotesti mali».",
+      "translation": "Who were infected with these maladies.”",
+      "line": 51
+    },
+    {
+      "source": "Ed elli a me: «Vano pensiero aduni:",
+      "translation": "And he to me: “Vain thought thou entertainest;",
+      "line": 52
+    },
+    {
+      "source": "la sconoscente vita che i fé sozzi,",
+      "translation": "The undiscerning life which made them sordid",
+      "line": 53
+    },
+    {
+      "source": "ad ogne conoscenza or li fa bruni.",
+      "translation": "Now makes them unto all discernment dim.",
+      "line": 54
+    },
+    {
+      "source": "In etterno verranno a li due cozzi:",
+      "translation": "Forever shall they come to these two buttings;",
+      "line": 55
+    },
+    {
+      "source": "questi resurgeranno del sepulcro",
+      "translation": "These from the sepulchre shall rise again",
+      "line": 56
+    },
+    {
+      "source": "col pugno chiuso, e questi coi crin mozzi.",
+      "translation": "With the fist closed, and these with tresses shorn.",
+      "line": 57
+    },
+    {
+      "source": "Mal dare e mal tener lo mondo pulcro",
+      "translation": "Ill giving and ill keeping the fair world",
+      "line": 58
+    },
+    {
+      "source": "ha tolto loro, e posti a questa zuffa:",
+      "translation": "Have ta’en from them, and placed them in this scuffle;",
+      "line": 59
+    },
+    {
+      "source": "qual ella sia, parole non ci appulcro.",
+      "translation": "Whate’er it be, no words adorn I for it.",
+      "line": 60
+    },
+    {
+      "source": "Or puoi, figliuol, veder la corta buffa",
+      "translation": "Now canst thou, Son, behold the transient farce",
+      "line": 61
+    },
+    {
+      "source": "d’i ben che son commessi a la fortuna,",
+      "translation": "Of goods that are committed unto Fortune,",
+      "line": 62
+    },
+    {
+      "source": "per che l’umana gente si rabbuffa;",
+      "translation": "For which the human race each other buffet;",
+      "line": 63
+    },
+    {
+      "source": "ché tutto l’oro ch’è sotto la luna",
+      "translation": "For all the gold that is beneath the moon,",
+      "line": 64
+    },
+    {
+      "source": "e che già fu, di quest’ anime stanche",
+      "translation": "Or ever has been, of these weary souls",
+      "line": 65
+    },
+    {
+      "source": "non poterebbe farne posare una».",
+      "translation": "Could never make a single one repose.”",
+      "line": 66
+    },
+    {
+      "source": "«Maestro mio», diss’ io, «or mi dì anche:",
+      "translation": "“Master,” I said to him, “now tell me also",
+      "line": 67
+    },
+    {
+      "source": "questa fortuna di che tu mi tocche,",
+      "translation": "What is this Fortune which thou speakest of,",
+      "line": 68
+    },
+    {
+      "source": "che è, che i ben del mondo ha sì tra branche?».",
+      "translation": "That has the world’s goods so within its clutches?”",
+      "line": 69
+    },
+    {
+      "source": "E quelli a me: «Oh creature sciocche,",
+      "translation": "And he to me: “O creatures imbecile,",
+      "line": 70
+    },
+    {
+      "source": "quanta ignoranza è quella che v’offende!",
+      "translation": "What ignorance is this which doth beset you?",
+      "line": 71
+    },
+    {
+      "source": "Or vo’ che tu mia sentenza ne ’mbocche.",
+      "translation": "Now will I have thee learn my judgment of her.",
+      "line": 72
+    },
+    {
+      "source": "Colui lo cui saver tutto trascende,",
+      "translation": "He whose omniscience everything transcends",
+      "line": 73
+    },
+    {
+      "source": "fece li cieli e diè lor chi conduce",
+      "translation": "The heavens created, and gave who should guide them,",
+      "line": 74
+    },
+    {
+      "source": "sì, ch’ogne parte ad ogne parte splende,",
+      "translation": "That every part to every part may shine,",
+      "line": 75
+    },
+    {
+      "source": "distribuendo igualmente la luce.",
+      "translation": "Distributing the light in equal measure;",
+      "line": 76
+    },
+    {
+      "source": "Similemente a li splendor mondani",
+      "translation": "He in like manner to the mundane splendours",
+      "line": 77
+    },
+    {
+      "source": "ordinò general ministra e duce",
+      "translation": "Ordained a general ministress and guide,",
+      "line": 78
+    },
+    {
+      "source": "che permutasse a tempo li ben vani",
+      "translation": "That she might change at times the empty treasures",
+      "line": 79
+    },
+    {
+      "source": "di gente in gente e d’uno in altro sangue,",
+      "translation": "From race to race, from one blood to another,",
+      "line": 80
+    },
+    {
+      "source": "oltre la difension d’i senni umani;",
+      "translation": "Beyond resistance of all human wisdom.",
+      "line": 81
+    },
+    {
+      "source": "per ch’una gente impera e l’altra langue,",
+      "translation": "Therefore one people triumphs, and another",
+      "line": 82
+    },
+    {
+      "source": "seguendo lo giudicio di costei,",
+      "translation": "Languishes, in pursuance of her judgment,",
+      "line": 83
+    },
+    {
+      "source": "che è occulto come in erba l’angue.",
+      "translation": "Which hidden is, as in the grass a serpent.",
+      "line": 84
+    },
+    {
+      "source": "Vostro saver non ha contasto a lei:",
+      "translation": "Your knowledge has no counterstand against her;",
+      "line": 85
+    },
+    {
+      "source": "questa provede, giudica, e persegue",
+      "translation": "She makes provision, judges, and pursues",
+      "line": 86
+    },
+    {
+      "source": "suo regno come il loro li altri dèi.",
+      "translation": "Her governance, as theirs the other gods.",
+      "line": 87
+    },
+    {
+      "source": "Le sue permutazion non hanno triegue:",
+      "translation": "Her permutations have not any truce;",
+      "line": 88
+    },
+    {
+      "source": "necessità la fa esser veloce;",
+      "translation": "Necessity makes her precipitate,",
+      "line": 89
+    },
+    {
+      "source": "sì spesso vien chi vicenda consegue.",
+      "translation": "So often cometh who his turn obtains.",
+      "line": 90
+    },
+    {
+      "source": "Quest’ è colei ch’è tanto posta in croce",
+      "translation": "And this is she who is so crucified",
+      "line": 91
+    },
+    {
+      "source": "pur da color che le dovrien dar lode,",
+      "translation": "Even by those who ought to give her praise,",
+      "line": 92
+    },
+    {
+      "source": "dandole biasmo a torto e mala voce;",
+      "translation": "Giving her blame amiss, and bad repute.",
+      "line": 93
+    },
+    {
+      "source": "ma ella s’è beata e ciò non ode:",
+      "translation": "But she is blissful, and she hears it not;",
+      "line": 94
+    },
+    {
+      "source": "con l’altre prime creature lieta",
+      "translation": "Among the other primal creatures gladsome",
+      "line": 95
+    },
+    {
+      "source": "volve sua spera e beata si gode.",
+      "translation": "She turns her sphere, and blissful she rejoices.",
+      "line": 96
+    },
+    {
+      "source": "Or discendiamo omai a maggior pieta;",
+      "translation": "Let us descend now unto greater woe;",
+      "line": 97
+    },
+    {
+      "source": "già ogne stella cade che saliva",
+      "translation": "Already sinks each star that was ascending",
+      "line": 98
+    },
+    {
+      "source": "quand’ io mi mossi, e ’l troppo star si vieta».",
+      "translation": "When I set out, and loitering is forbidden.”",
+      "line": 99
+    },
+    {
+      "source": "Noi ricidemmo il cerchio a l’altra riva",
+      "translation": "We crossed the circle to the other bank,",
+      "line": 100
+    },
+    {
+      "source": "sovr’ una fonte che bolle e riversa",
+      "translation": "Near to a fount that boils, and pours itself",
+      "line": 101
+    },
+    {
+      "source": "per un fossato che da lei deriva.",
+      "translation": "Along a gully that runs out of it.",
+      "line": 102
+    },
+    {
+      "source": "L’acqua era buia assai più che persa;",
+      "translation": "The water was more sombre far than perse;",
+      "line": 103
+    },
+    {
+      "source": "e noi, in compagnia de l’onde bige,",
+      "translation": "And we, in company with the dusky waves,",
+      "line": 104
+    },
+    {
+      "source": "intrammo giù per una via diversa.",
+      "translation": "Made entrance downward by a path uncouth.",
+      "line": 105
+    },
+    {
+      "source": "In la palude va c’ha nome Stige",
+      "translation": "A marsh it makes, which has the name of Styx,",
+      "line": 106
+    },
+    {
+      "source": "questo tristo ruscel, quand’ è disceso",
+      "translation": "This tristful brooklet, when it has descended",
+      "line": 107
+    },
+    {
+      "source": "al piè de le maligne piagge grige.",
+      "translation": "Down to the foot of the malign gray shores.",
+      "line": 108
+    },
+    {
+      "source": "E io, che di mirare stava inteso,",
+      "translation": "And I, who stood intent upon beholding,",
+      "line": 109
+    },
+    {
+      "source": "vidi genti fangose in quel pantano,",
+      "translation": "Saw people mud-besprent in that lagoon,",
+      "line": 110
+    },
+    {
+      "source": "ignude tutte, con sembiante offeso.",
+      "translation": "All of them naked and with angry look.",
+      "line": 111
+    },
+    {
+      "source": "Queste si percotean non pur con mano,",
+      "translation": "They smote each other not alone with hands,",
+      "line": 112
+    },
+    {
+      "source": "ma con la testa e col petto e coi piedi,",
+      "translation": "But with the head and with the breast and feet,",
+      "line": 113
+    },
+    {
+      "source": "troncandosi co’ denti a brano a brano.",
+      "translation": "Tearing each other piecemeal with their teeth.",
+      "line": 114
+    },
+    {
+      "source": "Lo buon maestro disse: «Figlio, or vedi",
+      "translation": "Said the good Master: “Son, thou now beholdest",
+      "line": 115
+    },
+    {
+      "source": "l’anime di color cui vinse l’ira;",
+      "translation": "The souls of those whom anger overcame;",
+      "line": 116
+    },
+    {
+      "source": "e anche vo’ che tu per certo credi",
+      "translation": "And likewise I would have thee know for certain",
+      "line": 117
+    },
+    {
+      "source": "che sotto l’acqua è gente che sospira,",
+      "translation": "Beneath the water people are who sigh",
+      "line": 118
+    },
+    {
+      "source": "e fanno pullular quest’ acqua al summo,",
+      "translation": "And make this water bubble at the surface,",
+      "line": 119
+    },
+    {
+      "source": "come l’occhio ti dice, u’ che s’aggira.",
+      "translation": "As the eye tells thee wheresoe’er it turns.",
+      "line": 120
+    },
+    {
+      "source": "Fitti nel limo dicon: “Tristi fummo",
+      "translation": "Fixed in the mire they say, ‘We sullen were",
+      "line": 121
+    },
+    {
+      "source": "ne l’aere dolce che dal sol s’allegra,",
+      "translation": "In the sweet air, which by the sun is gladdened,",
+      "line": 122
+    },
+    {
+      "source": "portando dentro accidïoso fummo:",
+      "translation": "Bearing within ourselves the sluggish reek;",
+      "line": 123
+    },
+    {
+      "source": "or ci attristiam ne la belletta negra”.",
+      "translation": "Now we are sullen in this sable mire.’",
+      "line": 124
+    },
+    {
+      "source": "Quest’ inno si gorgoglian ne la strozza,",
+      "translation": "This hymn do they keep gurgling in their throats,",
+      "line": 125
+    },
+    {
+      "source": "ché dir nol posson con parola integra».",
+      "translation": "For with unbroken words they cannot say it.”",
+      "line": 126
+    },
+    {
+      "source": "Così girammo de la lorda pozza",
+      "translation": "Thus we went circling round the filthy fen",
+      "line": 127
+    },
+    {
+      "source": "grand’ arco tra la ripa secca e ’l mézzo,",
+      "translation": "A great arc ’twixt the dry bank and the swamp,",
+      "line": 128
+    },
+    {
+      "source": "con li occhi vòlti a chi del fango ingozza.",
+      "translation": "With eyes turned unto those who gorge the mire;",
+      "line": 129
+    },
+    {
+      "source": "Venimmo al piè d’una torre al da sezzo.",
+      "translation": "Unto the foot of a tower we came at last.",
+      "line": 130
+    }
+  ]
+}
