@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
+# Manual only: the site now deploys from the gh-pages branch via `npm run deploy`.
+# To use this workflow again, set the Pages source back to "GitHub Actions".
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

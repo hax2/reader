@@ -206,7 +206,7 @@ HF_HOME=.tts-cache/huggingface .tts-venv/bin/python scripts/narrate_sections.py 
 
 Each canto is synthesized, aligned, added to `library.json`, committed with its
 audio and transcript, and pushed to `origin/main` before the next canto starts.
-A push triggers the GitHub Pages deployment. Cached synthesis resumes after an
+Pushing does not publish the site; run `npm run deploy` afterwards. Cached synthesis resumes after an
 interruption. Without `--push`, the same queue updates only the local catalog.
 
 
